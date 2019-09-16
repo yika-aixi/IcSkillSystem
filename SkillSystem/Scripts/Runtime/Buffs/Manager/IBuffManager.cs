@@ -5,30 +5,75 @@
 //2019年09月15日-19:28
 //CabinIcarus.SkillSystem.Runtime
 
+using System;
 using System.Collections.Generic;
 using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
 using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
 {
     public interface IBuffManager
     {
         /// <summary>
-        /// 寻找指定buff的Entitys
+        /// 添加buff System
         /// </summary>
-        /// <param name="buffEntitys">寻找结果</param>
-        /// <typeparam name="T">buff类型</typeparam>
-        void Find<T>(List<IEntity> buffEntitys) where T : IBuffDataComponent;
-
+        /// <param name="buffSystem"></param>
+        /// <returns></returns>
+        IBuffManager AddBuffSystem(IBuffSystem buffSystem);
+        
         /// <summary>
-        /// 寻找指定buff的Entitys
+        /// 添加实体
         /// </summary>
-        /// <param name="buff">buff类型</param>
-        /// <param name="buffEntitys">寻找结果</param>
-        void Find(IBuffDataComponent buff, List<IEntity> buffEntitys);
+        /// <param name="entity"></param>
+        void AddEntity(IEntity entity);
+        
+        /// <summary>
+        /// 销毁实体
+        /// </summary>
+        /// <param name="entity"></param>
+        void DestroyEntity(IEntity entity);
 
-        void AddBuff(IEntity entity, IBuffDataComponent buff);
+        void AddBuff(IEntity entity,IBuffDataComponent buff);
 
         void RemoveBuff(IEntity entity,IBuffDataComponent buff);
+
+        /// <summary>
+        /// 获取指定类型得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        IEnumerable<T> GetBuffs<T>(IEntity entity);
+        
+        /// <summary>
+        /// 获取指定类型得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        void GetBuffs<T>(IEntity entity,List<T> buffs);
+        
+        /// <summary>
+        /// 指定得实体是否有该类型得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        bool HasBuff<T>(IEntity entity) where T:IBuffDataComponent;
+
+        /// <summary>
+        /// 指定得实体是否有匹配得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="match"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        bool HasBuff<T>(IEntity entity,Predicate<T> match) where T:IBuffDataComponent;
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        void Update();
     }
 }
