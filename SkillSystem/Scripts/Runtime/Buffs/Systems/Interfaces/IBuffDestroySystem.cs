@@ -5,13 +5,17 @@
 //2019年09月14日-19:05
 //CabinIcarus.SkillSystem.Runtime
 
+using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
+using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.SkillSystem.Scripts.Runtime.Buffs.Com;
+
 namespace CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces
 {
     /// <summary>
     /// buff 销毁系统
     /// </summary>
-    public interface IBuffDestroySystem:IBuffSystem
+    public interface IBuffDestroySystem:IBuffSystem,IBuffFilter
     {
-        void Destroy();
+        void Destroy(IEntity entity,IBuffDataComponent buff);
     }
 }
