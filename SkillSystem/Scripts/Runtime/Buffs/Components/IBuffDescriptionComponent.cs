@@ -2,19 +2,24 @@
 //手动滑稽,滑稽脸
 //ヾ(•ω•`)o
 //https://www.ykls.app
-//2019年09月14日-19:25
+//2019年09月16日-22:33
 //CabinIcarus.SkillSystem.Runtime
 
 namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
 {
     /// <summary>
-    /// buff value
+    /// buff 描述
     /// </summary>
-    public interface IBuffValueDataComponent:IBuffDataComponent
+    public interface IBuffDescriptionComponent
     {
         /// <summary>
-        /// buff 值
+        /// buff名字
         /// </summary>
-        float Value { get; set;}
+        string Name { get; set; } 
+        
+        /// <summary>
+        /// buff 描述
+        /// </summary>
+        string Description { get; set; }
     }
 }

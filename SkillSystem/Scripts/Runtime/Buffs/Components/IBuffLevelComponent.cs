@@ -2,15 +2,16 @@
 //手动滑稽,滑稽脸
 //ヾ(•ω•`)o
 //https://www.ykls.app
-//2019年09月14日-18:59
+//2019年09月16日-22:34
 //CabinIcarus.SkillSystem.Runtime
 
 namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
 {
     /// <summary>
-    /// buff 组件
+    /// buff 等级
     /// </summary>
-    public interface IBuffDataComponent
+    public interface IBuffLevelComponent
     {
+        int Level { get; set; }
     }
 }
