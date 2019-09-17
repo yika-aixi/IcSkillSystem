@@ -118,7 +118,7 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
 
         public bool HasBuff<T>(IEntity entity) where T : IBuffDataComponent
         {
-            if (!_buffMap.ContainsKey(entity))
+            if (!_entities.Contains(entity))
             {
                 return false;
             }
@@ -128,7 +128,7 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
 
         public bool HasBuff<T>(IEntity entity, Predicate<T> match) where T : IBuffDataComponent
         {
-            if (!_buffMap.ContainsKey(entity))
+            if (!_entities.Contains(entity))
             {
                 return false;
             }
