@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
-using SkillSystem.SkillSystem.Scripts.Runtime.Unity;
+﻿using System.Collections.Generic;
+using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using UnityEditor;
-using UnityEngine;
 
-namespace SkillSystem.SkillSystem.Scripts.Editors.Buffs
+namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
 {
-    public class HPBuff:IBuffDataComponent,IBuffValueDataComponent
-    {
-        public float Value { get; set; }
-    }
-    [CustomEditor(typeof(EntityBuffsComponent))]
+    [CustomEditor(typeof(BuffEntityLinkComponent))]
     public class EntityBuffInspector : Editor
     {
-        private EntityBuffsComponent _entityBuff;
+        private BuffEntityLinkComponent _entityBuff;
         private List<IBuffDataComponent> _buffs;
         private List<bool> _foldoutState;
         private void OnEnable()
         {
-            _entityBuff = (EntityBuffsComponent) target;
+            _entityBuff = (BuffEntityLinkComponent) target;
             _buffs = new List<IBuffDataComponent>();
             _foldoutState = new List<bool>();
         }
@@ -30,13 +24,13 @@ namespace SkillSystem.SkillSystem.Scripts.Editors.Buffs
 
             if (_entityBuff.BuffManager == null)
             {
-                EditorGUILayout.HelpBox($"没有初始化!请调用{nameof(EntityBuffsComponent.Init)}",MessageType.Warning);
+                EditorGUILayout.HelpBox($"没有初始化!请调用{nameof(BuffEntityLinkComponent.Init)}",MessageType.Warning);
                 return;
             }
             
             if (_entityBuff.Entity == null)
             {
-                EditorGUILayout.HelpBox($"没有连接实体!请调用{nameof(EntityBuffsComponent.Link)}",MessageType.Warning);
+                EditorGUILayout.HelpBox($"没有连接实体!请调用{nameof(BuffEntityLinkComponent.Link)}",MessageType.Warning);
                 return;
             }
 

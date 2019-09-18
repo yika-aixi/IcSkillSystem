@@ -7,13 +7,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces;
-using UnityEngine;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
-namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
     public class BuffManager:IBuffManager
     {

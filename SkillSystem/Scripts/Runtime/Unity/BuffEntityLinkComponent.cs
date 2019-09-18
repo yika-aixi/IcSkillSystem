@@ -1,11 +1,11 @@
 ﻿using System;
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
-using CabinIcarus.SkillSystem.Scripts.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using UnityEngine;
 
-namespace SkillSystem.SkillSystem.Scripts.Runtime.Unity
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity
 {
-    public class EntityBuffsComponent : MonoBehaviour
+    public class BuffEntityLinkComponent : MonoBehaviour
     {
         [NonSerialized] 
         public IBuffManager BuffManager;
