@@ -106,7 +106,7 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
         {
             if (_entities.Contains(entity))
             {
-                return _buffMap[entity].Where(x => x.GetType() == typeof(T)).Cast<T>();
+                return _buffMap[entity].Where(x => x is T).Cast<T>();
             }
 
             return null;
@@ -119,9 +119,9 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
             {
                 foreach (var buff in _buffMap[entity])
                 {
-                    if (buff.GetType() == typeof(T))
+                    if (buff is T tBuff)
                     {
-                        buffs.Add((T) buff);
+                        buffs.Add(tBuff);
                     }
                 }
             }
@@ -134,7 +134,7 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
                 return false;
             }
 
-            return _buffMap[entity].Exists(x => x.GetType() == typeof(T));
+            return _buffMap[entity].Exists(x => x is T);
         }
 
         public bool HasBuff<T>(IEntity entity, Predicate<T> match) where T : IBuffDataComponent
