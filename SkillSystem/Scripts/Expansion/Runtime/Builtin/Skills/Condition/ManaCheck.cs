@@ -24,13 +24,21 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Condi
 
         public override bool Check(IEntity entity)
         {
-            if (_buffManager.GetBuffs<IMechanicBuff>(entity,x=>x.MechanicsType == MechanicsType.Mana) != null)
+            var buffs = _buffManager.GetBuffs<IMechanicBuff>(entity,x=>x.MechanicsType == MechanicsType.Mana);
+            if (buffs != null)
             {
-                var buffs = _buffManager.GetBuffs<IMechanicBuff>(entity).GetEnumerator();
+                var buff = buffs.GetEnumerator();
                 
-                buffs.MoveNext();
+                buff.MoveNext();
                 
-                return buffs.Current.Value >= NeedManaValue;
+                var result = buff.Current.Value >= NeedManaValue;
+
+                if (result)
+                {
+                    buff.Current.Value -= NeedManaValue;
+                }
+
+                return result;
             }
 
             return !MustNeedMana;
