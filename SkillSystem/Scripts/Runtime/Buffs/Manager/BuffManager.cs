@@ -56,6 +56,12 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
             return this;
         }
 
+        public void GetAllEntity(List<IEntity> entitys)
+        {
+            entitys.Clear();
+            entitys.AddRange(_entities);
+        }
+
         public void AddBuff(IEntity entity, IBuffDataComponent buff)
         {
             if (!_entities.Contains(entity))
