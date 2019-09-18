@@ -121,7 +121,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void GetBuffs<T>(IEntity entity, List<T> buffs)
         {
-            GetBuffs<T>(entity, null, buffs);
+            GetBuffs(entity, null, buffs);
         }
 
         public void GetBuffs<T>(IEntity entity, Predicate<T> match, List<T> buffs)
