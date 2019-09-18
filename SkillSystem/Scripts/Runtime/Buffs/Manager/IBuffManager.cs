@@ -23,6 +23,12 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
         IBuffManager AddBuffSystem(IBuffSystem buffSystem);
         
         /// <summary>
+        /// 获取所有实体
+        /// </summary>
+        /// <param name="entitys"></param>
+        void GetAllEntity(List<IEntity> entitys);
+        
+        /// <summary>
         /// 添加实体
         /// </summary>
         /// <param name="entity"></param>
