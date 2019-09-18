@@ -98,12 +98,23 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 {
                     var buff = buffP.Value[j];
 
-                    if (buffP.Value.Count > 1)
-                        _foldoutState2[j] = EditorGUILayout.Foldout(_foldoutState2[j], $"Index: {j}", true);
-                    else
+                    EditorGUILayout.BeginHorizontal();
                     {
-                        _foldoutState2[j] = EditorGUILayout.Foldout(_foldoutState2[j], $"{buffP.Key.Name}", true);
+                        if (buffP.Value.Count > 1)
+                            _foldoutState2[j] = EditorGUILayout.Foldout(_foldoutState2[j], $"Index: {j}", true);
+                        else
+                        {
+                            _foldoutState2[j] = EditorGUILayout.Foldout(_foldoutState2[j], $"{buffP.Key.Name}", true);
+                        }
+
+                        var icon = EditorGUIUtility.FindTexture("vcs_delete");
+                        EditorGUIUtility.SetIconSize(new Vector2(icon.width,icon.height));
+                        if (GUILayout.Button(icon,GUILayout.Width(icon.width + 2),GUILayout.Height(icon.height + 2)))
+                        {
+                            _entityBuff.BuffManager.RemoveBuff(_entityBuff.Entity, buff);
+                        }
                     }
+                    EditorGUILayout.EndHorizontal();
 
                     if (_foldoutState2[j])
                     {
