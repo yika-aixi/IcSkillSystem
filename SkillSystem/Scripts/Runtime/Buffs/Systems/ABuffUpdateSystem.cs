@@ -5,7 +5,6 @@
 //2019年09月14日-19:30
 //CabinIcarus.SkillSystem.Runtime
 
-using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
