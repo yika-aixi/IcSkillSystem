@@ -1,12 +1,8 @@
 {
-    "name": "CabinIcarus.SkillSystem.Editor",
-    "references": [
-        "CabinIcarus.SkillSystem.Runtime"
-    ],
+    "name": "CabinIcarus.IcSkillSystem.Runtime",
+    "references": [],
     "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

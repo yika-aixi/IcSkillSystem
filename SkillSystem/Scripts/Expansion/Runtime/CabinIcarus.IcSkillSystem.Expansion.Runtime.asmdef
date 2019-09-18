@@ -1,6 +1,8 @@
 {
-    "name": "CabinIcarus.SkillSystem.Runtime",
-    "references": [],
+    "name": "CabinIcarus.IcSkillSystem.Expansion.Runtime",
+    "references": [
+        "CabinIcarus.IcSkillSystem.Runtime"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
