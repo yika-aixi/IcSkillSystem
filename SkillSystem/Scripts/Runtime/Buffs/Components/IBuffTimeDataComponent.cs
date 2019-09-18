@@ -10,7 +10,7 @@ namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
     /// <summary>
     /// buff 时间
     /// </summary>
-    public interface IBuffTimeDataComponent:IBuffDataComponent
+    public interface IBuffTimeDataComponent
     {
         /// <summary>
         /// 持续时间
