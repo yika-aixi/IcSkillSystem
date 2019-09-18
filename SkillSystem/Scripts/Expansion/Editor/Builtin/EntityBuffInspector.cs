@@ -43,7 +43,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
 
             var buffs = _entityBuff.BuffManager.GetBuffs<IBuffDataComponent>(_entityBuff.Entity);
             _buffGroup.Clear();
-            EditorGUILayout.LabelField($"Buff同类数量:{_buffGroup.Count}");
 
             if (buffs == null)
             {
@@ -60,6 +59,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
 
                 _buffGroup[buff.GetType()].Add(buff);
             }
+            
+            EditorGUILayout.LabelField($"Buff同类数量:{_buffGroup.Count}");
 
             if (_foldoutState1.Count < _buffGroup.Count)
             {
