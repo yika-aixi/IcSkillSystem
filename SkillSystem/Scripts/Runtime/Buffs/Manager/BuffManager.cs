@@ -83,7 +83,7 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
             
         }
 
-        public void RemoveBuff(IEntity entity, IBuffDataComponent buff)
+        public bool RemoveBuff(IEntity entity, IBuffDataComponent buff)
         {
             foreach (var destroySystem in _destroySystems)
             {
@@ -95,8 +95,11 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
             
             if (_entities.Contains(entity))
             {
-                _buffMap[entity].Remove(buff);
+                var buffs = _buffMap[entity];
+                return buffs.Remove(buff);
             }
+
+            return false;
         }
 
         public IEnumerable<T> GetBuffs<T>(IEntity entity)
