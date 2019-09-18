@@ -1,7 +1,9 @@
-﻿namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+
+namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
 {
     public interface ICondition
     {
-        bool Check();
+        bool Check(IEntity entity);
     }
 }
