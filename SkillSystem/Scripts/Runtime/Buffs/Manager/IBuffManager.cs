@@ -58,7 +58,23 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
         /// <param name="entity"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        IEnumerable<T> GetBuffs<T>(IEntity entity,Predicate<T> match);
+        
+        /// <summary>
+        /// 获取指定类型得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         void GetBuffs<T>(IEntity entity,List<T> buffs);
+        
+        /// <summary>
+        /// 获取指定类型得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        void GetBuffs<T>(IEntity entity,Predicate<T> match,List<T> buffs);
         
         /// <summary>
         /// 指定得实体是否有该类型得buff

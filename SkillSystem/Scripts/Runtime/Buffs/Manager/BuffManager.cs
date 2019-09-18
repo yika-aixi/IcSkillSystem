@@ -104,15 +104,28 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
 
         public IEnumerable<T> GetBuffs<T>(IEntity entity)
         {
-            if (_entities.Contains(entity))
-            {
-                return _buffMap[entity].Where(x => x is T).Cast<T>();
-            }
+            List<T> buffs = new List<T>();
 
-            return null;
+            GetBuffs(entity, buffs);
+
+            return buffs.Count == 0 ? null : buffs;
         }
-        
+
+        public IEnumerable<T> GetBuffs<T>(IEntity entity, Predicate<T> match)
+        {
+            List<T> buffs = new List<T>();
+
+            GetBuffs(entity, match,buffs);
+
+            return buffs.Count == 0 ? null : buffs;
+        }
+
         public void GetBuffs<T>(IEntity entity, List<T> buffs)
+        {
+            GetBuffs<T>(entity, null, buffs);
+        }
+
+        public void GetBuffs<T>(IEntity entity, Predicate<T> match, List<T> buffs)
         {
             buffs.Clear();
             if (_entities.Contains(entity))
@@ -121,6 +134,14 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
                 {
                     if (buff is T tBuff)
                     {
+                        if (match != null)
+                        {
+                            if (!match(tBuff))
+                            {
+                                continue;
+                            }
+                        }
+                        
                         buffs.Add(tBuff);
                     }
                 }
