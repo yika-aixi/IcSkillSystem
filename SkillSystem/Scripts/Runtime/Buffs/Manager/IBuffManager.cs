@@ -36,7 +36,7 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
 
         void AddBuff(IEntity entity,IBuffDataComponent buff);
 
-        void RemoveBuff(IEntity entity,IBuffDataComponent buff);
+        bool RemoveBuff(IEntity entity,IBuffDataComponent buff);
 
         /// <summary>
         /// 获取指定类型得buff
