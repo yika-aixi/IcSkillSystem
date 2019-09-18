@@ -5,7 +5,7 @@
 //2019年09月14日-19:25
 //CabinIcarus.SkillSystem.Runtime
 
-namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     /// <summary>
     /// buff value

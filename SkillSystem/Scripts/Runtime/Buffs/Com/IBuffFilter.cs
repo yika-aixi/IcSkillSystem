@@ -5,10 +5,10 @@
 //2019年09月16日-22:40
 //CabinIcarus.SkillSystem.Runtime
 
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
-namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs.Com
+namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Com
 {
     /// <summary>
     /// buff 过滤器

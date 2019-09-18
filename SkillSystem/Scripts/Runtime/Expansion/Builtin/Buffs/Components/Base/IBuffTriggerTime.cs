@@ -1,4 +1,4 @@
-﻿namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
+﻿namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     /// <summary>
     /// buff触发事件

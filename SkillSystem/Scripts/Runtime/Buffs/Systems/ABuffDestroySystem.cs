@@ -5,12 +5,11 @@
 //2019年09月14日-19:19
 //CabinIcarus.SkillSystem.Runtime
 
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces;
-using CabinIcarus.SkillSystem.Scripts.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
-namespace Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Systems
+namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
     public abstract class ABuffDestroySystem:IBuffDestroySystem
     {

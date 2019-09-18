@@ -1,6 +1,6 @@
-﻿using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
-namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     public interface IBuffMakerEntityComponent
     {

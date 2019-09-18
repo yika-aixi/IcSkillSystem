@@ -5,9 +5,9 @@
 //2019年09月17日-00:49
 //CabinIcarus.SkillSystem.Runtime
 
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
-namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs.Com
+namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Com
 {
     public interface IEntityFilter
     {

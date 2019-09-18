@@ -5,7 +5,7 @@
 //2019年09月14日-19:59
 //CabinIcarus.SkillSystem.Runtime
 
-namespace CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces
+namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
 {
     public interface IBuffSystem
     {

@@ -5,10 +5,10 @@
 //2019年09月14日-19:05
 //CabinIcarus.SkillSystem.Runtime
 
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
-using CabinIcarus.SkillSystem.Scripts.Runtime.Buffs.Com;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Com;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
-namespace CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces
+namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
 {
     /// <summary>
     /// buff 更新系统

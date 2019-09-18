@@ -1,4 +1,6 @@
-﻿namespace CabinIcarus.SkillSystem.Runtime.Buffs.Components
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     public enum MechanicsType
     {

@@ -7,11 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using Cabin_Icarus.SkillSystem.Scripts.Runtime.Buffs.Entitys;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.SkillSystem.Runtime.Buffs.Systems.Interfaces;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
-namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
+namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
     public interface IBuffManager
     {
