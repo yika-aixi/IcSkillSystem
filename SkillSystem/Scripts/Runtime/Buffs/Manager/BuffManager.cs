@@ -149,9 +149,10 @@ namespace CabinIcarus.SkillSystem.Scripts.Runtime.Buffs
         {
             if (_entities.Contains(entity))
             {
-                foreach (var buff in _buffMap[entity])
+                for (var i = _buffMap[entity].Count - 1; i >= 0; i--)
                 {
-                    RemoveBuff(entity,buff);
+                    var buff = _buffMap[entity][i];
+                    RemoveBuff(entity, buff);
                 }
 
                 _buffMap.Remove(entity);
