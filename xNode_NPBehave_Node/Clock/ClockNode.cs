@@ -5,7 +5,7 @@ using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class ClockNode:Node
+    public abstract class ClockNode:Node,INPBehaveNode
     {
         public Clock Clock { get; protected set; }
 

@@ -5,7 +5,7 @@ using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class BlackboardNode:Node
+    public abstract class BlackboardNode:Node,INPBehaveNode
     {
         public Blackboard Blackboard { get; protected set; }
 
