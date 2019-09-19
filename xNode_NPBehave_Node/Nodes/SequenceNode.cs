@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using NPBehave;
 using UnityEngine;
 using XNode;
@@ -8,6 +9,7 @@ using Node = NPBehave.Node;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
 	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Nodes/Sequence")]
+	[PortTooltip("子节点,可多个","Sequence 节点")]
 	public class SequenceNode : NPBehaveNode
 	{
 		[SerializeField,Input()]
