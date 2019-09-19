@@ -7,7 +7,7 @@ using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Sequence Node")]
+	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Nodes/Sequence")]
 	public class SequenceNode : NPBehaveNode
 	{
 		[SerializeField,Input()]

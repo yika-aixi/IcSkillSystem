@@ -5,7 +5,7 @@ using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Root Node")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Nodes/Root")]
     public class RootNode : NPBehaveNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
