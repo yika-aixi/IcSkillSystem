@@ -6,9 +6,9 @@ using UnityEngine;
 using XNode;
 using Node = NPBehave.Node;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 {
-	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Nodes/Sequence")]
+	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Sequence")]
 	public class SequenceNode : NPBehaveNode
 	{
 		[SerializeField,Input()]
