@@ -6,6 +6,7 @@
 //Assembly-CSharp
 
 using System;
+using System.Reflection;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using UnityEngine;
@@ -39,21 +40,19 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             var tooltip = base.GetPortTooltip(port);
 
             var node = port.node;
+            
+            var attrs = node.GetType().GetField(port.fieldName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetCustomAttributes(typeof(PortTooltipAttribute), false);
 
-            var attrs = node.GetType().GetCustomAttributes(typeof(PortTooltipAttribute), false);
-
-            if (attrs.Length == 1)
+            if (attrs == null || attrs.Length == 0)
+            {
+                attrs = node.GetType().GetProperty(port.fieldName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetCustomAttributes(typeof(PortTooltipAttribute), false);
+            }
+            
+            if (attrs != null && attrs.Length == 1)
             {
                 var tooltipAttribute = ((PortTooltipAttribute) attrs[0]);
 
-                if (port.IsInput)
-                {
-                    tooltip = string.IsNullOrEmpty(tooltipAttribute.InputTooltip) ? tooltip : tooltipAttribute.InputTooltip;
-                }
-                else
-                {
-                    tooltip = string.IsNullOrEmpty(tooltipAttribute.OutputTooltip) ? tooltip : tooltipAttribute.OutputTooltip;
-                }
+                tooltip = string.IsNullOrEmpty(tooltipAttribute.Tooltip) ? tooltip : tooltipAttribute.Tooltip;
             }
 
             return tooltip;

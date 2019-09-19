@@ -12,28 +12,21 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes
     /// <summary>
     /// 临时的节点提示
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class,AllowMultiple = false,Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field,AllowMultiple = false,Inherited = false)]
     public class PortTooltipAttribute:Attribute
     {
         /// <summary>
-        /// 输入时悬浮的提示
+        /// 悬浮的提示
         /// </summary>
-        public string InputTooltip { get; }
-        
-        /// <summary>
-        /// 输出时的悬浮提示
-        /// </summary>
-        public string OutputTooltip { get; }
+        public string Tooltip { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="inputTooltip">节点是输入时悬浮的提示</param>
-        /// <param name="outputTooltip">节点是输出时的悬浮提示</param>
-        public PortTooltipAttribute(string inputTooltip="", string outputTooltip="")
+        /// <param name="tooltip">节点是输入时悬浮的提示</param>
+        public PortTooltipAttribute(string tooltip="")
         {
-            InputTooltip = inputTooltip;
-            OutputTooltip = outputTooltip;
+            Tooltip = tooltip;
         }
     }
 }

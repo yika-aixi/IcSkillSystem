@@ -7,16 +7,18 @@ using Node = XNode.Node;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Nodes/Root")]
-    [PortTooltip("主节点")]
     public class RootNode : NPBehaveNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [PortTooltip("黑板 Node")]
         private BlackboardNode _blackBoard;
         
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [PortTooltip("Clock Node")]
         private ClockNode _clok;
         
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [PortTooltip("主节点")]
         private NPBehaveNode _mainNode;
         
         // Use this for initialization

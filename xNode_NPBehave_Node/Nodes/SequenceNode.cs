@@ -9,13 +9,14 @@ using Node = NPBehave.Node;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
 	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Nodes/Sequence")]
-	[PortTooltip("子节点,可多个","Sequence 节点")]
 	public class SequenceNode : NPBehaveNode
 	{
 		[SerializeField,Input()]
+		[PortTooltip("节点,可多个")]
 		private NPBehaveNode _nodes;
 
 		[SerializeField,Output]
+		[PortTooltip("Sequence Node")]
 		private NPBehaveNode _outSequenceNode;
 
 		// Return the correct value of an output port when requested
