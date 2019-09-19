@@ -28,7 +28,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Manag
 //        {
 //        }
 
-        public void AddSkillSystme(ISkillExecuteSystem skillSystem)
+        public void AddSkillSystem(ISkillExecuteSystem skillSystem)
         {
             _skillSystem.Add(skillSystem);
         }
