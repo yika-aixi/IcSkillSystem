@@ -2,8 +2,32 @@
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class NPBehaveNode<T>:Node where T : NPBehave.Node
+    public abstract class NPBehaveNode:Node
     {
-        public T Node { get; protected set; }
+        public NPBehave.Node Node { get; protected set; }
+
+        public override object GetValue(NodePort port)
+        {
+            CreateNode();
+            
+            return this;
+        }
+
+        protected override void Init()
+        {
+            CreateNode();
+        }
+        
+        public override void OnCreateConnection(NodePort @from, NodePort to)
+        {
+            CreateNode();
+        }
+
+        public override void OnRemoveConnection(NodePort port)
+        {
+            CreateNode();
+        }
+
+        protected abstract void CreateNode();
     }
 }
