@@ -56,6 +56,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             if (GUI.changed)
             {
                 _aQNameProperty.stringValue = Types[CurrentSelectIndex];
+                serializedObject.ApplyModifiedProperties();
                 UpdateDynamicPort();
             }
         }
