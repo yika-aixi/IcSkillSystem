@@ -80,6 +80,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
                 NodeEditorGUILayout.PortField(title,nodePort,options);
             }
         }
+
+        private bool _error;
         /// <summary>
         /// 更新动节点
         /// </summary>
@@ -98,6 +100,15 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             }
 
             Type type = Type.GetType(_aQNameProperty.stringValue);
+
+            if (type == null)
+            {
+                _error = true;
+                Debug.LogError($"无法找到类型:{_aQNameProperty.stringValue}");
+                return;
+            }
+
+            _error = false;
             
             var fields = type.GetFields();
             var properties = type.GetProperties();
@@ -125,6 +136,16 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         protected virtual IEnumerable<NodePort> GetDynamicPort()
         {
             return null;
+        }
+
+        public override Color GetTint()
+        {
+            if (_error)
+            {
+                return Color.red;
+            }
+            
+            return base.GetTint();
         }
 
         #region 动态节点更新
