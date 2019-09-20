@@ -32,9 +32,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             _blackboardProperty = serializedObject.FindProperty("_blackboardNode");
             _Types = new List<string>();
 
-//            _Types.AddRange(CabinIcarus.EditorFrame.Utils.TypeUtil.GetFilterSystemAssemblyQualifiedNames(typeof(ISkillDataComponent)));
-
+#if IcEditorFrame
+            _Types.AddRange(CabinIcarus.EditorFrame.Utils.TypeUtil.GetFilterSystemAssemblyQualifiedNames(typeof(ISkillDataComponent)));
+#else
             _Types.AddRange(AppDomain.CurrentDomain.GetAllTypes().Where(x=> typeof(ISkillDataComponent).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).Select(x=>x.AssemblyQualifiedName));
+#endif
 
             _selectIndex = _Types.FindIndex(x=> x == _skillProperty.stringValue);
             
