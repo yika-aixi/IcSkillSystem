@@ -44,6 +44,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             _skillManager = Blackboard.Get<ISkillManager>(BlackBoardConstKeyTables.SkillManager);
 
             var skillType = Type.GetType(_skillComponentAQName);
+
+            if (skillType == null)
+            {
+                return;
+            }
             
             _skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
 
