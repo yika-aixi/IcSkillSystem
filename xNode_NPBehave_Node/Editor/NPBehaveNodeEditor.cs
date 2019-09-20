@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+﻿using System.Linq;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
@@ -21,9 +22,14 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         {
             _check();
 
-            if (_node.Inputs != null && _node.Node == null)
+            var NPBNodeInputs = _node.Inputs.Where(x => typeof(NPBehaveNode).IsAssignableFrom(x.ValueType));
+            
+            foreach (var nodePort in NPBNodeInputs)
             {
-                return Color.red;
+                if (nodePort.ConnectionCount == 0)
+                {
+                    return Color.red;
+                }
             }
             
             return base.GetTint();
