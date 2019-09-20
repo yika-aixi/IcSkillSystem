@@ -12,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 
         public override object GetValue(NodePort port)
         {
-            var key = GetInputValue(nameof(_key), string.Empty);
+            var key = GetInputValue(nameof(_key), _key);
             
             Blackboard = UnityContext.GetSharedBlackboard(key);
             
