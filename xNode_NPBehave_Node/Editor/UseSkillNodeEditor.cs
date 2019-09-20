@@ -24,6 +24,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             _blackboardProperty = serializedObject.FindProperty("_blackboardNode");
             
             base.OnCreate();
+            
+            UpdateDynamicPort();
         }
 
         protected override Type GetBaseType()
