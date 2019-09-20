@@ -59,6 +59,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
             if (GUI.changed)
             {
+                _skillProperty.stringValue = _Types[_selectIndex];
                 _dynamicPort();
             }
             
@@ -82,11 +83,14 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
         private void _dynamicPort()
         {
-            _skillProperty.stringValue = _Types[_selectIndex];
+            if (string.IsNullOrWhiteSpace(_skillProperty.stringValue))
+            {
+                return;
+            }
 
             _skillNode.ClearDynamicPorts();
 
-            Type type = Type.GetType(_Types[_selectIndex]);
+            Type type = Type.GetType(_skillProperty.stringValue);
             var fields = type.GetFields();
 
             foreach (var field in fields)
