@@ -44,29 +44,5 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
                     return;
             }
         }
-        
-        public override void OnCreateConnection(NodePort @from, NodePort to)
-        {
-            if (from.node != this)
-            {
-                if (!(from.node is IActionNode))
-                {
-                    from.Disconnect(to);
-                    Node = null;
-                    return;
-                }    
-            }
-            
-            base.OnCreateConnection(@from, to);
-        }
-
-        public override void OnRemoveConnection(NodePort port)
-        {
-            //输入断开,制空
-            if (port.IsInput)
-            {
-                Node = null;
-            }
-        }
     }
 }
