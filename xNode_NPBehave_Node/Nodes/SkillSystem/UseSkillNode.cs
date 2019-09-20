@@ -50,7 +50,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             foreach (var dynamicInput in DynamicInputs)
             {
                 //todo 效率可能不是很好
-                var value = dynamicInput.GetInputValue();
+                var value = dynamicInput.GetOutputValue();
                 
                 skillType.GetField(dynamicInput.fieldName).SetValue(_skill,value);
             }
