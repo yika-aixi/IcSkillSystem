@@ -164,7 +164,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 return false;
             }
             
-            return _buffMap[entity].Exists(x=>match((T) x));
+            return _buffMap[entity].Exists(x=> x is T && match((T) x));
         }
 
         public void AddEntity(IEntity entity)
