@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using UnityEngine;
 using XNode;
@@ -22,7 +21,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
         public override string GetNodeMenuName(Type type)
         {
-            return typeof(INPBehaveNode).IsAssignableFrom(type) ? base.GetNodeMenuName(type) : null;
+            return typeof(ISkillSystemNode).IsAssignableFrom(type) ? base.GetNodeMenuName(type) : null;
         }
 
         public override NodeEditorPreferences.Settings GetDefaultPreferences()

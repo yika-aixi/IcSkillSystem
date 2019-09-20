@@ -7,7 +7,7 @@
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public interface INPBehaveNode
+    public interface INPBehaveNode:ISkillSystemNode
     {
     }
 }
