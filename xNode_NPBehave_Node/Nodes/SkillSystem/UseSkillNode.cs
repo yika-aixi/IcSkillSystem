@@ -13,16 +13,19 @@ using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Task
+namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Use Skill")]
-    public class UseSkillNode:NeedBlackboardNPBehaveNode
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
+    public class UseSkillNode:NeedBlackboardNPBehaveNode,IActionExecuteNode
     {
         [SerializeField]
         private string _skillComponentAQName;
 
         [SerializeField,Output()]
         private UseSkillNode _skillNode;
+
+        private ISkillManager _skillManager;
+        private ISkillDataComponent _skill;
 
         public override object GetValue(NodePort port)
         {
@@ -38,23 +41,32 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Task
                 return;
             }
             
-            var skillManager = Blackboard.Get<ISkillManager>(BlackBoardConstKeyTables.SkillManager);
-
-            var entity = Blackboard.Get<IEntity>(BlackBoardConstKeyTables.UseSkillEntity);
+            _skillManager = Blackboard.Get<ISkillManager>(BlackBoardConstKeyTables.SkillManager);
 
             var skillType = Type.GetType(_skillComponentAQName);
             
-            var skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
+            _skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
 
             foreach (var dynamicInput in DynamicInputs)
             {
                 //todo 效率可能不是很好
                 var value = dynamicInput.GetInputValue();
                 
-                skillType.GetField(dynamicInput.fieldName).SetValue(skill,value);
+                skillType.GetField(dynamicInput.fieldName).SetValue(_skill,value);
             }
             
-            skillManager.UseSkill(entity,skill);
+        }
+
+        public void Execute()
+        {
+            if (_skillManager == null)
+            {
+                return;
+            }
+            
+            var entity = Blackboard.Get<IEntity>(BlackBoardConstKeyTables.UseSkillEntity);
+            
+            _skillManager.UseSkill(entity,_skill);
         }
     }
 }
