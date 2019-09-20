@@ -20,12 +20,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
         [PortTooltip("主节点")]
         private NPBehaveNode _mainNode;
-        
-        // Use this for initialization
-        protected override void Init()
-        {
-            base.Init();
-        }
 
         protected override void CreateNode()
         {
