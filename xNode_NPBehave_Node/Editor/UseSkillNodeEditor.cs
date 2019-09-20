@@ -88,29 +88,68 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
                 return;
             }
 
-            _skillNode.ClearDynamicPorts();
-
             Type type = Type.GetType(_skillProperty.stringValue);
+            
             var fields = type.GetFields();
-
-            foreach (var field in fields)
-            {
-                _skillNode.AddDynamicInput(field.FieldType, Node.ConnectionType.Override, fieldName: field.Name);
-            }
-
             var properties = type.GetProperties();
-
-            foreach (var property in properties)
+            
+            List<MemberInfo> memberInfos = new List<MemberInfo>();
+            memberInfos.AddRange(fields);
+            memberInfos.AddRange(properties);
+            
+            _updateDynamicPort(memberInfos, x=>
             {
-                if (!property.CanWrite)
+                if (x is FieldInfo fieldInfo)
                 {
-                    continue;
+                    return fieldInfo.FieldType;
                 }
 
-                _skillNode.AddDynamicInput(property.PropertyType, Node.ConnectionType.Override, fieldName: property.Name);
-            }
+                return ((PropertyInfo) x).PropertyType;
+            });
 
             serializedObject.UpdateIfRequiredOrScript();
+        }
+
+        private void _updateDynamicPort(IEnumerable<MemberInfo> memberInfos, Func<MemberInfo, Type> getType)
+        {
+            var inputs = new List<NodePort>();
+            inputs.AddRange(_skillNode.DynamicInputs);
+            //删除被不存在的
+            foreach (var nodePort in inputs)
+            {
+                bool hit = false;
+                foreach (var info in memberInfos)
+                {
+                    if (nodePort.ValueType == getType(info) && nodePort.fieldName == info.Name)
+                    {
+                        hit = true;
+                        break;
+                    }
+                }
+
+                if (!hit)
+                {
+                    _skillNode.RemoveDynamicPort(nodePort);
+                }
+            }
+            
+            //添加新的
+            foreach (var info in memberInfos)
+            {
+                bool hit = false;
+                foreach (var nodePort in inputs)
+                {
+                    if (nodePort.ValueType == getType(info) && nodePort.fieldName == info.Name)
+                    {
+                        hit = true;
+                        break;
+                    }
+                }
+                if (!hit)
+                {
+                    _skillNode.AddDynamicInput(getType(info), Node.ConnectionType.Override, fieldName: info.Name);
+                }
+            }
         }
 
         private void _baseDraw()
