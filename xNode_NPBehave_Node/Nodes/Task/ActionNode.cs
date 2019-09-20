@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
         [PortTooltip("动作节点 - IActionNode")]
-        private NPBehaveNode _nodes;
+        private NPBehaveNode _executeNode;
 
         [SerializeField,Output]
         [PortTooltip("Action Node")]
@@ -28,7 +28,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 
         protected override void CreateNode()
         {
-            switch (_nodes)
+            var execute = GetInputValue(nameof(_executeNode), _executeNode);
+            switch (execute)
             {
                 case IActionExecuteNode action:
                     Node = new Action(action.Execute);      

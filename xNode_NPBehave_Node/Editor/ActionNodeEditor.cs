@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     {
         public override Color GetTint()
         {
-            if (!target.GetInputPort("_nodes").IsConnected)
+            if (!target.GetInputPort("_executeNode").IsConnected)
             {
                 return Color.red;
             }
