@@ -10,8 +10,16 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         protected override void CreateNode()
         {
-            Clock = UnityContext.GetClock();
-            return base.GetValue(port);
+            
+#if UNITY_EDITOR
+            //没有播放,不执行
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+#endif
+            
+            Clock = UnityContext.GetClock(); 
         }
     }
 }

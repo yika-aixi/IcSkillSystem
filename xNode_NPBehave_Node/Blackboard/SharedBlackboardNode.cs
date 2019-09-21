@@ -13,10 +13,16 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         protected override void CreateNode()
         {
             var key = GetInputValue(nameof(_key), _key);
+
+#if UNITY_EDITOR
+            //没有播放,不执行
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+#endif
             
             Blackboard = UnityContext.GetSharedBlackboard(key);
-            
-            return base.GetValue(port);
         }
     }
 }
