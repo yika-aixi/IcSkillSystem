@@ -1,4 +1,5 @@
 ﻿using XNode;
+using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
