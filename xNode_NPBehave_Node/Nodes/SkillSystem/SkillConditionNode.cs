@@ -18,6 +18,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 
         protected override void CreateNode()
         {
+            base.CreateNode();
+            
             if (Blackboard == null)
             {
                 return;
