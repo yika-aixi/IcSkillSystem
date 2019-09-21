@@ -11,6 +11,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com
         void Execute();
     }
     
+    /// <summary>
+    /// 1个参数 Action
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IActionExecuteNode<T>:IActionNode
+    {
+        void Execute(T arg);
+    }
+    
     public interface ISingleFrameFuncExecuteNode:IActionNode
     {
         bool Execute();
