@@ -17,8 +17,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 
         protected override void CreateNode()
         {
-            var execute = GetInputValue(nameof(_executeNode), _executeNode);
-            switch (execute)
+            _executeNode = GetInputValue(nameof(_executeNode), _executeNode);
+            
+            if (!_executeNode)
+            {
+                return;
+            }
+            
+            switch (_executeNode)
             {
                 case IActionExecuteNode action:
                     Node = new Action(action.Execute);      
@@ -32,7 +38,28 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
                 case IMultiFrameFunc2ExecuteNode action:
                     Node = new Action(action.Execute);      
                     return;
+                default:
+                    throw new NotSupportedException($"不支持的Action:{_executeNode.GetType()}");
             }
+        }
+
+        public override void OnCreateConnection(NodePort @from, NodePort to)
+        {
+            if (from.node != this)
+            {
+                if (from.node is IActionExecuteNode ||
+                    from.node is ISingleFrameFuncExecuteNode ||
+                    from.node is IMultiFrameFuncExecuteNode ||
+                    from.node is IMultiFrameFunc2ExecuteNode)
+                {
+                    return;
+                }
+                else
+                {
+                    //不支持的行为,断开连接
+                    from.Disconnect(to);
+                }
+            }            
         }
     }
 }
