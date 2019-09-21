@@ -11,13 +11,14 @@ using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    public abstract class AQNameSelectEditor<T>:NodeEditor where T : Node
+    public abstract class AQNameSelectEditor<T>:NPBehaveNodeEditor where T : Node
     {
         protected T TNode;
         protected SerializedProperty _aQNameProperty;
         protected List<string> Types;
         protected int CurrentSelectIndex;
-        public override void OnCreate()
+
+        protected override void OnInit()
         {
             TNode = (T) target;
             Types = new List<string>();
@@ -33,7 +34,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 #else
             Types.AddRange(AppDomain.CurrentDomain.GetAllTypes().Where(x=> GetBaseType().IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).Select(x=>x.AssemblyQualifiedName));
 #endif
-
             CurrentSelectIndex = Types.FindIndex(x=> x == _aQNameProperty.stringValue);
         }
 

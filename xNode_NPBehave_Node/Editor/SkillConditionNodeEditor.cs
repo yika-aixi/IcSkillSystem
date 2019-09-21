@@ -12,11 +12,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode>
     {
         private SerializedProperty _blackboardProperty;
-        public override void OnCreate()
+        protected override void OnInit()
         {
-            _blackboardProperty = serializedObject.FindProperty("_blackboardNode");
+            base.OnInit();
             
-            base.OnCreate();
+            _blackboardProperty = serializedObject.FindProperty("_blackboardNode");
         }
 
         protected override Type GetBaseType()
@@ -24,7 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             return typeof(ACondition);
         }
 
-        public override void OnBodyGUI()
+        protected override void DrawBody()
         {
             _baseDraw();
             
@@ -39,7 +39,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         private void _baseDraw()
         {
             NodeEditorGUILayout.PropertyField(_blackboardProperty);
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_conditionNode"));
+            NodeEditorGUILayout.PropertyField(OutputSerPro);
         }
     }
 }
