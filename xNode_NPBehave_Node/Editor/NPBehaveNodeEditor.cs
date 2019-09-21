@@ -12,6 +12,10 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     {
         private NPBehaveNode _node;
         private Color _backColor;
+
+        protected bool Error;
+        protected bool Warning;
+        
         public void _check()
         {
             if (_node == null) _node = target as NPBehaveNode;
@@ -20,31 +24,62 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
         public override Color GetTint()
         {
-            _check();
+            if (Error)
+            {
+                return Color.red;
+            }
 
+            if (Warning)
+            {
+                return Color.yellow;
+            }
+
+            return base.GetTint();
+        }
+
+        protected SerializedProperty OutputSerPro;
+        
+        public sealed override void OnCreate()
+        {
+            OutputSerPro = serializedObject.FindProperty(NPBehaveNode.OutputName);
+            _check();
+            OnInit();
+        }
+
+        protected virtual void OnInit()
+        {
+        }
+
+        public sealed override void OnBodyGUI()
+        {
+            _reSetColor();
+            ColorCheck();
+            {
+                DrawBody();
+            }
+        }
+
+        protected virtual void DrawBody()
+        {
+            base.OnBodyGUI();
+        }
+        
+        protected virtual void ColorCheck()
+        {
             var NPBNodeInputs = _node.Inputs.Where(x => typeof(NPBehaveNode).IsAssignableFrom(x.ValueType));
-            
             foreach (var nodePort in NPBNodeInputs)
             {
                 if (nodePort.ConnectionCount == 0)
                 {
-                    return Color.red;
+                    Error = true;
                 }
             }
-            
-            return base.GetTint();
         }
 
-        public override void OnBodyGUI()
+        private void _reSetColor()
         {
-            _check();
-
-            if (_node.Inputs != null && _node.Node == null)
-            {
-                GUI.tooltip = "缺失连接点";
-            }
-            
-            base.OnBodyGUI();
+            Error = false;
+            Warning = false;
         }
     }
 }

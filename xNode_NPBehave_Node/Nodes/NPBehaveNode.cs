@@ -6,6 +6,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     public abstract class NPBehaveNode:Node,INPBehaveNode
     {
+        public static readonly string OutputName = nameof(_output);
         public NPBehave.Node Node { get; protected set; }
 
         [SerializeField,Output(ShowBackingValue.Always,typeConstraint = TypeConstraint.Inherited)]
