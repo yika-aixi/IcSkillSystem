@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     public abstract class NeedBlackboardNPBehaveNode:NPBehaveNode
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private BlackboardNode _blackboardNode;
 
         protected Blackboard Blackboard { get; private set; }

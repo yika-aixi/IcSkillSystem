@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Action")]
     public class ActionNode:NPBehaveNode
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("动作节点 - IActionNode")]
         private NPBehaveNode _executeNode;
 

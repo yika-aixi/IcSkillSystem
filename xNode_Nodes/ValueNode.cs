@@ -5,7 +5,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
     public abstract class ValueNode<T>:Node,ISkillSystemNode
     {
-        [SerializeField,Output(ShowBackingValue.Always,ConnectionType.Multiple)]
+        [SerializeField,Output(ShowBackingValue.Always,ConnectionType.Multiple,TypeConstraint.Inherited)]
         private T _value;
 
         public override object GetValue(NodePort port)

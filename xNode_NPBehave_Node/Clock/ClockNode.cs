@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         public Clock Clock { get; protected set; }
 
-        [SerializeField,Output()]
+        [SerializeField,Output(typeConstraint = TypeConstraint.Inherited)]
         private ClockNode _clockNode;
 
         public override object GetValue(NodePort port)

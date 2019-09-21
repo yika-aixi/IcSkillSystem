@@ -174,7 +174,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
                 if (!hit)
                 {
-                    TNode.AddDynamicInput(getType(info), Node.ConnectionType.Override, fieldName: info.Name);
+                    TNode.AddDynamicInput(getType(info), Node.ConnectionType.Override, fieldName: info.Name,typeConstraint:Node.TypeConstraint.Inherited);
                 }
             }
         }

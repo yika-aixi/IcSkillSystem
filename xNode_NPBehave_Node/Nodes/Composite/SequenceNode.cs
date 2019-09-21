@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 	[XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Sequence")]
 	public class SequenceNode : NPBehaveNode
 	{
-		[SerializeField,Input()]
+		[SerializeField,Input(typeConstraint = TypeConstraint.Inherited)]
 		[PortTooltip("节点,可多个")]
 		private NPBehaveNode _nodes;
 

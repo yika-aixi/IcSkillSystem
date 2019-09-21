@@ -7,7 +7,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Get Shared")]
     public class SharedBlackboardNode:BlackboardNode
     {
-        [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Strict)]
         private string _key;
 
         public override object GetValue(NodePort port)

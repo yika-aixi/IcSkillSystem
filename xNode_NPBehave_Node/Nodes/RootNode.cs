@@ -9,15 +9,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Root")]
     public class RootNode : NPBehaveNode
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("黑板 Node")]
         private BlackboardNode _blackBoard;
         
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("Clock Node")]
         private ClockNode _clok;
         
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("主节点")]
         private NPBehaveNode _mainNode;
 

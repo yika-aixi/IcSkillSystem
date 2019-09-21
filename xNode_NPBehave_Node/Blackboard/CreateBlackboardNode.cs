@@ -7,7 +7,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Create")]
     public class CreateBlackboardNode:BlackboardNode
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override)]
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         protected ClockNode ClockNode;
         
         public sealed override object GetValue(NodePort port)

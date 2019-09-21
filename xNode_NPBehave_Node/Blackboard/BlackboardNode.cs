@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         public Blackboard Blackboard { get; protected set; }
 
-        [SerializeField,Output]
+        [SerializeField,Output(typeConstraint = TypeConstraint.Inherited)]
         private BlackboardNode _blackboardNode;
 
         public override object GetValue(NodePort port)

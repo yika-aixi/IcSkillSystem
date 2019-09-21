@@ -6,6 +6,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         public NPBehave.Node Node { get; protected set; }
 
+        [SerializeField,Output(ShowBackingValue.Always,typeConstraint = TypeConstraint.Inherited)]
+        [PortTooltip("自身返回")]
+        private NPBehaveNode _output;
         public override object GetValue(NodePort port)
         {
             CreateNode();
