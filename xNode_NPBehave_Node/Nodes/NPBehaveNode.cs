@@ -1,3 +1,4 @@
+﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using UnityEngine;
 using XNode;
 
