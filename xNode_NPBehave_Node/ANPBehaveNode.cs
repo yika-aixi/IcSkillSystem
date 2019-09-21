@@ -5,9 +5,28 @@
 //2019年09月19日-21:33
 //Assembly-CSharp
 
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using UnityEngine;
+using XNode;
+
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public interface INPBehaveNode:ISkillSystemNode
+    public abstract class ANPBehaveNode<T>:Node,ISkillSystemNode where T : ANPBehaveNode<T>
     {
+        public static readonly string OutputName = nameof(_output);
+        public NPBehave.Node Node { get; protected set; }
+
+        [SerializeField,Output(ShowBackingValue.Always,typeConstraint = TypeConstraint.Inherited)]
+        [PortTooltip("自身返回")]
+        private T _output;
+
+        public sealed override object GetValue(NodePort port)
+        {
+            CreateNode();
+            _output = (T) this;
+            return _output;
+        }
+
+        protected abstract void CreateNode();
     }
 }
