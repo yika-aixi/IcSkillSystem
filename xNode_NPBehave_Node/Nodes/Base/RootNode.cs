@@ -26,7 +26,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
             var black = GetInputValue(nameof(_blackBoard),_blackBoard);
             var clok = GetInputValue(nameof(_clok), _clok);
             var mainNode = GetInputValue(nameof(_mainNode), _mainNode);
-
             if (black && clok && mainNode)
             {
                 Node = new Root(black.Blackboard,clok.Clock,mainNode.Node);
