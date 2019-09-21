@@ -21,18 +21,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
         [SerializeField]
         private string _skillComponentAQName;
 
-        [SerializeField,Output()]
-        private UseSkillNode _skillNode;
-
         private ISkillManager _skillManager;
         private ISkillDataComponent _skill;
-
-        public override object GetValue(NodePort port)
-        {
-            _skillNode = (UseSkillNode) base.GetValue(port);
-
-            return _skillNode;
-        }
 
         protected override void CreateNode()
         {

@@ -15,18 +15,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 		[PortTooltip("节点,可多个")]
 		private NPBehaveNode _nodes;
 
-		[SerializeField,Output]
-		[PortTooltip("Sequence Node")]
-		private NPBehaveNode _outSequenceNode;
-
-		// Return the correct value of an output port when requested
-		public override object GetValue(NodePort port)
-		{
-			_outSequenceNode = (NPBehaveNode) base.GetValue(port);
-			
-			return _outSequenceNode;
-		}
-
 		protected override void CreateNode()
 		{
 			var nodes = GetInputValue(nameof(_nodes), _nodes);

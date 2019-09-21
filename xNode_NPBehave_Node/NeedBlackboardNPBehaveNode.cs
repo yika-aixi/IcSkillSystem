@@ -18,11 +18,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 
         protected Blackboard Blackboard { get; private set; }
 
-        public override object GetValue(NodePort port)
+        protected override void CreateNode()
         {
             Blackboard = GetInputValue(nameof(_blackboardNode), _blackboardNode)?.Blackboard;
-           
-            return base.GetValue(port);
         }
     }
 }

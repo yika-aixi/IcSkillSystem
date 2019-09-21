@@ -15,17 +15,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
         [PortTooltip("动作节点 - IActionNode")]
         private NPBehaveNode _executeNode;
 
-        [SerializeField,Output]
-        [PortTooltip("Action Node")]
-        private ActionNode _actionNode;
-
-        public override object GetValue(NodePort port)
-        {
-            _actionNode = (ActionNode) base.GetValue(port);
-
-            return _actionNode;
-        }
-
         protected override void CreateNode()
         {
             var execute = GetInputValue(nameof(_executeNode), _executeNode);

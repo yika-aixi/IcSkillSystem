@@ -1,4 +1,5 @@
 ﻿using XNode;
+using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
@@ -9,11 +10,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         [SerializeField,Output(ShowBackingValue.Always,typeConstraint = TypeConstraint.Inherited)]
         [PortTooltip("自身返回")]
         private NPBehaveNode _output;
-        public override object GetValue(NodePort port)
+
+        public sealed override object GetValue(NodePort port)
         {
             CreateNode();
-            
-            return this;
+            _output = this;
+            return _output;
         }
 
         protected abstract void CreateNode();

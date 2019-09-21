@@ -13,17 +13,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
     {
         [SerializeField]
         private string _conditionAQName;
-        
-        [SerializeField,Output()]
-        private SkillConditionNode _conditionNode;
 
         private ACondition _condition;
-
-        public override object GetValue(NodePort port)
-        {
-            _conditionNode = (SkillConditionNode) base.GetValue(port);
-            return _conditionNode;
-        }
 
         protected override void CreateNode()
         {
