@@ -1,5 +1,4 @@
 ﻿using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
-using Entitas;
 using IEntity = CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity;
 
 namespace CabinIcarus.IcSkillSystem.Expansions
