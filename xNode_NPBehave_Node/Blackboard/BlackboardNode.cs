@@ -5,17 +5,8 @@ using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class BlackboardNode:Node,INPBehaveNode
+    public abstract class BlackboardNode:ANPBehaveNode<BlackboardNode>
     {
         public Blackboard Blackboard { get; protected set; }
-
-        [SerializeField,Output(typeConstraint = TypeConstraint.Inherited)]
-        private BlackboardNode _blackboardNode;
-
-        public override object GetValue(NodePort port)
-        {
-            _blackboardNode = this;
-            return _blackboardNode;
-        }
     }
 }

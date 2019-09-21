@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Strict)]
         private string _key;
 
-        public override object GetValue(NodePort port)
+        protected override void CreateNode()
         {
             var key = GetInputValue(nameof(_key), _key);
             

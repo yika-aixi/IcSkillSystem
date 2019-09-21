@@ -9,18 +9,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         protected ClockNode ClockNode;
-        
-        public sealed override object GetValue(NodePort port)
-        {
-            CreateBlackboard();
-            return base.GetValue(port);
-        }
 
-        protected virtual void CreateBlackboard()
+        protected override void CreateNode()
         {
             var clock = GetInputValue(nameof(ClockNode), ClockNode);
 
-            if (clock.Clock != null) 
+            if (clock != null) 
                 Blackboard = new Blackboard(clock.Clock);
         }
     }
