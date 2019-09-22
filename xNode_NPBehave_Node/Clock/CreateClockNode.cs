@@ -9,6 +9,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         protected override void CreateNode()
         {
+            base.CreateNode();
+            
             Clock = new Clock();
         }
     }

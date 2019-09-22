@@ -12,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Utils
 {
     public static class NPBehaveNodeExpansion
     {
-        public static void ToNPBehaveNodes(this NPBehaveNode self, List<Node> nodes)
+        public static void ToNPBehaveNodes(this ANPBehaveNode self, List<Node> nodes)
         {
             nodes.Clear();
             
@@ -20,7 +20,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Utils
             {
                 foreach (var connection in nodePort.GetConnections())
                 {
-                    var node = (NPBehaveNode) connection.node;
+                    var node = (ANPBehaveNode) connection.node;
 
                     if (node.Node == null)
                     {

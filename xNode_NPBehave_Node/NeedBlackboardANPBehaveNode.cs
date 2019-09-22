@@ -11,7 +11,7 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class NeedBlackboardAnpBehaveNode:ANPBehaveNode<NeedBlackboardAnpBehaveNode>
+    public abstract class NeedBlackboardANPBehaveNode:ANPBehaveNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private BlackboardNode _blackboardNode;

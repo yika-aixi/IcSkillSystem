@@ -12,6 +12,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 
         protected override void CreateNode()
         {
+            base.CreateNode();
+            
             var clock = GetInputValue(nameof(ClockNode), ClockNode);
             var parent = GetInputValue(nameof(_blackboardNodeInput), _blackboardNodeInput);
             if (clock != null && parent != null) 

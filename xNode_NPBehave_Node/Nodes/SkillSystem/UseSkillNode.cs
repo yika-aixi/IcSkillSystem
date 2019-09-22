@@ -10,16 +10,20 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
+using NPBehave;
 using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
-    public class UseSkillNode:NeedBlackboardNPBehaveNode,IActionExecuteNode
+    public class UseSkillNode:NeedBlackboardAnpBehaveNode,IActionExecuteNode,IOutPutName
     {
         [SerializeField]
         private string _skillComponentAQName;
+        
+        [SerializeField,Output()]
+        private UseSkillNode _output;
 
         private ISkillManager _skillManager;
         private ISkillDataComponent _skill;
@@ -27,6 +31,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
         protected override void CreateNode()
         {
             base.CreateNode();
+
+            _output = this;
             
             if (Blackboard == null)
             {
@@ -65,5 +71,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             
             _skillManager.UseSkill(entity,_skill);
         }
+
+        public string OutPutName { get; } = nameof(_output);
     }
 }

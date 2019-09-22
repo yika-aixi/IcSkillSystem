@@ -1,7 +1,6 @@
 ﻿using System;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
-using NPBehave;
 using UnityEngine;
 using XNode;
 using Action = NPBehave.Action;
@@ -9,14 +8,20 @@ using Action = NPBehave.Action;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Action")]
-    public class ActionNode:NPBehaveNode
+    public class ActionNode:ANPBehaveNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited,baseType:typeof(IActionNode))]
         [PortTooltip("动作节点 - IActionNode")]
-        private NPBehaveNode _executeNode;
+        private ANPBehaveNode _executeNode;
+        
+        [SerializeField,Output()]
+        [PortTooltip("动作节点 - IActionNode")]
+        private ANPBehaveNode _output;
 
         protected override void CreateNode()
         {
+            _output = this;
+            
             _executeNode = GetInputValue(nameof(_executeNode), _executeNode);
             
             if (!_executeNode)

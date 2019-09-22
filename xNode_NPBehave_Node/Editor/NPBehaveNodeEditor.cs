@@ -1,16 +1,14 @@
 ﻿using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
-using EditorGUIUtility = UnityEditor.Experimental.Networking.PlayerConnection.EditorGUIUtility;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(NPBehaveNode))]
+    [NodeEditor.CustomNodeEditorAttribute(typeof(ANPBehaveNode))]
     public class NPBehaveNodeEditor:NodeEditor 
     {
-        private NPBehaveNode _node;
+        private ANPBehaveNode _node;
         private Color _backColor;
 
         protected bool Error;
@@ -18,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         
         public void _check()
         {
-            if (_node == null) _node = target as NPBehaveNode;
+            if (_node == null) _node = target as ANPBehaveNode;
             _backColor = GUI.color;
         }
 
@@ -36,12 +34,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
             return base.GetTint();
         }
-
-        protected SerializedProperty OutputSerPro;
         
         public sealed override void OnCreate()
         {
-            OutputSerPro = serializedObject.FindProperty(NPBehaveNode.OutputName);
             _check();
             OnInit();
         }
@@ -66,7 +61,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         
         protected virtual void ColorCheck()
         {
-            var NPBNodeInputs = _node.Inputs.Where(x => typeof(NPBehaveNode).IsAssignableFrom(x.ValueType));
+            var NPBNodeInputs = _node.Inputs.Where(x => typeof(ANPBehaveNode).IsAssignableFrom(x.ValueType));
             foreach (var nodePort in NPBNodeInputs)
             {
                 if (nodePort.ConnectionCount == 0)

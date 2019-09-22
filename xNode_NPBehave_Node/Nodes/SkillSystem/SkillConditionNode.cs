@@ -3,14 +3,18 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
+using NPBehave;
 using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
-    public class SkillConditionNode:NeedBlackboardNPBehaveNode,ISingleFrameFuncExecuteNode
+    public class SkillConditionNode:NeedBlackboardAnpBehaveNode,IFuncExecuteNode<bool>,IOutPutName
     {
+        [SerializeField,Output()]
+        private SkillConditionNode _output;
+        
         [SerializeField]
         private string _conditionAQName;
 
@@ -19,6 +23,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
         protected override void CreateNode()
         {
             base.CreateNode();
+            
+            _output = this;
             
             if (Blackboard == null)
             {
@@ -43,5 +49,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 
             return _condition.Check(entity);
         }
+
+        public string OutPutName { get; } = nameof(_output);
     }
 }

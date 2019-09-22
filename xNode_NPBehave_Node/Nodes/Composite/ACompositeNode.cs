@@ -13,14 +13,19 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 {
-    public abstract class ACompositeNode:NPBehaveNode
+    public abstract class ACompositeNode:ANPBehaveNode
     {
         [SerializeField,Input(typeConstraint = TypeConstraint.Inherited)]
         [PortTooltip("节点,可多个")]
-        private NPBehaveNode _nodes;
+        private ANPBehaveNode _nodes;
+
+        [SerializeField,Output()]
+        private ACompositeNode _output;
         
         protected sealed override void CreateNode()
         {
+            _output = this;
+            
             var nodes = GetInputValue(nameof(_nodes), _nodes);
             
             if (nodes == null) 

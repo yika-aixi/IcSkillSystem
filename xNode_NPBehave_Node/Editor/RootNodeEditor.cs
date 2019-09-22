@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
-using EditorGUIUtility = UnityEditor.Experimental.Networking.PlayerConnection.EditorGUIUtility;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
@@ -15,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         {
             _check();
             
-            if (rootNode.GetInputValue<NPBehaveNode>("_mainNode",null) == null)
+            if (rootNode.GetInputValue<ANPBehaveNode>("_mainNode",null) == null)
             {
                 return Color.red;
             }            

@@ -1,13 +1,11 @@
 ﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using NPBehave;
 using UnityEngine;
-using XNode;
-using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Root")]
-    public class RootNode : NPBehaveNode
+    public class RootNode : ANPBehaveNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("黑板 Node")]
@@ -19,7 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("主节点")]
-        private NPBehaveNode _mainNode;
+        private ANPBehaveNode _mainNode;
 
         protected override void CreateNode()
         {
