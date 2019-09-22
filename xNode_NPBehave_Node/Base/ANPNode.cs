@@ -11,12 +11,12 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class ANPBehaveNode<T>:Node,ISkillSystemNode where T : ANPBehaveNode<T>
+    public abstract class ANPNode<T>:Node where T : ANPNode<T>
     {
         public static readonly string OutputName = nameof(_output);
         public NPBehave.Node Node { get; protected set; }
 
-        [SerializeField,Output(ShowBackingValue.Always,typeConstraint = TypeConstraint.Inherited)]
+        [SerializeField,Output(ShowBackingValue.Always)]
         [PortTooltip("自身返回")]
         private T _output;
 
