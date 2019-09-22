@@ -17,7 +17,7 @@ using XNode;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
-    public class UseSkillNode:NeedBlackboardAnpBehaveNode,IActionExecuteNode,IOutPutName
+    public class UseSkillNode:NeedBlackboardANPBehaveNode,IActionExecuteNode,IOutPutName
     {
         [SerializeField]
         private string _skillComponentAQName;

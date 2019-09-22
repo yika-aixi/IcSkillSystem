@@ -10,7 +10,7 @@ using XNode;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
-    public class SkillConditionNode:NeedBlackboardAnpBehaveNode,IFuncExecuteNode<bool>,IOutPutName
+    public class SkillConditionNode:NeedBlackboardANPBehaveNode,IFuncExecuteNode<bool>,IOutPutName
     {
         [SerializeField,Output()]
         private SkillConditionNode _output;
