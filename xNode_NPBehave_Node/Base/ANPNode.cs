@@ -12,21 +12,45 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     public abstract class ANPNode:Node,ISkillSystemNode
     {
+        protected sealed override void Init()
+        {
+            base.Init();
+            
+            if (!_editorNoPlay())
+            {
+                OnInit();
+            }
+        }
+
+        protected virtual void OnInit()
+        {
+        }
+        
         public sealed override object GetValue(NodePort port)
         {
-            
-#if UNITY_EDITOR
-            //没有播放,不执行创建
-            if (!Application.isPlaying)
+            if (_editorNoPlay())
             {
                 return this;
             }
-#endif
+
             CreateNode();
 
             return this;
         }
 
+        bool _editorNoPlay()
+        {
+#if UNITY_EDITOR
+            //没有播放,不执行创建
+            if (!Application.isPlaying)
+            {
+                return true;
+            }
+#endif
+            return false;
+        }
+
         protected abstract void CreateNode();
     }
+    
 }
