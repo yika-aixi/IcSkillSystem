@@ -36,7 +36,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                 hpBuff.Value -= damageBuff.Value;
                 BuffManager.RemoveBuff(entity,buff);
                 
-                //todo 一个单位不应该出现多血条,所以只处理第一条buff
+                //todo 一个单位只有第一条血条会受伤
                 return;
             }
         }
