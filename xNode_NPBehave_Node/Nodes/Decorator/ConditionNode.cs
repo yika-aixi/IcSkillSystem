@@ -18,6 +18,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
         [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited,baseType:typeof(IFuncExecuteNode<bool>))]
         [PortTooltip("实现了`IFuncExecuteNode`接口的Node")]
         private ANPBehaveNode _conditionNode;
+
+        [SerializeField]
+        private float _checkInterval;
+
+        [SerializeField]
+        private float _randomVariance;
         
         protected override void CreateNode()
         {
@@ -25,7 +31,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
             
             _conditionNode = GetInputValue(nameof(_conditionNode), _conditionNode);
             
-            Node = new Condition(((IFuncExecuteNode<bool>) _conditionNode).Execute,Stops,DecorateeNode.Node);
+            Node = new Condition(((IFuncExecuteNode<bool>) _conditionNode).Execute,Stops,_checkInterval,_randomVariance,DecorateeNode.Node);
         }
     }
 }

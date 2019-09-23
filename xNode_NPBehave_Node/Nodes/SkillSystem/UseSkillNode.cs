@@ -9,6 +9,7 @@ using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
@@ -53,9 +54,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             foreach (var dynamicInput in DynamicInputs)
             {
                 //todo 效率可能不是很好
-                var value = dynamicInput.GetOutputValue();
-                
-                skillType.GetField(dynamicInput.fieldName).SetValue(_skill,value);
+                ValueNode valueNode = dynamicInput.GetInputValue() as ValueNode;
+                if (valueNode)
+                {
+                    skillType.GetField(dynamicInput.fieldName).SetValue(_skill,valueNode.Value);    
+                }
             }
             
         }

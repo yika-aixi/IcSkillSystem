@@ -11,7 +11,10 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
     public class ActionNode:ANPBehaveNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited,baseType:typeof(IActionNode))]
-        [PortTooltip("动作节点 - IActionNode")]
+        [PortTooltip("动作节点 - IActionNode,只支持:"+nameof(IActionExecuteNode)+","+
+                     nameof(ISingleFrameFuncExecuteNode)+","+
+                     nameof(IMultiFrameFuncExecuteNode)+","+
+                     nameof(IMultiFrameFunc2ExecuteNode)+"类型动作节点")]
         private ANPBehaveNode _executeNode;
         
         [SerializeField,Output()]
