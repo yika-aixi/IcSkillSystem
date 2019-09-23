@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         
         public abstract object Value { get; }
 
-        public sealed override object GetValue(NodePort port)
+        public override object GetValue(NodePort port)
         {
             _output = this;
             return _output;
