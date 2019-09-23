@@ -18,7 +18,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         
         public override object Value => _getValue();
 
-        private Blackboard _blackboard;
+        public Blackboard Blackboard;
 
         protected override void Init()
         {
@@ -30,12 +30,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
                 return;
             }
 #endif
-            _blackboard = GetInputValue(nameof(_blackBoardNode), _blackBoardNode).Blackboard;
+            Blackboard = GetInputValue(nameof(_blackBoardNode), _blackBoardNode).Blackboard;
         }
         
         private object _getValue()
         {
-            return _blackboard?.Get(_key);
+            return Blackboard?.Get(_key);
         }
     }
 }

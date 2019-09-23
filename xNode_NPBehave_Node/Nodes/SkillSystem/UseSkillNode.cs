@@ -18,8 +18,14 @@ using XNode;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
-    public class UseSkillNode:NeedBlackboardANPBehaveNode,IActionExecuteNode,IOutPutName
+    public class UseSkillNode:ANPBehaveNode,IActionExecuteNode,IOutPutName,IEntityKey
     {
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private GetBlackboardValue _skillManagerValue;
+
+        [SerializeField]
+        private string _entityKey = BlackBoardConstKeyTables.UseSkillEntity;
+        
         [SerializeField]
         private string _skillComponentAQName;
         
@@ -28,19 +34,16 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 
         private ISkillManager _skillManager;
         private ISkillDataComponent _skill;
+        private Blackboard _blackboard;
 
         protected override void CreateNode()
         {
-            base.CreateNode();
-
             _output = this;
+
+            var getBlackboardValue = GetInputValue(nameof(_skillManagerValue), _skillManagerValue);
+            _blackboard = getBlackboardValue.Blackboard;
             
-            if (Blackboard == null)
-            {
-                return;
-            }
-            
-            _skillManager = Blackboard.Get<ISkillManager>(BlackBoardConstKeyTables.SkillManager);
+            _skillManager = (ISkillManager) getBlackboardValue.Value;
 
             var skillType = Type.GetType(_skillComponentAQName);
 
@@ -55,6 +58,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             {
                 //todo 效率可能不是很好
                 ValueNode valueNode = dynamicInput.GetInputValue() as ValueNode;
+                
                 if (valueNode)
                 {
                     skillType.GetField(dynamicInput.fieldName).SetValue(_skill,valueNode.Value);    
@@ -64,16 +68,17 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 
         public void Execute()
         {
-            if (_skillManager == null)
+            if (_skillManager == null || _skill == null)
             {
                 return;
             }
             
-            var entity = Blackboard.Get<IEntity>(BlackBoardConstKeyTables.UseSkillEntity);
+            var entity = _blackboard.Get<IEntity>(_entityKey);
             
             _skillManager.UseSkill(entity,_skill);
         }
 
         public string OutPutName { get; } = nameof(_output);
+        public string EntityKey { get; } = nameof(_entityKey);
     }
 }

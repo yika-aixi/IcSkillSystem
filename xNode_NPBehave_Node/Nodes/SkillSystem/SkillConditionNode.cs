@@ -10,8 +10,14 @@ using XNode;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
-    public class SkillConditionNode:NeedBlackboardANPBehaveNode,IFuncExecuteNode<bool>,IOutPutName
+    public class SkillConditionNode:ANPBehaveNode,IFuncExecuteNode<bool>,IOutPutName,IEntityKey
     {
+        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private GetBlackboardValue _buffManagerValue;
+        
+        [SerializeField]
+        private string _entityKey = BlackBoardConstKeyTables.UseSkillEntity;
+        
         [SerializeField,Output()]
         private SkillConditionNode _output;
         
@@ -19,23 +25,22 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
         private string _conditionAQName;
 
         private ACondition _condition;
-
+        private Blackboard _blackboard;
         protected override void CreateNode()
         {
-            base.CreateNode();
-            
             _output = this;
             
-            if (Blackboard == null)
+            var getBlackboardValue = GetInputValue(nameof(_buffManagerValue), _buffManagerValue);
+            _blackboard = getBlackboardValue.Blackboard;
+
+            var conditionType = Type.GetType(_conditionAQName);
+
+            if (conditionType == null)
             {
                 return;
             }
             
-            var buffManager = Blackboard.Get<IBuffManager>(BlackBoardConstKeyTables.BuffManager);
-
-            var connditionType = Type.GetType(_conditionAQName);
-            
-            _condition = (ACondition) Activator.CreateInstance(connditionType,buffManager);
+            _condition = (ACondition) Activator.CreateInstance(conditionType,getBlackboardValue.Value);
         }
 
         public bool Execute()
@@ -44,12 +49,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             {
                 return false;
             }
-            
-            var entity = Blackboard.Get<IEntity>(BlackBoardConstKeyTables.UseSkillEntity);
+
+            var entity = _blackboard.Get<IEntity>(_entityKey);
 
             return _condition.Check(entity);
         }
 
         public string OutPutName { get; } = nameof(_output);
+        public string EntityKey { get; } = nameof(_entityKey);
     }
 }

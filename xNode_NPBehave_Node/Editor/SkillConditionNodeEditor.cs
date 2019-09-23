@@ -11,14 +11,14 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     [NodeEditor.CustomNodeEditorAttribute(typeof(SkillConditionNode))]
     public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode>
     {
-        private SerializedProperty _blackboardProperty;
+        private SerializedProperty _getBlackboardValueProperty;
         private SerializedProperty _outputProperty;
         
         protected override void OnInit()
         {
             base.OnInit();
             
-            _blackboardProperty = serializedObject.FindProperty("_blackboardNode");
+            _getBlackboardValueProperty = serializedObject.FindProperty("_buffManagerValue");
             _outputProperty = serializedObject.FindProperty(TNode.OutPutName);
         }
 
@@ -41,7 +41,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         
         private void _baseDraw()
         {
-            NodeEditorGUILayout.PropertyField(_blackboardProperty);
+            NodeEditorGUILayout.PropertyField(_getBlackboardValueProperty);
+            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(TNode.EntityKey));
             NodeEditorGUILayout.PropertyField(_outputProperty);
         }
     }

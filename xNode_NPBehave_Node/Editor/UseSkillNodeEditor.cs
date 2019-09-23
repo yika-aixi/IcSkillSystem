@@ -23,7 +23,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         {
             base.OnInit();
             
-            _blackboardProperty = serializedObject.FindProperty("_blackboardNode");
+            _getBlackboardValueProperty = serializedObject.FindProperty("_skillManagerValue");
             _outputProperty = serializedObject.FindProperty(TNode.OutPutName);
             UpdateDynamicPort();
         }
@@ -43,7 +43,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             return TNode.DynamicInputs;
         }
 
-        private SerializedProperty _blackboardProperty;
+        private SerializedProperty _getBlackboardValueProperty;
         private SerializedProperty _outputProperty;
         protected override void DrawBody()
         {
@@ -70,7 +70,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         
         private void _baseDraw()
         {
-            NodeEditorGUILayout.PropertyField(_blackboardProperty);
+            NodeEditorGUILayout.PropertyField(_getBlackboardValueProperty);
+            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(TNode.EntityKey));
             NodeEditorGUILayout.PropertyField(_outputProperty);
         }
     }
