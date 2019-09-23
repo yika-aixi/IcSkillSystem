@@ -1,11 +1,9 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
-using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {

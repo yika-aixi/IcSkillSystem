@@ -13,7 +13,6 @@ using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
-using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
