@@ -55,13 +55,31 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 
             foreach (var dynamicInput in DynamicInputs)
             {
-                //todo 效率可能不是很好
-                ValueNode valueNode = dynamicInput.GetInputValue() as ValueNode;
-                
-                if (valueNode)
+                var value = (ValueNode) dynamicInput.GetInputValue();
+
+                if (!value)
                 {
-                    skillType.GetField(dynamicInput.fieldName).SetValue(_skill,valueNode.Value);    
+                    Debug.LogWarning($"{dynamicInput?.fieldName} 失败 Value 没有连接,跳过");
+                    continue;
                 }
+                
+                try
+                {
+                    var field = skillType.GetField(dynamicInput.fieldName);
+                    if (field != null)
+                    {
+                        field.SetValue(_skill, value.Value);
+                        continue;
+                    }
+                    
+                    var property = skillType.GetProperty(dynamicInput.fieldName);
+                    
+                    property.SetValue(_skill,value.Value);
+                }
+                catch(SystemException e)
+                {
+                    Debug.LogError($"{dynamicInput?.fieldName} 失败 Value: {value?.Value}\n{e}");
+                }    
             }
         }
 
