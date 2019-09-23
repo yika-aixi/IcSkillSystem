@@ -29,24 +29,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
             for (var i = 0; i < _continuousBuffs.Count; i++)
             {
                 var buff = _continuousBuffs[i];
-                buff.Duration -= Time.deltaTime;
-                if (buff.Duration > 0)
+            
+                if (buff.LastTriggerTime - buff.Duration >= buff.TriggerInterval)
                 {
-                    if (buff.LastTriggerTime - buff.Duration >= buff.TriggerInterval)
+                    buff.LastTriggerTime = buff.Duration;
+                    
+                    BuffManager.AddBuff(entity,new T()
                     {
-                        buff.LastTriggerTime = buff.Duration;
-                        
-                        BuffManager.AddBuff(entity,new T()
-                        {
-                            Maker = buff.Maker,
-                            Type = buff.Type,
-                            Value = buff.Value
-                        });
-                    }
-                }
-                else
-                {
-                    BuffManager.RemoveBuff(entity,buff);
+                        Maker = buff.Maker,
+                        Type = buff.Type,
+                        Value = buff.Value
+                    });
                 }
             }
         }
