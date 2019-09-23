@@ -10,6 +10,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Manager
 
         //void RemoveSkill(IEntity entity, ISkillDataComponent skill);
 
-        void AddSkillSystem(ISkillExecuteSystem skillSystem);
+        ISkillManager AddSkillSystem(ISkillExecuteSystem skillSystem);
     }
 }
