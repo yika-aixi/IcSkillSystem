@@ -19,8 +19,10 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Manag
         {
             foreach (var system in _skillSystem)
             {
-                //todo 缺少过滤
-                system.Execute(entity,skill);
+                if (system.Filter(entity,skill))
+                {
+                    system.Execute(entity,skill);
+                }
             }
         }
 
@@ -28,9 +30,10 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Manag
 //        {
 //        }
 
-        public void AddSkillSystem(ISkillExecuteSystem skillSystem)
+        public ISkillManager AddSkillSystem(ISkillExecuteSystem skillSystem)
         {
             _skillSystem.Add(skillSystem);
+            return this;
         }
     }
 }
