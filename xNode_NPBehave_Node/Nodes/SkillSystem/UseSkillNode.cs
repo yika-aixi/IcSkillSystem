@@ -60,7 +60,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
                     skillType.GetField(dynamicInput.fieldName).SetValue(_skill,valueNode.Value);    
                 }
             }
-            
         }
 
         public void Execute()

@@ -1,17 +1,25 @@
-﻿using NPBehave;
+﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Seconds")]
+    [NodeWidth(300)]
     public class WaitNode_Seconds:ANPBehaveNode
     {
         [SerializeField] 
-        protected float Seconds;
+        private float _seconds;
 
+        [SerializeField,Output()]
+        [PortTooltip("输入秒的等待节点")]
+        private WaitNode_Seconds _output;
+        
         protected override void CreateNode()
         {
-            Node = new Wait(Seconds);
+            _output = this;
+            
+            Node = new Wait(_seconds);
         }
     }
 }

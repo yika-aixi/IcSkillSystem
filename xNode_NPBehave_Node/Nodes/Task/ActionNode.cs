@@ -19,7 +19,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
         
         [SerializeField,Output()]
         [PortTooltip("动作节点 - IActionNode")]
-        private ANPBehaveNode _output;
+        private ActionNode _output;
 
         protected override void CreateNode()
         {
