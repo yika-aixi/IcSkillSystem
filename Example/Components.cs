@@ -55,4 +55,14 @@ namespace CabinIcarus.IcSkillSystem.Expansions
         public string Description { get; set; }
         public int Type { get; set; }
     }
+    
+    public class DamageReduceFixedBuffTime:DamageReduceFixedBuff,IBuffTimeDataComponent
+    {
+        public float Duration { get; set; }
+    }
+    
+    public class DamageReducePercentageBuffTime:DamageReducePercentageBuff,IBuffTimeDataComponent
+    {
+        public float Duration { get; set; }
+    }
 }
