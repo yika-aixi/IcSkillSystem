@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/Bool Value")]
-    public class BoolNode:ValueNode<bool>
+    public class BoolNode:ValueNode
     {
+        [SerializeField,Output(ShowBackingValue.Always)]
+        [PortTooltip("值出口")]
+        private bool _value;
+
+        public override object Value => _value;
     }
 }
