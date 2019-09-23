@@ -10,22 +10,9 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
-    public abstract class AObservingDecoratorNode:ANPBehaveNode
+    public abstract class AObservingDecoratorNode:ADecoratorNode
     {
         [SerializeField] 
         protected Stops Stops;
-
-        [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
-        protected ANPBehaveNode DecorateeNode;
-
-        [SerializeField,Output()]
-        protected AObservingDecoratorNode _output;
-
-        protected override void CreateNode()
-        {
-            _output = this;
-            
-            DecorateeNode = GetInputValue(nameof(DecorateeNode), DecorateeNode);
-        }
     }
 }
