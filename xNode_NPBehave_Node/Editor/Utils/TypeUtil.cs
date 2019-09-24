@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DesperateDevs.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
 {
@@ -22,6 +21,28 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         private static void _collectValueTyps()
         {
             _objectTypes.AddRange(AppDomain.CurrentDomain.GetAllTypes().Where(x => x.IsPublic));
+        }
+        
+        public static Type[] GetAllTypes(this AppDomain appDomain)
+        {
+            return appDomain.GetAssemblies().GetAllTypes();
+        }
+        
+        public static Type[] GetAllTypes(this IEnumerable<Assembly> assemblies)
+        {
+            List<Type> typeList = new List<Type>();
+            foreach (Assembly assembly in assemblies)
+            {
+                try
+                {
+                    typeList.AddRange((IEnumerable<Type>) assembly.GetTypes());
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    typeList.AddRange(((IEnumerable<Type>) ex.Types).Where<Type>((Func<Type, bool>) (type => type != null)));
+                }
+            }
+            return typeList.ToArray();
         }
     }
 }
