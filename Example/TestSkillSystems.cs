@@ -86,7 +86,8 @@ namespace CabinIcarus.IcSkillSystem.Expansions
         {
             Skill3 sk = (Skill3) skill;
 
-            if (Random.Range(0,1) < sk.Probability)
+            var f = Random.Range(0,1f);
+            if (f < sk.Probability)
             {
                 _buffManager.AddBuff(entity,new ContinuousDamageBuff()
                 {
