@@ -20,25 +20,21 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         
         [SerializeField]
         private string _key;
+
+        public const string TypeValueOutPortName = "TypeValue";
         
         public override object Value => _getValue();
 
         public Blackboard Blackboard;
 
-        protected override void Init()
+        public override object GetValue(NodePort port)
         {
-            base.Init();
-
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                return;
+                return base.GetValue(port);;
             }
 #endif
-        }
-
-        public override object GetValue(NodePort port)
-        {
             Blackboard = GetInputValue(nameof(_blackBoardNode), _blackBoardNode).Blackboard;
 
             _getBlackboard = this;
