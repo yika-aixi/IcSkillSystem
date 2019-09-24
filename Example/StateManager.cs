@@ -5,7 +5,6 @@
 //2019年09月23日-22:26
 //Assembly-CSharp
 
-using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
@@ -224,25 +223,21 @@ namespace CabinIcarus.IcSkillSystem.Expansions
 
         public void Create(IEntity entity, IBuffDataComponent buff)
         {
-            
+            var HpBar = _stateManager.GetPlayerHPBar(entity);
+            HpBar.size = 1;
         }
 
         public override void Destroy(IEntity entity, IBuffDataComponent buff)
         {
-            var HpBar = _stateManager.GetPlayerHPBar(entity);
-
-            BuffManager.GetBuffs(entity, x => x.MechanicsType == MechanicsType.Health,_buffs);
-            
-            var hp1 = _buffs[0];
-
-            if (_buffs.Count >= 2)
+            if (buff is IDamageBuff)
             {
+                var HpBar = _stateManager.GetPlayerHPBar(entity);
+
+                BuffManager.GetBuffs(entity, x => x.MechanicsType == MechanicsType.Health,_buffs);
+            
+                var hp1 = _buffs[0];
                 var hp2 = _buffs[1];
                 HpBar.size = hp1.Value / (float) hp2.Value;
-            }
-            else
-            {
-                HpBar.size = 1;
             }
         }
     }
