@@ -91,7 +91,7 @@ namespace CabinIcarus.IcSkillSystem.Expansions
             {
                 _buffManager.AddBuff(entity,new ContinuousDamageBuff()
                 {
-                    Value = sk.Value,
+                    Value = sk.Value * f,
                     Type = sk.Type,
                     Maker = sk.Maker,
                     Duration = sk.Duration,
