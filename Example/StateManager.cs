@@ -5,6 +5,7 @@
 //2019年09月23日-22:26
 //Assembly-CSharp
 
+using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
@@ -27,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansions
 
         public Sprite[] Icons;
         
-        private Dictionary<IEntity, Dictionary<IBuffDataComponent, List<GameObject>>> _buffIconMaps;
+        private Dictionary<IEntity, Dictionary<Type, List<GameObject>>> _buffIconMaps;
 
         public Dictionary<IEntity, int> _entityIndex;
 
@@ -35,7 +36,7 @@ namespace CabinIcarus.IcSkillSystem.Expansions
         
         private void Awake()
         {
-            _buffIconMaps = new Dictionary<IEntity, Dictionary<IBuffDataComponent, List<GameObject>>>();
+            _buffIconMaps = new Dictionary<IEntity, Dictionary<Type, List<GameObject>>>();
             _entityIndex = new Dictionary<IEntity, int>();
         }
 
@@ -54,9 +55,9 @@ namespace CabinIcarus.IcSkillSystem.Expansions
             
             if (!_buffIconMaps.ContainsKey(entity))
             {
-                _buffIconMaps.Add(entity,new Dictionary<IBuffDataComponent, List<GameObject>>());
+                _buffIconMaps.Add(entity,new Dictionary<Type, List<GameObject>>());
                 
-                _buffIconMaps[entity].Add(buff,new List<GameObject>());
+                _buffIconMaps[entity].Add(buff.GetType(),new List<GameObject>());
             }
 
             GameObject icon = new GameObject();
@@ -76,14 +77,14 @@ namespace CabinIcarus.IcSkillSystem.Expansions
 
             if (index == 1)
             {
-                icon.transform.SetParent(Player2_Buff,false);
+                icon.transform.SetParent(Player1_Buff,false);
             }
             else
             {
-                icon.transform.SetParent(Player1_Buff,false);
+                icon.transform.SetParent(Player2_Buff,false);
             }
             
-            _buffIconMaps[entity][buff].Add(icon);
+            _buffIconMaps[entity][buff.GetType()].Add(icon);
         }
 
         public void RemoveBuffIcon(IEntity entity, IBuffDataComponent buff)
@@ -93,26 +94,26 @@ namespace CabinIcarus.IcSkillSystem.Expansions
                 return;
             }
             
-            if (!_buffIconMaps[entity].ContainsKey(buff))
+            if (!_buffIconMaps[entity].ContainsKey(buff.GetType()))
             {
                 return;
             }
 
-            if (_buffIconMaps[entity][buff].Count == 0)
+            if (_buffIconMaps[entity][buff.GetType()].Count == 0)
             {
                 return;
             }
             
-            var buffGO = _buffIconMaps[entity][buff][0];
-            
+            var buffGO = _buffIconMaps[entity][buff.GetType()][0];
             Destroy(buffGO);
+            _buffIconMaps[entity][buff.GetType()].RemoveAt(0);
         }
 
         public Scrollbar GetPlayerHPBar(IEntity entity)
         {
              AddEntity(entity);
             //todo 不管了, Key
-            return _entityIndex[entity] == 1 ? Player2_HP : Player1_HP;
+            return _entityIndex[entity] == 1 ? Player1_HP : Player2_HP;
         }
     }
     
