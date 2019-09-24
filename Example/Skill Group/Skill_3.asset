@@ -103,7 +103,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   _output: {fileID: -4509659344639968055}
-  _value: 0.3
+  _value: 0.75
 --- !u!114 &-3036891957944212179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,7 +477,7 @@ MonoBehaviour:
     values:
     - _fieldName: _skillManagerValue
       _node: {fileID: 5076511760750000344}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes.ValueNode,
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.GetBlackboardValue,
         Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.GetBlackboardValue,
         Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
