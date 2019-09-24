@@ -4,4 +4,4 @@
 [submodule "xNode"]
 	path = xNode
 	url = https://github.com/yika-aixi/xNode.git
-	banch = Cabin_Icarus
+	branch = Cabin_Icarus
