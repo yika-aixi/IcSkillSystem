@@ -224,8 +224,11 @@ namespace CabinIcarus.IcSkillSystem.Expansions
 
         public void Create(IEntity entity, IBuffDataComponent buff)
         {
-            var HpBar = _stateManager.GetPlayerHPBar(entity);
-            HpBar.size = 1;
+            if (buff is IMechanicBuff mechanicBuff && mechanicBuff.MechanicsType == MechanicsType.Health)
+            {
+                var HpBar = _stateManager.GetPlayerHPBar(entity);
+                HpBar.size = 1;
+            }
         }
 
         public override void Destroy(IEntity entity, IBuffDataComponent buff)
