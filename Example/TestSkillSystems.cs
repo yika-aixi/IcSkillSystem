@@ -5,11 +5,11 @@
 //2019年09月23日-23:30
 //Assembly-CSharp
 
-using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Systems;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace CabinIcarus.IcSkillSystem.Expansions
@@ -136,23 +136,30 @@ namespace CabinIcarus.IcSkillSystem.Expansions
         }
     }
     
-    public class Skill4AudioSystem:ISkillExecuteSystem
+    public class PlayAudioSystem:ISkillExecuteSystem
     {
-        private readonly Action _playClip;
-
-        public Skill4AudioSystem(Action playClip)
+        private Vector2 _pos;
+        public PlayAudioSystem()
         {
-            _playClip = playClip;
+            _pos = Camera.main.transform.position;
         }
-        
+
         public bool Filter(IEntity entity, ISkillDataComponent skill)
         {
-            return skill is Skill4;
+            return skill is PlayAudioClip;
         }
 
         public void Execute(IEntity entity, ISkillDataComponent skill)
         {
-            _playClip();
+            var clip = (PlayAudioClip) skill;
+
+            Vector2 pos = _pos;
+            if (entity is Component comEn)
+            {
+                pos = comEn.transform.position;
+            }
+            
+            AudioSource.PlayClipAtPoint(clip.Clip,pos);
         }
     }
 }

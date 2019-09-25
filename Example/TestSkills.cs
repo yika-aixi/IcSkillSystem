@@ -8,6 +8,7 @@
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
+using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansions
 {
@@ -47,5 +48,10 @@ namespace CabinIcarus.IcSkillSystem.Expansions
     {
         public float Value { get; set; }
         public IEntity Maker { get; set; }
+    }
+
+    public class PlayAudioClip:ISkillDataComponent
+    {
+        public AudioClip Clip;
     }
 }
