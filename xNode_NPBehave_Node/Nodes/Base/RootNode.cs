@@ -5,36 +5,31 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Root")]
-    public class RootNode : ANPBehaveNode
+    public class RootNode : ANPBehaveNode<Root>
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        [PortTooltip("黑板 Node")]
-        private BlackboardNode _blackBoard;
+        [PortTooltip("黑板")]
+        private Blackboard _blackBoard;
         
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        [PortTooltip("Clock Node")]
-        private ClockNode _clok;
+        [PortTooltip("Clock")]
+        private Clock _clok;
         
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("主节点")]
-        private ANPBehaveNode _mainNode;
+        private Node _mainNode;
 
-        protected override void CreateNode()
+        protected override Root GetOutValue()
         {
             var black = GetInputValue(nameof(_blackBoard),_blackBoard);
             var clok = GetInputValue(nameof(_clok), _clok);
-            var mainNode = GetInputValue(nameof(_mainNode), _mainNode);
-            if (black && clok && mainNode)
+            var mainNode = GetInputValue<Node>(nameof(_mainNode));
+            if (black != null && clok != null && mainNode != null)
             {
-                Node = new Root(black.Blackboard,clok.Clock,mainNode.Node);
+                return new Root(black,clok,mainNode);
             }
-            else
-            {
-                if (Node != null)
-                {
-                    Node = null;
-                }   
-            }
+
+            return null;
         }
     }
 }

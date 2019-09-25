@@ -13,51 +13,47 @@ using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
+using Action = System.Action;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
-    public class UseSkillNode:ANPBehaveNode,IActionExecuteNode,IOutPutName,IEntityKey
+    public class UseSkillNode:ANPNode<Action>,IEntityKey
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private GetBlackboardValue _skillManagerValue;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private ISkillManager _skillManager;
+        
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private Blackboard _blackboard;
 
         [SerializeField]
         private string _entityKey = BlackBoardConstKeyTables.UseSkillEntity;
         
         [SerializeField]
         private string _skillComponentAQName;
-        
-        [SerializeField,Output()]
-        private UseSkillNode _output;
 
-        private ISkillManager _skillManager;
         private ISkillDataComponent _skill;
-        private Blackboard _blackboard;
 
-        protected override void CreateNode()
+        public string EntityKey { get; } = nameof(_entityKey);
+        protected override Action GetOutValue()
         {
-            _output = this;
-
-            var getBlackboardValue = GetInputValue(nameof(_skillManagerValue), _skillManagerValue);
-            _blackboard = getBlackboardValue.Blackboard;
+            _skillManager = GetInputValue(nameof(_skillManager), _skillManager);
+            _blackboard = GetInputValue(nameof(_blackboard), _blackboard);
             
-            _skillManager = (ISkillManager) getBlackboardValue.Value;
-
             var skillType = Type.GetType(_skillComponentAQName);
 
             if (skillType == null)
             {
-                return;
+                return null;
             }
             
             _skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
 
             foreach (var dynamicInput in DynamicInputs)
             {
-                var value = (ValueNode) dynamicInput.GetInputValue();
+                var value = dynamicInput.GetInputValue();
 
-                if (!value)
+                if (value == null)
                 {
                     Debug.LogWarning($"{dynamicInput?.fieldName} 失败 Value 没有连接,跳过");
                     continue;
@@ -68,34 +64,28 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
                     var field = skillType.GetField(dynamicInput.fieldName);
                     if (field != null)
                     {
-                        field.SetValue(_skill, value.Value);
+                        field.SetValue(_skill, value);
                         continue;
                     }
                     
                     var property = skillType.GetProperty(dynamicInput.fieldName);
                     
-                    property.SetValue(_skill,value.Value);
+                    property.SetValue(_skill,value);
                 }
                 catch(SystemException e)
                 {
-                    Debug.LogError($"{dynamicInput?.fieldName} 失败 Value: {value?.Value}\n{e}");
+                    Debug.LogError($"{dynamicInput?.fieldName} 失败 Value: {value}\n{e}");
                 }    
             }
-        }
 
-        public void Execute()
+            return _execute;
+        }
+        
+        private void _execute()
         {
-            if (_skillManager == null || _skill == null)
-            {
-                return;
-            }
-            
             var entity = _blackboard.Get<IEntity>(_entityKey);
             
             _skillManager.UseSkill(entity,_skill);
         }
-
-        public string OutPutName { get; } = nameof(_output);
-        public string EntityKey { get; } = nameof(_entityKey);
     }
 }

@@ -1,11 +1,12 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/WaitForCondition")]
-    public class WaitForConditionNode:ADecoratorNode
+    public class WaitForConditionNode:ADecoratorNode<WaitForCondition>
     {
         [SerializeField] 
         private float _checkInterval;
@@ -13,16 +14,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
         [SerializeField] 
         private float _randomVariance;
 
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited,typeof(IFuncExecuteNode<bool>))]
-        private ANPNode _condition;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private Func<bool> _condition;
 
-        protected override void CreateNode()
+        protected override WaitForCondition GetDecoratorNode()
         {
-            base.CreateNode();
-
-            IFuncExecuteNode<bool> condition = (IFuncExecuteNode<bool>) GetInputValue(nameof(_condition), _condition);
-            
-            Node = new WaitForCondition(condition.Execute, _checkInterval, _randomVariance, DecorateeNode.Node);
+            _condition = GetInputValue(nameof(_condition), _condition);
+            return new WaitForCondition(_condition, _checkInterval, _randomVariance, DecorateeNode);
         }
     }
 }

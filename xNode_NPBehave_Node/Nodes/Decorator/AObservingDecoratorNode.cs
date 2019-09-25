@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
-    public abstract class AObservingDecoratorNode:ADecoratorNode
+    public abstract class AObservingDecoratorNode<T>:ADecoratorNode<T> where T : Node
     {
         [SerializeField] 
         protected Stops Stops;

@@ -6,13 +6,14 @@
 //Assembly-CSharp
 
 using System.Collections.Generic;
+using System.Linq;
 using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 {
     [XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Parallel")]
-    public class ParallelNode:ACompositeNode
+    public class ParallelNode:ACompositeNode<Parallel>
     {
         [SerializeField]
         private Parallel.Policy _successPolicy;
@@ -20,9 +21,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
         [SerializeField]
         private Parallel.Policy _failurePolicy;
 
-        protected override Node GetNode(List<Node> inputNodes)
+        protected override Parallel GetNode(IEnumerable<Node> inputNodes)
         {
-           return new Parallel(_successPolicy,_failurePolicy,inputNodes.ToArray());
+            return new Parallel(_successPolicy,_failurePolicy,inputNodes.ToArray());
         }
     }
 }

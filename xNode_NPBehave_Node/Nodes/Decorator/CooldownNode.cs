@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Cooldown")]
-    public class CooldownNode:ADecoratorNode
+    public class CooldownNode:ADecoratorNode<Cooldown>
     {
         [SerializeField]
         private float _cooldownTime;
@@ -16,11 +16,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
         [SerializeField]
         private bool _resetOnFailiure;
 
-        protected override void CreateNode()
+        protected override Cooldown GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            Node = new Cooldown(_cooldownTime,_randomVariation,_startAfterDecoratee,_resetOnFailiure,DecorateeNode.Node);
+            return new Cooldown(_cooldownTime,_randomVariation,_startAfterDecoratee,_resetOnFailiure,DecorateeNode);
         }
     }
 }

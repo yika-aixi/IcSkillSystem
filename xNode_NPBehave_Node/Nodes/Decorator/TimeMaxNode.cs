@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/TimeMax")]
-    public class TimeMaxNode:ADecoratorNode
+    public class TimeMaxNode:ADecoratorNode<TimeMax>
     {
         [SerializeField] 
         private float _limit;
@@ -15,11 +15,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
         [SerializeField] 
         private bool _waitForChildButFailOnLimitReached;
 
-        protected override void CreateNode()
+        protected override TimeMax GetDecoratorNode()
         {
-            base.CreateNode();
-
-            Node = new TimeMax(_limit, _randomVariation, _waitForChildButFailOnLimitReached, DecorateeNode.Node);
+            return new TimeMax(_limit, _randomVariation, _waitForChildButFailOnLimitReached, DecorateeNode);
         }
     }
 }

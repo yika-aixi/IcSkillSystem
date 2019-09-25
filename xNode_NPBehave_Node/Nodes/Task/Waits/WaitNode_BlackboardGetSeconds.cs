@@ -6,22 +6,17 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Blackboard Get Seconds")]
     [NodeWidth(300)]
-    public class WaitNode_BlackboardGetSeconds:ANPBehaveNode
+    public class WaitNode_BlackboardGetSeconds:ANPBehaveNode<Wait>
     {
         [SerializeField] 
         private string _blackboardKey;
 
         [SerializeField] 
         private float _randomVariance;
-        
-        [SerializeField,Output()]
-        [PortTooltip("黑板获取秒的等待节点")]
-        private WaitNode_BlackboardGetSeconds _output;
 
-        protected override void CreateNode()
+        protected override Wait GetOutValue()
         {
-            _output = this;
-            Node = new Wait(_blackboardKey,_randomVariance);
+            return new Wait(_blackboardKey,_randomVariance);
         }
     }
 }

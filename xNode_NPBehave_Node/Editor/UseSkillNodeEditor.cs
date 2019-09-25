@@ -19,15 +19,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNode))]
     public class UseSkillNodeEditor:AQNameSelectEditor<UseSkillNode>
     {
-        protected override void OnInit()
-        {
-            base.OnInit();
-            
-            _getBlackboardValueProperty = serializedObject.FindProperty("_skillManagerValue");
-            _outputProperty = serializedObject.FindProperty(TNode.OutPutName);
-            UpdateDynamicPort();
-        }
-
         protected override Type GetBaseType()
         {
             return typeof(ISkillDataComponent);
@@ -47,9 +38,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         private SerializedProperty _outputProperty;
         protected override void DrawBody()
         {
+            base.DrawBody();
             serializedObject.Update();
-
-            _baseDraw();
 
             DrawSelectPop(new GUIContent("Skill: "));
             
@@ -67,12 +57,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             
             serializedObject.ApplyModifiedProperties();
         }
-        
-        private void _baseDraw()
-        {
-            NodeEditorGUILayout.PropertyField(_getBlackboardValueProperty);
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(TNode.EntityKey));
-            NodeEditorGUILayout.PropertyField(_outputProperty);
-        }
+
     }
 }

@@ -4,16 +4,14 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Repeater")]
-    public class RepeaterNode:ADecoratorNode
+    public class RepeaterNode:ADecoratorNode<Repeater>
     {
         [SerializeField]
         private int _loopCount;
-        
-        protected override void CreateNode()
+
+        protected override Repeater GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            Node = new Repeater(_loopCount, DecorateeNode.Node);
+            return new Repeater(_loopCount, DecorateeNode);
         }
     }
 }

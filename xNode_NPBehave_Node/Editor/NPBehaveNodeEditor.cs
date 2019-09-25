@@ -1,22 +1,23 @@
 ﻿using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using NPBehave;
 using UnityEngine;
 using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(ANPBehaveNode))]
-    public class NPBehaveNodeEditor:NodeEditor 
+    [NodeEditor.CustomNodeEditorAttribute(typeof(ANPBehaveNode<Node>))]
+    public class NPBehaveNodeEditor : NodeEditor
     {
-        private ANPBehaveNode _node;
+        private ANPBehaveNode<Node> _node;
         private Color _backColor;
 
         protected bool Error;
         protected bool Warning;
-        
+
         public void _check()
         {
-            if (_node == null) _node = target as ANPBehaveNode;
+            if (_node == null) _node = target as ANPBehaveNode<Node>;
             _backColor = GUI.color;
         }
 
@@ -34,7 +35,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
             return base.GetTint();
         }
-        
+
         public sealed override void OnCreate()
         {
             _check();
@@ -47,21 +48,26 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
         public sealed override void OnBodyGUI()
         {
-            _reSetColor();
-            ColorCheck();
+            serializedObject.Update();
             {
-                DrawBody();
+                _reSetColor();
+                ColorCheck();
+                {
+                    DrawBody();
+                }
             }
+            serializedObject.ApplyModifiedProperties();
         }
 
         protected virtual void DrawBody()
         {
             base.OnBodyGUI();
         }
-        
+
         protected virtual void ColorCheck()
         {
-            var NPBNodeInputs = _node.Inputs.Where(x => typeof(ANPBehaveNode).IsAssignableFrom(x.ValueType));
+            var NPBNodeInputs = _node.Inputs.Where(x => typeof(Node).IsAssignableFrom(x.ValueType));
+
             foreach (var nodePort in NPBNodeInputs)
             {
                 if (nodePort.ConnectionCount == 0)

@@ -12,9 +12,9 @@ using NPBehave;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 {
     [XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Selector")]
-    public class SelectorNode:ACompositeNode
+    public class SelectorNode:ACompositeNode<Selector>
     {
-        protected override Node GetNode(List<Node> inputNodes)
+        protected override Selector GetNode(IEnumerable<Node> inputNodes)
         {
             return new Selector(inputNodes.ToArray());
         }

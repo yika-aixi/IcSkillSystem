@@ -1,19 +1,20 @@
-﻿using UnityEngine;
+﻿using NPBehave;
+using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
-    public abstract class ADecoratorNode:ANPBehaveNode
+    public abstract class ADecoratorNode<T>:ANPBehaveNode<T> where T : Node
     {
         [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
-        protected ANPBehaveNode DecorateeNode;
-        
-        [SerializeField,Output()]
-        private ADecoratorNode _output;
-        
-        protected override void CreateNode()
+        protected Node DecorateeNode;
+
+        protected sealed override T GetOutValue()
         {
-            _output = this;
             DecorateeNode = GetInputValue(nameof(DecorateeNode), DecorateeNode);
+
+            return GetDecoratorNode();
         }
+
+        protected abstract T GetDecoratorNode();
     }
 }

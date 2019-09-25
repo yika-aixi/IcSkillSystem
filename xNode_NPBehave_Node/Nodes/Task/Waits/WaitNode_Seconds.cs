@@ -6,20 +6,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Seconds")]
     [NodeWidth(300)]
-    public class WaitNode_Seconds:ANPBehaveNode
+    public class WaitNode_Seconds:ANPBehaveNode<Wait>
     {
         [SerializeField] 
         private float _seconds;
 
-        [SerializeField,Output()]
-        [PortTooltip("输入秒的等待节点")]
-        private WaitNode_Seconds _output;
-        
-        protected override void CreateNode()
+        protected override Wait GetOutValue()
         {
-            _output = this;
-            
-            Node = new Wait(_seconds);
+            return new Wait(_seconds);
         }
     }
 }

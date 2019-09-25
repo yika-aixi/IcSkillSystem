@@ -7,35 +7,26 @@
 
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Utils;
 using NPBehave;
-using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 {
-    public abstract class ACompositeNode:ANPBehaveNode
+    public abstract class ACompositeNode<T>:ANPBehaveNode<T> where T : Node
     {
-        [SerializeField,Input(typeConstraint = TypeConstraint.Inherited)]
+        [Input(typeConstraint = TypeConstraint.Inherited)]
         [PortTooltip("节点,可多个")]
-        private ANPBehaveNode _nodes;
-
-        [SerializeField,Output()]
-        private ACompositeNode _output;
+        private Node _nodes;
         
-        protected sealed override void CreateNode()
+        protected override T GetOutValue()
         {
-            _output = this;
-            
-            var nodes = GetInputValue(nameof(_nodes), _nodes);
+            var nodes = GetInputValues(nameof(_nodes), _nodes);
             
             if (nodes == null) 
-                return;
+                return null;
             
-            List<Node> inputNodes = new List<Node>();
-            this.ToNPBehaveNodes(inputNodes);
-            Node = GetNode(inputNodes);
+            return GetNode(nodes);
         }
 
-        protected abstract Node GetNode(List<Node> inputNodes);
+        protected abstract T GetNode(IEnumerable<Node> inputNodes);
     }
 }

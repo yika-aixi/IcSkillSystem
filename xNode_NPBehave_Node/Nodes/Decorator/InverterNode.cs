@@ -3,13 +3,11 @@
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Inverter")]
-    public class InverterNode:ADecoratorNode
+    public class InverterNode:ADecoratorNode<Inverter>
     {
-        protected override void CreateNode()
+        protected override Inverter GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            Node = new Inverter(DecorateeNode.Node);
+            return new Inverter(DecorateeNode);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using NPBehave;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
@@ -14,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         {
             _check();
             
-            if (rootNode.GetInputValue<ANPBehaveNode>("_mainNode",null) == null)
+            if (rootNode.GetInputValue<ANPBehaveNode<Node>>("_mainNode",null) == null)
             {
                 return Color.red;
             }            
@@ -24,15 +25,16 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
         public override void OnBodyGUI()
         {
-            // Update serialized object's representation
             serializedObject.Update();
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_blackBoard"));
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_clok"));
+            
+            NodeEditorGUILayout.PortField(new GUIContent("Blackboard"),target.GetPort("_blackBoard"));
+            NodeEditorGUILayout.PortField(new GUIContent("Clock"),target.GetPort("_clok"));
+            
             EditorGUILayout.BeginHorizontal();
             {
                 {
                     EditorGUILayout.LabelField(string.Empty,GUILayout.Width(GetWidth() / 2));
-                    NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("_mainNode"),new GUIContent("","Main Node"));
+                    NodeEditorGUILayout.PortField(new GUIContent("Main Node"),target.GetPort("_mainNode"));
                 }
             }
             EditorGUILayout.EndHorizontal();

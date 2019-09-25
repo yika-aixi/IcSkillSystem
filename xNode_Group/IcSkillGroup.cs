@@ -21,22 +21,17 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         /// <returns></returns>
         public Root Start()
         {
-            RootNode rootNode = null;
+            Root rootNode = null;
             foreach (var node in nodes)
             {
                 if (node.GetType() == typeof(RootNode))
                 {
-                    rootNode = (RootNode) node.GetValue(null);
+                    rootNode = (Root) node.GetValue(null);
                     break;
                 }
             }
 
-            if (!rootNode)
-            {
-                return null;
-            }
-
-            return (Root) rootNode.Node;
+            return rootNode;
         }
     }
 }

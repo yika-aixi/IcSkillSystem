@@ -8,11 +8,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Clock/Get UnityContext")]
     public class UnityContextClockNode:ClockNode
     {
-        protected override void CreateNode()
+        protected override Clock GetOutValue()
         {
-            base.CreateNode();
-            
-            Clock = UnityContext.GetClock(); 
+            return UnityContext.GetClock(); 
         }
     }
 }

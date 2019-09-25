@@ -4,16 +4,14 @@ using Random = NPBehave.Random;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Random")]
-    public class RandomNode:ADecoratorNode
+    public class RandomNode:ADecoratorNode<Random>
     {
         [SerializeField]
         private float _probability;
-        
-        protected override void CreateNode()
+
+        protected override Random GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            Node = new Random(_probability,DecorateeNode.Node);
+            return new Random(_probability,DecorateeNode);
         }
     }
 }

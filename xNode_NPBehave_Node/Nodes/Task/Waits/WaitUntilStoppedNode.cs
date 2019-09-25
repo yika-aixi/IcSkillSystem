@@ -1,24 +1,18 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
-using NPBehave;
+﻿using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Until Stopped")]
     [NodeWidth(300)]
-    public class WaitUntilStoppedNode:ANPBehaveNode
+    public class WaitUntilStoppedNode:ANPBehaveNode<WaitUntilStopped>
     {
         [SerializeField] 
         private bool _sucessWhenStopped;
 
-        [SerializeField,Output()]
-        [PortTooltip("直到完成的等待节点")]
-        private WaitUntilStoppedNode _output;
-        
-        protected override void CreateNode()
+        protected override WaitUntilStopped GetOutValue()
         {
-            _output = this;
-            Node = new WaitUntilStopped(_sucessWhenStopped);
+            return new WaitUntilStopped(_sucessWhenStopped);
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Blackboard Condition")]
-    public class BlackboardConditionNode:AObservingDecoratorNode
+    public class BlackboardConditionNode:AObservingDecoratorNode<BlackboardCondition>
     {
         [SerializeField]
         private string _key;
@@ -13,16 +13,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
         [SerializeField]
         private Operator _operator;
 
-        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
-        private ValueNode _value;
+        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
+        private object _value;
 
-        protected override void CreateNode()
+        protected override BlackboardCondition GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            ValueNode valueNode = GetInputValue(nameof(_value),_value);
-            
-            Node = new BlackboardCondition(_key,_operator,valueNode.Value,Stops,DecorateeNode.Node);
+            _value = GetInputValue(nameof(_value),_value);
+
+            return new BlackboardCondition(_key,_operator,_value,Stops,DecorateeNode);
         }
     }
 }

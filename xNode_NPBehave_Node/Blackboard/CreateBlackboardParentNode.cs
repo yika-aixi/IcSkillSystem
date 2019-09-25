@@ -8,16 +8,16 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     public class CreateBlackboardParentNode:CreateBlackboardNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private BlackboardNode _blackboardNodeInput;
+        private Blackboard _blackboardNodeInput;
 
-        protected override void CreateNode()
+        protected override Blackboard GetOutValue()
         {
-            base.CreateNode();
-            
-            var clock = GetInputValue(nameof(ClockNode), ClockNode);
+            var clock = GetInputValue(nameof(Clock), Clock);
             var parent = GetInputValue(nameof(_blackboardNodeInput), _blackboardNodeInput);
             if (clock != null && parent != null) 
-                Blackboard = new Blackboard(parent.Blackboard,clock.Clock);
+                return new Blackboard(parent,clock);
+
+            return null;
         }
     }
 }

@@ -1,25 +1,23 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Blackboard Query")]
-    public class BlackboardQueryNode:AObservingDecoratorNode
+    public class BlackboardQueryNode:AObservingDecoratorNode<BlackboardQuery>
     {
         [SerializeField]
         private string[] _keys;
 
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited,typeof(IFuncExecuteNode<bool>))]
-        [PortTooltip("实现"+nameof(IFuncExecuteNode<bool>)+"的节点")]
-        private ANPNode _isConditionMet;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        [PortTooltip("实现"+nameof(Func<bool>)+"的节点")]
+        private Func<bool> _isConditionMet;
 
-        protected override void CreateNode()
+        protected override BlackboardQuery GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            Node = new BlackboardQuery(_keys,Stops,((IFuncExecuteNode<bool>)_isConditionMet).Execute,DecorateeNode.Node);
+            return new BlackboardQuery(_keys,Stops,_isConditionMet,DecorateeNode);
         }
     }
 }

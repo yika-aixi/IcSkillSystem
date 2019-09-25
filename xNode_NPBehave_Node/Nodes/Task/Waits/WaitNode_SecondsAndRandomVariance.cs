@@ -6,7 +6,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Seconds and Variance")]
     [NodeWidth(300)]
-    public class WaitNode_SecondsAndRandomVariance:ANPBehaveNode
+    public class WaitNode_SecondsAndRandomVariance:ANPBehaveNode<Wait>
     {
         [SerializeField] 
         private float _seconds;
@@ -14,14 +14,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
         [SerializeField] 
         private float _randomVariance;
 
-        [SerializeField,Output()]
-        [PortTooltip("输入秒及随机偏移的等待节点")]
-        private WaitNode_SecondsAndRandomVariance _output;
-        
-        protected override void CreateNode()
+        protected override Wait GetOutValue()
         {
-            _output = this;
-            Node = new Wait(_seconds,_randomVariance);
+            return new Wait(_seconds,_randomVariance);
         }
     }
 }

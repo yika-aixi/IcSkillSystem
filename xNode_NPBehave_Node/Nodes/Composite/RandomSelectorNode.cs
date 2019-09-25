@@ -6,14 +6,15 @@
 //Assembly-CSharp
 
 using System.Collections.Generic;
+using System.Linq;
 using NPBehave;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
 {
     [XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Random Selector")]
-    public class RandomSelectorNode:ACompositeNode
+    public class RandomSelectorNode:ACompositeNode<RandomSelector>
     {
-        protected override Node GetNode(List<Node> inputNodes)
+        protected override RandomSelector GetNode(IEnumerable<Node> inputNodes)
         {
             return new RandomSelector(inputNodes.ToArray());
         }

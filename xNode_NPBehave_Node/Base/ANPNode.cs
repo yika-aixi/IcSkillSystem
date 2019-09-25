@@ -10,8 +10,11 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class ANPNode:Node,ISkillSystemNode
+    public abstract class ANPNode<T>:Node,ISkillSystemNode
     {
+        [Output()]
+        public T Value;
+        
         protected sealed override void Init()
         {
             base.Init();
@@ -30,12 +33,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         {
             if (_editorNoPlay())
             {
-                return this;
+                return null;
             }
 
-            CreateNode();
+            Value = GetOutValue();
 
-            return this;
+            return Value;
         }
 
         bool _editorNoPlay()
@@ -50,7 +53,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
             return false;
         }
 
-        protected abstract void CreateNode();
+        protected abstract T GetOutValue();
     }
     
 }

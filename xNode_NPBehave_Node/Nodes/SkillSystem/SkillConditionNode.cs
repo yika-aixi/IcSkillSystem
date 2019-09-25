@@ -1,4 +1,5 @@
 ﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
@@ -8,52 +9,41 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
-    public class SkillConditionNode:ANPBehaveNode,IFuncExecuteNode<bool>,IOutPutName,IEntityKey
+    public class SkillConditionNode:ANPNode<Func<bool>>,IEntityKey
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private GetBlackboardValue _buffManagerValue;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private IBuffManager _buffManagerValue;
+        
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private Blackboard _blackboard;
         
         [SerializeField]
         private string _entityKey = BlackBoardConstKeyTables.UseSkillEntity;
         
-        [SerializeField,Output()]
-        private SkillConditionNode _output;
-        
         [SerializeField]
         private string _conditionAQName;
+        public string EntityKey { get; } = nameof(_entityKey);
 
         private ACondition _condition;
-        private Blackboard _blackboard;
-        protected override void CreateNode()
+        
+        protected override Func<bool> GetOutValue()
         {
-            _output = this;
-            
-            var getBlackboardValue = GetInputValue(nameof(_buffManagerValue), _buffManagerValue);
-            _blackboard = getBlackboardValue.Blackboard;
+            _buffManagerValue = GetInputValue(nameof(_buffManagerValue), _buffManagerValue);
+            _blackboard = GetInputValue(nameof(_blackboard), _blackboard);;
 
             var conditionType = Type.GetType(_conditionAQName);
 
             if (conditionType == null)
             {
-                return;
+                return null;
             }
-            
-            _condition = (ACondition) Activator.CreateInstance(conditionType,getBlackboardValue.Value);
+            _condition = (ACondition) Activator.CreateInstance(conditionType,_buffManagerValue);
+            return _execute;
         }
 
-        public bool Execute()
+        private bool _execute()
         {
-            if (_condition == null)
-            {
-                return false;
-            }
-
-            var entity = _blackboard.Get<IEntity>(_entityKey);
-
-            return _condition.Check(entity);
+            return _condition.Check(_blackboard.Get<IEntity>(_entityKey));
         }
-
-        public string OutPutName { get; } = nameof(_output);
-        public string EntityKey { get; } = nameof(_entityKey);
     }
 }

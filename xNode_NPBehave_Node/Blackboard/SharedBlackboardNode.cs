@@ -10,13 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Strict)]
         private string _key;
 
-        protected override void CreateNode()
+        protected override Blackboard GetOutValue()
         {
-            base.CreateNode();
-
             var key = GetInputValue(nameof(_key), _key);
 
-            Blackboard = UnityContext.GetSharedBlackboard(key);
+            return UnityContext.GetSharedBlackboard(key);
         }
     }
 }

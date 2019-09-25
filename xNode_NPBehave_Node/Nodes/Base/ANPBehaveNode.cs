@@ -1,7 +1,8 @@
-﻿namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
+﻿using NPBehave;
+
+namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class ANPBehaveNode:ANPNode
+    public abstract class ANPBehaveNode<T>:ANPNode<T> where T : Node
     {
-        public NPBehave.Node Node { get; protected set; }
     }
 }

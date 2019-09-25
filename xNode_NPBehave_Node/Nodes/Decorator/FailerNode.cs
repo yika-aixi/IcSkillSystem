@@ -3,13 +3,11 @@
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Failer")]
-    public class FailerNode:ADecoratorNode
+    public class FailerNode:ADecoratorNode<Failer>
     {
-        protected override void CreateNode()
+        protected override Failer GetDecoratorNode()
         {
-            base.CreateNode();
-            
-            Node = new Failer(DecorateeNode.Node);
+            return new Failer(DecorateeNode);
         }
     }
 }

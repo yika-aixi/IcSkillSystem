@@ -1,27 +1,25 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
+﻿using System;
 using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Observer")]
-    public class ObserverNode:ADecoratorNode
+    public class ObserverNode:ADecoratorNode<Observer>
     {
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited,typeof(IActionExecuteNode))]
-        private ANPNode _onStart;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private System.Action _onStart;
         
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited,typeof(IActionExecuteNode<bool>))]
-        private ANPNode _onStop;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private Action<bool> _onStop;
 
-        protected override void CreateNode()
+        protected override Observer GetDecoratorNode()
         {
-            base.CreateNode();
+            _onStart = GetInputValue(nameof(_onStart),_onStart);
 
-            IActionExecuteNode ex = (IActionExecuteNode) GetInputValue(nameof(_onStart),_onStart);
-
-            IActionExecuteNode<bool> exf = (IActionExecuteNode<bool>) GetInputValue(nameof(_onStop), _onStop);
+            _onStop = GetInputValue(nameof(_onStop), _onStop);
             
-            Node = new Observer(ex.Execute,exf.Execute,DecorateeNode.Node);
+            return new Observer(_onStart,_onStop,DecorateeNode);
         }
     }
 }

@@ -5,33 +5,31 @@
 //2019年09月22日-00:08
 //Assembly-CSharp
 
+using System;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Condition")]
-    public class ConditionNode:AObservingDecoratorNode
+    public class ConditionNode:AObservingDecoratorNode<Condition>
     {
-        [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited,baseType:typeof(IFuncExecuteNode<bool>))]
+        [Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("实现了`IFuncExecuteNode`接口的Node")]
-        private ANPBehaveNode _conditionNode;
+        private Func<bool> _conditionNode;
 
         [SerializeField]
         private float _checkInterval;
 
         [SerializeField]
         private float _randomVariance;
-        
-        protected override void CreateNode()
+
+        protected override Condition GetDecoratorNode()
         {
-            base.CreateNode();
-            
             _conditionNode = GetInputValue(nameof(_conditionNode), _conditionNode);
-            
-            Node = new Condition(((IFuncExecuteNode<bool>) _conditionNode).Execute,Stops,_checkInterval,_randomVariance,DecorateeNode.Node);
+
+            return new Condition(_conditionNode,Stops,_checkInterval,_randomVariance,DecorateeNode);
         }
     }
 }
