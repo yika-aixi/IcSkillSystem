@@ -162,7 +162,7 @@ MonoBehaviour:
       _typeConstraintBaseTypeQualifiedName: 
       connections:
       - fieldName: Action
-        node: {fileID: -7088920634328504133}
+        node: {fileID: 5842772105881106531}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -290,8 +290,8 @@ MonoBehaviour:
   - {fileID: 2602229235897800396}
   - {fileID: 994928706552564575}
   - {fileID: -6916705562759852654}
-  - {fileID: -7088920634328504133}
   - {fileID: -673456896028755680}
+  - {fileID: 5842772105881106531}
 --- !u!114 &582140088278046151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +346,7 @@ MonoBehaviour:
       _typeConstraintBaseTypeQualifiedName: 
       connections:
       - fieldName: OutValue
-        node: {fileID: -7088920634328504133}
+        node: {fileID: 5842772105881106531}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
@@ -471,6 +471,51 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 1
   _value: 1
+--- !u!114 &5842772105881106531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bbc52404faf050468d0759caaa03f16, type: 3}
+  m_Name: Action Node_Action
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 24, y: -88}
+  ports:
+    keys:
+    - Action
+    - OutValue
+    values:
+    - _fieldName: Action
+      _node: {fileID: 5842772105881106531}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -3885102287295254309}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: 5842772105881106531}
+      _typeQualifiedName: NPBehave.Action, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _mainNode
+        node: {fileID: 582140088278046151}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
 --- !u!114 &8174613969942843891
 MonoBehaviour:
   m_ObjectHideFlags: 0
