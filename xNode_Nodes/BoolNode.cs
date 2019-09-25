@@ -8,10 +8,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     [CreateNodeMenu("CabinIcarus/Nodes/Bool Value")]
     public class BoolNode:ValueNode
     {
-        [SerializeField,Output(ShowBackingValue.Always)]
-        [PortTooltip("值出口")]
+        [SerializeField]
         private bool _value;
 
-        public override object Value => _value;
+        public override Type ValueType { get; set; } = typeof(bool);
+
+        protected override object GetOutValue()
+        {
+            return _value;
+        }
     }
 }

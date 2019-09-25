@@ -1,8 +1,8 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using NPBehave;
 using UnityEngine;
-using XNode;
 using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
@@ -11,41 +11,25 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     public class GetBlackboardValue:ValueNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        [PortTooltip("黑板 Node")]
-        private BlackboardNode _blackBoardNode;
-        
-        [SerializeField,Output()]
-        [PortTooltip("获取黑板值节点出口,如果你需要的是值请连接值出口")]
-        private GetBlackboardValue _getBlackboard;
+        [PortTooltip("黑板")]
+        private Blackboard _blackBoard;
         
         [SerializeField]
         private string _key;
 
-        public const string TypeValueOutPortName = "TypeValue";
+        public override Type ValueType { get; set; }
         
-        public override object Value => _getValue();
-
-        public Blackboard Blackboard;
-
-        public override object GetValue(NodePort port)
+        protected override object GetOutValue()
         {
+            
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                return base.GetValue(port);;
+                return null;;
             }
 #endif
-            Blackboard = GetInputValue(nameof(_blackBoardNode), _blackBoardNode).Blackboard;
-
-            _getBlackboard = this;
-
-            return base.GetValue(port);
-            
-        }
-
-        private object _getValue()
-        {
-            return Blackboard?.Get(_key);
+            var blackboard = GetInputValue(nameof(_blackBoard), _blackBoard);
+            return blackboard?.Get(_key);
         }
     }
 }

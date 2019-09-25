@@ -8,10 +8,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     [CreateNodeMenu("CabinIcarus/Nodes/Int Value")]
     public class IntNode:ValueNode
     {
-        [SerializeField,Output(ShowBackingValue.Always)]
+        [SerializeField]
         [PortTooltip("值出口")]
         private int _value;
 
-        public override object Value => _value;
+        public override Type ValueType { get; set; } = typeof(int);
+        protected override object GetOutValue()
+        {
+            return _value;
+        }
     }
 }

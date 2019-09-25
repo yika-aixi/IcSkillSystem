@@ -8,10 +8,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     [CreateNodeMenu("CabinIcarus/Nodes/Float Value")]
     public class FloatNode:ValueNode
     {
-        [SerializeField,Output(ShowBackingValue.Always)]
+        [SerializeField]
         [PortTooltip("值出口")]
         private float _value;
 
-        public override object Value => _value;
+        public override Type ValueType { get; set; } = typeof(float);
+
+        protected override object GetOutValue()
+        {
+            return _value;
+        }
     }
 }
