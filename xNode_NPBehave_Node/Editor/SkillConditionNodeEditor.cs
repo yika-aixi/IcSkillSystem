@@ -17,6 +17,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             return typeof(ACondition);
         }
 
+        protected override void OnInit()
+        {
+            base.OnInit();
+            UpdateDynamicPort();
+        }
+
         protected override void DrawBody()
         {
             DrawSelectPop(new GUIContent("Skill Condition"));

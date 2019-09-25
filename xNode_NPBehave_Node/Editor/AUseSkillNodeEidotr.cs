@@ -34,6 +34,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             return TNode.DynamicInputs;
         }
 
+        protected override void OnInit()
+        {
+            base.OnInit();
+            UpdateDynamicPort();
+        }
+
         private SerializedProperty _getBlackboardValueProperty;
         private SerializedProperty _outputProperty;
         protected override void DrawBody()
