@@ -10,16 +10,17 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
 {
     public class TypeSelectPopupWindow : PopupWindowContent
     {
+        private readonly bool _focus;
         private readonly Type _baseType;
         private string _ser;
         private SearchField searchField;
+        public TypeSelectPopupWindow(bool focus):this(focus,typeof(object)) { }
 
-        public TypeSelectPopupWindow():this(typeof(object)) { }
-
-        public TypeSelectPopupWindow(Type baseType)
+        public TypeSelectPopupWindow(bool focus,Type baseType)
         {
+            this._focus = focus;
             this._baseType = baseType;
-            var typs = TypeUtil.RuntimeTypes;
+            var typs = TypeUtil.RuntimeTypes.Where(x=> _baseType.IsAssignableFrom(x));
             _typeGroup = typs.GroupBy(x => x.Assembly);
         }
 
@@ -28,6 +29,18 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
             base.OnOpen();
             searchField = new SearchField();
             _state = new List<bool>();
+
+            if (_focus)
+            {
+                searchField.SetFocus();
+            }
+        }
+
+        public override void OnClose()
+        {
+            base.OnClose();
+            //todo 不清空吧=-=
+            //_ser = string.Empty;
         }
 
         public Action<Type> OnChangeTypeSelect;
@@ -53,6 +66,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
             EditorGUILayout.Space();
             
             _pos = EditorGUILayout.BeginScrollView(_pos);
+
             int i = 0;
             foreach (var group in _typeGroup)
             {
