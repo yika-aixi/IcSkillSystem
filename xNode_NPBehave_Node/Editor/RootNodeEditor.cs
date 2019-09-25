@@ -15,9 +15,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         {
             _check();
             
-            if (rootNode.GetInputValue<ANPBehaveNode<Node>>("_mainNode",null) == null)
+            if (!rootNode.GetPort("_mainNode").IsConnected)
             {
-                return Color.red;
+                return new Color(205 / 255f,20 / 255f,25 / 255f);
             }            
             
             return base.GetTint();
