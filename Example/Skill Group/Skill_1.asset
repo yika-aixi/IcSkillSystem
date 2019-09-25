@@ -1,5 +1,92 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7088920634328504133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f07acdafa82743759dbbbaf92393d1eb, type: 3}
+  m_Name: Action Node_Action
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -8, y: -72}
+  ports:
+    keys:
+    - Action
+    - OutValue
+    values:
+    - _fieldName: Action
+      _node: {fileID: -7088920634328504133}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -3885102287295254309}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -7088920634328504133}
+      _typeQualifiedName: NPBehave.Action, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _mainNode
+        node: {fileID: 582140088278046151}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &-6916705562759852654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fc2cf419fa7b14e82682c6e375026c, type: 3}
+  m_Name: Get Blackboard Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -600, y: -392}
+  ports:
+    keys:
+    - _blackBoard
+    - Value
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: -6916705562759852654}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 8174613969942843891}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -6916705562759852654}
+      _typeQualifiedName: 
+      _typeConstraintBaseTypeQualifiedName: 
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _key: UseSkillEntity
 --- !u!114 &-5785658741394643451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,13 +100,12 @@ MonoBehaviour:
   m_Name: Float
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1160, y: -24}
+  position: {x: -872, y: 72}
   ports:
     keys:
-    - _value
-    - _output
+    - Value
     values:
-    - _fieldName: _value
+    - _fieldName: Value
       _node: {fileID: -5785658741394643451}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
@@ -31,18 +117,7 @@ MonoBehaviour:
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _output
-      _node: {fileID: -5785658741394643451}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes.ValueNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      _typeConstraintBaseTypeQualifiedName: 
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  _output: {fileID: -5785658741394643451}
+      _dynamic: 1
   _value: 20
 --- !u!114 &-3885102287295254309
 MonoBehaviour:
@@ -57,62 +132,62 @@ MonoBehaviour:
   m_Name: Use Skill
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -728, y: -104}
+  position: {x: -280, y: -120}
   ports:
     keys:
-    - _skillManagerValue
-    - _output
-    - Value
+    - _skillManager
+    - OutValue
+    - _blackboard
     - Type
     - Maker
+    - Value
     values:
-    - _fieldName: _skillManagerValue
+    - _fieldName: _skillManager
       _node: {fileID: -3885102287295254309}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes.ValueNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      _typeConstraintBaseTypeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.GetBlackboardValue,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Skills.Manager.ISkillManager,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _getBlackboard
+      - fieldName: Value
         node: {fileID: 994928706552564575}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 1
       _dynamic: 0
-    - _fieldName: _output
+    - _fieldName: OutValue
       _node: {fileID: -3885102287295254309}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.UseSkillNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _executeNode
-        node: {fileID: 3185063544479000197}
+      - fieldName: Action
+        node: {fileID: -7088920634328504133}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: Value
+    - _fieldName: _blackboard
       _node: {fileID: -3885102287295254309}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _value
-        node: {fileID: -5785658741394643451}
+      - fieldName: OutValue
+        node: {fileID: 8174613969942843891}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 1
-      _dynamic: 1
+      _dynamic: 0
     - _fieldName: Type
       _node: {fileID: -3885102287295254309}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _value
+      - fieldName: Value
         node: {fileID: 2602229235897800396}
         reroutePoints: []
       _direction: 0
@@ -124,16 +199,76 @@ MonoBehaviour:
       _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
         CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
-      connections: []
+      connections:
+      - fieldName: Value
+        node: {fileID: -673456896028755680}
+        reroutePoints: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 1
       _dynamic: 1
-  _skillManagerValue: {fileID: 0}
+    - _fieldName: Value
+      _node: {fileID: -3885102287295254309}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -5785658741394643451}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
   _entityKey: TargetEntity
   _skillComponentAQName: CabinIcarus.IcSkillSystem.Expansions.Skill1, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _output: {fileID: -3885102287295254309}
+--- !u!114 &-673456896028755680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fc2cf419fa7b14e82682c6e375026c, type: 3}
+  m_Name: Get Blackboard Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -648, y: -120}
+  ports:
+    keys:
+    - _blackBoard
+    - Value
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: -673456896028755680}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 8174613969942843891}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -673456896028755680}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Maker
+        node: {fileID: -3885102287295254309}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _key: UseSkillEntity
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,11 +285,13 @@ MonoBehaviour:
   - {fileID: 582140088278046151}
   - {fileID: 8174613969942843891}
   - {fileID: 1638908938818634796}
-  - {fileID: 3185063544479000197}
   - {fileID: -3885102287295254309}
   - {fileID: -5785658741394643451}
   - {fileID: 2602229235897800396}
   - {fileID: 994928706552564575}
+  - {fileID: -6916705562759852654}
+  - {fileID: -7088920634328504133}
+  - {fileID: -673456896028755680}
 --- !u!114 &582140088278046151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,20 +305,21 @@ MonoBehaviour:
   m_Name: Root
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 40, y: -264}
+  position: {x: 136, y: -312}
   ports:
     keys:
     - _blackBoard
     - _clok
     - _mainNode
+    - OutValue
     values:
     - _fieldName: _blackBoard
       _node: {fileID: 582140088278046151}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.BlackboardNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _output
+      - fieldName: OutValue
         node: {fileID: 8174613969942843891}
         reroutePoints: []
       _direction: 0
@@ -190,11 +328,11 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: _clok
       _node: {fileID: 582140088278046151}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.ClockNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: NPBehave.Clock, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _output
+      - fieldName: OutValue
         node: {fileID: 1638908938818634796}
         reroutePoints: []
       _direction: 0
@@ -203,20 +341,27 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: _mainNode
       _node: {fileID: 582140088278046151}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.ANPBehaveNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: NPBehave.Node, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _output
-        node: {fileID: 3185063544479000197}
+      - fieldName: OutValue
+        node: {fileID: -7088920634328504133}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 1
       _dynamic: 0
-  _blackBoard: {fileID: 0}
-  _clok: {fileID: 0}
-  _mainNode: {fileID: 0}
+    - _fieldName: OutValue
+      _node: {fileID: 582140088278046151}
+      _typeQualifiedName: NPBehave.Root, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
 --- !u!114 &994928706552564575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,52 +375,38 @@ MonoBehaviour:
   m_Name: Get Blackboard Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1032, y: -200}
+  position: {x: -760, y: -264}
   ports:
     keys:
-    - _blackBoardNode
-    - _output
-    - _getBlackboard
+    - _blackBoard
+    - Value
     values:
-    - _fieldName: _blackBoardNode
+    - _fieldName: _blackBoard
       _node: {fileID: 994928706552564575}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.BlackboardNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _output
+      - fieldName: OutValue
         node: {fileID: 8174613969942843891}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 1
       _dynamic: 0
-    - _fieldName: _output
+    - _fieldName: Value
       _node: {fileID: 994928706552564575}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes.ValueNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      _typeConstraintBaseTypeQualifiedName: 
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _getBlackboard
-      _node: {fileID: 994928706552564575}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.GetBlackboardValue,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Skills.Manager.ISkillManager,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
-      - fieldName: _skillManagerValue
+      - fieldName: _skillManager
         node: {fileID: -3885102287295254309}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
-  _output: {fileID: 994928706552564575}
-  _blackBoardNode: {fileID: 0}
-  _getBlackboard: {fileID: 994928706552564575}
+      _dynamic: 1
   _key: SkillManager
 --- !u!114 &1638908938818634796
 MonoBehaviour:
@@ -290,15 +421,15 @@ MonoBehaviour:
   m_Name: Unity Context Clock
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -472, y: -200}
+  position: {x: -120, y: -456}
   ports:
     keys:
-    - _output
+    - OutValue
     values:
-    - _fieldName: _output
+    - _fieldName: OutValue
       _node: {fileID: 1638908938818634796}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.ClockNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: NPBehave.Clock, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
       - fieldName: _clok
@@ -308,7 +439,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _output: {fileID: 1638908938818634796}
 --- !u!114 &2602229235897800396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,13 +452,12 @@ MonoBehaviour:
   m_Name: Int
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1160, y: 88}
+  position: {x: -872, y: 184}
   ports:
     keys:
-    - _value
-    - _output
+    - Value
     values:
-    - _fieldName: _value
+    - _fieldName: Value
       _node: {fileID: 2602229235897800396}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
@@ -340,67 +469,8 @@ MonoBehaviour:
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: _output
-      _node: {fileID: 2602229235897800396}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes.ValueNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      _typeConstraintBaseTypeQualifiedName: 
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  _output: {fileID: 2602229235897800396}
+      _dynamic: 1
   _value: 1
---- !u!114 &3185063544479000197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51072becef5076f4daa0aa5989054009, type: 3}
-  m_Name: Action
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -424, y: -56}
-  ports:
-    keys:
-    - _executeNode
-    - _output
-    values:
-    - _fieldName: _executeNode
-      _node: {fileID: 3185063544479000197}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.ANPBehaveNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      _typeConstraintBaseTypeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com.IActionNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: _output
-        node: {fileID: -3885102287295254309}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _typeConstraint: 1
-      _dynamic: 0
-    - _fieldName: _output
-      _node: {fileID: 3185063544479000197}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks.ActionNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      _typeConstraintBaseTypeQualifiedName: 
-      connections:
-      - fieldName: _mainNode
-        node: {fileID: 582140088278046151}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  _executeNode: {fileID: -3885102287295254309}
-  _output: {fileID: 3185063544479000197}
 --- !u!114 &8174613969942843891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,11 +484,11 @@ MonoBehaviour:
   m_Name: Shared Blackboard
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -776, y: -328}
+  position: {x: -472, y: -504}
   ports:
     keys:
     - _key
-    - _output
+    - OutValue
     values:
     - _fieldName: _key
       _node: {fileID: 8174613969942843891}
@@ -430,21 +500,29 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 2
       _dynamic: 0
-    - _fieldName: _output
+    - _fieldName: OutValue
       _node: {fileID: 8174613969942843891}
-      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.BlackboardNode,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       _typeConstraintBaseTypeQualifiedName: 
       connections:
       - fieldName: _blackBoard
         node: {fileID: 582140088278046151}
         reroutePoints: []
-      - fieldName: _blackBoardNode
+      - fieldName: _blackBoard
+        node: {fileID: -6916705562759852654}
+        reroutePoints: []
+      - fieldName: _blackBoard
         node: {fileID: 994928706552564575}
+        reroutePoints: []
+      - fieldName: _blackboard
+        node: {fileID: -3885102287295254309}
+        reroutePoints: []
+      - fieldName: _blackBoard
+        node: {fileID: -673456896028755680}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _output: {fileID: 8174613969942843891}
   _key: Test
