@@ -17,7 +17,7 @@ using XNodeEditor;
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
     [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNodeNodeAction))]
-    public class AUseSkill<T>:AQNameSelectEditor<AUseSkillNode<T>,T> where T: Delegate
+    public abstract class AUseSkillNodeEditor<T>:AQNameSelectEditor<AUseSkillNode<T>,T> where T: Delegate
     {
         protected override Type GetBaseType()
         {
@@ -43,5 +43,16 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             base.DrawBody();
         }
 
+    }
+
+
+    [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNodeNodeAction))]
+    public class UseSkillNodeNodeActionEditor : AUseSkillNodeEditor<Action>
+    {
+    }
+    
+    [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNodeNodeSingleFrame))]
+    public class UseSkillNodeNodeSingleFrameEditor : AUseSkillNodeEditor<Func<bool>>
+    {
     }
 }
