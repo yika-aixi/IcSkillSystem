@@ -1,5 +1,7 @@
 # SkillSystem
 
+[Video](https://b23.tv/av68993551)
+
 Example Unity Version:2019.2+
 
 这个版本我将主要维护技能编辑器,让它更好用,目前节点太少,编写自定义有点混乱,不够清晰,
