@@ -48,7 +48,6 @@ namespace CabinIcarus.IcSkillSystem.Expansions
             
             var bt = Skills[index].Start();
             bt?.Start();
-            bt?.Stop();
         }
     }
 }
