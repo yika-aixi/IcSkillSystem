@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    public abstract class ANPBehaveNodeEditor<T,AT>: ANPNodeEditor<T,AT> where T : ANPNode<AT>
+    public abstract class ANPBehaveNodeEditor<T,AT>: ANPNodeEditor<T,AT> where T : ANPBehaveNode<AT> where AT : Node
     {
         protected override void ColorCheck()
         {
