@@ -1,20 +1,19 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks;
-using UnityEngine;
-using XNodeEditor;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks;
+using Action = NPBehave.Action;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(ActionNode))]
-    public class ActionNodeEditor:NodeEditor
+    [CustomNodeEditorAttribute(typeof(ANPBehaveNode<Action>))]
+    public class ActionNodeEditor:ANPNodeEditor<ANPBehaveNode<Action>,Action>
     {
-        public override Color GetTint()
+        protected override void ColorCheck()
         {
-            if (!target.GetInputPort("_executeNode").IsConnected)
+            if (!target.GetInputPort(AActionNode<Delegate>.InputPortName).IsConnected)
             {
-                return Color.red;
+                Error = true;
             }
-            
-            return base.GetTint();
         }
     }
 }

@@ -9,7 +9,6 @@ using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
@@ -75,7 +74,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
                 catch(SystemException e)
                 {
                     Debug.LogError($"{dynamicInput?.fieldName} 失败 Value: {value}\n{e}");
-                }    
+                }   
+                
             }
 
             return _execute;

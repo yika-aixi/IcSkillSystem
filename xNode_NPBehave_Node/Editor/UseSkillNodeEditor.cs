@@ -17,7 +17,7 @@ using XNodeEditor;
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
     [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNode))]
-    public class UseSkillNodeEditor:AQNameSelectEditor<UseSkillNode>
+    public class UseSkillNodeEditor:AQNameSelectEditor<UseSkillNode,Action>
     {
         protected override Type GetBaseType()
         {
@@ -38,24 +38,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         private SerializedProperty _outputProperty;
         protected override void DrawBody()
         {
-            base.DrawBody();
-            serializedObject.Update();
-
             DrawSelectPop(new GUIContent("Skill: "));
-            
-            EditorGUILayout.Space();
-            {
-                var lastRect = GUILayoutUtility.GetLastRect();
-                var lineX = GetWidth() * 0.9f;
-                var lineY = lastRect.y + 5;
-                var offset = GetWidth() - lineX;
-                Handles.DrawLine(new Vector3(offset, lineY), new Vector3(lineX, lineY));
-            }
-            EditorGUILayout.Space();
 
-            DrawDynamicPort(null);
-            
-            serializedObject.ApplyModifiedProperties();
+            base.DrawBody();
         }
 
     }

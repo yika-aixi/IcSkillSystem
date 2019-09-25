@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using UnityEditor;
 using UnityEngine;
 using XNode;
@@ -10,16 +11,26 @@ using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    public abstract class AQNameSelectEditor<T>:NPBehaveNodeEditor where T : Node
+    public abstract class AQNameSelectEditor<T,AT>:ANPNodeEditor<T,AT> where T : ANPNode<AT>
     {
-        protected T TNode;
         protected SerializedProperty _aQNameProperty;
         protected List<string> Types;
         protected int CurrentSelectIndex;
 
+        protected override IEnumerable<string> GetExcludesField()
+        {
+            var AQName = GetAQNamePropertyName();
+
+            if (string.IsNullOrWhiteSpace(AQName))
+            {
+                return null;
+            }
+            
+            return new[] {AQName};
+        }
+
         protected override void OnInit()
         {
-            TNode = (T) target;
             Types = new List<string>();
             _aQNameProperty = serializedObject.FindProperty(GetAQNamePropertyName());
 
@@ -201,6 +212,10 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         }
 
         #endregion
+
+        protected override void ColorCheck()
+        {
+        }
 
         protected abstract string GetAQNamePropertyName();
     }

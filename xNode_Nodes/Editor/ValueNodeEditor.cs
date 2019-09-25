@@ -8,10 +8,8 @@ namespace UnityEditor
     public class ValueNodeEditor:NodeEditor
     {
         private ValueNode _valueNode;
-        public override void OnCreate()
+        protected override void Init()
         {
-            base.OnCreate();
-
             _valueNode = (ValueNode) target;
         }
 

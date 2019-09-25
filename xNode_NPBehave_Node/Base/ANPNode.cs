@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     public abstract class ANPNode<T>:Node,ISkillSystemNode
     {
         [Output()]
-        public T Value;
+        public T OutValue;
         
         protected sealed override void Init()
         {
@@ -36,9 +36,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
                 return null;
             }
 
-            Value = GetOutValue();
+            OutValue = GetOutValue();
 
-            return Value;
+            return OutValue;
         }
 
         bool _editorNoPlay()

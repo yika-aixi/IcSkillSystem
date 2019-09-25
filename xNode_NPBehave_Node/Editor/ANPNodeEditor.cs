@@ -1,31 +1,36 @@
-﻿using System.Linq;
+﻿using System;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using NPBehave;
 using UnityEngine;
 using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(ANPBehaveNode<Node>))]
-    public class NPBehaveNodeEditor : NodeEditor
+    public abstract class ANPNodeEditor<T,AT>:NodeEditor where T : ANPNode<AT>
     {
-        private ANPBehaveNode<Node> _node;
-        private Color _backColor;
+        protected T TNode;
 
         protected bool Error;
         protected bool Warning;
 
         public void _check()
         {
-            if (_node == null) _node = target as ANPBehaveNode<Node>;
-            _backColor = GUI.color;
+            try
+            {
+                if (TNode == null)
+                    TNode = (T) target;
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(target);
+            }           
         }
 
         public override Color GetTint()
         {
             if (Error)
             {
-                return Color.red;
+                return new Color(205 / 255f,20 / 255f,25 / 255f);
             }
 
             if (Warning)
@@ -36,7 +41,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             return base.GetTint();
         }
 
-        public sealed override void OnCreate()
+        protected sealed override void Init()
         {
             _check();
             OnInit();
@@ -64,18 +69,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             base.OnBodyGUI();
         }
 
-        protected virtual void ColorCheck()
-        {
-            var NPBNodeInputs = _node.Inputs.Where(x => typeof(Node).IsAssignableFrom(x.ValueType));
-
-            foreach (var nodePort in NPBNodeInputs)
-            {
-                if (nodePort.ConnectionCount == 0)
-                {
-                    Error = true;
-                }
-            }
-        }
+        protected abstract void ColorCheck();
 
         private void _reSetColor()
         {

@@ -10,7 +10,7 @@ using XNodeEditor;
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
     [NodeEditor.CustomNodeEditorAttribute(typeof(SkillConditionNode))]
-    public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode>
+    public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode,Func<bool>>
     {
         protected override Type GetBaseType()
         {
@@ -19,8 +19,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
         protected override void DrawBody()
         {
-            base.DrawBody();
             DrawSelectPop(new GUIContent("Skill Condition"));
+            
+            base.DrawBody();
         }
 
         protected override string GetAQNamePropertyName()
