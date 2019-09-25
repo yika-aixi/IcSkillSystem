@@ -228,6 +228,7 @@ MonoBehaviour:
     - SkillManager
     - OutValue
     - Clip
+    - Volume
     values:
     - _fieldName: Target
       _node: {fileID: -4770489490815491591}
@@ -276,6 +277,19 @@ MonoBehaviour:
       connections:
       - fieldName: Value
         node: {fileID: -8792053890637688360}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Volume
+      _node: {fileID: -4770489490815491591}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -2170930801528317003}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
@@ -366,6 +380,38 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+--- !u!114 &-2170930801528317003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a76bf466733d24caba98242c129a16, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -120, y: -24}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -2170930801528317003}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Volume
+        node: {fileID: -4770489490815491591}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 1
 --- !u!114 &-2099074146722795726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +607,7 @@ MonoBehaviour:
   - {fileID: -8792053890637688360}
   - {fileID: 5906125931837611520}
   - {fileID: 8934247575424007312}
+  - {fileID: -2170930801528317003}
 --- !u!114 &5539628946690307961
 MonoBehaviour:
   m_ObjectHideFlags: 0

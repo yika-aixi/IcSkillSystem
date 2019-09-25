@@ -136,13 +136,14 @@ MonoBehaviour:
   m_Name: Use Skill Node_Single Frame
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: -168}
+  position: {x: 328, y: -216}
   ports:
     keys:
     - SkillManager
     - Target
     - OutValue
     - Clip
+    - Volume
     values:
     - _fieldName: SkillManager
       _node: {fileID: -5980127703695190649}
@@ -197,6 +198,19 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 1
       _dynamic: 1
+    - _fieldName: Volume
+      _node: {fileID: -5980127703695190649}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -5010785594853634625}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
   _skillComponentAQName: CabinIcarus.IcSkillSystem.Expansions.PlayAudioClip, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _result: 1
@@ -213,7 +227,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1000, y: -8}
+  position: {x: 952, y: 40}
   ports:
     keys:
     - OutValue
@@ -254,6 +268,38 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 1
       _dynamic: 0
+--- !u!114 &-5010785594853634625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a76bf466733d24caba98242c129a16, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 56, y: -104}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -5010785594853634625}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Volume
+        node: {fileID: -5980127703695190649}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 0.4
 --- !u!114 &-4786611608209672543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +428,7 @@ MonoBehaviour:
   m_Name: Wait Node_Seconds
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 440, y: 8}
+  position: {x: 440, y: -8}
   ports:
     keys:
     - OutValue
@@ -400,7 +446,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  _seconds: 1
+  _seconds: 1.5
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,6 +475,7 @@ MonoBehaviour:
   - {fileID: 772379218593809381}
   - {fileID: -8990024634516269792}
   - {fileID: 7734364537162921440}
+  - {fileID: -5010785594853634625}
 --- !u!114 &772379218593809381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,7 +770,7 @@ MonoBehaviour:
   m_Name: Root
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 920, y: -216}
+  position: {x: 936, y: -232}
   ports:
     keys:
     - _blackBoard
