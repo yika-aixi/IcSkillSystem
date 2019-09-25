@@ -24,26 +24,37 @@ namespace UnityEditor
 
         public override void OnBodyGUI()
         {
-            var port = target.GetOutputPort(ValueNode.ValueOutPutPortName);
+            serializedObject.Update();
+            {
+                var port = _valueNode.GetOutputPort(ValueNode.ValueOutPutPortName);
 
-            if (port == null)
-            {
-                target.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
-                return;
+                if (port == null)
+                {
+                    if (_valueNode.ValueType != null)
+                    {
+                        _valueNode.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
+                    }
+                }
+                else
+                {
+                    if (port.ValueType != _valueNode.ValueType)
+                    {
+                        port.ValueType = _valueNode.ValueType;
+                    }
+                }
+                
+                base.OnBodyGUI();
+                
+                if (_valueNode.IsChangeValueType)
+                {
+                    if (GUILayout.Button("Change Type"))
+                    {
+                        UnityEditor.PopupWindow.Show(new Rect(GetCurrentMousePosition(), new Vector2(0, 0)),
+                            windowContent);
+                    }
+                }
             }
-
-            if (port.ValueType != _valueNode.ValueType)
-            {
-                port.ValueType = _valueNode.ValueType;
-            }
-            
-            base.OnBodyGUI();
-            
-            if (GUILayout.Button("Change Type"))
-            {
-                UnityEditor.PopupWindow.Show(new Rect(GetCurrentMousePosition(),new Vector2(0,0)), windowContent);
-            }
-            
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

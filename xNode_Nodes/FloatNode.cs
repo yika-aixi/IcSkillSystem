@@ -12,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [PortTooltip("值出口")]
         private float _value;
 
-        public override Type ValueType { get; set; } = typeof(float);
+        public override Type ValueType { get => typeof(float); set{} }
 
         protected override object GetOutValue()
         {

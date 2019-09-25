@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private bool _value;
 
-        public override Type ValueType { get; set; } = typeof(bool);
+        public override Type ValueType { get => typeof(bool); set {} }
 
         protected override object GetOutValue()
         {

@@ -27,6 +27,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         /// Value类型
         /// </summary>
         public abstract Type ValueType { get; set; }
+
+
+        /// <summary>
+        /// 是否能改变Value类型
+        /// </summary>
+        public virtual bool IsChangeValueType { get; } = false;
         
         /// <summary>
         /// 获取输出 value

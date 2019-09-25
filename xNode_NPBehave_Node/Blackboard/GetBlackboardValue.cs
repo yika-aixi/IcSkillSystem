@@ -18,7 +18,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         private string _key;
 
         public override Type ValueType { get; set; }
-        
+
+        public override bool IsChangeValueType { get; } = true;
+
         protected override object GetOutValue()
         {
             
