@@ -14,6 +14,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
+    //todo 断言保护
     public class BuffManager:IBuffManager
     {
         private List<IEntity> _entities;
