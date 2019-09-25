@@ -1,4 +1,6 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+﻿using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using UnityEngine;
 using XNode;
 using XNodeEditor;
 
@@ -8,9 +10,16 @@ namespace UnityEditor
     public class ValueNodeEditor:NodeEditor
     {
         private ValueNode _valueNode;
+        private TypeSelectPopupWindow windowContent;
         protected override void Init()
         {
             _valueNode = (ValueNode) target;
+            windowContent = new TypeSelectPopupWindow();
+            windowContent.OnChangeTypeSelect = type =>
+            {
+                _valueNode.ValueType = type;
+                windowContent.editorWindow.Close();
+            };
         }
 
         public override void OnBodyGUI()
@@ -29,6 +38,12 @@ namespace UnityEditor
             }
             
             base.OnBodyGUI();
+            
+            if (GUILayout.Button("Change Type"))
+            {
+                UnityEditor.PopupWindow.Show(new Rect(GetCurrentMousePosition(),new Vector2(0,0)), windowContent);
+            }
+            
         }
     }
 }
