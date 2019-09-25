@@ -7,7 +7,6 @@
 
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems;
-using CabinIcarus.IcSkillSystem.Expansions.Skills;
 using NPBehave;
 using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Manager;
 using UnityEngine;
