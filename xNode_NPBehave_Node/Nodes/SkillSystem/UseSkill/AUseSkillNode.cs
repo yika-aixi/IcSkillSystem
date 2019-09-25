@@ -2,51 +2,45 @@
 //手动滑稽,滑稽脸
 //ヾ(•ω•`)o
 //https://www.ykls.app
-//2019年09月19日-23:12
+//2019年09月25日-20:58
 //Assembly-CSharp
 
 using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
-using NPBehave;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using UnityEngine;
-using Action = System.Action;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
-    public class UseSkillNode:ANPNode<Action>,IEntityKey
+    public abstract class AUseSkillNode<T>:ANPNode<T> where T : Delegate
     {
-        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private ISkillManager _skillManager;
+         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+         protected ISkillManager SkillManager;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private Blackboard _blackboard;
+        [PortTooltip("目标")]
+        protected IEntity Target;
 
-        [SerializeField]
-        private string _entityKey = BlackBoardConstKeyTables.UseSkillEntity;
-        
         [SerializeField]
         private string _skillComponentAQName;
 
-        private ISkillDataComponent _skill;
+        protected ISkillDataComponent Skill;
 
-        public string EntityKey { get; } = nameof(_entityKey);
-        protected override Action GetOutValue()
+        protected sealed override T GetOutValue()
         {
-            _skillManager = GetInputValue(nameof(_skillManager), _skillManager);
-            _blackboard = GetInputValue(nameof(_blackboard), _blackboard);
+            SkillManager = GetInputValue(nameof(SkillManager), SkillManager);
+            Target = GetInputValue(nameof(Target), Target);
             
             var skillType = Type.GetType(_skillComponentAQName);
 
             if (skillType == null)
             {
-                return null;
+                return default;
             }
             
-            _skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
+            Skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
 
             foreach (var dynamicInput in DynamicInputs)
             {
@@ -63,13 +57,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
                     var field = skillType.GetField(dynamicInput.fieldName);
                     if (field != null)
                     {
-                        field.SetValue(_skill, value);
+                        field.SetValue(Skill, value);
                         continue;
                     }
                     
                     var property = skillType.GetProperty(dynamicInput.fieldName);
                     
-                    property.SetValue(_skill,value);
+                    property.SetValue(Skill,value);
                 }
                 catch(SystemException e)
                 {
@@ -78,14 +72,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
                 
             }
 
-            return _execute;
+            return UseSkill();
         }
-        
-        private void _execute()
-        {
-            var entity = _blackboard.Get<IEntity>(_entityKey);
-            
-            _skillManager.UseSkill(entity,_skill);
-        }
+
+        protected abstract T UseSkill();
     }
 }
