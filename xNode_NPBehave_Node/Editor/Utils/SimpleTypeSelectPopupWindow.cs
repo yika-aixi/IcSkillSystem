@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
     public class TypeSelectPopupWindow : PopupWindowContent
     {
         private readonly bool _focus;
-        private readonly Type _baseType;
+        private Type _baseType;
         private string _ser;
         private SearchField searchField;
         public TypeSelectPopupWindow(bool focus):this(focus,typeof(object)) { }
@@ -19,9 +19,15 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         public TypeSelectPopupWindow(bool focus,Type baseType)
         {
             this._focus = focus;
-            this._baseType = baseType;
-            var typs = TypeUtil.RuntimeTypes.Where(x=> _baseType.IsAssignableFrom(x));
+            this.BaseType = baseType;
+            var typs = TypeUtil.RuntimeTypes.Where(x=> BaseType.IsAssignableFrom(x));
             _typeGroup = typs.GroupBy(x => x.Assembly);
+        }
+
+        public Type BaseType
+        {
+            get => _baseType;
+            set => _baseType = value;
         }
 
         public override void OnOpen()
@@ -78,11 +84,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                 bool isSkip = false;
                 foreach (var valueType in @group)
                 {
-                    if (!string.IsNullOrWhiteSpace(_ser) || _baseType != null)
+                    if (!string.IsNullOrWhiteSpace(_ser) || BaseType != null)
                     {
                         if (!string.IsNullOrWhiteSpace(_ser) &&
                             !valueType.FullName.ToLower().Contains(_ser.ToLower()) ||
-                            !_baseType.IsAssignableFrom(valueType))
+                            !BaseType.IsAssignableFrom(valueType))
                         {
                             isSkip = true;
                         }
@@ -107,11 +113,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                     GUILayout.BeginVertical();
                     foreach (var valueType in @group)
                     {
-                        if (!string.IsNullOrWhiteSpace(_ser) || _baseType != null)
+                        if (!string.IsNullOrWhiteSpace(_ser) || BaseType != null)
                         {
                             if (!string.IsNullOrWhiteSpace(_ser) &&
                                 !valueType.FullName.ToLower().Contains(_ser.ToLower()) ||
-                                !_baseType.IsAssignableFrom(valueType))
+                                !BaseType.IsAssignableFrom(valueType))
                             {
                                 continue;
                             }
