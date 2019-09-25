@@ -17,7 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         [SerializeField]
         private string _key;
 
-        public override Type ValueType { get; set; }
+        public override Type ValueType { get; } = typeof(object);
 
         public override bool IsChangeValueType { get; } = true;
 

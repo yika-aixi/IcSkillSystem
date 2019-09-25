@@ -1,4 +1,6 @@
-﻿using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
+﻿using System;
+using System.Collections.Generic;
+using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using UnityEngine;
 using XNode;
@@ -10,15 +12,31 @@ namespace UnityEditor
     public class ValueNodeEditor:NodeEditor
     {
         private ValueNode _valueNode;
+        private NodePort _valueOutPut;
+        
         private TypeSelectPopupWindow windowContent;
+
         protected override void Init()
         {
             _valueNode = (ValueNode) target;
+            _valueOutPut = _valueNode.GetOutputPort(ValueNode.ValueOutPutPortName);
+
+            if (_valueOutPut != null)
+            {
+                if (_valueOutPut.ValueType == null)
+                {
+                    _valueOutPut.ValueType = _valueNode.ValueType;
+                }
+            }
+            
             windowContent = new TypeSelectPopupWindow(true);
+            
             windowContent.OnChangeTypeSelect = type =>
             {
-                _valueNode.ValueType = type;
+                _valueOutPut.ValueType = type;
                 windowContent.editorWindow.Close();
+                serializedObject.ApplyModifiedProperties();
+                serializedObject.UpdateIfRequiredOrScript();
             };
         }
 
@@ -26,20 +44,11 @@ namespace UnityEditor
         {
             serializedObject.Update();
             {
-                var port = _valueNode.GetOutputPort(ValueNode.ValueOutPutPortName);
-
-                if (port == null)
+                if (_valueOutPut == null)
                 {
                     if (_valueNode.ValueType != null)
                     {
-                        _valueNode.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
-                    }
-                }
-                else
-                {
-                    if (port.ValueType != _valueNode.ValueType)
-                    {
-                        port.ValueType = _valueNode.ValueType;
+                        _valueOutPut = _valueNode.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
                     }
                 }
                 
@@ -49,6 +58,8 @@ namespace UnityEditor
                 {
                     if (GUILayout.Button("Change Type"))
                     {
+                        windowContent.BaseType = _valueNode.BaseType;
+                        
                         UnityEditor.PopupWindow.Show(new Rect(GetCurrentMousePosition(), new Vector2(0, 0)),
                             windowContent);
                     }
