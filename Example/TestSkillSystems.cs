@@ -138,7 +138,7 @@ namespace CabinIcarus.IcSkillSystem.Expansions
     
     public class PlayAudioSystem:ISkillExecuteSystem
     {
-        private Vector2 _pos;
+        private Vector3 _pos;
         public PlayAudioSystem()
         {
             _pos = Camera.main.transform.position;
@@ -153,13 +153,13 @@ namespace CabinIcarus.IcSkillSystem.Expansions
         {
             var clip = (PlayAudioClip) skill;
 
-            Vector2 pos = _pos;
+            Vector3 pos = _pos;
             if (entity is Component comEn)
             {
                 pos = comEn.transform.position;
             }
             
-            AudioSource.PlayClipAtPoint(clip.Clip,pos);
+            AudioSource.PlayClipAtPoint(clip.Clip,pos,clip.Volume);
         }
     }
 }

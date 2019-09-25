@@ -53,5 +53,6 @@ namespace CabinIcarus.IcSkillSystem.Expansions
     public class PlayAudioClip:ISkillDataComponent
     {
         public AudioClip Clip;
+        public float Volume = 1;
     }
 }
