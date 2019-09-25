@@ -14,7 +14,7 @@ namespace UnityEditor
         protected override void Init()
         {
             _valueNode = (ValueNode) target;
-            windowContent = new TypeSelectPopupWindow();
+            windowContent = new TypeSelectPopupWindow(true);
             windowContent.OnChangeTypeSelect = type =>
             {
                 _valueNode.ValueType = type;
