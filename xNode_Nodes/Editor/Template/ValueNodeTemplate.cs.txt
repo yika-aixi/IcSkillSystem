@@ -5,7 +5,7 @@ using XNode;
 namespace %NAMESPACE%
 {
     [CreateNodeMenu("CabinIcarus/Nodes/%ASSEMBLY%/%NAME% Value")]
-    public class %NAME%ValueNode:ValueNode
+    public partial class %NAME%ValueNode:ValueNode
     {
         [SerializeField]
         private %TYPE% _value;
