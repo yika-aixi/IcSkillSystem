@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
@@ -19,13 +20,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         const string ValueNodeTemplateName = "ValueNodeTemplate.cs";
 
         private static string _templateContent;
-        
-        [InitializeOnLoadMethod]
-        static void Init()
-        {
-            _loadTemple();
-        }
 
+        private static List<string> _generateAssemblys;
+        
         private static void _loadTemple()
         {
             var guids = AssetDatabase.FindAssets(ValueNodeTemplateName);
@@ -65,16 +62,26 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             set => EditorPrefs.SetString(_getKey(nameof(NameSpace)),value);
         }
 
-        [MenuItem("Cabin Icarus/IcSkillSystem/ValueNode Code Generate")]
+        [MenuItem("Icarus/IcSkillSystem/ValueNode Code Generate")]
         static void _open()
         {
             EditorWindow.CreateWindow<SerializableTypeCodeGenerate>();
+            _generateAssemblys = new List<string>();
+            _generateAssemblys =
+                JsonUtility.FromJson<List<string>>(EditorPrefs.GetString(_getKey(nameof(_generateAssemblys))));
+        }
+
+        private void OnEnable()
+        {
+            _loadTemple();
         }
 
         private static string _getKey(string key)
         {
             return $"{nameof(SerializableTypeCodeGenerate)}.{key}";
 ;        }
+
+        private bool _force = false;
 
         private void OnGUI()
         {
@@ -96,47 +103,75 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
             NameSpace = EditorGUILayout.DelayedTextField("Name Space:", NameSpace);
 
+            _force = EditorGUILayout.ToggleLeft("Force",_force);
+            
+            _drawGenerate();
+        }
+
+        private void _drawGenerate()
+        {
             if (GUILayout.Button("Generate"))
             {
-                EditorUtility.DisplayProgressBar("Generate ing",string.Empty,0);
-                var runtimeTypes = TypeUtil.RuntimeTypes
-                    .Where(x=>!x.IsInterface && !x.IsAbstract)
-                    .Where(x=>x.IsSerializable && !x.IsGenericType)
-                    .Where(x=>x.IsVisible)
-                    .Where(x=>!x.IsNestedAssembly)
-                    .Where(x=>!x.Assembly.GetName().FullName.Contains("NUnit"))
-                    .Where(x=>!x.Assembly.GetName().FullName.Contains("Mono"))
-                    .Where(x=>!x.Assembly.GetName().FullName.Contains("Cecil"))
-                    .Where(x=>!x.Assembly.GetName().FullName.Contains("Test"))
-                    .Where(x=>!x.Assembly.FullName.Contains("System.Reflection"));
-                var count = runtimeTypes.Count();
+                if (!Directory.Exists(GenerateSavePath))
+                {
+                    Directory.CreateDirectory(GenerateSavePath);
+                }
+
+
+                EditorUtility.DisplayProgressBar("Generate ing", string.Empty, 0);
+
+                var runtimeTypes = TypeUtil.UnityRuntimeTypes
+                    .Where(x => !typeof(Delegate).IsAssignableFrom(x))
+                    .Where(x => !typeof(Exception).IsAssignableFrom(x))
+                    .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
+                    .Where(x => !typeof(Attribute).IsAssignableFrom(x))
+                    .Where(x => x.IsSerializable)
+                    .Where(x => !x.IsGenericType)
+                    .Where(x => !x.Assembly.GlobalAssemblyCache)
+                    .Where(x => !x.IsPointer)
+                    .Where(x => x.IsClass || x.IsValueType || x.IsEnum)
+                    .Where(x => x.IsVisible)
+                    .Where(x => !x.FullName.Contains("UnityEngine.TestTools")).ToList();
+
+
+                runtimeTypes.Add(typeof(int));
+                runtimeTypes.Add(typeof(long));
+                runtimeTypes.Add(typeof(float));
+                runtimeTypes.Add(typeof(bool));
+                runtimeTypes.Add(typeof(string));
+
+                var count = runtimeTypes.Count;
+                
                 int i = 0;
+                
                 foreach (var runtimeType in runtimeTypes)
                 {
-                    if (runtimeType.GetCustomAttributes(typeof(ObsoleteAttribute),false).Length > 0)
-                    {
-                        continue;
-                    }
-                    
-                    EditorUtility.DisplayProgressBar("Generate ing",runtimeType.FullName,i/(float) count);
+                    EditorUtility.DisplayProgressBar("Generate ing", runtimeType.FullName, i / (float) count);
                     if (_isSerializableType(runtimeType))
                     {
+                        var typeName = runtimeType.Name.Split('.').Last();
+                        var fileName = $"{typeName}ValueNode.cs";
+                        var path = Path.Combine(GenerateSavePath, fileName);
+
+                        if (!_force)
+                        {
+                            if (File.Exists(path))
+                            {
+                                continue;
+                            }
+                        }
+
                         var content = _templateContent.Replace(TypeMark, runtimeType.FullName);
                         content = content.Replace(NameSpaceMark, NameSpace);
                         content = content.Replace(IsChangeMark, "false");
-                        var typeName = runtimeType.Name.Split('.').Last();
                         content = content.Replace(NameMark, typeName);
-                        if (!Directory.Exists(GenerateSavePath))
-                        {
-                            Directory.CreateDirectory(GenerateSavePath);
-                        }
-                        var path = Path.Combine(GenerateSavePath, $"{typeName}{ValueNodeTemplateName}");
-                        
-                        File.WriteAllText(path,content);
+
+                        File.WriteAllText(path, content);
                     }
 
                     ++i;
                 }
+
                 EditorUtility.ClearProgressBar();
                 AssetDatabase.Refresh();
             }
