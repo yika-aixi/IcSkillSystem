@@ -1,7 +1,5 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using UnityEngine;
-using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
@@ -9,13 +7,21 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     public class IntNode:ValueNode
     {
         [SerializeField]
-        [PortTooltip("值出口")]
         private int _value;
 
         public override Type ValueType { get; } = typeof(int);
         protected override object GetOutValue()
         {
             return _value;
+        }
+    }
+    
+    [CreateNodeMenu("CabinIcarus/Nodes/Condition/Int")]
+    public class IntConditionNode:ValueConditionNode<int>
+    {
+        protected override Func<bool> GetComparison()
+        {
+            return () => A == B;
         }
     }
 }

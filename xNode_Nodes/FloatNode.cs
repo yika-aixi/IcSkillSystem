@@ -1,7 +1,5 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using UnityEngine;
-using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
@@ -9,7 +7,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     public class FloatNode:ValueNode
     {
         [SerializeField]
-        [PortTooltip("值出口")]
         private float _value;
 
         public override Type ValueType { get; } = typeof(float);
@@ -17,6 +14,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         protected override object GetOutValue()
         {
             return _value;
+        }
+    }
+    
+    [CreateNodeMenu("CabinIcarus/Nodes/Float Condition")]
+    public class FloatConditionNode:ValueConditionNode<float>
+    {
+        protected override Func<bool> GetComparison()
+        {
+            return () => Mathf.Approximately(A,B);
         }
     }
 }
