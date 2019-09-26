@@ -6,7 +6,7 @@ using UnityEngine;
 using XNode;
 using XNodeEditor;
 
-namespace UnityEditor
+namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 {
     [NodeEditor.CustomNodeEditorAttribute(typeof(ValueNode))]
     public class ValueNodeEditor:NodeEditor
