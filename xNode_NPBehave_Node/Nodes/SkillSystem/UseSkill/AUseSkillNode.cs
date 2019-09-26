@@ -10,14 +10,15 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     public abstract class AUseSkillNode<T>:ANPNode<T> where T : Delegate
     {
-         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-         protected ISkillManager SkillManager;
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        protected ISkillManager SkillManager;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]
@@ -40,37 +41,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
                 return default;
             }
             
-            Skill = (ISkillDataComponent)Activator.CreateInstance(skillType);
-
-            foreach (var dynamicInput in DynamicInputs)
-            {
-                var value = dynamicInput.GetInputValue();
-
-                if (value == null)
-                {
-                    Debug.LogWarning($"{dynamicInput?.fieldName} 失败 Value 没有连接,跳过");
-                    continue;
-                }
-                
-                try
-                {
-                    var field = skillType.GetField(dynamicInput.fieldName);
-                    if (field != null)
-                    {
-                        field.SetValue(Skill, value);
-                        continue;
-                    }
-                    
-                    var property = skillType.GetProperty(dynamicInput.fieldName);
-                    
-                    property.SetValue(Skill,value);
-                }
-                catch(SystemException e)
-                {
-                    Debug.LogError($"{dynamicInput?.fieldName} 失败 Value: {value}\n{e}");
-                }   
-                
-            }
+            Skill = (ISkillDataComponent) this.DynamicInputCreateInstance(skillType);
 
             return UseSkill();
         }
