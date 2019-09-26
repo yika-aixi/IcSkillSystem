@@ -11,6 +11,11 @@ using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T">ANPNode 节点</typeparam>
+    /// <typeparam name="AT">输出类型</typeparam>
     public abstract class AQNameSelectEditor<T,AT>:ANPNodeEditor<T,AT> where T : ANPNode<AT>
     {
         protected SerializedProperty _aQNameProperty;
