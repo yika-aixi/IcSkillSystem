@@ -20,7 +20,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
                 return new Color(205 / 255f,20 / 255f,25 / 255f);
             }            
             
-            return base.GetTint();
+            return new Color(30 / 255f,147 / 255f,65 / 255f);
         }
 
         public override void OnBodyGUI()
