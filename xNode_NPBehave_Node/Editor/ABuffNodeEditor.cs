@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buff;
 using UnityEngine;
+using XNode;
 using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
@@ -30,6 +31,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             DrawSelectPop(new GUIContent("Buff: "));
 
             base.DrawBody();
+        }
+        
+        protected override IEnumerable<NodePort> GetDynamicPort()
+        {
+            return TNode.DynamicInputs;
         }
     }
     
