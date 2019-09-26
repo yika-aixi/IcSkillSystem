@@ -1,0 +1,19 @@
+﻿using System;
+using UnityEngine;
+
+namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
+{
+    [CreateNodeMenu("CabinIcarus/Nodes/%Type% Value")]
+    public class %Type%Node:ValueNode
+    {
+        [SerializeField]
+        private int _value;
+
+        public override Type ValueType { get; } = typeof(%Type%);
+        
+        protected override object GetOutValue()
+        {
+            return _value;
+        }
+    }
+}
