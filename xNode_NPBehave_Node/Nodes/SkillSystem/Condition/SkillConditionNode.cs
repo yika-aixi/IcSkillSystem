@@ -2,34 +2,33 @@
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
+using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
-    public class SkillConditionNode:ANPNode<Func<bool>>,IEntityKey
+    public class SkillConditionNode:ANPNode<Func<bool>>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private IBuffManager _buffManagerValue;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private Blackboard _blackboard;
-        
-        [SerializeField]
-        private string _entityKey = BlackBoardConstKeyTables.UseSkillEntity;
+        [PortTooltip("目标")]
+        protected IEntity Target;
         
         [SerializeField]
         private string _conditionAQName;
-        public string EntityKey { get; } = nameof(_entityKey);
 
         private ACondition _condition;
         
         protected override Func<bool> GetOutValue()
         {
             _buffManagerValue = GetInputValue(nameof(_buffManagerValue), _buffManagerValue);
-            _blackboard = GetInputValue(nameof(_blackboard), _blackboard);;
+            Target = GetInputValue(nameof(Target), Target);;
 
             var conditionType = Type.GetType(_conditionAQName);
 
@@ -37,13 +36,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
             {
                 return null;
             }
-            _condition = (ACondition) Activator.CreateInstance(conditionType,_buffManagerValue);
+            
+            _condition = (ACondition) this.DynamicInputCreateInstance(conditionType,_buffManagerValue);
+            
             return _execute;
         }
 
         private bool _execute()
         {
-            return _condition.Check(_blackboard.Get<IEntity>(_entityKey));
+            return _condition.Check(Target);
         }
     }
 }
