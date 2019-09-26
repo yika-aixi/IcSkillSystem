@@ -17,9 +17,33 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         {
             get
             {
+                List<Type> types = new List<Type>();
+                
                 var runtimeAssemblies = CompilationPipeline.GetAssemblies(AssembliesType.Player);
 
-                return AllTypes.Where(allType => runtimeAssemblies.Any(x => x.name == allType.Assembly.GetName().Name));
+                runtimeAssemblies = runtimeAssemblies.Where(x => x.defines.All(y => y != "UNITY_INCLUDE_TESTS")).ToArray();
+                
+                foreach (Type allType in AllTypes)
+                {
+                    foreach (var x in runtimeAssemblies)
+                    {
+                        if (x.name == allType.Assembly.GetName().Name)
+                        {
+                            types.Add(allType);
+                            break;
+                        }
+                    }
+                    
+                    if (allType.Assembly.GetName().Name.StartsWith("UnityEngine"))
+                    {
+                        if (!types.Contains(allType))
+                        {
+                            types.Add(allType);
+                        }
+                    }
+                }
+
+                return types;
             }
         }
 
