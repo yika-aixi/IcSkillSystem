@@ -10,7 +10,7 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
-    public abstract class ANPNode<T>:Node,ISkillSystemNode
+    public abstract class ANPNode<T>:Node,IIcSkillSystemNode
     {
         [Output()]
         public T OutValue;

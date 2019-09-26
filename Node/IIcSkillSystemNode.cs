@@ -1,6 +1,6 @@
 ﻿namespace CabinIcarus.IcSkillSystem
 {
-    public interface ISkillSystemNode
+    public interface IIcSkillSystemNode
     {
     }
 }
