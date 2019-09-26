@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buff
 {
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Buff/Add or Remove")]
     public class AddOrRemoveBuffNode:ABuffNode<Action>
     {
         [SerializeField]

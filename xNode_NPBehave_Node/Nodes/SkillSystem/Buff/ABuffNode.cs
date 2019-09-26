@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buff
 {
-    
     public abstract class ABuffNode<T>:ANPNode<T> where T : Delegate
     {
         [SerializeField]
