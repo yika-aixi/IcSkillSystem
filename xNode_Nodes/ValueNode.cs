@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     /// <summary>
     /// 值节点,为了严格性,请在实现类在output一个实际类型,如IntNode
     /// </summary>
-    public abstract class ValueNode:Node,ISkillSystemNode
+    public abstract class ValueNode:Node,IIcSkillSystemNode
     {
         public const string ValueOutPutPortName = "Value";
 
