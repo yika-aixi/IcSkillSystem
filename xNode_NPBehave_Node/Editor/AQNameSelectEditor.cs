@@ -70,26 +70,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
                 UpdateDynamicPort();
             }
         }
-        
-        /// <summary>
-        /// 绘制动态端口
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="options"></param>
-        protected void DrawDynamicPort(GUIContent title,params GUILayoutOption[] options)
-        {
-            var dynamicPorts = GetDynamicPort();
-            
-            if (dynamicPorts == null)
-            {
-                return;
-            }
-            
-            foreach (var nodePort in dynamicPorts)
-            {
-                NodeEditorGUILayout.PortField(title,nodePort,options);
-            }
-        }
 
         private bool _error;
         /// <summary>
