@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
+using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
-    [CreateNodeMenu("CabinIcarus/Nodes/%Type% Value")]
-    public class %Type%Node:ValueNode
+    [CreateNodeMenu("CabinIcarus/Nodes/%NAME% Value")]
+    public class %NAME%Node:ValueNode
     {
         [SerializeField]
         private int _value;
