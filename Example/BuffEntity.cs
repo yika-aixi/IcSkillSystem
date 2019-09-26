@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansions
 {
-    public class BuffEntity : MonoBehaviour
+    public class BuffEntity : MonoBehaviour,IEntity
     {
         public GameRoot Root;
 
@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansions
 
         private void Start()
         {
-            _entity = new TestEntity();
+            _entity = this;
             
 #if UNITY_EDITOR
             //创建buff 连接来辅助调试
