@@ -40,8 +40,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             UpdateDynamicPort();
         }
 
-        private SerializedProperty _getBlackboardValueProperty;
-        private SerializedProperty _outputProperty;
         protected override void DrawBody()
         {
             DrawSelectPop(new GUIContent("Skill: "));
