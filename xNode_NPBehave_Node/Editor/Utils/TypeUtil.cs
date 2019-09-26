@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEditor.Compilation;
+using Assembly = System.Reflection.Assembly;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
 {
@@ -11,7 +13,15 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
 
         public static IEnumerable<Type> AllTypes => _objectTypes;
         
-        public static IEnumerable<Type> RuntimeTypes => _objectTypes.Where(x=>!x.Assembly.FullName.Contains("Editor"));
+        public static IEnumerable<Type> UnityRuntimeTypes
+        {
+            get
+            {
+                var runtimeAssemblies = CompilationPipeline.GetAssemblies(AssembliesType.Player);
+
+                return AllTypes.Where(allType => runtimeAssemblies.Any(x => x.name == allType.Assembly.GetName().Name));
+            }
+        }
 
         static TypeUtil()
         {

@@ -20,7 +20,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         {
             this._focus = focus;
             this.BaseType = baseType;
-            var typs = TypeUtil.RuntimeTypes.Where(x=> BaseType.IsAssignableFrom(x));
+            var typs = TypeUtil.UnityRuntimeTypes.Where(x=> BaseType.IsAssignableFrom(x));
             _typeGroup = typs.GroupBy(x => x.Assembly);
         }
 
