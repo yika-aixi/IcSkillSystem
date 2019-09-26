@@ -1,0 +1,1222 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8951886803603359589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f952a08d9bcb2347881228d942012c2, type: 3}
+  m_Name: String
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -792, y: 280}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -8951886803603359589}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Name
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: "\u51CF\u5C11\u4F24\u5BB3"
+--- !u!114 &-7777368594189992690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5052272d15a649c083de70a4080182c3, type: 3}
+  m_Name: "\u7ED9\u65BD\u6CD5\u8005\u6DFB\u52A0\u56FA\u5B9A\u4F24\u5BB3\u51CF\u5C11buff"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -440, y: 88}
+  ports:
+    keys:
+    - BuffManager
+    - Target
+    - OutValue
+    - Duration
+    - Value
+    - Name
+    - Description
+    - Type
+    values:
+    - _fieldName: BuffManager
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.IBuffManager, CabinIcarus.IcSkillSystem.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 7545870080054944750}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Target
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -2297786743883948334}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Action
+        node: {fileID: -7643855497011570335}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Duration
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -3432734296734527902}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Value
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -7271543808377112057}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Name
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -8951886803603359589}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Description
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 6016383470763768996}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Type
+      _node: {fileID: -7777368594189992690}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -3133644668464378205}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+  _buffAQName: CabinIcarus.IcSkillSystem.Expansions.DamageReduceFixedBuffTime, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _isAddBuff: 1
+--- !u!114 &-7643855497011570335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bbc52404faf050468d0759caaa03f16, type: 3}
+  m_Name: Action Node_Action
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: 200}
+  ports:
+    keys:
+    - Action
+    - OutValue
+    values:
+    - _fieldName: Action
+      _node: {fileID: -7643855497011570335}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -7643855497011570335}
+      _typeQualifiedName: NPBehave.Action, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _nodes
+        node: {fileID: -3908771741283741659}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &-7271543808377112057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a76bf466733d24caba98242c129a16, type: 3}
+  m_Name: "\u51CF\u5C1120\u4F24\u5BB3"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -792, y: 184}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -7271543808377112057}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 20
+--- !u!114 &-5894412193591703400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba09d12fd6449e9499904de225ccc78f, type: 3}
+  m_Name: "\u7ED3\u675F"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -184, y: 312}
+  ports:
+    keys:
+    - OutValue
+    values:
+    - _fieldName: OutValue
+      _node: {fileID: -5894412193591703400}
+      _typeQualifiedName: NPBehave.WaitUntilStopped, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _nodes
+        node: {fileID: -3908771741283741659}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _sucessWhenStopped: 1
+--- !u!114 &-5203813644117306663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e58f830937684349a1e02cfdd3cb930, type: 3}
+  m_Name: "\u7B49\u5F85\u4E00\u4F1A"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -168, y: -120}
+  ports:
+    keys:
+    - OutValue
+    values:
+    - _fieldName: OutValue
+      _node: {fileID: -5203813644117306663}
+      _typeQualifiedName: NPBehave.Wait, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _nodes
+        node: {fileID: -3908771741283741659}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _seconds: 0.6
+--- !u!114 &-4047224285879881209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d008e163bb66e48890c28f51e9ec36, type: 3}
+  m_Name: Root
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 232, y: -424}
+  ports:
+    keys:
+    - _blackBoard
+    - _clok
+    - _mainNode
+    - OutValue
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: -4047224285879881209}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 6921126530327557466}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: _clok
+      _node: {fileID: -4047224285879881209}
+      _typeQualifiedName: NPBehave.Clock, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 8998253507707153734}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: _mainNode
+      _node: {fileID: -4047224285879881209}
+      _typeQualifiedName: NPBehave.Node, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -3908771741283741659}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -4047224285879881209}
+      _typeQualifiedName: NPBehave.Root, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &-3908771741283741659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7179220c8971cb49962533167236059, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 264, y: -232}
+  ports:
+    keys:
+    - OutValue
+    - _nodes
+    values:
+    - _fieldName: OutValue
+      _node: {fileID: -3908771741283741659}
+      _typeQualifiedName: NPBehave.Sequence, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _mainNode
+        node: {fileID: -4047224285879881209}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: _nodes
+      _node: {fileID: -3908771741283741659}
+      _typeQualifiedName: NPBehave.Node, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -2099735827124744043}
+        reroutePoints: []
+      - fieldName: OutValue
+        node: {fileID: -5203813644117306663}
+        reroutePoints: []
+      - fieldName: OutValue
+        node: {fileID: 2778861975935278469}
+        reroutePoints: []
+      - fieldName: OutValue
+        node: {fileID: -7643855497011570335}
+        reroutePoints: []
+      - fieldName: OutValue
+        node: {fileID: -5894412193591703400}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+--- !u!114 &-3432734296734527902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a76bf466733d24caba98242c129a16, type: 3}
+  m_Name: "\u6301\u7EED\u65F6\u95F4"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -792, y: 88}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -3432734296734527902}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Duration
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 5
+--- !u!114 &-3133644668464378205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd9f5182e5a555458daaa3c54a4fcff, type: 3}
+  m_Name: Int
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -712, y: -40}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -3133644668464378205}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Type
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      - fieldName: Type
+        node: {fileID: -2183974894763975355}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 1
+--- !u!114 &-2297786743883948334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fc2cf419fa7b14e82682c6e375026c, type: 3}
+  m_Name: Get Blackboard Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1096, y: -104}
+  ports:
+    keys:
+    - _blackBoard
+    - Value
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: -2297786743883948334}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 6921126530327557466}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -2297786743883948334}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Target
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      - fieldName: Target
+        node: {fileID: -1197153897538132494}
+        reroutePoints: []
+      - fieldName: Maker
+        node: {fileID: -2183974894763975355}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _key: UseSkillEntity
+--- !u!114 &-2183974894763975355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5052272d15a649c083de70a4080182c3, type: 3}
+  m_Name: "\u5BF9\u76EE\u6807\u9020\u6210\u4F24\u5BB3"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -168, y: -24}
+  ports:
+    keys:
+    - BuffManager
+    - Target
+    - OutValue
+    - Value
+    - Maker
+    - Type
+    values:
+    - _fieldName: BuffManager
+      _node: {fileID: -2183974894763975355}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.IBuffManager, CabinIcarus.IcSkillSystem.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 7545870080054944750}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Target
+      _node: {fileID: -2183974894763975355}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 4487218279945373220}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -2183974894763975355}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Action
+        node: {fileID: 2778861975935278469}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -2183974894763975355}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 2941810354786949226}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Maker
+      _node: {fileID: -2183974894763975355}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -2297786743883948334}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Type
+      _node: {fileID: -2183974894763975355}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -3133644668464378205}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+  _buffAQName: CabinIcarus.IcSkillSystem.Expansions.DamageBuff, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  _isAddBuff: 1
+--- !u!114 &-2099735827124744043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bbc52404faf050468d0759caaa03f16, type: 3}
+  m_Name: "\u64AD\u653E\u97F3\u6548"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -88, y: -248}
+  ports:
+    keys:
+    - Action
+    - OutValue
+    values:
+    - _fieldName: Action
+      _node: {fileID: -2099735827124744043}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -1197153897538132494}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -2099735827124744043}
+      _typeQualifiedName: NPBehave.Action, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _nodes
+        node: {fileID: -3908771741283741659}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &-1197153897538132494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6452159a5fa01942b3fc38d65f564dd, type: 3}
+  m_Name: Use Skill Node Node Action
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -360}
+  ports:
+    keys:
+    - SkillManager
+    - Target
+    - OutValue
+    - Clip
+    - Volume
+    values:
+    - _fieldName: SkillManager
+      _node: {fileID: -1197153897538132494}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Skills.Manager.ISkillManager,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -451538664122781147}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Target
+      _node: {fileID: -1197153897538132494}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -2297786743883948334}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: -1197153897538132494}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Action
+        node: {fileID: -2099735827124744043}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Clip
+      _node: {fileID: -1197153897538132494}
+      _typeQualifiedName: UnityEngine.AudioClip, UnityEngine.AudioModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 7884879888061238282}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+    - _fieldName: Volume
+      _node: {fileID: -1197153897538132494}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: 531250603611682966}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 1
+  _skillComponentAQName: CabinIcarus.IcSkillSystem.Expansions.PlayAudioClip, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &-451538664122781147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fc2cf419fa7b14e82682c6e375026c, type: 3}
+  m_Name: Get Blackboard Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1080, y: -360}
+  ports:
+    keys:
+    - _blackBoard
+    - Value
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: -451538664122781147}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 6921126530327557466}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: -451538664122781147}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Skills.Manager.ISkillManager,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: SkillManager
+        node: {fileID: -1197153897538132494}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _key: SkillManager
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01cc34d01d2f4f0b9e087757d6933529, type: 3}
+  m_Name: "\u6218\u6FC0"
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -4047224285879881209}
+  - {fileID: 6921126530327557466}
+  - {fileID: 8998253507707153734}
+  - {fileID: -3908771741283741659}
+  - {fileID: -1197153897538132494}
+  - {fileID: -2099735827124744043}
+  - {fileID: -5203813644117306663}
+  - {fileID: -7777368594189992690}
+  - {fileID: -7643855497011570335}
+  - {fileID: 7545870080054944750}
+  - {fileID: -2297786743883948334}
+  - {fileID: -451538664122781147}
+  - {fileID: 7884879888061238282}
+  - {fileID: 531250603611682966}
+  - {fileID: -3432734296734527902}
+  - {fileID: -7271543808377112057}
+  - {fileID: -8951886803603359589}
+  - {fileID: 6016383470763768996}
+  - {fileID: -3133644668464378205}
+  - {fileID: -2183974894763975355}
+  - {fileID: 4487218279945373220}
+  - {fileID: 2941810354786949226}
+  - {fileID: 2778861975935278469}
+  - {fileID: -5894412193591703400}
+--- !u!114 &531250603611682966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a76bf466733d24caba98242c129a16, type: 3}
+  m_Name: "\u97F3\u91CF"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -728, y: -280}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: 531250603611682966}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Volume
+        node: {fileID: -1197153897538132494}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 0.8
+--- !u!114 &2778861975935278469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bbc52404faf050468d0759caaa03f16, type: 3}
+  m_Name: Action Node_Action
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 216, y: -8}
+  ports:
+    keys:
+    - Action
+    - OutValue
+    values:
+    - _fieldName: Action
+      _node: {fileID: 2778861975935278469}
+      _typeQualifiedName: System.Action, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: -2183974894763975355}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: 2778861975935278469}
+      _typeQualifiedName: NPBehave.Action, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _nodes
+        node: {fileID: -3908771741283741659}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &2941810354786949226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a76bf466733d24caba98242c129a16, type: 3}
+  m_Name: Float
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -456, y: -120}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: 2941810354786949226}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Value
+        node: {fileID: -2183974894763975355}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: 40
+--- !u!114 &4487218279945373220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fc2cf419fa7b14e82682c6e375026c, type: 3}
+  m_Name: Get Blackboard Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1112, y: 40}
+  ports:
+    keys:
+    - _blackBoard
+    - Value
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: 4487218279945373220}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: 4487218279945373220}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys.IEntity,
+        CabinIcarus.IcSkillSystem.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Target
+        node: {fileID: -2183974894763975355}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _key: TargetEntity
+--- !u!114 &6016383470763768996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f952a08d9bcb2347881228d942012c2, type: 3}
+  m_Name: String
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -792, y: 376}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: 6016383470763768996}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Description
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: "$\"\u4F24\u5BB3\u7C7B\u578B{Type}\u51CF\u5C11:{Value}\u70B9\u4F24\u5BB3\""
+--- !u!114 &6921126530327557466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a5665902fc8bde47ad570f3c553ad30, type: 3}
+  m_Name: Shared Blackboard
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -952, y: -504}
+  ports:
+    keys:
+    - _key
+    - OutValue
+    values:
+    - _fieldName: _key
+      _node: {fileID: 6921126530327557466}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      _typeConstraintBaseTypeQualifiedName: 
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 2
+      _dynamic: 0
+    - _fieldName: OutValue
+      _node: {fileID: 6921126530327557466}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _blackBoard
+        node: {fileID: -4047224285879881209}
+        reroutePoints: []
+      - fieldName: _blackBoard
+        node: {fileID: -451538664122781147}
+        reroutePoints: []
+      - fieldName: _blackBoard
+        node: {fileID: 7545870080054944750}
+        reroutePoints: []
+      - fieldName: _blackBoard
+        node: {fileID: -2297786743883948334}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _key: Test
+--- !u!114 &7545870080054944750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fc2cf419fa7b14e82682c6e375026c, type: 3}
+  m_Name: Get Blackboard Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1080, y: -232}
+  ports:
+    keys:
+    - _blackBoard
+    - Value
+    values:
+    - _fieldName: _blackBoard
+      _node: {fileID: 7545870080054944750}
+      _typeQualifiedName: NPBehave.Blackboard, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: OutValue
+        node: {fileID: 6921126530327557466}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: 7545870080054944750}
+      _typeQualifiedName: CabinIcarus.IcSkillSystem.Runtime.Buffs.IBuffManager, CabinIcarus.IcSkillSystem.Runtime,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: BuffManager
+        node: {fileID: -7777368594189992690}
+        reroutePoints: []
+      - fieldName: BuffManager
+        node: {fileID: -2183974894763975355}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _key: BuffManager
+--- !u!114 &7884879888061238282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bbe477a49324dd45bc2970811bbfe35, type: 3}
+  m_Name: Object
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -728, y: -392}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: 7884879888061238282}
+      _typeQualifiedName: UnityEngine.AudioClip, UnityEngine.AudioModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: Clip
+        node: {fileID: -1197153897538132494}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  _value: {fileID: 8300000, guid: 0f234c6ac9a1f984fba83ec18aac5b88, type: 3}
+--- !u!114 &8998253507707153734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3174f2c8b643a409670379acbd1b6f, type: 3}
+  m_Name: Unity Context Clock
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -88, y: -392}
+  ports:
+    keys:
+    - OutValue
+    values:
+    - _fieldName: OutValue
+      _node: {fileID: 8998253507707153734}
+      _typeQualifiedName: NPBehave.Clock, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      _typeConstraintBaseTypeQualifiedName: 
+      connections:
+      - fieldName: _clok
+        node: {fileID: -4047224285879881209}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
