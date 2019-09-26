@@ -17,6 +17,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         private const string TypeMark = "%TYPE%";
         private const string NameSpaceMark = "%NAMESPACE%";
         private const string IsChangeMark = "%ISCHANGE%";
+        private const string AssemblyMark = "%ASSEMBLY%";
+           
         const string ValueNodeTemplateName = "ValueNodeTemplate.cs";
 
         private static string _templateContent;
@@ -161,11 +163,30 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                                 continue;
                             }
                         }
+                        
+                        var assemblyPath = runtimeType.Assembly.GetName().Name;
+                        
+                        assemblyPath = assemblyPath.Replace(".", "/");
 
+                        assemblyPath = assemblyPath.Replace("Assembly-CSharp", "Project");
+                        
+                        assemblyPath = assemblyPath.Replace("mscorlib", "System");
+
+                        assemblyPath = assemblyPath.Replace("CabinIcarus/", string.Empty);
+                        assemblyPath = assemblyPath.Replace("IcSkillSystem/", string.Empty);
+                        assemblyPath = assemblyPath.Replace("IcSkillSystem/", string.Empty);
+                        assemblyPath = assemblyPath.Replace("Runtime", string.Empty);
+
+                        if (assemblyPath.EndsWith("/"))
+                        {
+                            assemblyPath = assemblyPath.Remove(assemblyPath.Length - 1, 1);
+                        }
+                        
                         var content = _templateContent.Replace(TypeMark, runtimeType.FullName);
                         content = content.Replace(NameSpaceMark, NameSpace);
                         content = content.Replace(IsChangeMark, "false");
                         content = content.Replace(NameMark, typeName);
+                        content = content.Replace(AssemblyMark, assemblyPath);
 
                         File.WriteAllText(path, content);
                     }
