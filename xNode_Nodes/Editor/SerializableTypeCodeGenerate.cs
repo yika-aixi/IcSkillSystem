@@ -6,6 +6,7 @@ using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 {
@@ -119,22 +120,29 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 {
                     Directory.CreateDirectory(GenerateSavePath);
                 }
-
-
+                
                 EditorUtility.DisplayProgressBar("Generate ing", string.Empty, 0);
-
+                
                 var runtimeTypes = TypeUtil.UnityRuntimeTypes
+                    .Where(x => !x.IsPointer)
+                    .Where(x => !x.IsGenericType)
+                    .Where(x => !x.IsAbstract)
+                    .Where(x =>
+                    {
+                        if (x.IsSealed)
+                        {
+                            return x.IsSealed && x.IsPublic || x.IsPublic;
+                        }
+
+                        return x.IsPublic;
+                    })
                     .Where(x => !typeof(Delegate).IsAssignableFrom(x))
                     .Where(x => !typeof(Exception).IsAssignableFrom(x))
                     .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
                     .Where(x => !typeof(Attribute).IsAssignableFrom(x))
-                    .Where(x => x.IsSerializable)
-                    .Where(x => !x.IsGenericType)
-                    .Where(x => !x.Assembly.GlobalAssemblyCache)
-                    .Where(x => !x.IsPointer)
-                    .Where(x => x.IsClass || x.IsValueType || x.IsEnum)
-                    .Where(x => x.IsVisible)
-                    .Where(x => !x.FullName.Contains("UnityEngine.TestTools")).ToList();
+                    .Where(x => x.IsClass &&
+                                x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
+                                typeof(Object).IsAssignableFrom(x)).ToList();
 
 
                 runtimeTypes.Add(typeof(int));
