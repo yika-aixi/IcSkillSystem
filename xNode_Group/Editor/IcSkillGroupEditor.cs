@@ -21,7 +21,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
         public override string GetNodeMenuName(Type type)
         {
-            return typeof(ISkillSystemNode).IsAssignableFrom(type) ? base.GetNodeMenuName(type) : null;
+            return typeof(IIcSkillSystemNode).IsAssignableFrom(type) ? base.GetNodeMenuName(type) : null;
         }
 
         public override NodeEditorPreferences.Settings GetDefaultPreferences()
