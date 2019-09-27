@@ -6,6 +6,7 @@
 //Assembly-CSharp
 
 using System;
+using System.Collections;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
@@ -49,6 +50,21 @@ namespace CabinIcarus.IcSkillSystem.Expansions
             {
                 Value = HP
             });
+        }
+
+        public void MoveTarget(BuffEntity target)
+        {
+            StopCoroutine(_move(target));
+            StartCoroutine(_move(target));
+        }
+
+        private IEnumerator _move(BuffEntity target)
+        {
+            while (Vector3.Distance(transform.position,target.transform.position) > 1)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.2f);
+                yield return null;
+            }
         }
     }
 }

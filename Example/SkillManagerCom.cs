@@ -35,8 +35,8 @@ namespace CabinIcarus.IcSkillSystem.Expansions
 
         public void SetTargetEntity(BuffEntity buffEntity)
         {
-            _blackboard.Set(UseSkillEntityKey,SelfEntity.Entity);
-            _blackboard.Set(SkillTargetEntityKey,buffEntity.Entity);
+            _blackboard.Set(UseSkillEntityKey,SelfEntity);
+            _blackboard.Set(SkillTargetEntityKey,buffEntity);
         }
 
         public void UseSkill(int index)

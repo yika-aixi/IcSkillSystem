@@ -146,7 +146,7 @@ MonoBehaviour:
       _typeConstraintBaseTypeQualifiedName: 
       connections:
       - fieldName: Value
-        node: {fileID: -987394066326022050}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
@@ -172,7 +172,7 @@ MonoBehaviour:
       _typeConstraintBaseTypeQualifiedName: 
       connections:
       - fieldName: Value
-        node: {fileID: -5486885601580525057}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
@@ -229,8 +229,8 @@ MonoBehaviour:
   - {fileID: 4418050622941274593}
   - {fileID: 2830888829025467398}
   - {fileID: -4303569997262398996}
-  - {fileID: -5486885601580525057}
-  - {fileID: -987394066326022050}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 3007980429171210979}
   - {fileID: 4611276401337139410}
   - {fileID: 7047891917163423091}
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Name: Action Node_Action
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 934, y: 456.5}
+  position: {x: 920, y: 456}
   ports:
     keys:
     - Action
@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1240, y: 472}
+  position: {x: 1224, y: 472}
   ports:
     keys:
     - OutValue
