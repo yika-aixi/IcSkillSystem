@@ -20,9 +20,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                 List<Type> types = new List<Type>();
                 
                 var runtimeAssemblies = CompilationPipeline.GetAssemblies(AssembliesType.Player);
-
-                runtimeAssemblies = runtimeAssemblies.Where(x => x.defines.All(y => y != "UNITY_INCLUDE_TESTS")).ToArray();
-                
+                runtimeAssemblies = runtimeAssemblies.Where(x => x.defines.Any(y => y != "UNITY_INCLUDE_TESTS")).ToArray();
+               
                 foreach (Type allType in AllTypes)
                 {
                     foreach (var x in runtimeAssemblies)
