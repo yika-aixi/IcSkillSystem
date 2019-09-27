@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEditor;
 using UnityEngine;
 using XNode;
@@ -18,6 +19,18 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     /// <typeparam name="AT">输出类型</typeparam>
     public abstract class AQNameSelectEditor<T,AT>:ANPNodeEditor<T,AT> where T : ANPNode<AT>
     {
+        class TypeInfo
+        {
+            public string Name;
+            public Type Type;
+
+            public TypeInfo(string name, Type type)
+            {
+                Name = name;
+                Type = type;
+            }
+        }
+        
         protected SerializedProperty _aQNameProperty;
         protected List<string> Types;
         protected int CurrentSelectIndex;
@@ -76,7 +89,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             }
         }
 
-        private bool _error;
         /// <summary>
         /// 更新动节点
         /// </summary>
@@ -98,34 +110,55 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
             if (type == null)
             {
-                _error = true;
                 Debug.LogError($"无法找到类型:{_aQNameProperty.stringValue}");
                 return;
             }
-
-            _error = false;
             
             var fields = type.GetFields();
             var properties = type.GetProperties();
-            
-            List<MemberInfo> memberInfos = new List<MemberInfo>();
-            memberInfos.AddRange(fields);
-            memberInfos.AddRange(properties);
-            
+            var defaultCtor =  type.GetConstructors()[0];
+            var args = defaultCtor.GetParameters();
+            List<TypeInfo> memberInfos = new List<TypeInfo>();
+            memberInfos.AddRange(args.Select(x=> new TypeInfo(_getParameterName(x.Name),x.ParameterType)));
+            memberInfos.AddRange(fields.Select(x=> new TypeInfo(x.Name,x.FieldType)));
+            memberInfos.AddRange(properties.Where(x=>x.CanWrite).Select(x=> new TypeInfo(x.Name,x.PropertyType)));
             var inputs = new List<NodePort>();
             inputs.AddRange(dynamicPorts);
             
-            _updateDynamicPort(inputs,memberInfos, x=>
-            {
-                if (x is FieldInfo fieldInfo)
-                {
-                    return fieldInfo.FieldType;
-                }
-
-                return ((PropertyInfo) x).PropertyType;
-            });
-
+            _updateDynamicPort(inputs,memberInfos);
+            
             serializedObject.UpdateIfRequiredOrScript();
+        }
+
+        public override Color GetTint()
+        {
+            Type type = Type.GetType(_aQNameProperty.stringValue);
+
+            if (type == null)
+            {
+                Error = true;
+            }
+            else
+            {
+                var defaultCtor =  type.GetConstructors()[0];
+                var args = defaultCtor.GetParameters();
+                foreach (var ctorArg in args)
+                {
+                    var inputPort = TNode.GetInputPort(_getParameterName(ctorArg.Name));
+
+                    if (!inputPort.IsConnected)
+                    {
+                        Error = true;
+                    }
+                }
+            }
+           
+            return base.GetTint();
+        }
+
+        private string _getParameterName(string argName)
+        {
+            return xNodeExpansion.GetCtorParameterName(argName);
         }
 
         protected virtual IEnumerable<NodePort> GetDynamicPort()
@@ -133,34 +166,24 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             return null;
         }
 
-        public override Color GetTint()
-        {
-            if (_error)
-            {
-                return Color.red;
-            }
-            
-            return base.GetTint();
-        }
-
         #region 动态节点更新
 
-        private void _updateDynamicPort(IEnumerable<NodePort> dynamicPort,IEnumerable<MemberInfo> memberInfos, Func<MemberInfo, Type> getType)
+        private void _updateDynamicPort(IEnumerable<NodePort> dynamicPort,IEnumerable<TypeInfo> typeInfos)
         {
-            _removeNoExist(dynamicPort, memberInfos, getType);
+            _removeNoExist(dynamicPort, typeInfos);
 
-            _addDynamicPort(dynamicPort, memberInfos, getType);
+            _addDynamicPort(dynamicPort, typeInfos);
         }
 
-        private void _addDynamicPort(IEnumerable<NodePort> dynamicPort, IEnumerable<MemberInfo> memberInfos, Func<MemberInfo, Type> getType)
+        private void _addDynamicPort(IEnumerable<NodePort> dynamicPort, IEnumerable<TypeInfo> typeInfos)
         {
             //添加新的
-            foreach (var info in memberInfos)
+            foreach (var info in typeInfos)
             {
                 bool hit = false;
                 foreach (var nodePort in dynamicPort)
                 {
-                    if (nodePort.ValueType == getType(info) && nodePort.fieldName == info.Name)
+                    if (nodePort.ValueType == info.Type && nodePort.fieldName == info.Name)
                     {
                         hit = true;
                         break;
@@ -169,20 +192,20 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
                 if (!hit)
                 {
-                    TNode.AddDynamicInput(getType(info), Node.ConnectionType.Override, fieldName: info.Name,typeConstraint:Node.TypeConstraint.Inherited);
+                    TNode.AddDynamicInput(info.Type, Node.ConnectionType.Override, fieldName: info.Name,typeConstraint:Node.TypeConstraint.Inherited);
                 }
             }
         }
 
-        private void _removeNoExist(IEnumerable<NodePort> dynamicPort, IEnumerable<MemberInfo> memberInfos, Func<MemberInfo, Type> getType)
+        private void _removeNoExist(IEnumerable<NodePort> dynamicPort, IEnumerable<TypeInfo> typeInfos)
         {
             //删除被不存在的
             foreach (var nodePort in dynamicPort)
             {
                 bool hit = false;
-                foreach (var info in memberInfos)
+                foreach (var info in typeInfos)
                 {
-                    if (nodePort.ValueType == getType(info) && nodePort.fieldName == info.Name)
+                    if (nodePort.ValueType == info.Type && nodePort.fieldName == info.Name)
                     {
                         hit = true;
                         break;
