@@ -77,5 +77,22 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
             }
             return typeList.ToArray();
         }
+
+
+        public static string ConversionTypeAssemblyName(this Type self)
+        {
+            return ConversionAssemblyName(self.Assembly);
+        }
+        
+        public static string ConversionAssemblyName(this Assembly self)
+        {
+            var assemblyPath = self.GetName().Name;
+            
+            assemblyPath = assemblyPath.Replace("Assembly-CSharp", "Project");
+                    
+            assemblyPath = assemblyPath.Replace("mscorlib", "System");
+
+            return assemblyPath;
+        }
     }
 }

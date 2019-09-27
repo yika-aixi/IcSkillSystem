@@ -171,19 +171,10 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                                 continue;
                             }
                         }
-                        
-                        var assemblyPath = runtimeType.Assembly.GetName().Name;
+
+                        var assemblyPath = runtimeType.ConversionTypeAssemblyName();
                         
                         assemblyPath = assemblyPath.Replace(".", "/");
-
-                        assemblyPath = assemblyPath.Replace("Assembly-CSharp", "Project");
-                        
-                        assemblyPath = assemblyPath.Replace("mscorlib", "System");
-
-                        assemblyPath = assemblyPath.Replace("CabinIcarus/", string.Empty);
-                        assemblyPath = assemblyPath.Replace("IcSkillSystem/", string.Empty);
-                        assemblyPath = assemblyPath.Replace("IcSkillSystem/", string.Empty);
-                        assemblyPath = assemblyPath.Replace("Runtime", string.Empty);
 
                         if (assemblyPath.EndsWith("/"))
                         {
