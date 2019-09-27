@@ -1,6 +1,4 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
-using CabinIcarus.IcSkillSystem.Expansions;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
