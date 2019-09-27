@@ -9,6 +9,7 @@ using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using NPBehave;
 using UnityEngine;
 using XNode;
+using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
@@ -32,6 +33,25 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             }
 
             return rootNode;
+        }
+        
+        /// <summary>
+        /// 获取子图,返回Node
+        /// </summary>
+        /// <returns></returns>
+        public Node GetChildGroupNode()
+        {
+            Node main = null;
+            foreach (var node in nodes)
+            {
+                if (node.GetType() == typeof(ChildGroupNode))
+                {
+                    main = (Node) node.GetValue(null);
+                    break;
+                }
+            }
+
+            return main;
         }
     }
 }
