@@ -1,7 +1,7 @@
 ﻿namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     /// <summary>
-    /// buff触发事件
+    /// 持续触发型buff
     /// </summary>
     public interface IBuffTriggerTime:IBuffTimeDataComponent
     {
