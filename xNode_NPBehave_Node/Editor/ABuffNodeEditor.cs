@@ -43,4 +43,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     public class AddOrRemoveBuffNodeEditor:ABuffNodeEditor<Action>
     {
     }
+    
+    [NodeEditor.CustomNodeEditorAttribute(typeof(HasBuffNode))]
+    public class HasBuffNodeNodeEditor:ABuffNodeEditor<Func<bool>>
+    {
+    }
 }
