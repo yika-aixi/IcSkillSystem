@@ -23,7 +23,8 @@ namespace CabinIcarus.IcSkillSystem.Expansions
         public const string SharedBlackboardKey = "Test";
 
         public string SkillManagerKey = "SkillManager";
-
+        public string BuffManagerKey = "BuffManager";
+        
         private void Awake()
         {
             var bb = UnityContext.GetSharedBlackboard(SharedBlackboardKey);
@@ -32,6 +33,7 @@ namespace CabinIcarus.IcSkillSystem.Expansions
             SkillManager = new SkillManager();
 
             bb.Set(SkillManagerKey,SkillManager);
+            bb.Set(BuffManagerKey,BuffManager);
             
             BuffManager
                 //带有持续时间buff的时间处理,一定在所有buff之前,因为时间的减少发生在buff产生效果之前
