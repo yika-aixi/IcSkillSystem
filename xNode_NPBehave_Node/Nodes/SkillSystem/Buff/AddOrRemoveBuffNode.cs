@@ -1,4 +1,8 @@
 ﻿using System;
+using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Expansions;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buff
@@ -8,14 +12,23 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buf
     {
         [SerializeField]
         private bool _isAddBuff = true;
+
+        private IBuffDataComponent _buff;
+        
         protected override Action Execute()
         {
-            if (_isAddBuff)
+            if (BuffType == null)
             {
-                return () => BuffManager.AddBuff(Target, Buff);
+                return null;
             }
             
-            return () => BuffManager.RemoveBuff(Target,Buff);
+            _buff = (IBuffDataComponent) this.DynamicInputCreateInstance(BuffType);
+            if (_isAddBuff)
+            {
+                return () => BuffManager.AddBuff(Target, _buff);
+            }
+            
+            return () => BuffManager.RemoveBuff(Target,_buff);
         }
     }
 }
