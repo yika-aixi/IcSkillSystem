@@ -124,7 +124,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 EditorUtility.DisplayProgressBar("Generate ing", string.Empty, 0);
                 
                 var runtimeTypes = TypeUtil.UnityRuntimeTypes
+                    .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
                     .Where(x => !x.IsPointer)
+                    .Where(x => !typeof(Delegate).IsAssignableFrom(x))
+                    .Where(x => !typeof(Exception).IsAssignableFrom(x))
+                    .Where(x => !typeof(Attribute).IsAssignableFrom(x))
                     .Where(x => !x.IsGenericType)
                     .Where(x => !x.IsAbstract)
                     .Where(x =>
@@ -136,12 +140,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
                         return x.IsPublic;
                     })
-                    .Where(x => !typeof(Delegate).IsAssignableFrom(x))
-                    .Where(x => !typeof(Exception).IsAssignableFrom(x))
-                    .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
-                    .Where(x => !typeof(Attribute).IsAssignableFrom(x))
-                    .Where(x => x.IsClass &&
-                                x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
+                    .Where(x => x.IsValueType || x.IsEnum || x.IsClass && x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
                                 typeof(Object).IsAssignableFrom(x)).ToList();
 
 
