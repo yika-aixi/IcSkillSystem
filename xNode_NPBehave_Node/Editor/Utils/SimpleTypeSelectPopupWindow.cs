@@ -83,9 +83,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                 bool isSkip = false;
                 foreach (var valueType in @group)
                 {
-                    if (!string.IsNullOrWhiteSpace(_ser) &&
-                        !valueType.FullName.ToLower().Contains(_ser.ToLower()) ||
-                        BaseType != null && !BaseType.IsAssignableFrom(valueType))
+                    if (_isSkip(valueType))
                     {
                         isSkip = true;
                     }
@@ -111,9 +109,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                     GUILayout.BeginVertical();
                     foreach (var valueType in @group)
                     {
-                        if (!string.IsNullOrWhiteSpace(_ser) &&
-                            !valueType.FullName.ToLower().Contains(_ser.ToLower()) || 
-                            BaseType != null && !BaseType.IsAssignableFrom(valueType))
+                        if (_isSkip(valueType))
                         {
                             continue;
                         }
@@ -130,6 +126,13 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
             }
            
             EditorGUILayout.EndScrollView();
+        }
+
+        private bool _isSkip(Type valueType)
+        {
+            return !string.IsNullOrWhiteSpace(_ser) &&
+                   !valueType.FullName.ToLower().Contains(_ser.ToLower()) || 
+                   BaseType != null && !BaseType.IsAssignableFrom(valueType);
         }
     }
 }
