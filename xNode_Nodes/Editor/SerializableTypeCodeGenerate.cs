@@ -68,7 +68,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         [MenuItem("Icarus/IcSkillSystem/ValueNode Code Generate")]
         static void _open()
         {
-            var wind = EditorWindow.CreateWindow<SerializableTypeCodeGenerate>();
+            var wind = EditorWindow.GetWindow<SerializableTypeCodeGenerate>();
             wind.titleContent = new GUIContent("ValueNode Generate");
             _generateAssemblys = new List<string>();
             _generateAssemblys =
