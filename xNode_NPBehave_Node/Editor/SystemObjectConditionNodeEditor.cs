@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator;
 using NPBehave;
 using UnityEngine;
@@ -16,13 +18,33 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         private NodePort _aInput;
         private NodePort _bInput;
         
-        private TypeSelectPopupWindow windowContent;
+        private static TypeSelectPopupWindow windowContent;
 
         protected override void OnInit()
         {
             _valueNode = (SystemObjectConditionNode) target;
+            
+            if (windowContent == null)
+            {
+                List<Type> types = new List<Type>();
+                
+                foreach (var unityRuntimeType in TypeUtil.UnityRuntimeTypes)
+                {
+                    if (typeof(ValueNode).IsAssignableFrom(unityRuntimeType))
+                    {
+                        var valueField = unityRuntimeType.GetField("_value", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            windowContent = new TypeSelectPopupWindow(true);
+                        if (valueField != null)
+                        {
+                            types.Add(valueField.FieldType);
+                        }
+                    }
+                }
+                
+                windowContent = new TypeSelectPopupWindow(true,types);
+            }
+
+            _refreshInputPort();
             
             windowContent.OnChangeTypeSelect = type =>
             {
