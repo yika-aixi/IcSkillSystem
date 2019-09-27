@@ -111,14 +111,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                     GUILayout.BeginVertical();
                     foreach (var valueType in @group)
                     {
-                        if (!string.IsNullOrWhiteSpace(_ser) || BaseType != null)
+                        if (!string.IsNullOrWhiteSpace(_ser) &&
+                            !valueType.FullName.ToLower().Contains(_ser.ToLower()) || 
+                            BaseType != null && !BaseType.IsAssignableFrom(valueType))
                         {
-                            if (!string.IsNullOrWhiteSpace(_ser) &&
-                                !valueType.FullName.ToLower().Contains(_ser.ToLower()) ||
-                                !BaseType.IsAssignableFrom(valueType))
-                            {
-                                continue;
-                            }
+                            continue;
                         }
 
                         if (GUILayout.Button(valueType.Name,"label"))
