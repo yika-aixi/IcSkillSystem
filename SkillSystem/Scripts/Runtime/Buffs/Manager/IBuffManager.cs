@@ -85,6 +85,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         bool HasBuff<T>(IEntity entity) where T:IBuffDataComponent;
 
         /// <summary>
+        /// 指定得实体是否有该类型得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <typeparam name="buffType"></typeparam>
+        /// <returns></returns>
+        bool HasBuff(IEntity entity, Type buffType);
+
+        /// <summary>
         /// 指定得实体是否有匹配得buff
         /// </summary>
         /// <param name="entity"></param>
@@ -92,6 +100,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         bool HasBuff<T>(IEntity entity,Predicate<T> match) where T:IBuffDataComponent;
+
+        /// <summary>
+        /// 指定得实体是否有匹配得buff
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="match"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        bool HasBuff(IEntity entity, Type buffType, Predicate<IBuffDataComponent> match);
 
         /// <summary>
         /// 更新

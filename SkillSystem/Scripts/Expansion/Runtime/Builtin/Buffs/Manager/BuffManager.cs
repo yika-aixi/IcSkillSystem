@@ -150,22 +150,32 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public bool HasBuff<T>(IEntity entity) where T : IBuffDataComponent
         {
+            return HasBuff(entity, typeof(T));
+        }
+
+        public bool HasBuff(IEntity entity, Type buffType)
+        {
             if (!_entities.Contains(entity))
             {
                 return false;
             }
 
-            return _buffMap[entity].Exists(x => x is T);
+            return _buffMap[entity].Exists(buffType.IsInstanceOfType);
         }
 
         public bool HasBuff<T>(IEntity entity, Predicate<T> match) where T : IBuffDataComponent
+        {
+            return HasBuff(entity, typeof(T), x=>match((T) x));
+        }
+
+        public bool HasBuff(IEntity entity, Type buffType, Predicate<IBuffDataComponent> match)
         {
             if (!_entities.Contains(entity))
             {
                 return false;
             }
             
-            return _buffMap[entity].Exists(x=> x is T && match((T) x));
+            return _buffMap[entity].Exists(x=> buffType.IsInstanceOfType(x) && match(x));
         }
 
         public void AddEntity(IEntity entity)
