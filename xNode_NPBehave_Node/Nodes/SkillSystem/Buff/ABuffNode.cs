@@ -19,22 +19,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buf
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]
         protected IEntity Target;
-        
-        protected IBuffDataComponent Buff;
+
+        protected Type BuffType;
         
         protected sealed override T GetOutValue()
         {
             BuffManager = GetInputValue(nameof(BuffManager), BuffManager);
             Target = GetInputValue(nameof(Target), Target);;
 
-            var buffType = Type.GetType(_buffAQName);
-
-            if (buffType == null)
-            {
-                return null;
-            }
-            
-            Buff = (IBuffDataComponent) this.DynamicInputCreateInstance(buffType);
+            BuffType = Type.GetType(_buffAQName);
 
             return Execute();
         }
