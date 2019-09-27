@@ -14,13 +14,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         private Type _baseType;
         private string _ser;
         private SearchField searchField;
-        public TypeSelectPopupWindow(bool focus):this(focus,typeof(object)) { }
+        public TypeSelectPopupWindow(bool focus):this(focus,TypeUtil.UnityRuntimeTypes) { }
 
-        public TypeSelectPopupWindow(bool focus,Type baseType)
+        public TypeSelectPopupWindow(bool focus,IEnumerable<Type> types)
         {
             this._focus = focus;
-            this.BaseType = baseType;
-            var typs = TypeUtil.UnityRuntimeTypes.Where(x=> BaseType.IsAssignableFrom(x));
+            var typs = types;
             _typeGroup = typs.GroupBy(x => x.Assembly);
         }
 
