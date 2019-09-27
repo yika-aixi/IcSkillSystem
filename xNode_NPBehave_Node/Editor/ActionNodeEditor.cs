@@ -10,9 +10,13 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     {
         protected override void ColorCheck()
         {
-            if (!target.GetInputPort(AActionNode<Delegate>.InputPortName).IsConnected)
+            var inputPort = target.GetInputPort(AActionNode<Delegate>.InputPortName);
+            if (inputPort != null)
             {
-                Error = true;
+                if (!inputPort.IsConnected)
+                {
+                    Error = true;
+                }
             }
         }
     }
