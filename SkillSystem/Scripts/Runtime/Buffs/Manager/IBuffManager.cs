@@ -43,22 +43,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         void AddBuff(IEntity entity,IBuffDataComponent buff);
 
         bool RemoveBuff(IEntity entity,IBuffDataComponent buff);
-
-        /// <summary>
-        /// 获取指定类型得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        IEnumerable<T> GetBuffs<T>(IEntity entity);
-        
-        /// <summary>
-        /// 获取指定类型得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        IEnumerable<T> GetBuffs<T>(IEntity entity,Predicate<T> match);
         
         /// <summary>
         /// 获取指定类型得buff

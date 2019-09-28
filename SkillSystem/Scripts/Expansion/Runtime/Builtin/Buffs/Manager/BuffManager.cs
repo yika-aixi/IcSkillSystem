@@ -102,24 +102,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
 
-        public IEnumerable<T> GetBuffs<T>(IEntity entity)
-        {
-            List<T> buffs = new List<T>();
-
-            GetBuffs(entity, buffs);
-
-            return buffs.Count == 0 ? null : buffs;
-        }
-
-        public IEnumerable<T> GetBuffs<T>(IEntity entity, Predicate<T> match)
-        {
-            List<T> buffs = new List<T>();
-
-            GetBuffs(entity, match,buffs);
-
-            return buffs.Count == 0 ? null : buffs;
-        }
-
         public void GetBuffs<T>(IEntity entity, List<T> buffs)
         {
             GetBuffs(entity, null, buffs);
