@@ -35,6 +35,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
             if (damageBuff.Type == damageReduceFixedBuff.Type)
             {
                 damageBuff.Value -= damageReduceFixedBuff.Value;
+
+                if (damageBuff.Value <= 0)
+                {
+                    damageBuff.Value = 0;
+                }
             }
         }
     }
