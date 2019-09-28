@@ -10,11 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 吸血
     /// </summary>
-    public interface ILifesteal
+    public interface ILifesteal:IBuffValueDataComponent
     {
-        /// <summary>
-        /// 吸血值
-        /// </summary>
-        float LifestealValue { get; set; }
     }
 }
