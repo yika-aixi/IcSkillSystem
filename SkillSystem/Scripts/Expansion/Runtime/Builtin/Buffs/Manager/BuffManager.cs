@@ -64,14 +64,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void AddBuff(IEntity entity, IBuffDataComponent buff)
         {
-            if (!_entities.Contains(entity))
-            {
-                _entities.Add(entity);
-                _buffMap.Add(entity,new List<IBuffDataComponent>());
-            }
-            
-            _buffMap[entity].Add(buff);
-
             foreach (var createSystem in _createSystems)
             {
                 if (createSystem.Filter(entity,buff))
@@ -80,7 +72,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }    
             }
             
+            if (!_entities.Contains(entity))
+            {
+                _entities.Add(entity);
+                _buffMap.Add(entity,new List<IBuffDataComponent>());
+            }
             
+            _buffMap[entity].Add(buff);
         }
 
         public bool RemoveBuff(IEntity entity, IBuffDataComponent buff)
