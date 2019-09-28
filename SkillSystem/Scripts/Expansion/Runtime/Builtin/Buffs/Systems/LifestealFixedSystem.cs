@@ -14,9 +14,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     public class LifestealFixedSystem:ABuffDestroySystem
     {
         private List<IFixedLifesteal> _fixedLifesteals;
+        private List<IMechanicBuff> _mechanicBuffs;
+
         public LifestealFixedSystem(IBuffManager buffManager) : base(buffManager)
         {
             _fixedLifesteals = new List<IFixedLifesteal>();
+            _mechanicBuffs = new List<IMechanicBuff>();
         }
 
         public override bool Filter(IEntity entity, IBuffDataComponent buff)
@@ -32,11 +35,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
             BuffManager.GetBuffs(damageBuff.Maker,_fixedLifesteals);
 
-            var healths = BuffManager.GetBuffs<IMechanicBuff>(damageBuff.Maker).GetEnumerator();
+            BuffManager.GetBuffs(damageBuff.Maker, _mechanicBuffs);
 
-            healths.MoveNext();
+            if (_mechanicBuffs.Count < 1)
+            {
+                return;
+            }
 
-            var health = healths.Current;
+            var health = _mechanicBuffs[0];
+            var maxHealth = _mechanicBuffs[1];
             
             foreach (var fixedLifesteal in _fixedLifesteals)
             {
@@ -49,6 +56,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                 }
 
                 health.Value += fixedLifesteal.Value;
+
+                if (health.Value > maxHealth.Value)
+                {
+                    health.Value = maxHealth.Value;
+                }
             }
         }
     }

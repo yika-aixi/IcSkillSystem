@@ -5,6 +5,7 @@
 //2019年09月23日-23:00
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
+using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
@@ -16,8 +17,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
     public class BuffTimeSystem:ABuffUpdateSystem
     {
+        private List<IBuffDataComponent> _buffs;
+
         public BuffTimeSystem(IBuffManager buffManager) : base(buffManager)
         {
+            _buffs = new List<IBuffDataComponent>();
         }
 
         public override bool Filter(IEntity entity)
@@ -27,14 +31,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
         public override void Execute(IEntity entity)
         {
-            var buffs = BuffManager.GetBuffs<IBuffDataComponent>(entity, x => x is IBuffTimeDataComponent);
-
-            if (buffs == null)
-            {
-                return;
-            }
+            BuffManager.GetBuffs(entity, x => x is IBuffTimeDataComponent,_buffs);
             
-            foreach (var dataComponent in buffs)
+            foreach (var dataComponent in _buffs)
             {
                 IBuffTimeDataComponent timeData = (IBuffTimeDataComponent) dataComponent;
 
@@ -42,7 +41,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
                 if (timeData.Duration <= 0)
                 {
-                    BuffManager.RemoveBuff(entity, dataComponent);
+                    BuffManager.RemoveBuffEx(entity, dataComponent);
                 }
             }
         }

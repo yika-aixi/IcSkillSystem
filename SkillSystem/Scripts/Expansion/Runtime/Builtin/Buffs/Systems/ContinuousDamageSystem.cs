@@ -34,11 +34,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                 {
                     buff.LastTriggerTime = buff.Duration;
                     
-                    BuffManager.AddBuff(entity,new T()
+                    BuffManager.CreateAndAddBuff<T>(entity, x =>
                     {
-                        Maker = buff.Maker,
-                        Type = buff.Type,
-                        Value = buff.Value
+                        x.Maker = buff.Maker;
+                        x.Type = buff.Type;
+                        x.Value = buff.Value;
                     });
                 }
             }

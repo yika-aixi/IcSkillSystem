@@ -16,6 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
         private Dictionary<Type, List<IBuffDataComponent>> _buffGroup;
         private List<bool> _foldoutState1;
         private List<bool> _foldoutState2;
+        private List<IBuffDataComponent> _buffs;
 
         private void OnEnable()
         {
@@ -23,6 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
             _buffGroup = new Dictionary<Type, List<IBuffDataComponent>>();
             _foldoutState1 = new List<bool>();
             _foldoutState2 = new List<bool>();
+            _buffs = new List<IBuffDataComponent>();
         }
 
         public override void OnInspectorGUI()
@@ -41,16 +43,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 return;
             }
 
-            var buffs = _entityBuff.BuffManager.GetBuffs<IBuffDataComponent>(_entityBuff.Entity);
+            _entityBuff.BuffManager.GetBuffs<IBuffDataComponent>(_entityBuff.Entity,_buffs);
             _buffGroup.Clear();
 
-            if (buffs == null)
+            if (_buffs.Count == 0)
             {
                 Repaint();
                 return;
             }
 
-            foreach (var buff in buffs)
+            foreach (var buff in _buffs)
             {
                 if (!_buffGroup.ContainsKey(buff.GetType()))
                 {

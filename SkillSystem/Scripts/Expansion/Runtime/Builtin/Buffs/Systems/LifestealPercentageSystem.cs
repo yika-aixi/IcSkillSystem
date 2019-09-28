@@ -13,9 +13,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     public class LifestealPercentageSystem:ABuffDestroySystem
     {
         private List<IPercentageLifesteal> _damageReducePercentageBuffs;
+        private List<IMechanicBuff> _hps;
+
         public LifestealPercentageSystem(IBuffManager buffManager) : base(buffManager)
         {
             _damageReducePercentageBuffs = new List<IPercentageLifesteal>();
+            _hps = new List<IMechanicBuff>();
         }
 
         public override bool Filter(IEntity entity, IBuffDataComponent buff)
@@ -28,12 +31,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         public override void Destroy(IEntity entity, IBuffDataComponent buff)
         {
             IDamageBuff damageBuff = (IDamageBuff) buff;
+
+            BuffManager.GetBuffs<IMechanicBuff>(damageBuff.Maker, _hps);
+
+            if (_hps.Count < 1)
+            {
+                return;
+            }
             
-            var healths = BuffManager.GetBuffs<IMechanicBuff>(damageBuff.Maker).GetEnumerator();
-
-            healths.MoveNext();
-
-            var health = healths.Current;
+            var health = _hps[0];
+            var maxHealth = _hps[1];
             
             BuffManager.GetBuffs(damageBuff.Maker,_damageReducePercentageBuffs);
 
@@ -53,6 +60,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
             }
             
             health.Value += damageBuff.Value * per;
+
+            if (health.Value > maxHealth.Value)
+            {
+                health.Value = maxHealth.Value;
+            }
         }
     }
 }

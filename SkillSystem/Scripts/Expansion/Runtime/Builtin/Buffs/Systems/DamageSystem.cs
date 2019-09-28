@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
+﻿using System.Collections.Generic;
+using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
@@ -12,14 +13,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// </summary>
     public class DamageSystem:ABuffCreateSystem
     {
+        private List<IMechanicBuff> _buffs;
 
         public DamageSystem(IBuffManager buffManager) : base(buffManager)
         {
+            _buffs = new List<IMechanicBuff>();
         }
 
         public override bool Filter(IEntity entity, IBuffDataComponent buff)
         {
-            return buff is IDamageBuff && BuffManager.HasBuff<IMechanicBuff>(entity,_healthMatch); 
+            return buff is IDamageBuff; 
         }
 
         private static bool _healthMatch(IMechanicBuff x)
@@ -29,16 +32,20 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
         public override void Create(IEntity entity, IBuffDataComponent buff)
         {
-            foreach (var hpBuff in BuffManager.GetBuffs<IMechanicBuff>(entity,_healthMatch))
+            BuffManager.GetBuffs(entity, _healthMatch, _buffs);
+            
+            foreach (var hpBuff in _buffs)
             {
                 var damageBuff = ((IDamageBuff) buff);
                 
                 hpBuff.Value -= damageBuff.Value;
-                BuffManager.RemoveBuff(entity,buff);
                 
                 //todo 一个单位只有第一条血条会受伤
-                return;
+                break;
             }
+            
+            BuffManager.RemoveBuffEx(entity,buff);
+
         }
     }
 }
