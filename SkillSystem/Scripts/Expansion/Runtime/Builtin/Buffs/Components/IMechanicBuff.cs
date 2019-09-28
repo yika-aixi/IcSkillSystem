@@ -48,6 +48,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// </summary>
     public interface IMechanicBuff:IBuffDataComponent,IBuffValueDataComponent
     {
-        MechanicsType MechanicsType { get;}
+        MechanicsType MechanicsType { get; set; }
     }
 }
