@@ -173,14 +173,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             if (_entities.Contains(entity))
             {
-                for (var i = _buffMap[entity].Count - 1; i >= 0; i--)
+                _entities.Remove(entity);
+
+                foreach (var buff in _buffMap[entity].ToList())
                 {
-                    var buff = _buffMap[entity][i];
                     RemoveBuff(entity, buff);
                 }
 
                 _buffMap.Remove(entity);
-                _entities.Remove(entity);
             }
         }
 
