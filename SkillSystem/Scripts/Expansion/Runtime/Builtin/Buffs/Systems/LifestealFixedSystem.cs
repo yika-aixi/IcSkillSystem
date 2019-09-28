@@ -30,7 +30,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         {
             IDamageBuff damageBuff = (IDamageBuff) buff;
 
-            BuffManager.GetBuffs(entity,_fixedLifesteals);
+            BuffManager.GetBuffs(damageBuff.Maker,_fixedLifesteals);
 
             var healths = BuffManager.GetBuffs<IMechanicBuff>(damageBuff.Maker).GetEnumerator();
 
@@ -48,7 +48,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                     }
                 }
 
-                health.Value += fixedLifesteal.LifestealValue;
+                health.Value += fixedLifesteal.Value;
             }
         }
     }

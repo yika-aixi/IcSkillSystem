@@ -35,7 +35,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
             var health = healths.Current;
             
-            BuffManager.GetBuffs(entity,_damageReducePercentageBuffs);
+            BuffManager.GetBuffs(damageBuff.Maker,_damageReducePercentageBuffs);
 
             float per = 0;
             
@@ -49,7 +49,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                     }
                 }
 
-                per += percentageLifesteal.LifestealValue;
+                per += percentageLifesteal.Value;
             }
             
             health.Value += damageBuff.Value * per;
