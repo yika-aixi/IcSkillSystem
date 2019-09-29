@@ -41,30 +41,32 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return buff;
         }
 
-        public static void CreateAndAddBuff<T>(this IBuffManager self,IEntity entity, Action<T> buffSetting,params object[] args) where T : IBuffDataComponent
+        public static T CreateAndAddBuff<T>(this IBuffManager self,IEntity entity, Action<T> buffSetting,params object[] args) where T : IBuffDataComponent
         {
             if (buffSetting == null)
             {
-                self.CreateAndAddBuff(typeof(T), entity, null, args);
+                return (T) self.CreateAndAddBuff(typeof(T), entity, null, args);
             }
             else
             {
-                self.CreateAndAddBuff(typeof(T), entity, x=>buffSetting.Invoke((T) x), args);
+                return (T) self.CreateAndAddBuff(typeof(T), entity, x=>buffSetting.Invoke((T) x), args);
             }
         }
         
-        public static void CreateAndAddBuff(this IBuffManager self,Type buffType,IEntity entity, Action<IBuffDataComponent> buffSetting,params object[] args)
+        public static IBuffDataComponent CreateAndAddBuff(this IBuffManager self,Type buffType,IEntity entity, Action<IBuffDataComponent> buffSetting,params object[] args)
         {
             IBuffDataComponent buff = self.CreateBuff(buffType, args);
             
             if (buff == null)
             {
-                return;
+                return null;
             }
             
             buffSetting?.Invoke(buff);
             
             self.AddBuff(entity,buff);
+
+            return buff;
         }
         
         public static void RemoveBuffEx(this IBuffManager self,IEntity entity,IBuffDataComponent buff)
