@@ -38,6 +38,19 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             _objectCache = new Dictionary<Type, List<ObjectState>>();
         }
 
+        public void AddObjectToPool(object obj,bool state)
+        {
+            var type = obj.GetType();
+            
+            if (!_objectCache.TryGetValue(type,out var result))
+            {
+                result = new List<ObjectState>();
+                _objectCache.Add(type,result);
+            }
+            
+            result.Add(new ObjectState(obj,state));
+        }
+        
         /// <summary>
         /// 获取对象
         /// </summary>
