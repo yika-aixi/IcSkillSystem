@@ -178,10 +178,8 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             {
                 List<object> _obj = new List<object>();
                 
-                if(_objectCache.TryGetValue(type,out var result))
-                {
-                    _obj.AddRange(result.Where(x=>x.Reference.Target != null).Select(x=>x.Reference.Target));
-                }
+                _obj.AddRange(this[type,true]);
+                _obj.AddRange(this[type,false]);
 
                 return _obj;
             }
