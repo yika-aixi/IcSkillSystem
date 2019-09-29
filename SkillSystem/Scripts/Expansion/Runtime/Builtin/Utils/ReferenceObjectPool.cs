@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
 {
@@ -17,11 +18,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             public WeakReference Reference;
             public bool UseState;
 
-            public ObjectState(object obj):this(obj,true)
-            {
-            }
-
-            public ObjectState(object obj, bool use)
+            public ObjectState(object obj, bool use = true)
             {
                 this.Reference = new WeakReference(obj,false);
                 UseState = use;
