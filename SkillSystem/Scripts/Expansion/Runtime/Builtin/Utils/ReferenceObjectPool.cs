@@ -165,7 +165,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 
                 if(_objectCache.TryGetValue(type,out var result))
                 {
-                    _obj.AddRange(result.Where(x=>x.UseState == state).Select(x=>x.Reference.Target));
+                    _obj.AddRange(result.Where(x=>x.UseState == state && x.Obj != null).Select(x=>x.Obj));
                 }
 
                 return _obj;
