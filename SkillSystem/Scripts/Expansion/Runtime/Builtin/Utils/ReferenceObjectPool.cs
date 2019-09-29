@@ -143,5 +143,36 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 }
             }
         }
+
+
+        public List<object> this[Type type,bool state]
+        {
+            get
+            {
+                List<object> _obj = new List<object>();
+                
+                if(_objectCache.TryGetValue(type,out var result))
+                {
+                    _obj.AddRange(result.Where(x=>x.UseState == state).Select(x=>x.Reference.Target));
+                }
+
+                return _obj;
+            }
+        }
+        
+        public List<object> this[Type type]
+        {
+            get
+            {
+                List<object> _obj = new List<object>();
+                
+                if(_objectCache.TryGetValue(type,out var result))
+                {
+                    _obj.AddRange(result.Where(x=>x.Reference.Target != null).Select(x=>x.Reference.Target));
+                }
+
+                return _obj;
+            }
+        }
     }
 }
