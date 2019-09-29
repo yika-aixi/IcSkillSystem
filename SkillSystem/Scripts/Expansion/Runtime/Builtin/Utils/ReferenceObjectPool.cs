@@ -15,6 +15,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
     {
         class ObjectState
         {
+            public Type ObjType { get; }
             public WeakReference Reference;
             public bool UseState;
 
@@ -22,10 +23,11 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             {
                 this.Reference = new WeakReference(obj,false);
                 UseState = use;
+                ObjType = obj.GetType();
             }
         }
 
-        private Dictionary<Type, List<ObjectState>> _objectCache;
+        private List<ObjectState> _objectCache;
 
         /// <summary>
         /// 开启:归还对象时如果不是<see cref="ReferenceObjectPool"/>创建得对象就加入缓存
@@ -35,20 +37,12 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
 
         public ReferenceObjectPool()
         {
-            _objectCache = new Dictionary<Type, List<ObjectState>>();
+            _objectCache = new List<ObjectState>();
         }
 
         public void AddObjectToPool(object obj,bool state)
         {
-            var type = obj.GetType();
-            
-            if (!_objectCache.TryGetValue(type,out var result))
-            {
-                result = new List<ObjectState>();
-                _objectCache.Add(type,result);
-            }
-            
-            result.Add(new ObjectState(obj,state));
+            _objectCache.Add(new ObjectState(obj,state));
         }
         
         /// <summary>
@@ -73,26 +67,15 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         public object GetObject(Type type,params object[] args)
         {
             object obj = null;
-            
-            if (!_objectCache.TryGetValue(type,out var result))
-            {
-                result = new List<ObjectState>();
-                _objectCache.Add(type,result);
-            }
 
-            for (var index = result.Count - 1; index >= 0; index--)
+            for (var i = 0; i < _objectCache.Count; i++)
             {
-                var state = result[index];
-                if (!state.UseState)
+                var objectState = _objectCache[i];
+                if (objectState.ObjType == type)
                 {
-                    if (state.Reference.Target == null)
+                    if (!objectState.UseState && objectState.Reference.Target != null)
                     {
-                        result.RemoveAt(index);
-                    }
-                    else
-                    {
-                        state.UseState = true;
-                        obj = state.Reference.Target;
+                        obj = objectState.Reference.Target;
                     }
                 }
             }
@@ -101,7 +84,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             {
                 obj = Activator.CreateInstance(type,args);
                 
-                result.Add(new ObjectState(obj));
+                _objectCache.Add(new ObjectState(obj));
             }
 
             return obj;
@@ -114,12 +97,12 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         /// <param name="obj"></param>
         public void Recede(object obj)
         {
-            var type = obj.GetType();
             bool hit = false;
 
-            if (_objectCache.TryGetValue(type,out var result))
+            for (var i = 0; i < _objectCache.Count; i++)
             {
-                foreach (var objectState in result)
+                var objectState = _objectCache[i];
+                if (objectState.Reference.Target != null && objectState.UseState)
                 {
                     if (objectState.Reference.Target == obj)
                     {
@@ -137,20 +120,12 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
 
         public void CleanUp()
         {
-            foreach (var objectCacheValue in _objectCache)
+            for (var index = _objectCache.Count - 1; index >= 0; index--)
             {
-                for (var index = objectCacheValue.Value.Count - 1; index >= 0; index--)
+                var state = _objectCache[index];
+                if (!state.Reference.IsAlive)
                 {
-                    var state = objectCacheValue.Value[index];
-                    if (!state.Reference.IsAlive)
-                    {
-                        objectCacheValue.Value.RemoveAt(index);
-                    }
-                }
-
-                if (objectCacheValue.Value.Count == 0)
-                {
-                    _objectCache.Remove(objectCacheValue.Key);
+                    _objectCache.RemoveAt(index);
                 }
             }
         }
@@ -161,10 +136,14 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             get
             {
                 List<object> _obj = new List<object>();
-                
-                if(_objectCache.TryGetValue(type,out var result))
+
+                for (var index = 0; index < _objectCache.Count; index++)
                 {
-                    _obj.AddRange(result.Where(x=>x.UseState == state).Select(x=>x.Reference.Target));
+                    var objectState = _objectCache[index];
+                    if (objectState.ObjType == type && objectState.UseState == state)
+                    {
+                        _obj.Add(objectState.Reference.Target);
+                    }
                 }
 
                 return _obj;
@@ -176,11 +155,9 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             get
             {
                 List<object> _obj = new List<object>();
-                
-                if(_objectCache.TryGetValue(type,out var result))
-                {
-                    _obj.AddRange(result.Where(x=>x.Reference.Target != null).Select(x=>x.Reference.Target));
-                }
+
+                _obj.AddRange(this[type, true]);
+                _obj.AddRange(this[type, false]);
 
                 return _obj;
             }
