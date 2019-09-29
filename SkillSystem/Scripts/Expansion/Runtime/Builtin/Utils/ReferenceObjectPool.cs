@@ -106,31 +106,23 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         public void Recede(object obj)
         {
             var type = obj.GetType();
-            
-            if (!_objectCache.TryGetValue(type,out var result))
-            {
-                if (RecedeCache)
-                {
-                    result = new List<ObjectState>();
-                    _objectCache.Add(type,result);
-                }
-                return;
-            }
-
             bool hit = false;
-            
-            foreach (var objectState in result)
+
+            if (_objectCache.TryGetValue(type,out var result))
             {
-                if (objectState.Reference.Target == obj)
+                foreach (var objectState in result)
                 {
-                    hit = true;
-                    objectState.UseState = false;
+                    if (objectState.Reference.Target == obj)
+                    {
+                        hit = true;
+                        objectState.UseState = false;
+                    }
                 }
             }
 
             if (!hit && RecedeCache)
             {
-                result.Add(new ObjectState(obj,false));
+                AddObjectToPool(obj,false);
             }
         }
 
