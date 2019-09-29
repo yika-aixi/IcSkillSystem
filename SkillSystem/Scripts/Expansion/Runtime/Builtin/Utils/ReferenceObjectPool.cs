@@ -185,5 +185,28 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 return _obj;
             }
         }
+
+        /// <summary>
+        /// 获取类型缓存的数量
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int GetTypeCacheCount(Type type)
+        {
+            int count = 0;
+            if (_objectCache.TryGetValue(type,out var result))
+            {
+                for (var i = 0; i < result.Count; i++)
+                {
+                    var state = result[i];
+                    if (state.Obj != null)
+                    {
+                        ++count;
+                    }
+                }
+            }
+
+            return count;
+        }
     }
 }
