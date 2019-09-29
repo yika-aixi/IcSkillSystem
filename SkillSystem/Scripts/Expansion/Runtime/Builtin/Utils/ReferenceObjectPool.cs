@@ -119,8 +119,9 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
 
             if (_objectCache.TryGetValue(type,out var result))
             {
-                foreach (var objectState in result)
+                for (var i = 0; i < result.Count; i++)
                 {
+                    var objectState = result[i];
                     if (objectState.Reference.Target == obj)
                     {
                         hit = true;
