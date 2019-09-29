@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.Profiling;
+using Debug = UnityEngine.Debug;
 
 namespace IcSkillSystem.SkillSystem.Expansion.Tests
 {
@@ -19,13 +20,26 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
     {
         private ReferenceObjectPool _pool;
         private List<testObj> _objs;
-        
+        private long _startMemory;
+        private long _endMemory;
+        private Stopwatch _stop;
+
         [SetUp]
         public void Init()
         {
             _pool = new ReferenceObjectPool();
             _objs = new List<testObj>();
             _pool.RecedeCache = true;
+            _stop = new Stopwatch();
+            _startMemory = GC.GetTotalMemory(true);
+            _stop.Restart();
+        }
+
+        [TearDown]
+        public void End()
+        {
+            Debug.Log($"耗时:{_stop.Elapsed}");
+            Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
         }
 
         /// <summary>
@@ -39,7 +53,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
                 var testObj = _pool.GetObject<testObj>();
                 _objs.Add(testObj);
             }
-
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
             Assert.True(_pool[typeof(testObj),true].Count == 500);
         } 
         
@@ -60,6 +75,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             {
                 _pool.Recede(_objs[i]);
             }
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
             Assert.True(_pool[typeof(testObj),true].Count == 300);
             Assert.True(_pool[typeof(testObj),false].Count == 200);
         } 
@@ -73,8 +90,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
                 var testObj = _pool.GetObject<testObj>();
                 _pool.Recede(testObj);
             }
-            var endMemory = GC.GetTotalMemory(false);
-            Debug.Log($"{startMemory} and {endMemory} = {(endMemory - startMemory)}");
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
             Assert.GreaterOrEqual(_pool[typeof(testObj)].Count, 1);
             Assert.GreaterOrEqual(_pool[typeof(testObj), false].Count, 1);
         } 
@@ -93,7 +110,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
                     _objs.RemoveAt(index);
                 });
             }
-            
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
             Assert.GreaterOrEqual(_pool[typeof(testObj)].Count, 1);
             Assert.GreaterOrEqual(_pool[typeof(testObj), false].Count, 1);
         } 
@@ -101,8 +119,6 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public async void 线程3个创建1个归还()
         {
-            var startMemory = GC.GetTotalMemory(true);
-
             var task1 = Task.Run(() =>
             {
                 for (int i = 0; i < 500; i++)
@@ -136,10 +152,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             await task1;
             
             await task2;
-            
-            var endMemory = GC.GetTotalMemory(false);
-            Debug.LogError($"{startMemory} and {endMemory} = {(endMemory - startMemory)}");
-            
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
             Assert.GreaterOrEqual(_pool[typeof(testObj)].Count, 1001);
             Assert.GreaterOrEqual(_pool[typeof(testObj), true].Count, 1001);
         } 
@@ -147,37 +161,33 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public async void 创建10001()
         {
-            var startMemory = GC.GetTotalMemory(true);
-
             for (int i = 0; i < 10001; i++)
             {
                 var testObj = new testObj();
                 _objs.Add(testObj);
             }
-            
-            var endMemory = GC.GetTotalMemory(false);
-            Debug.Log($"{startMemory} and {endMemory} = {(endMemory - startMemory)}");
-            Assert.True(true);
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
+            Assert.GreaterOrEqual(_objs.Count,10001);
         } 
         
         [Test]
         public async void 创建10001_Pool()
         {
-            var startMemory = GC.GetTotalMemory(true);
             var type = typeof(testObj);
             _pool.AddObjectToPool(new testObj(), false);
             for (int i = 0; i < 10001; i++)
             {
                 var test = _pool.GetObject(type);
-
-                if (i % 3 != 0)
-                {
-                    _pool.Recede(test);
-                }
+//                _objs.Add((testObj) test);
+//                if (i % 3 != 0)
+//                {
+//                    _pool.Recede(test);
+//                }
             }
-            var endMemory = GC.GetTotalMemory(false);
-            Debug.Log($"{startMemory} and {endMemory} = {(endMemory - startMemory)}");
-            Assert.True(true);
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(false);
+            Assert.GreaterOrEqual(_pool.GetTypeCacheCount(type),10001);
         } 
     }
 }
