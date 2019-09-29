@@ -15,12 +15,13 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
     {
         class ObjectState
         {
-            public WeakReference Reference;
+            public object Obj => _reference.Target;
+            private WeakReference _reference;
             public bool UseState;
 
             public ObjectState(object obj, bool use = true)
             {
-                this.Reference = new WeakReference(obj,false);
+                this._reference = new WeakReference(obj,false);
                 UseState = use;
             }
         }
@@ -85,14 +86,14 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 var state = result[index];
                 if (!state.UseState)
                 {
-                    if (state.Reference.Target == null)
+                    if (state.Obj == null)
                     {
                         result.RemoveAt(index);
                     }
                     else
                     {
                         state.UseState = true;
-                        obj = state.Reference.Target;
+                        obj = state.Obj;
                     }
                 }
             }
@@ -122,7 +123,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 for (var i = 0; i < result.Count; i++)
                 {
                     var objectState = result[i];
-                    if (objectState.Reference.Target == obj)
+                    if (objectState.Obj == obj)
                     {
                         hit = true;
                         objectState.UseState = false;
@@ -143,7 +144,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 for (var index = objectCacheValue.Value.Count - 1; index >= 0; index--)
                 {
                     var state = objectCacheValue.Value[index];
-                    if (!state.Reference.IsAlive)
+                    if (state.Obj != null)
                     {
                         objectCacheValue.Value.RemoveAt(index);
                     }
