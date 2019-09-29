@@ -80,11 +80,20 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 _objectCache.Add(type,result);
             }
 
-            foreach (var state in result)
+            for (var index = result.Count - 1; index >= 0; index--)
             {
-                if (!state.UseState && state.Reference.IsAlive)
+                var state = result[index];
+                if (!state.UseState)
                 {
-                    obj = state.Reference.Target;
+                    if (state.Reference.Target == null)
+                    {
+                        result.RemoveAt(index);
+                    }
+                    else
+                    {
+                        state.UseState = true;
+                        obj = state.Reference.Target;
+                    }
                 }
             }
 
