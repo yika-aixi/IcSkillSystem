@@ -39,6 +39,11 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             _objectCache = new Dictionary<Type, List<ObjectState>>();
         }
 
+        /// <summary>
+        /// 添加对象到池子
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="state"></param>
         public void AddObjectToPool(object obj,bool state)
         {
             var type = obj.GetType();
@@ -137,6 +142,9 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             }
         }
 
+        /// <summary>
+        /// 清理被垃圾回收掉的缓存
+        /// </summary>
         public void CleanUp()
         {
             foreach (var objectCacheValue in _objectCache)
@@ -157,7 +165,12 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             }
         }
 
-
+        
+        /// <summary>
+        /// 获取类型指定状态的列表
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="state"></param>
         public List<object> this[Type type,bool state]
         {
             get
@@ -173,6 +186,10 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             }
         }
         
+        /// <summary>
+        /// 获取类型的列表
+        /// </summary>
+        /// <param name="type"></param>
         public List<object> this[Type type]
         {
             get
