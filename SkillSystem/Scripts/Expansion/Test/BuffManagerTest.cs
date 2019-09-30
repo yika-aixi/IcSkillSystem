@@ -17,12 +17,12 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
     public class TestBuff : IBuffDataComponent
     {
-        public string name;
+//        public string name;
 
-        public override string ToString()
-        {
-            return $"Name: {name}";
-        }
+//        public override string ToString()
+//        {
+//            return $"Name: {name}";
+//        }
     }
     public class BuffManagerTest
     {
@@ -64,7 +64,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             for (int i = 0; i < 5000; i++)
             {
                 var i1 = i;
-                _buffManage.CreateAndAddBuff(type,_entity, x => { ((TestBuff) x).name = i1.ToString();});
+                _buffManage.CreateAndAddBuff(type,_entity, /*x => { ((TestBuff) x).name = i1.ToString();}*/null);
             }
             _setEndMemory();
             Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
@@ -81,8 +81,30 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             for (int i = 0; i < 5000; i++)
             {
-                _buffManage.AddBuff(_entity,new TestBuff(){name = i.ToString()});
+                _buffManage.AddBuff(_entity,new TestBuff(){/*name = i.ToString()*/});
             }
+            _setEndMemory();
+            Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
+            List<IBuffDataComponent> buffs = new List<IBuffDataComponent>();
+            _buffManage.GetBuffs(_entity, buffs);
+            
+            Assert.GreaterOrEqual(buffs.Count,5000);
+        }
+
+        struct TestS:IBuffDataComponent
+        {
+        }
+        
+        [Test()]
+        public void 添加buff_Struct()
+        {
+            _startMemory = GC.GetTotalMemory(false);
+
+            for (int i = 0; i < 5000; i++)
+            {
+                _buffManage.AddBuff(_entity,new TestS());
+            }
+            
             _setEndMemory();
             Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
             List<IBuffDataComponent> buffs = new List<IBuffDataComponent>();
@@ -100,7 +122,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             for (int i = 0; i < 5000; i++)
             {
                 var i1 = i;
-                var buff = _buffManage.CreateAndAddBuff(type,_entity,x => { ((TestBuff) x).name = i1.ToString();});
+                var buff = _buffManage.CreateAndAddBuff(type,_entity,/*x => { ((TestBuff) x).name = i1.ToString();}*/null);
                 _buffManage.RemoveBuffEx(_entity,buff);
             }
             _setEndMemory();
@@ -118,7 +140,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             for (int i = 0; i < 5000; i++)
             {
-                var buffDataComponent = new TestBuff(){name = i.ToString()};
+                var buffDataComponent = new TestBuff()/*{name = i.ToString()}*/;
                 _buffManage.AddBuff(_entity,buffDataComponent);
                 _buffManage.RemoveBuff(_entity,buffDataComponent);
             }

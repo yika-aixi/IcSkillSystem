@@ -35,7 +35,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             for (int i = 0; i < 5000; i++)
             {
                 var i1 = i;
-                var buff = _buffManage.CreateAndAddBuff(type, _entity, x => { ((TestBuff) x).name = i1.ToString(); });
+                var buff = _buffManage.CreateAndAddBuff(type, _entity, /*x => { ((TestBuff) x).name = i1.ToString(); }*/null);
             }
         }
         
@@ -47,7 +47,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             for (int i = 0; i < 5000; i++)
             {
                 var i1 = i;
-                var buff = _buffManage.CreateAndAddBuff(type, _entity, x => { ((TestBuff) x).name = i1.ToString(); });
+                var buff = _buffManage.CreateAndAddBuff(type, _entity, /*x => { ((TestBuff) x).name = i1.ToString(); }*/null);
                 _buffManage.RemoveBuffEx(_entity, buff);
             }
         }
