@@ -176,13 +176,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             if (_entities.Contains(entity))
             {
-                _entities.Remove(entity);
-
                 foreach (var buff in _buffMap[entity].ToList())
                 {
                     RemoveBuff(entity, buff);
                 }
-
+                
+                _entities.Remove(entity);
                 _buffMap.Remove(entity);
             }
         }
