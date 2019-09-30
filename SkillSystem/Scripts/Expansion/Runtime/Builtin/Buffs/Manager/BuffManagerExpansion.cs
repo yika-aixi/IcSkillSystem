@@ -10,7 +10,6 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils;
-using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
@@ -71,9 +70,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         
         public static void RemoveBuffEx(this IBuffManager self,IEntity entity,IBuffDataComponent buff)
         {
-            self.RemoveBuff(entity, buff);
-            
-            _buffPool.Recede(buff);
+            if (self.RemoveBuff(entity, buff))
+            {
+                _buffPool.Recede(buff);
+            }
         }
     }
 }
