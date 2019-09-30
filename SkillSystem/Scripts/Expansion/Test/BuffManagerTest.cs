@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
+using Debug = UnityEngine.Debug;
 
 namespace IcSkillSystem.SkillSystem.Expansion.Tests
 {
@@ -78,12 +79,15 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加buff()
         {
             _startMemory = GC.GetTotalMemory(false);
-
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
             for (int i = 0; i < 5000; i++)
             {
                 _buffManage.AddBuff(_entity,new TestBuff(){/*name = i.ToString()*/});
             }
+            stop.Stop();
             _setEndMemory();
+            Debug.Log($"Time:{stop.Elapsed}");
             Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
             List<IBuffDataComponent> buffs = new List<IBuffDataComponent>();
             _buffManage.GetBuffs(_entity, buffs);
@@ -91,7 +95,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             Assert.GreaterOrEqual(buffs.Count,5000);
         }
 
-        struct TestS:IBuffDataComponent
+        public struct TestS:IBuffDataComponent
         {
         }
         
@@ -99,13 +103,15 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加buff_Struct()
         {
             _startMemory = GC.GetTotalMemory(false);
-
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
             for (int i = 0; i < 5000; i++)
             {
                 _buffManage.AddBuff(_entity,new TestS());
             }
-            
+            stop.Stop();
             _setEndMemory();
+            Debug.Log($"Time:{stop.Elapsed}");
             Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
             List<IBuffDataComponent> buffs = new List<IBuffDataComponent>();
             _buffManage.GetBuffs(_entity, buffs);
