@@ -12,6 +12,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
@@ -39,6 +40,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public IBuffManager AddBuffSystem(IBuffSystem buffSystem)
         {
+            if (_createSystems.Exists(x=>x.GetType() == buffSystem.GetType()) ||
+                _updateSystems.Exists(x=>x.GetType() == buffSystem.GetType()) ||
+                _destroySystems.Exists(x=>x.GetType() == buffSystem.GetType()))
+            {
+                Debug.LogWarning($"{buffSystem.GetType()} System already exists, skip");
+                return this;
+            }
+            
             if (buffSystem is IBuffCreateSystem createSystem)
             {
                 _createSystems.Add(createSystem);
