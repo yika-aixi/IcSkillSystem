@@ -72,24 +72,37 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
             
             _buffMap[entity].Add(buff);
+            
+            foreach (var createSystem in _createSystems)
+            {
+                if (createSystem.Filter(entity,buff))
+                {
+                    createSystem.Create(entity,buff);
+                }    
+            }
+        }
 
         public bool RemoveBuff(IEntity entity, IBuffDataComponent buff)
         {
-            foreach (var destroySystem in _destroySystems)
-            {
-                if (destroySystem.Filter(entity,buff))
-                {
-                    destroySystem.Destroy(entity,buff);
-                }    
-            }
-            
+            bool result = false;
             if (_entities.Contains(entity))
             {
                 var buffs = _buffMap[entity];
-                return buffs.Remove(buff);
+                result = buffs.Remove(buff);
             }
 
-            return false;
+            if (result)
+            {
+                foreach (var destroySystem in _destroySystems)
+                {
+                    if (destroySystem.Filter(entity,buff))
+                    {
+                        destroySystem.Destroy(entity,buff);
+                    }    
+                }
+            }
+
+            return result;
         }
 
         public void GetBuffs<T>(IEntity entity, List<T> buffs)
