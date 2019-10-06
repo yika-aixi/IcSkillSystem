@@ -18,12 +18,12 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
     public class TestBuff : IBuffDataComponent
     {
-//        public string name;
+        public string name;
 
-//        public override string ToString()
-//        {
-//            return $"Name: {name}";
-//        }
+        public override string ToString()
+        {
+            return $"Name: {name}";
+        }
     }
     public class BuffManagerTest
     {
