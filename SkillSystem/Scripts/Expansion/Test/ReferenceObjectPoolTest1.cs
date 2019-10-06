@@ -27,7 +27,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [SetUp]
         public void Init()
         {
-            _pool = new ReferenceObjectPool();
+            _pool = new ReferenceObjectPool(maxCount: 20000);
             _objs = new List<testObj>();
             _pool.RecedeCache = true;
             _stop = new Stopwatch();
@@ -55,7 +55,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(true);
-            Assert.True(_pool[typeof(testObj),true].Count == 500);
+            Assert.GreaterOrEqual(_pool[typeof(testObj),true].Count,500);
         } 
         
         
@@ -77,15 +77,14 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(true);
-            Assert.True(_pool[typeof(testObj),true].Count == 300);
-            Assert.True(_pool[typeof(testObj),false].Count == 200);
+            Assert.GreaterOrEqual(_pool[typeof(testObj),true].Count,300);
+            Assert.GreaterOrEqual(_pool[typeof(testObj),false].Count,200);
         } 
         
         [Test]
-        public void 一边创建一边归还()
+        public void 一边创建一边归还10001()
         {
-            var startMemory = GC.GetTotalMemory(true);
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 10001; i++)
             {
                 var testObj = _pool.GetObject<testObj>();
                 _pool.Recede(testObj);
@@ -93,7 +92,6 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(true);
             Assert.GreaterOrEqual(_pool[typeof(testObj)].Count, 1);
-            Assert.GreaterOrEqual(_pool[typeof(testObj), false].Count, 1);
         } 
         
         [Test]
