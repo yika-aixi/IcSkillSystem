@@ -1,13 +1,7 @@
-//创建者:Icarus
-//手动滑稽,滑稽脸
-//ヾ(•ω•`)o
-//https://www.ykls.app
-//2019年09月15日-18:59
-//CabinIcarus.SkillSystem.Runtime
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
@@ -16,8 +10,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
-    //todo 断言保护
-    public class BuffManager:IBuffManager
+    public class StructBuffManager:IBuffManager
     {
         private List<IEntity> _entities;
         
@@ -29,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         private List<IBuffDestroySystem> _destroySystems;
 
-        public BuffManager()
+        public StructBuffManager()
         {
             _entities = new List<IEntity>();
             _buffMap = new Dictionary<IEntity, List<IBuffDataComponent>>();
@@ -74,6 +67,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void AddBuff(IEntity entity, IBuffDataComponent buff)
         {
+            
+#if UNITY_EDITOR
+//            var type = buff.GetType();
+//            if (!type.IsValueType ||
+//                (type.IsValueType && type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Any(x=>x.)))
+//            {
+//                
+//            }
+#endif
             if (!_entities.Contains(entity))
             {
                 _entities.Add(entity);
