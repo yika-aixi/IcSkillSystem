@@ -111,19 +111,39 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public async void 创建10001_Pool()
         {
             var type = typeof(testObj);
-            _pool.AddObjectToPool(new testObj(), false);
             for (int i = 0; i < 10001; i++)
             {
-                var test = _pool.GetObject(type);
-//                _objs.Add((testObj) test);
-//                if (i % 3 != 0)
-//                {
-//                    _pool.Recede(test);
-//                }
+                _pool.GetObject(type);
             }
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(false);
-//            Assert.GreaterOrEqual(_pool.GetTypeCacheCount(type),10001);
+            Assert.GreaterOrEqual(_pool.GetTypeCacheCount(type),10001);
+        } 
+        
+        [Test]
+        public async void 创建100()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                var testObj = new testObj();
+                _objs.Add(testObj);
+            }
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
+            Assert.GreaterOrEqual(_objs.Count,100);
+        } 
+        
+        [Test]
+        public async void 创建100_Pool()
+        {
+            var type = typeof(testObj);
+            for (int i = 0; i < 100; i++)
+            {
+                _pool.GetObject(type);
+            }
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(false);
+            Assert.GreaterOrEqual(_pool.GetTypeCacheCount(type),100);
         } 
     }
 }
