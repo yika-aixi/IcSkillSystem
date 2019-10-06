@@ -362,20 +362,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         /// <returns></returns>
         public int GetTypeCacheCount(Type type)
         {
-            int count = 0;
-            if (_weakObjectCache.TryGetValue(type,out var result))
-            {
-                for (var i = 0; i < result.Count; i++)
-                {
-                    var state = result[i];
-                    if (state.Obj != null)
-                    {
-                        ++count;
-                    }
-                }
-            }
-
-            return count;
+            return this[type].Count;
         }
     }
 }
