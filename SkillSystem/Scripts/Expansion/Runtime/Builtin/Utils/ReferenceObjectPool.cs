@@ -13,24 +13,34 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
 {
     public class ReferenceObjectPool
     {
-        class WeakObjectState
+        interface IObjectState
+        {
+            bool UseState { get; set; }
+
+            object GetValue();
+        }
+        
+        class WeakObjectState:IObjectState
         {
             public object Obj => _reference.Target;
             private WeakReference _reference;
-            public bool UseState;
 
             public WeakObjectState(object obj, bool use = true)
             {
                 this._reference = new WeakReference(obj,false);
                 UseState = use;
             }
+
+            public bool UseState { get; set; }
+            public object GetValue()
+            {
+                return _reference.Target;
+            }
         }
         
-        class ObjectState
+        class ObjectState:IObjectState
         {
             public object Obj { get; }
-            
-            public bool UseState;
             
             public int LastUseTime;
             
@@ -39,6 +49,12 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 Obj = obj;
                 LastUseTime = lastUseTime;
                 UseState = use;
+            }
+
+            public bool UseState { get; set; }
+            public object GetValue()
+            {
+                return Obj;
             }
         }
 
@@ -53,7 +69,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         
         private Dictionary<Type, List<ObjectState>> _objectCache;
         
-        private Dictionary<Type, Queue<object>> _objectCacheQueue;
+        private Dictionary<Type, Queue<IObjectState>> _objectCacheQueue;
 
         public int MaxCount;
         
@@ -74,7 +90,7 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             
             _objectCache = new Dictionary<Type, List<ObjectState>>();
             
-            _objectCacheQueue = new Dictionary<Type, Queue<object>>();
+            _objectCacheQueue = new Dictionary<Type, Queue<IObjectState>>();
             
             MaxCount = maxCount;
 
@@ -105,10 +121,13 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
 
                 _objectCache.Add(type,oResult);
             }
+
+            IObjectState _objectState;
             
             if (oResult.Count < MaxCount)
             {
-                oResult.Add(new ObjectState(obj,ClearTime,state));
+                _objectState = new ObjectState(obj, _getCurrentSeconds(), state);
+                oResult.Add((ObjectState) _objectState);
             }
             else
             {
@@ -118,19 +137,21 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 
                     _weakObjectCache.Add(type,result);
                 }
+
+                _objectState = new WeakObjectState(obj, state);
                 
-                result.Add(new WeakObjectState(obj,state));
+                result.Add((WeakObjectState) _objectState);
             }
           
             if (!state)
             {
                 if (!_objectCacheQueue.TryGetValue(type,out var queues))
                 {
-                    queues = new Queue<object>();
+                    queues = new Queue<IObjectState>();
                     _objectCacheQueue.Add(type,queues);
                 }
 
-                queues.Enqueue(obj);
+                queues.Enqueue(_objectState);
             }
         }
         
@@ -161,7 +182,9 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             {
                 if (result.Count > 0)
                 {
-                    obj = result.Dequeue();
+                    var state = result.Dequeue();
+                    state.UseState = true;
+                    obj = state.GetValue();
                 }
             }
             
@@ -221,52 +244,58 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         public void Recede(object obj)
         {
             var type = obj.GetType();
-
-            if (!_objectCache.TryGetValue(type,out var oResult))
-            {
-                if (!RecedeCache)
-                {
-                    return;
-                }
-                
-                AddObjectToPool(obj,false);
-
-                return;
-            }
-
-            if (oResult.Count < MaxCount)
-            {
-                foreach (var objectState in oResult)
-                {
-                    if (objectState.Obj == obj)
-                    {
-                        objectState.UseState = false;
-                        break;
-                    }
-                }
-                
-                return;
-            }
-            
             bool hit = false;
+
+            IObjectState qState = null;
             
-            if (_weakObjectCache.TryGetValue(type,out var result))
+            if (_objectCache.TryGetValue(type,out var oResult))
             {
-                for (var i = 0; i < result.Count; i++)
+                if (oResult.Count < MaxCount)
                 {
-                    var objectState = result[i];
-                    if (objectState.Obj == obj)
+                    foreach (var state in oResult)
                     {
-                        hit = true;
-                        objectState.UseState = false;
+                        if (state.Obj == obj)
+                        {
+                            qState = state;
+                            hit = true;
+                            state.UseState = false;
+                            break;
+                        }
                     }
                 }
+            }
 
-                //被回收了,加入弱引用缓存
-                if (!hit)
+            if (!hit)
+            {
+                if (_weakObjectCache.TryGetValue(type,out var result))
                 {
-                    result.Add(new WeakObjectState(obj,false));
+                    foreach (var state in result)
+                    {
+                        if (state.Obj == obj)
+                        {
+                            qState = state;
+                            hit = true;
+                            state.UseState = false;
+                            break;
+                        }
+                    }
                 }
+            }
+
+            if (hit)
+            {
+                if (!_objectCacheQueue.TryGetValue(type, out var result))
+                {
+                    result = new Queue<IObjectState>();
+                    _objectCacheQueue.Add(type, result);
+                }
+                
+                result.Enqueue(qState);
+            }
+            
+            if (!hit && RecedeCache)
+            {
+                AddObjectToPool(obj,false);
             }
         }
 
@@ -360,9 +389,77 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public int GetTypeCacheCount(Type type)
+        public int GetTypeAllCacheCount(Type type)
         {
-            return this[type].Count;
+            int count = 0;
+            
+            if (_objectCache.TryGetValue(type, out var oResult))
+            {
+                count += oResult.Count;
+            }
+            
+            if (_weakObjectCache.TryGetValue(type, out var wResult))
+            {
+                count += wResult.Count;
+            }
+            
+            if (_objectCacheQueue.TryGetValue(type, out var qResult))
+            {
+                count += qResult.Count;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// 获取类型队列缓存数量
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int GetCacheQueueCount(Type type)
+        {
+            int count = 0;
+
+            if (_objectCacheQueue.TryGetValue(type, out var qResult))
+            {
+                count = qResult.Count;
+            }
+
+            return count;
+        }
+        
+        /// <summary>
+        /// 获取类型弱缓存数量
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int GetCacheWeakCount(Type type)
+        {
+            int count = 0;
+
+            if (_weakObjectCache.TryGetValue(type, out var wResult))
+            {
+                count = wResult.Count;
+            }
+
+            return count;
+        }
+        
+        /// <summary>
+        /// 获取类型强缓存数量
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int GetCacheCount(Type type)
+        {
+            int count = 0;
+
+            if (_objectCache.TryGetValue(type, out var oResult))
+            {
+                count = oResult.Count;
+            }
+
+            return count;
         }
     }
 }
