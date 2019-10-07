@@ -6,6 +6,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using System;
+using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
@@ -74,6 +75,24 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             {
                 _buffPool.Recede(buff);
             }
+            else
+            {
+                UnityEngine.Debug.LogWarning($"{entity} Remove {buff} Buff failure!");
+            }
+        }
+        
+        public static void DestroyEntityEx(this IBuffManager self,IEntity entity)
+        {
+            List<IBuffDataComponent> _buffs = new List<IBuffDataComponent>();
+            
+            self.GetBuffs(entity,_buffs);
+            
+            for (var i = 0; i < _buffs.Count; i++)
+            {
+                _buffPool.Recede(_buffs[i]);
+            }
+            
+            self.DestroyEntity(entity);
         }
     }
 }
