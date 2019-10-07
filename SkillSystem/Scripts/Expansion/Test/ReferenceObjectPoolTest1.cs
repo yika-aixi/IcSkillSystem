@@ -77,8 +77,38 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(true);
-            Assert.GreaterOrEqual(_pool[typeof(testObj),true].Count,300);
-            Assert.GreaterOrEqual(_pool[typeof(testObj),false].Count,200);
+            Assert.GreaterOrEqual(_pool.GetCacheCount(typeof(testObj)),300);
+            Assert.GreaterOrEqual(_pool.GetCacheQueueCount(typeof(testObj)),200);
+        } 
+        
+        /// <summary>
+        /// 对象归还
+        /// </summary>
+        [Test]
+        public void 创建500归还200然后在使用200()
+        {
+            for (int i = 0; i < 500; i++)
+            {
+                var testObj = _pool.GetObject<testObj>();
+                _objs.Add(testObj);
+            }
+            
+            for (int i = 0; i < 200; i++)
+            {
+                _pool.Recede(_objs[i]);
+            }
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
+            Assert.GreaterOrEqual(_pool.GetCacheCount(typeof(testObj)),300);
+            Assert.GreaterOrEqual(_pool.GetCacheWeakCount(typeof(testObj)),0);
+            Assert.GreaterOrEqual(_pool.GetCacheQueueCount(typeof(testObj)),200);
+            for (int i = 0; i < 200; i++)
+            {
+                _pool.GetObject<testObj>();
+            }
+            Assert.GreaterOrEqual(_pool.GetCacheQueueCount(typeof(testObj)),0);
+            Assert.GreaterOrEqual(_pool.GetCacheWeakCount(typeof(testObj)),0);
+            Assert.GreaterOrEqual(_pool.GetCacheCount(typeof(testObj)),500);
         } 
         
         [Test]
@@ -117,7 +147,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(false);
-            Assert.GreaterOrEqual(_pool.GetTypeCacheCount(type),10001);
+            Assert.GreaterOrEqual(_pool.GetTypeAllCacheCount(type),10001);
         } 
         
         [Test]
@@ -143,7 +173,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(false);
-            Assert.GreaterOrEqual(_pool.GetTypeCacheCount(type),100);
+            Assert.GreaterOrEqual(_pool.GetTypeAllCacheCount(type),100);
         } 
     }
 }
