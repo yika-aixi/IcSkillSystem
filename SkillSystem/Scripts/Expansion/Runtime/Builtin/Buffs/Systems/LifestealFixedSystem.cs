@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         private List<IFixedLifesteal> _fixedLifesteals;
         private List<IMechanicBuff> _mechanicBuffs;
 
-        public LifestealFixedSystem(IBuffManager buffManager) : base(buffManager)
+        public LifestealFixedSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _fixedLifesteals = new List<IFixedLifesteal>();
             _mechanicBuffs = new List<IMechanicBuff>();

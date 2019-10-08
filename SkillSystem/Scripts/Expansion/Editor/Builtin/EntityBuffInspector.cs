@@ -43,7 +43,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 return;
             }
 
-            _entityBuff.BuffManager.GetBuffs<IBuffDataComponent>(_entityBuff.Entity,_buffs);
+            _entityBuff.BuffManager.GetBuffs(_entityBuff.Entity,_buffs);
             _buffGroup.Clear();
 
             if (_buffs.Count == 0)

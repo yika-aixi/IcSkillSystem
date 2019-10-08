@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 
@@ -21,7 +22,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Condi
 
         private List<IMechanicBuff> _buffs;
 
-        public ManaCheck(IBuffManager buffManager) : base(buffManager)
+        public ManaCheck(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _buffs = new List<IMechanicBuff>();
         }

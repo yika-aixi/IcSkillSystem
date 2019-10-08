@@ -13,9 +13,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
     public abstract class ABuffDestroySystem:IBuffDestroySystem
     {
-        protected readonly IBuffManager BuffManager;
+        protected readonly IBuffManager<IBuffDataComponent> BuffManager;
 
-        protected ABuffDestroySystem(IBuffManager buffManager)
+        protected ABuffDestroySystem(IBuffManager<IBuffDataComponent> buffManager)
         {
             BuffManager = buffManager;
         }

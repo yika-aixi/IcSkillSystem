@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     public class DamageReduceFixedSystem:ABuffCreateSystem
     {
         private List<IDamageReduceFixedBuff> _damageReduceFixedBuffs;
-        public DamageReduceFixedSystem(IBuffManager buffManager) : base(buffManager)
+        public DamageReduceFixedSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _damageReduceFixedBuffs = new List<IDamageReduceFixedBuff>();
         }

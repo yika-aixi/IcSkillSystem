@@ -5,6 +5,7 @@
 //2019年09月14日-19:30
 //CabinIcarus.SkillSystem.Runtime
 
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
@@ -12,9 +13,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
     public abstract class ABuffUpdateSystem : IBuffUpdateSystem
     {
-        protected readonly IBuffManager BuffManager;
+        protected readonly IBuffManager<IBuffDataComponent> BuffManager;
 
-        protected ABuffUpdateSystem(IBuffManager buffManager)
+        protected ABuffUpdateSystem(IBuffManager<IBuffDataComponent> buffManager)
         {
             BuffManager = buffManager;
         }

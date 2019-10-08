@@ -19,7 +19,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     {
         private List<IBuffDataComponent> _buffs;
 
-        public BuffTimeSystem(IBuffManager buffManager) : base(buffManager)
+        public BuffTimeSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _buffs = new List<IBuffDataComponent>();
         }

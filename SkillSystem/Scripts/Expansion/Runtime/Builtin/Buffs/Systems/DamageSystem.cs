@@ -15,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     {
         private List<IMechanicBuff> _buffs;
 
-        public DamageSystem(IBuffManager buffManager) : base(buffManager)
+        public DamageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _buffs = new List<IMechanicBuff>();
         }

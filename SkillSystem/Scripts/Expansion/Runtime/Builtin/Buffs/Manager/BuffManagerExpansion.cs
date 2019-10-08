@@ -24,12 +24,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffPool.RecedeCache = true;
         }
 
-        public static T CreateBuff<T>(this IBuffManager self, params object[] args) where T : IBuffDataComponent
+        public static T CreateBuff<T>(this IBuffManager<IBuffDataComponent> self, params object[] args) where T : IBuffDataComponent
         {
             return (T) self.CreateBuff(typeof(T), args);
         }
         
-        public static IBuffDataComponent CreateBuff(this IBuffManager self,Type buffType, params object[] args)
+        public static IBuffDataComponent CreateBuff(this IBuffManager<IBuffDataComponent> self,Type buffType, params object[] args)
         {
             if (!typeof(IBuffDataComponent).IsAssignableFrom(buffType))
             {
@@ -41,7 +41,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return buff;
         }
 
-        public static T CreateAndAddBuff<T>(this IBuffManager self,IEntity entity, Action<T> buffSetting,params object[] args) where T : IBuffDataComponent
+        public static T CreateAndAddBuff<T>(this IBuffManager<IBuffDataComponent> self,IEntity entity, Action<T> buffSetting,params object[] args) where T : IBuffDataComponent
         {
             if (buffSetting == null)
             {
@@ -53,7 +53,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
         
-        public static IBuffDataComponent CreateAndAddBuff(this IBuffManager self,Type buffType,IEntity entity, Action<IBuffDataComponent> buffSetting,params object[] args)
+        public static IBuffDataComponent CreateAndAddBuff(this IBuffManager<IBuffDataComponent> self,Type buffType,IEntity entity, Action<IBuffDataComponent> buffSetting,params object[] args)
         {
             IBuffDataComponent buff = self.CreateBuff(buffType, args);
             
@@ -69,19 +69,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return buff;
         }
         
-        public static void RemoveBuffEx(this IBuffManager self,IEntity entity,IBuffDataComponent buff)
+        public static void RemoveBuffEx(this IBuffManager<IBuffDataComponent> self,IEntity entity,IBuffDataComponent buff)
         {
             if (self.RemoveBuff(entity, buff))
             {
                 _buffPool.Recede(buff);
             }
+#if UNITY_EDITOR
             else
             {
                 UnityEngine.Debug.LogWarning($"{entity} Remove {buff} Buff failure!");
             }
+#endif
         }
         
-        public static void DestroyEntityEx(this IBuffManager self,IEntity entity)
+        public static void DestroyEntityEx(this IBuffManager<IBuffDataComponent> self,IEntity entity)
         {
             List<IBuffDataComponent> _buffs = new List<IBuffDataComponent>();
             

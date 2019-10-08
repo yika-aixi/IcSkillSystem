@@ -1,5 +1,4 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
 using NPBehave;
 using UnityEngine;
 

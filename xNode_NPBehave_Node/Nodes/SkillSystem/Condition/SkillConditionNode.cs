@@ -1,10 +1,9 @@
 ﻿using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
-using NPBehave;
 using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
     public class SkillConditionNode:ANPNode<Func<bool>>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IBuffManager _buffManagerValue;
+        private IBuffManager<IBuffDataComponent> _buffManagerValue;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]

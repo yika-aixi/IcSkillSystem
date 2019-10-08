@@ -17,7 +17,7 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
     //todo 断言保护
-    public class BuffManager:IBuffManager
+    public class BuffManager:IBuffManager<IBuffDataComponent>
     {
         private List<IEntity> _entities;
         
@@ -38,7 +38,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _destroySystems = new List<IBuffDestroySystem>();
         }
 
-        public IBuffManager AddBuffSystem(IBuffSystem buffSystem)
+        public IBuffManager<IBuffDataComponent> AddBuffSystem(IBuffSystem buffSystem)
         {
             if (_createSystems.Exists(x=>x.GetType() == buffSystem.GetType()) ||
                 _updateSystems.Exists(x=>x.GetType() == buffSystem.GetType()) ||
@@ -114,12 +114,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return result;
         }
 
-        public void GetBuffs<T>(IEntity entity, List<T> buffs)
+        public void GetBuffs<T>(IEntity entity, List<T> buffs) where T : IBuffDataComponent
         {
             GetBuffs(entity, null, buffs);
         }
 
-        public void GetBuffs<T>(IEntity entity, Predicate<T> match, List<T> buffs)
+        public void GetBuffs<T>(IEntity entity, Predicate<T> match, List<T> buffs) where T : IBuffDataComponent
         {
             buffs.Clear();
             if (_entities.Contains(entity))

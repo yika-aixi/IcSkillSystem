@@ -15,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         private List<IPercentageLifesteal> _damageReducePercentageBuffs;
         private List<IMechanicBuff> _hps;
 
-        public LifestealPercentageSystem(IBuffManager buffManager) : base(buffManager)
+        public LifestealPercentageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _damageReducePercentageBuffs = new List<IPercentageLifesteal>();
             _hps = new List<IMechanicBuff>();

@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     public class DamageReducePercentageSystem:ABuffCreateSystem
     {
         private List<IDamageReducePercentageBuff> _damageReducePercentageBuffs;
-        public DamageReducePercentageSystem(IBuffManager buffManager) : base(buffManager)
+        public DamageReducePercentageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _damageReducePercentageBuffs = new List<IDamageReducePercentageBuff>();
         }

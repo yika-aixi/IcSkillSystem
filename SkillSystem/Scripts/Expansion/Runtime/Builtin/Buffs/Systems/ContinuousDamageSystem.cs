@@ -15,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     public class ContinuousDamageSystem<T>:ABuffUpdateSystem,IBuffCreateSystem where T : IDamageBuff,new()
     {
         private List<IContinuousDamageBuff> _continuousBuffs;
-        public ContinuousDamageSystem(IBuffManager buffManager) : base(buffManager)
+        public ContinuousDamageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
         {
             _continuousBuffs = new List<IContinuousDamageBuff>();
         }

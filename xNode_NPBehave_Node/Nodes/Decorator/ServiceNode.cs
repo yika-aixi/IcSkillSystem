@@ -1,5 +1,4 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Com;
-using NPBehave;
+﻿using NPBehave;
 using UnityEngine;
 using Action = System.Action;
 
