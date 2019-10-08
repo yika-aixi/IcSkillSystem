@@ -14,8 +14,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// <summary>
     /// buff 创建系统
     /// </summary>
-    public interface IBuffCreateSystem:IBuffSystem,IBuffFilter
+    public interface IBuffCreateSystem<in T>:IBuffSystem,IBuffFilter<T> where T : IBuffDataComponent
     {
-        void Create(IEntity entity,IBuffDataComponent buff);
+        void Create(IEntity entity,T buff);
     }
 }

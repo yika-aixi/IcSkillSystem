@@ -15,23 +15,23 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
-    public class BuffTimeSystem:ABuffUpdateSystem
+    public class BuffTimeSystem<T>:ABuffUpdateSystem<T> where T : IBuffDataComponent
     {
-        private List<IBuffDataComponent> _buffs;
+        private List<T> _buffs;
 
-        public BuffTimeSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
+        public BuffTimeSystem(IBuffManager<T> buffManager) : base(buffManager)
         {
-            _buffs = new List<IBuffDataComponent>();
+            _buffs = new List<T>();
         }
 
         public override bool Filter(IEntity entity)
         {
-            return BuffManager.HasBuff<IBuffDataComponent>(entity);
+            return BuffManager.HasBuff<T>(entity);
         }
 
         public override void Execute(IEntity entity)
         {
-            BuffManager.GetBuffs(entity, x => x is IBuffTimeDataComponent,_buffs);
+            BuffManager.GetBuffs(entity, x => x is T,_buffs);
             
             foreach (var dataComponent in _buffs)
             {

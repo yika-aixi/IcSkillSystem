@@ -12,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 持续伤害
     /// </summary>
-    public class ContinuousDamageSystem<T>:ABuffUpdateSystem,IBuffCreateSystem where T : IDamageBuff,new()
+    public class ContinuousDamageSystem<T>:ABuffUpdateSystem<IBuffDataComponent>,IBuffCreateSystem<IBuffDataComponent> where T : IDamageBuff,new()
     {
         private List<IContinuousDamageBuff> _continuousBuffs;
         public ContinuousDamageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)

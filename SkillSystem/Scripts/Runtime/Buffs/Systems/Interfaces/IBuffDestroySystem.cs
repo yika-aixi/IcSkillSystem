@@ -14,8 +14,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// <summary>
     /// buff 销毁系统
     /// </summary>
-    public interface IBuffDestroySystem:IBuffSystem,IBuffFilter
+    public interface IBuffDestroySystem<in T>:IBuffSystem,IBuffFilter<T> where T : IBuffDataComponent
     {
-        void Destroy(IEntity entity,IBuffDataComponent buff);
+        void Destroy(IEntity entity,T buff);
     }
 }

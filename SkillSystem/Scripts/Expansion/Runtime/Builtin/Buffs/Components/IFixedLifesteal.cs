@@ -5,6 +5,7 @@
 //2019年09月27日-22:02
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
+using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
@@ -13,6 +14,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// 固定值吸血
     /// </summary>
     public interface IFixedLifesteal:ILifesteal,IBuffDataComponent
+    {
+    }
+    
+    /// <summary>
+    /// 固定值吸血
+    /// </summary>
+    public interface IFixedLifestealStruct:ILifesteal,IStructBuffDataComponent
     {
     }
 }

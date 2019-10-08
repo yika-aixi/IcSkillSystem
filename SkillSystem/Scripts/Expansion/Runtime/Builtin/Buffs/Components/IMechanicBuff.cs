@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+﻿using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
@@ -47,6 +48,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// 能力buff
     /// </summary>
     public interface IMechanicBuff:IBuffDataComponent,IBuffValueDataComponent
+    {
+        MechanicsType MechanicsType { get; set; }
+    }
+    
+    /// <summary>
+    /// 能力buff
+    /// </summary>
+    public interface IMechanicBuffStruct:IStructBuffDataComponent,IBuffValueDataComponent
     {
         MechanicsType MechanicsType { get; set; }
     }

@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 伤害处理系统
     /// </summary>
-    public class DamageSystem:ABuffCreateSystem
+    public class DamageSystem:ABuffCreateSystem<IBuffDataComponent>
     {
         private List<IMechanicBuff> _buffs;
 

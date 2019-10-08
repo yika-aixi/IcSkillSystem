@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+﻿using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
@@ -23,6 +24,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// 属性buff
     /// </summary>
     public interface IAttributeBuff:IBuffDataComponent,IBuffValueDataComponent
+    {
+        AttributeType Type { get; }
+    }
+    
+    /// <summary>
+    /// 属性buff
+    /// </summary>
+    public interface IAttributeStructBuff:IStructBuffDataComponent,IBuffValueDataComponent
     {
         AttributeType Type { get; }
     }

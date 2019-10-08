@@ -11,11 +11,11 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
-    public abstract class ABuffUpdateSystem : IBuffUpdateSystem
+    public abstract class ABuffUpdateSystem<T> : IBuffUpdateSystem where T : IBuffDataComponent
     {
-        protected readonly IBuffManager<IBuffDataComponent> BuffManager;
+        protected readonly IBuffManager<T> BuffManager;
 
-        protected ABuffUpdateSystem(IBuffManager<IBuffDataComponent> buffManager)
+        protected ABuffUpdateSystem(IBuffManager<T> buffManager)
         {
             BuffManager = buffManager;
         }

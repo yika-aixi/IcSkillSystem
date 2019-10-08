@@ -11,16 +11,16 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
-    public abstract class ABuffDestroySystem:IBuffDestroySystem
+    public abstract class ABuffDestroySystem<T>:IBuffDestroySystem<T> where T : IBuffDataComponent
     {
-        protected readonly IBuffManager<IBuffDataComponent> BuffManager;
+        protected readonly IBuffManager<T> BuffManager;
 
-        protected ABuffDestroySystem(IBuffManager<IBuffDataComponent> buffManager)
+        protected ABuffDestroySystem(IBuffManager<T> buffManager)
         {
             BuffManager = buffManager;
         }
 
-        public abstract bool Filter(IEntity entity, IBuffDataComponent buff);
-        public abstract void Destroy(IEntity entity, IBuffDataComponent buff);
+        public abstract bool Filter(IEntity entity, T buff);
+        public abstract void Destroy(IEntity entity, T buff);
     }
 }

@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 百分比伤害减少,如果存在多个一样的buff,只会使用最后一个
     /// </summary>
-    public class DamageReducePercentageSystem:ABuffCreateSystem
+    public class DamageReducePercentageSystem:ABuffCreateSystem<IBuffDataComponent>
     {
         private List<IDamageReducePercentageBuff> _damageReducePercentageBuffs;
         public DamageReducePercentageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)

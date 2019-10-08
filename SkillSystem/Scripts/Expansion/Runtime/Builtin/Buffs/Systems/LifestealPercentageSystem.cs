@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 百分比吸血,可叠加
     /// </summary>
-    public class LifestealPercentageSystem:ABuffDestroySystem
+    public class LifestealPercentageSystem:ABuffDestroySystem<IBuffDataComponent>
     {
         private List<IPercentageLifesteal> _damageReducePercentageBuffs;
         private List<IMechanicBuff> _hps;

@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+﻿using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
@@ -12,6 +13,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
         IBuffType,
         IBuffTriggerTime,
         IBuffMakerEntityComponent
+    {
+    }
+    
+    /// <summary>
+    /// 持续伤害buff
+    /// </summary>
+    public interface IContinuousDamageStructBuff:
+        IStructBuffDataComponent,
+        IBuffValueDataComponent,
+        IBuffType,
+        IBuffTriggerTime
     {
     }
 }

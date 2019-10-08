@@ -69,7 +69,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return buff;
         }
         
-        public static void RemoveBuffEx(this IBuffManager<IBuffDataComponent> self,IEntity entity,IBuffDataComponent buff)
+        public static void RemoveBuffEx<T>(this IBuffManager<T> self,IEntity entity,T buff) where T : IBuffDataComponent
         {
             if (self.RemoveBuff(entity, buff))
             {

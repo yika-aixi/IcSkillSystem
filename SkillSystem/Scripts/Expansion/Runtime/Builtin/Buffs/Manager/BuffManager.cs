@@ -23,19 +23,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         
         private Dictionary<IEntity,List<IBuffDataComponent>> _buffMap;
         
-        private List<IBuffCreateSystem> _createSystems;
+        private List<IBuffCreateSystem<IBuffDataComponent>> _createSystems;
 
         private List<IBuffUpdateSystem> _updateSystems;
 
-        private List<IBuffDestroySystem> _destroySystems;
+        private List<IBuffDestroySystem<IBuffDataComponent>> _destroySystems;
 
         public BuffManager()
         {
             _entities = new List<IEntity>();
             _buffMap = new Dictionary<IEntity, List<IBuffDataComponent>>();
-            _createSystems = new List<IBuffCreateSystem>();
+            _createSystems = new List<IBuffCreateSystem<IBuffDataComponent>>();
             _updateSystems = new List<IBuffUpdateSystem>();
-            _destroySystems = new List<IBuffDestroySystem>();
+            _destroySystems = new List<IBuffDestroySystem<IBuffDataComponent>>();
         }
 
         public IBuffManager<IBuffDataComponent> AddBuffSystem(IBuffSystem buffSystem)
@@ -48,7 +48,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 return this;
             }
             
-            if (buffSystem is IBuffCreateSystem createSystem)
+            if (buffSystem is IBuffCreateSystem<IBuffDataComponent> createSystem)
             {
                 _createSystems.Add(createSystem);
             }
@@ -58,7 +58,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 _updateSystems.Add(updateSystem);
             }
             
-            if (buffSystem is IBuffDestroySystem destroySystem)
+            if (buffSystem is IBuffDestroySystem<IBuffDataComponent> destroySystem)
             {
                 _destroySystems.Add(destroySystem);
             }

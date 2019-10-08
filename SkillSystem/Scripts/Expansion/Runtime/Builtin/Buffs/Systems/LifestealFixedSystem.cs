@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 固定吸血,可多个
     /// </summary>
-    public class LifestealFixedSystem:ABuffDestroySystem
+    public class LifestealFixedSystem:ABuffDestroySystem<IBuffDataComponent>
     {
         private List<IFixedLifesteal> _fixedLifesteals;
         private List<IMechanicBuff> _mechanicBuffs;
