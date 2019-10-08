@@ -1,53 +1,92 @@
-﻿using System.Collections;
+﻿using System;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Buffs.Exceptions;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace IcSkillSystem.SkillSystem.Expansion.Tests
 {
     public class StructBuffManagerTest
     {
-        class buff1:IBuffDataComponent
+        static int _getCurrentMilliSeconds()
         {
-            
-        }
-
-        struct buff2:IBuffDataComponent
-        {
-            
+            return (int) (DateTime.Now.Ticks / 10000L % 1000L);
         }
         
-        struct buff3:IBuffDataComponent
+        class buff1:IStructBuffDataComponent
+        {
+            public int ID { get; } = _getCurrentMilliSeconds();
+        }
+
+        struct buff2:IStructBuffDataComponent
+        {
+            public buff2(int id)
+            {
+                ID = id;
+            }
+
+            public int ID { get; }
+
+        }
+        
+        struct buff3:IStructBuffDataComponent
         {
             public int a;
             public int b { get; set; }
+            public int ID { get; }
+
+            public buff3(int id) : this()
+            {
+                ID = id;
+            }
         }
         
-        struct buff4:IBuffDataComponent
+        struct buff4:IStructBuffDataComponent
         {
             public int a;
             public string b;
+            public int ID { get; }
+
+            public buff4(int id) : this()
+            {
+                ID = id;
+            }
         }
         
-        struct buff5:IBuffDataComponent
+        struct buff5:IStructBuffDataComponent
         {
             public int a;
             public string b { get; set; }
+            public int ID { get; }
+
+            public buff5(int id) : this()
+            {
+                ID = id;
+            }
         }
         
-        struct buff6:IBuffDataComponent
+        struct buff6:IStructBuffDataComponent
         {
             public int a;
             private string b;
+            public int ID { get; }
+
+            public buff6(int id) : this()
+            {
+                ID = id;
+            }
         }
         
-        struct buff7:IBuffDataComponent
+        struct buff7:IStructBuffDataComponent
         {
             public int a;
             private string b { get; set; }
+            public int ID { get; }
+
+            public buff7(int id) : this()
+            {
+                ID = id;
+            }
         }
         
         [Test]
@@ -70,24 +109,29 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             // Use the Assert class to test conditions.
             StructBuffManager structBuffManager = new StructBuffManager();
-            structBuffManager.AddBuff(new Enity(), new buff2());
+            addBuff(structBuffManager, new buff2(_getCurrentMilliSeconds()));
         }
-        
+
+        private void addBuff(StructBuffManager structBuffManager, buff2 buff2)
+        {
+            structBuffManager.AddBuff(new Enity(), buff2);
+        }
+
         [Test]
         public void 结构值字段buff()
         {
             // Use the Assert class to test conditions.
             StructBuffManager structBuffManager = new StructBuffManager();
-            structBuffManager.AddBuff(new Enity(), new buff3());
+            structBuffManager.AddBuff(new Enity(), new buff3(_getCurrentMilliSeconds()));
         }
-        
+
         [Test]
         public void 结构含引用字段buff不允许()
         {
             // Use the Assert class to test conditions.
             StructBuffManager structBuffManager = new StructBuffManager();
 
-            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff4()); });
+            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff4(_getCurrentMilliSeconds())); });
             Debug.Log(ex.Message);
         }
         
@@ -97,7 +141,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             // Use the Assert class to test conditions.
             StructBuffManager structBuffManager = new StructBuffManager();
 
-            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff5()); });
+            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff5(_getCurrentMilliSeconds())); });
             Debug.Log(ex.Message);
         }
         
@@ -107,7 +151,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             // Use the Assert class to test conditions.
             StructBuffManager structBuffManager = new StructBuffManager();
 
-            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff6()); });
+            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff6(_getCurrentMilliSeconds())); });
             Debug.Log(ex.Message);
         }
         
@@ -117,7 +161,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             // Use the Assert class to test conditions.
             StructBuffManager structBuffManager = new StructBuffManager();
 
-            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff7()); });
+            var ex = Assert.Catch<TypeErrorException>(() => { structBuffManager.AddBuff(new Enity(), new buff7(_getCurrentMilliSeconds())); });
             
             Debug.Log(ex.Message);
         }
