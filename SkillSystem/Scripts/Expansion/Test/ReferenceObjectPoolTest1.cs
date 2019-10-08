@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.Profiling;
+using UnityEngine.TestTools;
 using Debug = UnityEngine.Debug;
 
 namespace IcSkillSystem.SkillSystem.Expansion.Tests
@@ -27,7 +30,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [SetUp]
         public void Init()
         {
-            _pool = new ReferenceObjectPool(maxCount: 20000);
+            _pool = new ReferenceObjectPool(maxCount: 20000,cleatTime:2);
             _objs = new List<testObj>();
             _pool.RecedeCache = true;
             _stop = new Stopwatch();
@@ -174,6 +177,48 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             _stop.Stop();
             _endMemory = GC.GetTotalMemory(false);
             Assert.GreaterOrEqual(_pool.GetTypeAllCacheCount(type),100);
+        } 
+
+        [UnityTest]
+        public IEnumerator 创建100_Pool等待3秒ClearUp()
+        {
+            var type = typeof(testObj);
+            for (int i = 0; i < 100; i++)
+            {
+                _pool.GetObject(type);
+            }
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(false);
+            Assert.GreaterOrEqual(_pool.GetTypeAllCacheCount(type),100);
+
+            yield return new WaitForSeconds(3);
+            
+            _pool.CleanUp();
+            
+            Assert.GreaterOrEqual(_pool.GetCacheQueueCount(typeof(testObj)),0);
+            Assert.GreaterOrEqual(_pool.GetCacheWeakCount(typeof(testObj)),100);
+            Assert.GreaterOrEqual(_pool.GetCacheCount(typeof(testObj)),0);
+        }
+        
+        [UnityTest]
+        public IEnumerator 一边创建一边归还100等待3秒ClearUp()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                var testObj = _pool.GetObject<testObj>();
+                _pool.Recede(testObj);
+            }
+            _stop.Stop();
+            _endMemory = GC.GetTotalMemory(true);
+            Assert.GreaterOrEqual(_pool.GetCacheCount(typeof(testObj)), 1);
+            
+            yield return new WaitForSeconds(3);
+            
+            _pool.CleanUp();
+            
+            Assert.GreaterOrEqual(_pool.GetCacheQueueCount(typeof(testObj)),0);
+            Assert.GreaterOrEqual(_pool.GetCacheWeakCount(typeof(testObj)),0);
+            Assert.GreaterOrEqual(_pool.GetCacheCount(typeof(testObj)),0);
         } 
     }
 }
