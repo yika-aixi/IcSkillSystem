@@ -6,6 +6,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+using IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Buffs.Exceptions;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
@@ -67,15 +68,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void AddBuff(IEntity entity, IBuffDataComponent buff)
         {
+            _checkType(buff);
             
-#if UNITY_EDITOR
-//            var type = buff.GetType();
-//            if (!type.IsValueType ||
-//                (type.IsValueType && type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Any(x=>x.)))
-//            {
-//                
-//            }
-#endif
             if (!_entities.Contains(entity))
             {
                 _entities.Add(entity);
@@ -91,6 +85,37 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     createSystem.Create(entity,buff);
                 }    
             }
+        }
+
+        private static void _checkType(object obj)
+        {
+#if UNITY_EDITOR
+            var type = obj.GetType();
+            if (!type.IsValueType)
+            {
+                throw new TypeErrorException($"{type} not is Struct Type.", typeof(ValueType));
+            }
+
+            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var fieldInfo in fields)
+            {
+                if (!fieldInfo.FieldType.IsValueType)
+                {
+                    throw new TypeErrorException($"{type.Name}.{fieldInfo.Name} not is Value Type.", typeof(ValueType));
+                }
+            }
+
+            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var propertyInfo in properties)
+            {
+                if (!propertyInfo.PropertyType.IsValueType)
+                {
+                    throw new TypeErrorException($"{type.Name}.{propertyInfo.Name} not is Value Type.", typeof(ValueType));
+                }
+            }
+#endif
         }
 
         public bool RemoveBuff(IEntity entity, IBuffDataComponent buff)
