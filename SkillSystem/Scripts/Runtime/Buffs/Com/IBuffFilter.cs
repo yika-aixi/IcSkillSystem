@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Com
     /// <summary>
     /// buff 过滤器
     /// </summary>
-    public interface IBuffFilter<in T> where T : IBuffDataComponent
+    public interface IBuffFilter<in T>
     {
         /// <summary>
         /// 过滤buff

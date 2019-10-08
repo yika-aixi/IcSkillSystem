@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems.StructSystem;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
@@ -19,12 +20,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
     
     public class StructBuffManager:IBuffManager<IStructBuffDataComponent>
     {
-        struct StructBuffInfo
+        struct StructBuffPtrInfo
         {
             public int ID;
             public IntPtr Ptr;
 
-            public StructBuffInfo(int id, IntPtr ptr)
+            public StructBuffPtrInfo(int id, IntPtr ptr)
             {
                 ID = id;
                 Ptr = ptr;
@@ -33,21 +34,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         
         private List<IEntity> _entities;
         
-        private Dictionary<IEntity,List<StructBuffInfo>> _buffMap;
+        private Dictionary<IEntity,List<StructBuffPtrInfo>> _buffMap;
         
-        private List<IBuffCreateSystem<IStructBuffDataComponent>> _createSystems;
+        private List<IBuffCreateSystem<StructBuffInfo>> _createSystems;
 
         private List<IBuffUpdateSystem> _updateSystems;
 
-        private List<IBuffDestroySystem<IStructBuffDataComponent>> _destroySystems;
+        private List<IBuffDestroySystem<StructBuffInfo>> _destroySystems;
 
         public StructBuffManager()
         {
             _entities = new List<IEntity>();
-            _buffMap = new Dictionary<IEntity, List<StructBuffInfo>>();
-            _createSystems = new List<IBuffCreateSystem<IStructBuffDataComponent>>();
+            _buffMap = new Dictionary<IEntity, List<StructBuffPtrInfo>>();
+            _createSystems = new List<IBuffCreateSystem<StructBuffInfo>>();
             _updateSystems = new List<IBuffUpdateSystem>();
-            _destroySystems = new List<IBuffDestroySystem<IStructBuffDataComponent>>();
+            _destroySystems = new List<IBuffDestroySystem<StructBuffInfo>>();
         }
 
         public IBuffManager<IStructBuffDataComponent> AddBuffSystem(IBuffSystem buffSystem)
@@ -60,7 +61,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 return this;
             }
             
-            if (buffSystem is IBuffCreateSystem<IStructBuffDataComponent> createSystem)
+            if (buffSystem is IBuffCreateSystem<StructBuffInfo> createSystem)
             {
                 _createSystems.Add(createSystem);
             }
@@ -70,7 +71,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 _updateSystems.Add(updateSystem);
             }
             
-            if (buffSystem is IBuffDestroySystem<IStructBuffDataComponent> destroySystem)
+            if (buffSystem is IBuffDestroySystem<StructBuffInfo> destroySystem)
             {
                 _destroySystems.Add(destroySystem);
             }
@@ -91,7 +92,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             if (!_entities.Contains(entity))
             {
                 _entities.Add(entity);
-                _buffMap.Add(entity,new List<StructBuffInfo>());
+                _buffMap.Add(entity,new List<StructBuffPtrInfo>());
             }
 
 #if UNITY_EDITOR
@@ -103,14 +104,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
 #endif
-            _buffMap[entity].Add(new StructBuffInfo(buff.ID,buff.ToPtr(true)));
+            var intPtr = buff.ToPtr(true);
+            _buffMap[entity].Add(new StructBuffPtrInfo(buff.ID,intPtr));
             
             foreach (var createSystem in _createSystems)
             {
-                if (createSystem.Filter(entity,buff))
+                var structBuffInfo = new StructBuffInfo(){BuffPtr = intPtr};
+                if (createSystem.Filter(entity,structBuffInfo))
                 {
-                    createSystem.Create(entity,buff);
-                }    
+                    createSystem.Create(entity,structBuffInfo);
+                }
             }
         }
 
@@ -172,13 +175,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             if (result)
             {
-                foreach (var destroySystem in _destroySystems)
-                {
-                    if (destroySystem.Filter(entity,buff))
-                    {
-                        destroySystem.Destroy(entity,buff);
-                    }    
-                }
+//                foreach (var destroySystem in _destroySystems)
+//                {
+//                    if (destroySystem.Filter(entity,buff))
+//                    {
+//                        destroySystem.Destroy(entity,buff);
+//                    }    
+//                }
             }
 
             return result;
@@ -247,7 +250,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             if (!_entities.Contains(entity))
             {
                 _entities.Add(entity);
-                _buffMap.Add(entity,new List<StructBuffInfo>());
+                _buffMap.Add(entity,new List<StructBuffPtrInfo>());
             }
         }
 
