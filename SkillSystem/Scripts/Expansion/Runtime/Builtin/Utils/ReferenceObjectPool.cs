@@ -58,8 +58,6 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             }
         }
 
-        private long _starTime;
-        
         /// <summary>
         /// 清理时间停留超过这个时间的对象
         /// </summary>
@@ -95,8 +93,6 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
             MaxCount = maxCount;
 
             ClearTime = cleatTime;
-
-            _starTime = _getCurrentSeconds();
         }
 
         int _getCurrentSeconds()
@@ -325,14 +321,24 @@ namespace IcSkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Utils
                 {
                     var state = objectCacheValue.Value[index];
                     
-                    if (curTime - _starTime > state.LastUseTime)
+                    if (curTime - state.LastUseTime > ClearTime)
                     {
                         objectCacheValue.Value.RemoveAt(index);
+                        
+                        //使用时间超过生命,避免未归还的情况发生,移入弱池
+                        if (state.UseState)
+                        {
+                            if (!_weakObjectCache.TryGetValue(objectCacheValue.Key,out var result))
+                            {
+                                result = new List<WeakObjectState>();
+                                _weakObjectCache.Add(objectCacheValue.Key,result);
+                            }
+                            result.Add(new WeakObjectState(state.Obj,state.UseState));
+                        }
                     }
                 }
             }
         }
-
         
         /// <summary>
         /// 获取类型指定状态的列表
