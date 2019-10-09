@@ -13,8 +13,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// <summary>
     /// buff 更新系统
     /// </summary>
-    public interface IBuffUpdateSystem:IBuffSystem,IEntityFilter
+    public interface IBuffUpdateSystem:IBuffSystem
     {
-        void Execute(IEntity entity);
+        void Execute();
     }
 }
