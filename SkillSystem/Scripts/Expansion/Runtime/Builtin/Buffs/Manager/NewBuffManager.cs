@@ -13,29 +13,28 @@ using Debug = UnityEngine.Debug;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
+    interface IBuffList
+    {
+        Type ValueType{get;}
+        
+        int Count { get; }
+    }
+
+    class BuffList<T>:FasterList<T>,IBuffList
+    {
+        public Type ValueType { get; } = typeof(T);
+    }
+    
     public class NewBuffManager:INewBuffManager
     {
-        struct BuffPtrInfo
-        {
-            public IntPtr Ptr;
-
-            public readonly int TypeIndex;
-
-            public BuffPtrInfo(int typeIndex, IntPtr ptr) : this()
-            {
-                TypeIndex = typeIndex;
-                Ptr = ptr;
-            }
-        }
+        private FasterList<AIcBuffSystem> _systems;
         
-        private FasterListThreadSafe<AIcBuffSystem> _systems;
-        
-        private Dictionary<BuffEntity, FasterListThreadSafe<BuffPtrInfo>> _buffMaps;
+        private Dictionary<BuffEntity, List<IBuffList>> _buffMaps;
 
         public NewBuffManager()
         {
-            _buffMaps = new Dictionary<BuffEntity, FasterListThreadSafe<BuffPtrInfo>>();
-            _systems = new FasterListThreadSafe<AIcBuffSystem>();
+            _buffMaps = new Dictionary<BuffEntity, List<IBuffList>>();
+            _systems = new FasterList<AIcBuffSystem>();
         }
 
         public INewBuffManager AddBuffSystem(AIcBuffSystem buffSystem)
@@ -54,21 +53,38 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void AddBuff<T>(BuffEntity entity, T buff) where T : struct, IBuffDataComponent
         {
-//            _checkType<T>();
-            
-            var index = TypeManager.FindTypeIndex(typeof(T));
-
+            _checkType<T>();
+            BuffList<T> buffList = null;
             if (!_buffMaps.TryGetValue(entity,out var buffs))
             {
-                buffs = new FasterListThreadSafe<BuffPtrInfo>();
+                buffs = new List<IBuffList>();
+                buffList = new BuffList<T>();
+                buffs.Add(buffList);
                 _buffMaps.Add(entity,buffs);
             }
+            else
+            {
+                bool hit = false;
+                
+                foreach (var list in buffs)
+                {
+                    if (list.ValueType == typeof(T))
+                    {
+                        hit = true;
+                        buffList = (BuffList<T>) list;
+                        break;
+                    }
+                }
+
+                if (!hit)
+                {
+                    buffList = new BuffList<T>();
+                    buffs.Add(buffList);   
+                }
+            }
             
-            Stopwatch stop = new Stopwatch();
-            stop.Start();
-            buffs.Add(new BuffPtrInfo(index,buff.ToPtr(false)));
-            stop.Stop();
-            Debug.Log(stop.Elapsed);
+            buffList.Add(buff);
+            
             //todo Create System
             
             foreach (var buffSystem in _systems)
@@ -79,10 +95,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
         }
-        
+
         private static void _checkType<T>() where T : struct, IBuffDataComponent
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && IcSkillSystemDebug
             var type = typeof(T);
 
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -103,23 +119,23 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void RemoveBuff<T>(BuffEntity entity, T buff) where T : struct, IBuffDataComponent
         {
-            var index = TypeManager.FindTypeIndex(typeof(T));
-            var buffPtr = buff.ToPtr();
-            if (_buffMaps.TryGetValue(entity, out var buffs))
+            if (_buffMaps.TryGetValue(entity, out var result))
             {
-                for (var i = buffs.Count - 1; i >= 0; i--)
+                foreach (var list in result)
                 {
-                    var buffPtrInfo = buffs[i];
-
-                    if (buffPtrInfo.TypeIndex == index)
+                    if (list.ValueType == typeof(T))
                     {
-                        if (buffPtr == buffPtrInfo.Ptr)
+                        BuffList<T> buffList = (BuffList<T>) list;
+
+                        for (var index = buffList.Count - 1; index >= 0; index--)
                         {
-                            buffPtr.Free();
-                            buffPtrInfo.Ptr.Free();
-                            buffs.RemoveAt(i);
-                            _callDestroyBuffSystem(buff);                            
-                            break;
+                            var bf = buffList[index];
+                            if (bf.Equals(buff))
+                            {
+                                buffList.RemoveAt(index);
+                                _callDestroyBuffSystem(buff);
+                                return;
+                            }
                         }
                     }
                 }
@@ -141,12 +157,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         //todo 暂时只有类型判断
         public bool HasBuff<T>(BuffEntity entity,T buff) where T : struct, IBuffDataComponent
         {
-            var index = TypeManager.FindTypeIndex(typeof(T));
             if (_buffMaps.TryGetValue(entity, out var buffs))
             {
                 foreach (var ptrInfo in buffs)
                 {
-                    if (ptrInfo.TypeIndex == index)
+                    if (ptrInfo.ValueType == typeof(T))
                     {
                         return true;
                     }
@@ -158,17 +173,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public int GetBuffCount<T>(BuffEntity entity) where T : IBuffDataComponent
         {
-            var index = TypeManager.FindTypeIndex(typeof(T));
-            
             int count = 0;
             
-            if (_buffMaps.TryGetValue(entity, out var buffs))
+            if (_buffMaps.TryGetValue(entity, out var result))
             {
-                foreach (var ptrInfo in buffs)
+                foreach (var buffList in result)
                 {
-                    if (ptrInfo.TypeIndex == index)
+                    if (buffList.ValueType == typeof(T))
                     {
-                        ++count;
+                        count += buffList.Count;
                     }
                 }
             }
@@ -179,27 +192,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         public void Update()
         {
             //todo Update System
-        }
-    }
-    
-    static class StructBuffEx
-    {
-        public static IntPtr ToPtr(this IBuffDataComponent self,bool deleteOld = true)
-        {
-            IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(self));
-            Marshal.StructureToPtr(self,pnt,deleteOld);
-
-            return pnt;
-        }
-
-        public static T ToBuff<T>(this IntPtr self) where T : IBuffDataComponent
-        {
-            return Marshal.PtrToStructure<T>(self);
-        }
-        
-        public static void Free(this IntPtr self)
-        {
-            Marshal.FreeHGlobal(self);
         }
     }
 }
