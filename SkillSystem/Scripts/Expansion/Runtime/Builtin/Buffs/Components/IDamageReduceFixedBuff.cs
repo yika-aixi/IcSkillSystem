@@ -10,10 +10,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     {
     }
     
-    /// <summary>
-    /// 固定伤害减少 buff
-    /// </summary>
-    public interface IDamageReduceFixedStructBuff:IStructBuffDataComponent,IBuffValueDataComponent,IBuffType
-    {
-    }
+//    /// <summary>
+//    /// 固定伤害减少 buff
+//    /// </summary>
+//    public interface IDamageReduceFixedStructBuff:IStructBuffDataComponent,IBuffValueDataComponent,IBuffType
+//    {
+//    }
 }

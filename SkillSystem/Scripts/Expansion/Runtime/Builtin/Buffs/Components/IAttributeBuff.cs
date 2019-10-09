@@ -31,8 +31,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 属性buff
     /// </summary>
-    public interface IAttributeStructBuff:IStructBuffDataComponent,IBuffValueDataComponent
-    {
-        AttributeType Type { get; }
-    }
+//    public interface IAttributeStructBuff:IStructBuffDataComponent,IBuffValueDataComponent
+//    {
+//        AttributeType Type { get; }
+//    }
 }

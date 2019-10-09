@@ -16,14 +16,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     {
     }
     
-    /// <summary>
-    /// 持续伤害buff
-    /// </summary>
-    public interface IContinuousDamageStructBuff:
-        IStructBuffDataComponent,
-        IBuffValueDataComponent,
-        IBuffType,
-        IBuffTriggerTime
-    {
-    }
+//    /// <summary>
+//    /// 持续伤害buff
+//    /// </summary>
+//    public interface IContinuousDamageStructBuff:
+//        IStructBuffDataComponent,
+//        IBuffValueDataComponent,
+//        IBuffType,
+//        IBuffTriggerTime
+//    {
+//    }
 }
