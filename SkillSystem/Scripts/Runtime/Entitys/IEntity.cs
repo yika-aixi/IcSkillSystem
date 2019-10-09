@@ -9,14 +9,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
     public interface IEntity
     {
-//        event BuffRemove OnBuffRemove;
-//        
-//        void AddBuff<T>(T buff) where T:IBuffDataComponent;
-//
-//        void RemoveBuff<T>(T buff) where T:IBuffDataComponent;
-//
-//        bool HasBuff<T>() where T:IBuffDataComponent;
-//
-//        bool HasBuff<T>(Predicate<T> match) where T:IBuffDataComponent;
+    }
+    
+    public struct BuffEntity
+    {
+        public int ID;
+#if CSHARP_7_OR_LATER
+        //todo 
+#endif
+
     }
 }
