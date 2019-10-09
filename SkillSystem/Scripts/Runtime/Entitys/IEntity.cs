@@ -5,18 +5,34 @@
 //2019年09月15日-19:04
 //CabinIcarus.SkillSystem.Runtime
 
+using System;
+
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
     public interface IEntity
     {
     }
     
-    public struct BuffEntity
+    public struct BuffEntity:IEquatable<BuffEntity>
     {
         public int ID;
 #if CSHARP_7_OR_LATER
         //todo 
 #endif
 
+        public bool Equals(BuffEntity other)
+        {
+            return ID == other.ID;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BuffEntity other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID;
+        }
     }
 }
