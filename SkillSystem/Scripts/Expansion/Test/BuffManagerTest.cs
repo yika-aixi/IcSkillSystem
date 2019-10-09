@@ -74,6 +74,23 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             
             Assert.GreaterOrEqual(buffs.Count,5000);
         }
+        List<TestBuff> _testBuffs = new List<TestBuff>();
+        [Test()]
+        public void 添加buff_1()
+        {
+            _startMemory = GC.GetTotalMemory(false);
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
+            _testBuffs.Add(new TestBuff());
+            stop.Stop();
+            _setEndMemory();
+            Debug.Log($"Time:{stop.Elapsed}");
+            Debug.Log($"{_startMemory} and {_endMemory} = {(_endMemory - _startMemory)}");
+            List<IBuffDataComponent> buffs = new List<IBuffDataComponent>();
+            _buffManage.GetBuffs(_entity, buffs);
+            
+            Assert.GreaterOrEqual(_testBuffs.Count,1);
+        }
         
         [Test()]
         public void 添加buff()

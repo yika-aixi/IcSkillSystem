@@ -1,18 +1,42 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NUnit.Framework;
 using UnityEngine.TestTools;
+using Debug = UnityEngine.Debug;
 
 namespace IcSkillSystem.SkillSystem.Expansion.Tests
 {
     public class NewBuffManagerTest
     {
-        struct Buff:IBuffDataComponent,IBuffValueDataComponent
+        struct Buff:IBuffDataComponent//,IBuffValueDataComponent
         {
-            public float Value { get; set; }
+            //public float Value { get; set; }
+        }
+        
+        ref struct Test
+        {
+            public int a;
+        }
+        
+        
+        [Test]
+        public void RefStructTest()
+        {
+            Test t = new Test();
+
+            t.a = 100;
+
+            Test t1 = t;
+
+            t.a = 20;
+            
+            Assert.GreaterOrEqual(t1.a,20);
         }
         
         [Test]
@@ -20,9 +44,11 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             NewBuffManager buffManager = new NewBuffManager();
             BuffEntity entity = new BuffEntity(){ID = 1};
-            
-            buffManager.AddBuff(entity,new Buff(){Value = 20f});
-            
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
+            buffManager.AddBuff(entity,new Buff(){});
+            stop.Stop();
+            Debug.Log($"Time:{stop.Elapsed} {stop.Elapsed.Milliseconds}");
             Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),1);
         }
         
@@ -31,12 +57,14 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             NewBuffManager buffManager = new NewBuffManager();
             BuffEntity entity = new BuffEntity(){ID = 1};
-            
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
             for (var i = 0; i < 10001; i++)
             {
-                buffManager.AddBuff(entity,new Buff(){Value = 20f+i});
+                buffManager.AddBuff(entity,new Buff(){});
             }
-            
+            stop.Stop();
+            Debug.Log($"Time:{stop.Elapsed}");
             Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),10001);
         }
         
@@ -46,7 +74,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             NewBuffManager buffManager = new NewBuffManager();
             BuffEntity entity = new BuffEntity(){ID = 1};
 
-            var buff = new Buff(){Value = 20f};
+            var buff = new Buff(){};
             
             buffManager.AddBuff(entity,buff);
             buffManager.RemoveBuff(entity,buff);
