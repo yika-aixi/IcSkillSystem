@@ -108,6 +108,29 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             public override void Create(BuffEntity entity, int index)
             {
+                Debug.Log("1");
+//                var buff = _buffManager.GetCurrentBuffData<Buff>(index);
+////                var buff = _buffManager.GetBuffData<Buff>(entity, index);
+//                if ((int)buff.Value == 0)
+//                {
+//                    _buffManager.SetBuffData(entity,new Buff(){Value = 100}, index);
+//                }
+            }
+        }
+        
+        class TestSystem1:AIcStructBuffSystem
+        {
+            private readonly NewBuffManager _buffManager;
+
+
+            public TestSystem1(NewBuffManager buffManager)
+            {
+                this._buffManager = buffManager;
+            }
+
+            public override void Create(BuffEntity entity, int index)
+            {
+                Debug.Log("2");
 //                var buff = _buffManager.GetCurrentBuffData<Buff>(index);
 ////                var buff = _buffManager.GetBuffData<Buff>(entity, index);
 //                if ((int)buff.Value == 0)
@@ -121,18 +144,19 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加Buff_10001_Value为0的将他们修改为100()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            for (var i = 0; i < 200; i++)
-                buffManager.AddBuffSystem(new TestSystem(buffManager));
+            for (var i = 0; i < 100; i++)
+                buffManager.AddBuffSystem(new TestSystem(buffManager))
+                    .AddBuffSystem(new TestSystem1(buffManager));
             BuffEntity entity = buffManager.CreateEntity();
             Stopwatch stop = new Stopwatch();
             stop.Start();
-            for (var i = 0; i < 10001; i++)
+            for (var i = 0; i < 1; i++)
             {
                 buffManager.AddBuff(entity,new Buff(){Value = i % 5});
             }
             stop.Stop();
             Debug.Log($"Add Time:{stop.Elapsed}");
-            Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),10001);
+            //Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),10001);
 
             stop.Restart();
 
