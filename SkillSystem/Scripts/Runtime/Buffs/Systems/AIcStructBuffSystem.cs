@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 //            BuffManager = buffManager;
 //        }
         
-        public abstract bool Filter();
+        public abstract bool Filter(bu'f'f'f);
         public abstract void Destroy();
         public abstract void Execute();
         public abstract void Create();
