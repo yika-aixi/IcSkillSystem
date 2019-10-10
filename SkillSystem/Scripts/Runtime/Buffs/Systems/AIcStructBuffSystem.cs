@@ -1,19 +1,20 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
-    public abstract class AIcBuffSystem : IBuffCreateSystem,IBuffUpdateSystem,IBuffDestroySystem
+    public abstract class AIcStructBuffSystem: IBuffCreateSystem,IBuffUpdateSystem,IBuffDestroySystem
     {
-//        protected readonly IBuffManager<T> BuffManager;
-//
-//        protected AIcBuffSystem(IBuffManager<T> buffManager)
-//        {
-//            BuffManager = buffManager;
-//        }
-        
-        public abstract bool Filter(bu'f'f'f);
-        public abstract void Destroy();
-        public abstract void Execute();
-        public abstract void Create();
+        public void Execute()
+        {
+        }
+
+        public virtual void Create(BuffEntity entity, int index)
+        {
+        }
+
+        public virtual void Destroy(BuffEntity entity, int index)
+        {
+        }
     }
 }

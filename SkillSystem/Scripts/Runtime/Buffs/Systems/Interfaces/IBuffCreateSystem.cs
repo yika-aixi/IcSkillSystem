@@ -16,6 +16,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// </summary>
     public interface IBuffCreateSystem:IBuffSystem
     {
-        void Create();
+        void Create(BuffEntity entity,int index);
     }
 }

@@ -16,6 +16,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// </summary>
     public interface IBuffDestroySystem:IBuffSystem
     {
-        void Destroy();
+        void Destroy(BuffEntity entity,int index);
     }
 }

@@ -11,10 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
 {
     public interface IBuffSystem:ISkillSystem
     {
-        /// <summary>
-        /// 过滤
-        /// </summary>
-        /// <returns></returns>
-        bool Filter();
     }
+    
+    public interface IBuffSystem<in T>:IBuffSystem{}
 }
