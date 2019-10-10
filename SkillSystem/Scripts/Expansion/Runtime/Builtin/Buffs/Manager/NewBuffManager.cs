@@ -31,30 +31,36 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
     {
         public FasterReadOnlyList<BuffEntity> Entitys => _entitys.AsReadOnly();
         private IBuffList _currentBuffs;
-        private FasterList<AIcStructBuffSystem> _systemMap;
-        private FasterList<IBuffUpdateSystem> _updateSystems;
         private FasterList<BuffEntity> _entitys;
         private Dictionary<BuffEntity, Dictionary<Type,IBuffList>> _buffMaps;
-
+        private Action<BuffEntity, int> _onCreate;
+        private Action<BuffEntity, int> _onDestroy;
+        private Action _onUpdate;
         public NewBuffManager()
         {
             _entitys = new FasterList<BuffEntity>();
             _buffMaps = new Dictionary<BuffEntity, Dictionary<Type,IBuffList>>();
-            _systemMap = new FasterList<AIcStructBuffSystem>();
-            _updateSystems = new FasterList<IBuffUpdateSystem>();
         }
 
-        public INewBuffManager AddBuffSystem<T>(T structBuffSystem) where T : AIcStructBuffSystem
+        public NewBuffManager AddBuffSystem(AIcStructBuffSystem structBuffSystem)
         {
+            if (_onCreate != null)
+            {
+                var type = structBuffSystem.GetType();
+                foreach (var @delegate in _onCreate.GetInvocationList())
+                {
+                    if (@delegate.Target.GetType() == type)
+                    {
 #if UNITY_EDITOR
-//            if (_systemMap.Contains(structBuffSystem))
-//            {
-//                Debug.LogWarning($"{structBuffSystem.GetType()} System already exists, skip");
-//                return this;
-//            }
+                        Debug.LogWarning($"{type} System already exists, skip");
 #endif
-            _systemMap.Add(structBuffSystem);
-            _updateSystems.Add(structBuffSystem);
+                        return this;
+                    }
+                }
+            }
+            _onCreate += structBuffSystem.Create;
+            _onDestroy += structBuffSystem.Destroy;
+            _onUpdate += structBuffSystem.Execute;
             return this;
         }
 
@@ -221,16 +227,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         private void _callSystem(BuffEntity entity,int index,bool isCreate)
         {
-            foreach (AIcStructBuffSystem system in _systemMap)
+            if (isCreate)
             {
-                if (isCreate)
-                {
-                    system.Create(entity,index);
-                }
-                else
-                {
-                    system.Destroy(entity,index);
-                }
+                _onCreate?.Invoke(entity,index);
+            }
+            else
+            {
+                _onDestroy?.Invoke(entity,index);
             }
         }
 
@@ -361,10 +364,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         
         public void Update()
         {
-            foreach (var updateSystem in _updateSystems)
-            {
-                updateSystem.Execute();
-            }
+            _onUpdate?.Invoke();
         }
     }
 }
