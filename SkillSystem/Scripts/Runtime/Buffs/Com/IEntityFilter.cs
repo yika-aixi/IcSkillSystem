@@ -16,6 +16,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Com
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        bool Filter(IEntity entity);
+        bool Filter(BuffEntity entity);
     }
 }

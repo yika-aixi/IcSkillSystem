@@ -19,7 +19,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Com
         /// 过滤buff
         /// </summary>
         /// <param name="entity"></param>
+        /// <param name="buff"></param>
         /// <returns></returns>
-        bool Filter(IEntity entity,T buff);
+        bool Filter(BuffEntity entity,T buff);
     }
 }
