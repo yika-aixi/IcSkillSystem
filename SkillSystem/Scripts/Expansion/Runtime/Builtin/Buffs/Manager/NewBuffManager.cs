@@ -27,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         public Action<BuffEntity, int> OnDestroy;
     }
     
-    public class NewBuffManager:INewBuffManager
+    public class NewBuffManager:INewBuffManager<AIcStructBuffSystem>
     {
         public FasterReadOnlyList<BuffEntity> Entitys => _entitys.AsReadOnly();
         private IBuffList _currentBuffs;
@@ -42,7 +42,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffMaps = new Dictionary<BuffEntity, Dictionary<Type,IBuffList>>();
         }
 
-        public NewBuffManager AddBuffSystem(AIcStructBuffSystem structBuffSystem)
+        public INewBuffManager<AIcStructBuffSystem> AddBuffSystem(AIcStructBuffSystem structBuffSystem)
         {
             if (_onCreate != null)
             {
