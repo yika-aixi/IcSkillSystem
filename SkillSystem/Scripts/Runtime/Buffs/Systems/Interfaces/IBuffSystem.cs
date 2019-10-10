@@ -12,6 +12,4 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     public interface IBuffSystem:ISkillSystem
     {
     }
-    
-    public interface IBuffSystem<in T>:IBuffSystem{}
 }

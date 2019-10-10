@@ -5,9 +5,6 @@
 //2019年09月14日-19:05
 //CabinIcarus.SkillSystem.Runtime
 
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Com;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
 {
     /// <summary>
