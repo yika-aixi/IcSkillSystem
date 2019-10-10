@@ -89,5 +89,20 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     return true;
             return false;
         }
+
+        public static int ImplCount<T>()
+        {
+            int count = 0;
+            
+            foreach (var type in _typeIndexMap.Keys)
+            {
+                if (typeof(T).IsAssignableFrom(type))
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
     }
 }
