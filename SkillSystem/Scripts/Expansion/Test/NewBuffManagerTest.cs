@@ -98,13 +98,13 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
         class TestSystem:AIcStructBuffSystem
         {
-            private readonly NewBuffManager _buffManager;
-
-
-            public TestSystem(NewBuffManager buffManager)
-            {
-                this._buffManager = buffManager;
-            }
+//            private readonly NewBuffManager _buffManager;
+//
+//
+//            public TestSystem(NewBuffManager buffManager)
+//            {
+//                this._buffManager = buffManager;
+//            }
 
             public override void Create(BuffEntity entity, int index)
             {
@@ -116,17 +116,21 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                    _buffManager.SetBuffData(entity,new Buff(){Value = 100}, index);
 //                }
             }
+
+            public TestSystem(INewBuffManager<AIcStructBuffSystem> buffManager) : base(buffManager)
+            {
+            }
         }
         
         class TestSystem1:AIcStructBuffSystem
         {
-            private readonly NewBuffManager _buffManager;
-
-
-            public TestSystem1(NewBuffManager buffManager)
-            {
-                this._buffManager = buffManager;
-            }
+//            private readonly NewBuffManager _buffManager;
+//
+//
+//            public TestSystem1(NewBuffManager buffManager)
+//            {
+//                this._buffManager = buffManager;
+//            }
 
             public override void Create(BuffEntity entity, int index)
             {
@@ -138,6 +142,10 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                    _buffManager.SetBuffData(entity,new Buff(){Value = 100}, index);
 //                }
             }
+
+            public TestSystem1(INewBuffManager<AIcStructBuffSystem> buffManager) : base(buffManager)
+            {
+            }
         }
         
         [Test]
@@ -145,7 +153,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             NewBuffManager buffManager = new NewBuffManager();
             for (var i = 0; i < 100; i++)
-                buffManager.AddBuffSystem(new TestSystem(buffManager))
+                buffManager.AddBuffSystem(new TestSystem(new NewBuffManager()))
                     .AddBuffSystem(new TestSystem1(buffManager));
             BuffEntity entity = buffManager.CreateEntity();
             Stopwatch stop = new Stopwatch();
