@@ -15,7 +15,12 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
     
     public struct BuffEntity:IEquatable<BuffEntity>
     {
-        public int ID;
+        public readonly int ID;
+
+        public BuffEntity(int id)
+        {
+            ID = id;
+        }
 #if CSHARP_7_OR_LATER
         //todo 
 #endif
@@ -33,6 +38,16 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
         public override int GetHashCode()
         {
             return ID;
+        }
+
+        public static implicit operator int(BuffEntity entity)
+        {
+            return entity.ID;
+        }
+        
+        public static implicit operator BuffEntity(int id)
+        {
+            return new BuffEntity(id);
         }
     }
 }
