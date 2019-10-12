@@ -13,11 +13,24 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
     interface IBuffList
     {
         int Count { get; }
+        IBuffDataComponent GetBuff(int index);
+        
+        IEnumerable<IBuffDataComponent> GetBuffs();
     }
 
     class BuffList<T>:FasterList<T>,IBuffList
     {
         public FasterReadOnlyList<T> Buffs => AsReadOnly();
+
+        public IBuffDataComponent GetBuff(int index)
+        {
+            return (IBuffDataComponent)this[index];
+        }
+
+        public IEnumerable<IBuffDataComponent> GetBuffs()
+        {
+            return Buffs.Select(x=>(IBuffDataComponent) x);
+        }
     }
     
     public class BuffManager:IStructBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity>
@@ -359,9 +372,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
            
            foreach (var buffList1 in _buffMaps[entity].Values)
            {
-               var buffList = (BuffList<IBuffDataComponent>) buffList1;
+               var buffList = buffList1;
                
-               buffs.AddRange(buffList.Buffs);
+               buffs.AddRange(buffList.GetBuffs());
            }
 
            return buffs;
