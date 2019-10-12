@@ -11,17 +11,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 {
     struct TestBuff1:IDamageBuff,IEquatable<TestBuff1>
     {
-        private readonly float _value;
-        private readonly int _type;
-        public float Value
-        {
-            get => _value; set{}
-        }
-        
-        public int Type
-        {
-            get => _type; set{}
-        }
+        public float Value { get; set; }
+        public int Type { get; set; }
 
         public bool Equals(TestBuff1 other)
         {
@@ -41,45 +32,32 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
         }
 
+        public override string ToString()
+        {
+            return $"{Value} _ {Type}";
+        }
+
         public TestBuff1(float value, int type)
         {
-            _value = value;
-            _type = type;
+            Value = value;
+            Type = type;
         }
     }
     
     struct TestBuff2:IMechanicBuff,IEquatable<TestBuff2>
     {
-        private readonly float _value;
-        private readonly int _type;
-        private readonly MechanicsType _mechanicsType;
-
-        public float Value
-        {
-            get => _value; set{} 
-        }
+        public float Value { get; set; }
+        public MechanicsType MechanicsType { get; set; }
         
-        public int Type
+        public TestBuff2(float value, MechanicsType mechanicsType)
         {
-            get => _type; set{} }
-
-
-        public MechanicsType MechanicsType
-        {
-            get => _mechanicsType;
-            set{}
-        }
-
-        public TestBuff2(float value, int type, MechanicsType mechanicsType)
-        {
-            _value = value;
-            _type = type;
-            _mechanicsType = mechanicsType;
+            Value = value;
+            MechanicsType = mechanicsType;
         }
 
         public bool Equals(TestBuff2 other)
         {
-            return _value.Equals(other._value) && _type == other._type && _mechanicsType == other._mechanicsType;
+            return Value.Equals(other.Value) && MechanicsType == other.MechanicsType;
         }
 
         public override bool Equals(object obj)
@@ -91,9 +69,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             unchecked
             {
-                var hashCode = _value.GetHashCode();
-                hashCode = (hashCode * 397) ^ _type;
-                hashCode = (hashCode * 397) ^ (int) _mechanicsType;
+                var hashCode = Value.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) MechanicsType;
                 return hashCode;
             }
         }
@@ -158,7 +135,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             else
             {
                 count = _entityManager.BuffManager.GetBuffCount<TestBuff2>(entity);
-                _entityManager.RemoveBuff(entity, new TestBuff2(count, count, MechanicsType.Health));
+                _entityManager.RemoveBuff(entity, new TestBuff2(count, MechanicsType.Health));
             }
 
         }
@@ -174,8 +151,14 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             else
             {
                 count = _entityManager.BuffManager.GetBuffCount<TestBuff2>(entity);
-                _entityManager.AddBuff(entity, new TestBuff2(count+1, count+1, MechanicsType.Health));
+                _entityManager.AddBuff(entity, new TestBuff2(count+1, MechanicsType.Health));
             }
+        }
+
+        [ContextMenu("Test Set 0")]
+        private void _testSet()
+        {
+            _entityManager.BuffManager.SetBuffData(1,new TestBuff1(100,100), 0);
         }
     }
 }

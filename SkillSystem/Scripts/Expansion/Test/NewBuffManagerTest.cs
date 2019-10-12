@@ -195,6 +195,40 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             
             Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),0);
         }
+        
+        [Test]
+        public void 简单的添加修改Buff_正常()
+        {
+            BuffManager buffManager = new BuffManager();
+            IcSkSEntity entity = new IcSkSEntity();
+            buffManager.AddEntity(entity);
+
+            var buff = new Buff(){};
+            
+            buffManager.AddBuff(entity,buff);
+            buffManager.SetBuffData(entity,new Buff(){Value = 100}, 0);
+
+            Assert.GreaterOrEqual(buffManager.GetBuffData<Buff>(entity,0).Value, 100);
+        }
+        
+        [Test]
+        public void 简单的添加修改Buff_BOX()
+        {
+            BuffManager buffManager = new BuffManager();
+            IcSkSEntity entity = new IcSkSEntity();
+            buffManager.AddEntity(entity);
+
+            var buff = new Buff(){};
+
+            buffManager.AddBuff(entity,buff);
+
+            IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity> b = buffManager;
+            
+            b .SetBuffData(entity,new Buff(){Value = 100}, 0);
+
+            Assert.GreaterOrEqual(b.GetBuffData<Buff>(entity,0).Value, 100);
+        }
+
 
         // A UnityTest behaves like a coroutine in PlayMode
         // and allows you to yield null to skip a frame in EditMode
