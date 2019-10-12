@@ -10,7 +10,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
     public class IcSkSEntityManager:IStructIcSkSEntityManager<NewBuffManager>
     {
-        private FasterList<BuffEntity> _entitys;
+        private FasterList<IcSkSEntity> _entitys;
 
         
         public NewBuffManager BuffManager { get; }
@@ -18,21 +18,21 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
         public IcSkSEntityManager(NewBuffManager buffManager)
         {
             BuffManager = buffManager;
-            _entitys = new FasterList<BuffEntity>();
+            _entitys = new FasterList<IcSkSEntity>();
         }
 
         private int _id;
         
-        public BuffEntity CreateEntity()
+        public IcSkSEntity CreateEntity()
         {
             ++_id;
 
             return CreateEntity(_id);
         }
 
-        public BuffEntity CreateEntity(int id)
+        public IcSkSEntity CreateEntity(int id)
         {
-            BuffEntity entity = id;
+            IcSkSEntity entity = id;
             
             BuffManager.AddEntity(entity);
             
@@ -41,10 +41,10 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         public bool DestroyEntity(int id)
         {
-            return DestroyEntity((BuffEntity) id);
+            return DestroyEntity((IcSkSEntity) id);
         }
 
-        public bool DestroyEntity(BuffEntity entity)
+        public bool DestroyEntity(IcSkSEntity entity)
         {
             if (!_checkEntity(entity))
             {
@@ -56,7 +56,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             return true;
         }
 
-        private bool _checkEntity(BuffEntity entity)
+        private bool _checkEntity(IcSkSEntity entity)
         {
             return _entitys.Contains(entity);
         }
@@ -66,34 +66,34 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             BuffManager.Update();
         }
 
-        public void AddBuff<T>(BuffEntity entity, T buff) where T :struct, IBuffDataComponent
+        public void AddBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
         {
             BuffManager.AddBuff(entity,buff);
         }
 
-        public bool RemoveBuff<T>(BuffEntity entity, T buff) where T :struct, IBuffDataComponent
+        public bool RemoveBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
         {
             return BuffManager.RemoveBuff(entity, buff);
         }
 
-        public bool HasBuff<T>(BuffEntity entity, T buff) where T :struct, IBuffDataComponent
+        public bool HasBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
         {
             return BuffManager.HasBuff(entity, buff);
         }
 
         #region Cover
 
-        void IIcSkSEntityManager<NewBuffManager>.AddBuff<T>(BuffEntity entity, T buff)
+        void IIcSkSEntityManager<NewBuffManager>.AddBuff<T>(IcSkSEntity entity, T buff)
         {
             throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
         }
 
-        bool IIcSkSEntityManager<NewBuffManager>.RemoveBuff<T>(BuffEntity entity, T buff)
+        bool IIcSkSEntityManager<NewBuffManager>.RemoveBuff<T>(IcSkSEntity entity, T buff)
         {
             throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
         }
 
-        bool IIcSkSEntityManager<NewBuffManager>.HasBuff<T>(BuffEntity entity, T buff)
+        bool IIcSkSEntityManager<NewBuffManager>.HasBuff<T>(IcSkSEntity entity, T buff)
         {
             throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
         }

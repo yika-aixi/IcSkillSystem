@@ -13,11 +13,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
     {
     }
     
-    public struct BuffEntity:IEquatable<BuffEntity>
+    public struct IcSkSEntity:IEquatable<IcSkSEntity>
     {
         public readonly int ID;
 
-        public BuffEntity(int id)
+        public IcSkSEntity(int id)
         {
             ID = id;
         }
@@ -25,14 +25,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
         //todo 
 #endif
 
-        public bool Equals(BuffEntity other)
+        public bool Equals(IcSkSEntity other)
         {
             return ID == other.ID;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is BuffEntity other && Equals(other);
+            return obj is IcSkSEntity other && Equals(other);
         }
 
         public override int GetHashCode()
@@ -40,14 +40,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
             return ID;
         }
 
-        public static implicit operator int(BuffEntity entity)
+        public static implicit operator int(IcSkSEntity entity)
         {
             return entity.ID;
         }
         
-        public static implicit operator BuffEntity(int id)
+        public static implicit operator IcSkSEntity(int id)
         {
-            return new BuffEntity(id);
+            return new IcSkSEntity(id);
         }
     }
 }

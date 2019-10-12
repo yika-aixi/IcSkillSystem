@@ -16,11 +16,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
         {
         }
 
-        public virtual void Create(BuffEntity entity, int index)
+        public virtual void Create(IcSkSEntity entity, int index)
         {
         }
 
-        public virtual void Destroy(BuffEntity entity, int index)
+        public virtual void Destroy(IcSkSEntity entity, int index)
         {
         }
     }

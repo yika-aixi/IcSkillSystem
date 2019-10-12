@@ -47,7 +47,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             NewBuffManager buffManager = new NewBuffManager();
 
-            BuffEntity entity = new BuffEntity();
+            IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
@@ -61,7 +61,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加Buff_10001()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = new BuffEntity();
+            IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
@@ -78,7 +78,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加Buff_10001_查找Value为0的()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = new BuffEntity();
+            IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
@@ -110,7 +110,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                this._buffManager = buffManager;
 //            }
 
-            public override void Create(BuffEntity entity, int index)
+            public override void Create(IcSkSEntity entity, int index)
             {
                 Debug.Log("1");
 //                var buff = _buffManager.GetCurrentBuffData<Buff>(index);
@@ -136,7 +136,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                this._buffManager = buffManager;
 //            }
 
-            public override void Create(BuffEntity entity, int index)
+            public override void Create(IcSkSEntity entity, int index)
             {
                 Debug.Log("2");
 //                var buff = _buffManager.GetCurrentBuffData<Buff>(index);
@@ -159,7 +159,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             for (var i = 0; i < 100; i++)
                 buffManager.AddBuffSystem(new TestSystem(new NewBuffManager()))
                     .AddBuffSystem(new TestSystem1(buffManager));
-            BuffEntity entity = new BuffEntity();
+            IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
@@ -185,7 +185,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 简单的添加删除Buff()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = new BuffEntity();
+            IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
 
             var buff = new Buff(){};
@@ -219,7 +219,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             
             NewBuffManager t3 = new NewBuffManager();
             
-            BuffEntity entity = new BuffEntity();
+            IcSkSEntity entity = new IcSkSEntity();
             
             Buff buff = new Buff();
             

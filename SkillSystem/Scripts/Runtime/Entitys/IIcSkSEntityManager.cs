@@ -6,29 +6,29 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
     {
         TBM BuffManager { get;}
 
-        BuffEntity CreateEntity();
+        IcSkSEntity CreateEntity();
         
-        BuffEntity CreateEntity(int id);
+        IcSkSEntity CreateEntity(int id);
 
         bool DestroyEntity(int id);
         
-        bool DestroyEntity(BuffEntity entity);
+        bool DestroyEntity(IcSkSEntity entity);
 
         void Update();
 
-        void AddBuff<T>(BuffEntity entity, T buff) where T : IBuffDataComponent;
+        void AddBuff<T>(IcSkSEntity entity, T buff) where T : IBuffDataComponent;
         
-        bool RemoveBuff<T>(BuffEntity entity,T buff) where T : IBuffDataComponent;
+        bool RemoveBuff<T>(IcSkSEntity entity,T buff) where T : IBuffDataComponent;
 
-        bool HasBuff<T>(BuffEntity entity, T buff) where T : IBuffDataComponent;
+        bool HasBuff<T>(IcSkSEntity entity, T buff) where T : IBuffDataComponent;
     }
 
     public interface IStructIcSkSEntityManager<TBM> : IIcSkSEntityManager<TBM> where TBM : INewBuffManager
     {
-        new void AddBuff<T>(BuffEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new void AddBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
         
-        new bool RemoveBuff<T>(BuffEntity entity,T buff) where T :struct, IBuffDataComponent;
+        new bool RemoveBuff<T>(IcSkSEntity entity,T buff) where T :struct, IBuffDataComponent;
 
-        new bool HasBuff<T>(BuffEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new bool HasBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
     }
 }
