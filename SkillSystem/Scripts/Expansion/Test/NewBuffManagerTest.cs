@@ -46,7 +46,9 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 简单的添加Buff()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = buffManager.CreateEntity();
+
+            BuffEntity entity = new BuffEntity();
+            buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             buffManager.AddBuff(entity,new Buff(){});
@@ -59,7 +61,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加Buff_10001()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = buffManager.CreateEntity();
+            BuffEntity entity = new BuffEntity();
+            buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 10001; i++)
@@ -75,7 +78,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加Buff_10001_查找Value为0的()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = buffManager.CreateEntity();
+            BuffEntity entity = new BuffEntity();
+            buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 10001; i++)
@@ -155,7 +159,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             for (var i = 0; i < 100; i++)
                 buffManager.AddBuffSystem(new TestSystem(new NewBuffManager()))
                     .AddBuffSystem(new TestSystem1(buffManager));
-            BuffEntity entity = buffManager.CreateEntity();
+            BuffEntity entity = new BuffEntity();
+            buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 1; i++)
@@ -180,7 +185,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 简单的添加删除Buff()
         {
             NewBuffManager buffManager = new NewBuffManager();
-            BuffEntity entity = buffManager.CreateEntity();
+            BuffEntity entity = new BuffEntity();
+            buffManager.AddEntity(entity);
 
             var buff = new Buff(){};
             
@@ -198,6 +204,44 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             // Use the Assert class to test conditions.
             // yield to skip a frame
             yield return null;
+        }
+
+        class CB:IBuffDataComponent
+        {
+            
+        }
+        [Test]
+        public void TestT()
+        {    
+            IStructBuffManager<AIcStructBuffSystem> t1 = new NewBuffManager();
+            
+            IStructBuffManager<AIcStructBuffSystem> t2 = new NewBuffManager();
+            
+            NewBuffManager t3 = new NewBuffManager();
+            
+            BuffEntity entity = new BuffEntity();
+            
+            Buff buff = new Buff();
+            
+            t1.AddEntity(entity);
+            t1.AddBuff(entity,buff);
+            
+            t2.AddEntity(entity);
+            t3.AddEntity(entity);
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
+            t2.AddBuff(entity, buff);
+            stop.Stop();
+            Debug.Log($"Time:{stop.Elapsed}");
+            
+            stop.Restart();
+            t3.AddBuff(entity, buff);
+            stop.Stop();
+            Debug.Log($"Time:{stop.Elapsed}");
+            
+            var count =t1.GetBuffCount<Buff>(entity);
+            
+            Debug.Log(count);
         }
     }
 }
