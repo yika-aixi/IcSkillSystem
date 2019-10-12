@@ -2,6 +2,7 @@
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using SkillSystem.xNode_NPBehave_Node.Utils;
@@ -13,11 +14,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
     public class SkillConditionNode:ANPNode<Func<bool>>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IBuffManager<IBuffDataComponent> _buffManagerValue;
+        private INewBuffManager<IBuffSystem,IIcSkSEntity> _buffManagerValue;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]
-        protected IEntity Target;
+        protected IIcSkSEntity Target;
         
         [SerializeField]
         private string _conditionAQName;

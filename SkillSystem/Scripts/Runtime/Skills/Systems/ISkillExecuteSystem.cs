@@ -7,6 +7,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Systems
 {
     public interface ISkillExecuteSystem:ISkillSystem,ISkillFilter
     {
-        void Execute(IEntity entity,ISkillDataComponent skill);
+        void Execute(IIcSkSEntity icSkSEntity,ISkillDataComponent skill);
     }
 }

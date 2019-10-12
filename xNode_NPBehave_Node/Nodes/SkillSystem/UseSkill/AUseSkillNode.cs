@@ -22,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]
-        protected IEntity Target;
+        protected IIcSkSEntity Target;
 
         [SerializeField]
         private string _skillComponentAQName;

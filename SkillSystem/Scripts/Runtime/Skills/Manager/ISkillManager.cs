@@ -6,7 +6,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Manager
 {
     public interface ISkillManager
     {
-        void UseSkill(IEntity entity, ISkillDataComponent skill);
+        void UseSkill(IIcSkSEntity icSkSEntity, ISkillDataComponent skill);
 
         //void RemoveSkill(IEntity entity, ISkillDataComponent skill);
 

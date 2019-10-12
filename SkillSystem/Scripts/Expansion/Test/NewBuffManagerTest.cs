@@ -100,7 +100,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             Assert.GreaterOrEqual(result.Count(),2001);
         }
 
-        class TestSystem:AIcStructBuffSystem
+        class TestSystem:AIcStructBuffSystem<IcSkSEntity>
         {
 //            private readonly NewBuffManager _buffManager;
 //
@@ -121,12 +121,12 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                }
             }
 
-            public TestSystem(INewBuffManager<AIcStructBuffSystem> buffManager) : base(buffManager)
+            public TestSystem(INewBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager) : base(buffManager)
             {
             }
         }
         
-        class TestSystem1:AIcStructBuffSystem
+        class TestSystem1:AIcStructBuffSystem<IcSkSEntity>
         {
 //            private readonly NewBuffManager _buffManager;
 //
@@ -147,7 +147,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                }
             }
 
-            public TestSystem1(INewBuffManager<AIcStructBuffSystem> buffManager) : base(buffManager)
+            public TestSystem1(INewBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager) : base(buffManager)
             {
             }
         }
@@ -204,44 +204,6 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             // Use the Assert class to test conditions.
             // yield to skip a frame
             yield return null;
-        }
-
-        class CB:IBuffDataComponent
-        {
-            
-        }
-        [Test]
-        public void TestT()
-        {    
-            IStructBuffManager<AIcStructBuffSystem> t1 = new NewBuffManager();
-            
-            IStructBuffManager<AIcStructBuffSystem> t2 = new NewBuffManager();
-            
-            NewBuffManager t3 = new NewBuffManager();
-            
-            IcSkSEntity entity = new IcSkSEntity();
-            
-            Buff buff = new Buff();
-            
-            t1.AddEntity(entity);
-            t1.AddBuff(entity,buff);
-            
-            t2.AddEntity(entity);
-            t3.AddEntity(entity);
-            Stopwatch stop = new Stopwatch();
-            stop.Start();
-            t2.AddBuff(entity, buff);
-            stop.Stop();
-            Debug.Log($"Time:{stop.Elapsed}");
-            
-            stop.Restart();
-            t3.AddBuff(entity, buff);
-            stop.Stop();
-            Debug.Log($"Time:{stop.Elapsed}");
-            
-            var count =t1.GetBuffCount<Buff>(entity);
-            
-            Debug.Log(count);
         }
     }
 }

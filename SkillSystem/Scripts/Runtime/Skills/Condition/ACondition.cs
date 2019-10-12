@@ -6,13 +6,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
 {
     public abstract class ACondition:ICondition
     {
-        protected readonly IBuffManager<IBuffDataComponent> _buffManager;
+        protected readonly INewBuffManager _buffManager;
 
-        protected ACondition(IBuffManager<IBuffDataComponent> buffManager)
+        protected ACondition(INewBuffManager buffManager)
         {
             this._buffManager = buffManager;
         }
 
-        public abstract bool Check(IEntity entity);
+        public abstract bool Check(IIcSkSEntity icSkSEntity);
     }
 }

@@ -37,14 +37,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 return;
             }
 
-            if (_entityBuff.Entity == null)
+            if (_entityBuff.IcSkSEntity == null)
             {
                 EditorGUILayout.HelpBox($"没有连接实体!请调用{nameof(BuffEntityLinkComponent.Link)}", MessageType.Warning);
                 return;
             }
 
-            _entityBuff.BuffManager.GetBuffs(_entityBuff.Entity,_buffs);
+            _buffs.Clear();
             _buffGroup.Clear();
+            
+            var buffs = _entityBuff.BuffManager.GetAllBuff(_entityBuff.IcSkSEntity);
+            
+            _buffs.AddRange(buffs);
 
             if (_buffs.Count == 0)
             {
@@ -113,11 +117,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         EditorGUIUtility.SetIconSize(new Vector2(icon.width,icon.height));
                         if (GUILayout.Button(icon,GUILayout.Width(icon.width + 2),GUILayout.Height(icon.height + 2)))
                         {
-                            _entityBuff.BuffManager.RemoveBuff(_entityBuff.Entity, buff);
+                            _entityBuff.BuffManager.RemoveBuff(_entityBuff.IcSkSEntity, buff);
                         }
                     }
                     EditorGUILayout.EndHorizontal();
 
+                    GUILayout.Label("buff 的更新暂时没更新为新方式,无法更新哈");
+                    
                     if (_foldoutState2[j])
                     {
                         MemberInfo[] fields = buff.GetType().GetFields();

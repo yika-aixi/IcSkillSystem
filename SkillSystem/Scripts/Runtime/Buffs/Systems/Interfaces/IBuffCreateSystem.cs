@@ -12,8 +12,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// <summary>
     /// buff 创建系统
     /// </summary>
-    public interface IBuffCreateSystem:IBuffSystem
+    public interface IBuffCreateSystem<in TEntity>:IBuffSystem where TEntity : IIcSkSEntity
     {
-        void Create(IcSkSEntity entity,int index);
+        void Create(TEntity entity,int index);
     }
 }

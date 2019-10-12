@@ -17,47 +17,15 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buf
                     return BuffManager.HasBuff(Target, BuffType);
                 }
                 
-                return BuffManager.HasBuff(Target, BuffType, _hasBuff);
+                return BuffManager.HasBuff(Target, BuffType, _hasBuff());
             };
         }
 
-        private bool _hasBuff(IBuffDataComponent x)
+        private IBuffDataComponent _hasBuff()
         {
-            if (!BuffType.IsInstanceOfType(x))
-            {
-                return false;
-            }
-            
-            var xBuffType = x.GetType();
-
-            foreach (var input in DynamicInputs)
-            {
-                var inputValue = GetInputValue<object>(input.fieldName);
-
-                var field = xBuffType.GetField(input.fieldName);
-
-                if (field != null)
-                {
-                    var value = field.GetValue(x);
-                    if (value != inputValue)
-                    {
-                        return false;
-                    }
-                }
-
-                var property = xBuffType.GetProperty(input.fieldName);
-
-                if (property != null)
-                {
-                    var value = property.GetValue(x);
-                    if (value != inputValue)
-                    {
-                        return false;
-                    }
-                }
-            }
-            Debug.LogError("存在");
-            return true;
+            //todo 暂时先这样写下
+            Debug.LogError("空值比较 -----------");
+            return (IBuffDataComponent) Activator.CreateInstance(BuffType);
         }
     }
 }
