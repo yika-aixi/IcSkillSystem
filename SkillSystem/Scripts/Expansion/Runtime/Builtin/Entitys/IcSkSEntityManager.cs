@@ -8,14 +8,14 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
-    public class BuffEntityManager:IStructBuffEntityManager<NewBuffManager>
+    public class IcSkSEntityManager:IStructIcSkSEntityManager<NewBuffManager>
     {
         private FasterList<BuffEntity> _entitys;
 
         
         public NewBuffManager BuffManager { get; }
         
-        public BuffEntityManager(NewBuffManager buffManager)
+        public IcSkSEntityManager(NewBuffManager buffManager)
         {
             BuffManager = buffManager;
             _entitys = new FasterList<BuffEntity>();
@@ -83,19 +83,19 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         #region Cover
 
-        void IBuffEntityManager<NewBuffManager>.AddBuff<T>(BuffEntity entity, T buff)
+        void IIcSkSEntityManager<NewBuffManager>.AddBuff<T>(BuffEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffEntityManager<NewBuffManager>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
         }
 
-        bool IBuffEntityManager<NewBuffManager>.RemoveBuff<T>(BuffEntity entity, T buff)
+        bool IIcSkSEntityManager<NewBuffManager>.RemoveBuff<T>(BuffEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffEntityManager<NewBuffManager>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
         }
 
-        bool IBuffEntityManager<NewBuffManager>.HasBuff<T>(BuffEntity entity, T buff)
+        bool IIcSkSEntityManager<NewBuffManager>.HasBuff<T>(BuffEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffEntityManager<NewBuffManager>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
         }
 
         #endregion
