@@ -102,7 +102,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
                 var link = go.AddComponent<BuffEntityLinkComponent>();
                 
-                link.Init(_entityManager.BuffManager,entity);
+                link.Init(_entityManager,_entityManager.BuffManager,entity);
             }
         }
 

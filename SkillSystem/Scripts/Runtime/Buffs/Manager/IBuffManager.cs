@@ -7,11 +7,12 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
-    public interface IBuffManager
+    public interface IBuffManager<in TEntity> where TEntity : IIcSkSEntity
     {
+        IEnumerable<IBuffDataComponent> GetAllBuff(TEntity entity);
     }
 
-    public interface IBuffManager<in T,in TEntity>:IBuffManager where T : IBuffSystem where TEntity : IIcSkSEntity
+    public interface IBuffManager<in T,in TEntity>:IBuffManager<TEntity> where T : IBuffSystem where TEntity : IIcSkSEntity
     {
         IBuffManager<T,TEntity> AddBuffSystem(T buffSystem);
 
@@ -36,8 +37,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         bool HasBuff(TEntity entity, Type buffType);
         
         bool HasBuff(TEntity entity, Type buffType, IBuffDataComponent buff);
-
-        IEnumerable<IBuffDataComponent> GetAllBuff(TEntity entity);
 
         IEnumerable<TBuff> GetBuffs<TBuff>(TEntity entity, TBuff condition) where TBuff : IBuffDataComponent;
 
