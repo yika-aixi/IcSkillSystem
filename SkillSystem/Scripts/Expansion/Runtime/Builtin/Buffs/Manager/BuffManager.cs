@@ -14,8 +14,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
     {
         int Count { get; }
         IBuffDataComponent GetBuff(int index);
+
+        void SetBuff(int index, IBuffDataComponent newBuff);
         
         IEnumerable<IBuffDataComponent> GetBuffs();
+
+        void RemoveAt(int index);
     }
 
     class BuffList<T>:FasterList<T>,IBuffList
@@ -27,6 +31,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return (IBuffDataComponent)this[index];
         }
 
+        public void SetBuff(int index, IBuffDataComponent newBuff)
+        {
+            this[index] = (T) newBuff;
+        }
+        
         public IEnumerable<IBuffDataComponent> GetBuffs()
         {
             return Buffs.Select(x=>(IBuffDataComponent) x);
@@ -96,7 +105,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void AddBuff<T>(IcSkSEntity entity,in T buff) where T : struct, IBuffDataComponent
         {
-            _checkType<T>();
             if (!_checkEntityExist(entity))
             {
                 return;
@@ -104,8 +112,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _addBuff(entity, buff);
         }
 
-        private void _addBuff<T>(IcSkSEntity entity, T buff) where T : struct, IBuffDataComponent
+        private void _addBuff<T>(IcSkSEntity entity, T buff)
         {
+            _checkType<T>();
+            
             BuffList<T> buffList;
             var type = typeof(T);
 
@@ -143,11 +153,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         
         public T GetBuffData<T>(IcSkSEntity entity, int index) where T : struct, IBuffDataComponent
         {
+            return _getBuffData<T>(entity, index);
+        }
+
+        private T _getBuffData<T>(IcSkSEntity entity, int index,bool isBox = false)
+        {
             if (!_checkEntityExist(entity))
             {
                 throw new ArgumentException($"{entity.ID} entity not exist! Please Call {nameof(AddEntity)}.");
             }
-            
+
             var type = typeof(T);
             var buffMap = _buffMaps[entity];
 
@@ -161,7 +176,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 throw new IndexOutOfRangeException($"{type.Name} Buff Count :{result.Count},get index :{index}");
             }
 
-            return ((BuffList<T>)result)[index];
+            return isBox ? (T) result.GetBuff(index) : ((BuffList<T>) result)[index];
         }
 
         /// <summary>
@@ -173,29 +188,43 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <typeparam name="T"></typeparam>
         public void SetBuffData<T>(IcSkSEntity entity, in T buff,int index) where T : struct, IBuffDataComponent
         {
-            _checkType<T>();
+            var type = typeof(T);
+            _setBuffData(entity, type,buff, index);
+        }
+        
+        private void _setBuffData<T>(IcSkSEntity entity,Type buffType, in T buff,int index,bool isBox = false)
+        {
             if (!_checkEntityExist(entity))
             {
                 return;
             }
-            var type = typeof(T);
+            
             var buffMap = _buffMaps[entity];
             
-            if (!buffMap.TryGetValue(type,out var result))
+            if (!buffMap.TryGetValue(buffType,out var result))
             {
                 _addBuff(entity,buff);
                 return;
             }
             
-            BuffList<T> buffList = (BuffList<T>) result;
 
-            if (index >= buffList.Count -1)
+            if (index > result.Count -1)
             {
                 _addBuff(entity,buff);
                 return;
             }
 
-            buffList[index] = buff;
+            if (!isBox)
+            {
+                BuffList<T> buffList = (BuffList<T>) result;
+
+                buffList[index] = buff;
+            }
+            else
+            {
+                result.SetBuff(index,(IBuffDataComponent) buff);
+            }
+           
         }
 
         private void _callSystem(IcSkSEntity entity,int index,bool isCreate)
@@ -215,7 +244,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return _entitys.Contains(entity);
         }
 
-        private static void _checkType<T>() where T : struct, IBuffDataComponent
+        private static void _checkType<T>()
         {
 #if UNITY_EDITOR && IcSkillSystemDebug
             var type = typeof(T);
@@ -238,10 +267,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public bool RemoveBuff<T>(IcSkSEntity entity, T buff) where T : struct, IBuffDataComponent
         {
-            return _removeBuff(entity, buff);
+            var type = typeof(T);
+
+            return _removeBuff(entity,type, buff);
         }
 
-        private bool _removeBuff<T>(IcSkSEntity entity, T buff)
+        private bool _removeBuff<T>(IcSkSEntity entity,Type buffType, T buff,bool isBox = false)
         {
             if (!_checkEntityExist(entity))
             {
@@ -250,20 +281,36 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             var buffMap = _buffMaps[entity];
 
-            var type = typeof(T);
-            if (buffMap.TryGetValue(type, out var result))
+            if (buffMap.TryGetValue(buffType, out var result))
             {
-                var buffList = (BuffList<T>) result;
-                for (var index = buffList.Count - 1; index >= 0; index--)
+                BuffList<T> buffList = null;
+                
+                if (!isBox)
                 {
-                    var bf = buffList[index];
-                    if (bf.Equals(buff))
+                    buffList = (BuffList<T>) result;
+                }
+                
+                for (var index = result.Count - 1; index >= 0; index--)
+                {
+                    if (!isBox)
                     {
-                        _currentBuffs = buffList;
-                        buffList.RemoveAt(index);
-                        _callSystem(entity, index, false);
-                        return true;
+                        var bf = buffList[index];
+                        if (!bf.Equals(buff))
+                        {
+                            continue;
+                        }
                     }
+                    else
+                    {
+                        if (!result.GetBuff(index).Equals(buff))
+                        {
+                            continue;
+                        }
+                    }
+                    
+                    _currentBuffs = result;
+                    result.RemoveAt(index);
+                    _callSystem(entity, index, false);
                 }
             }
 
@@ -418,17 +465,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         TBuff IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity>.GetBuffData<TBuff>(IcSkSEntity entity, int index)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity>)}");
+            return _getBuffData<TBuff>(entity, index,true);
         }
 
         void IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity>.SetBuffData<TBuff>(IcSkSEntity entity, in TBuff buff, int index)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity>)}");
+            _setBuffData(entity,buff.GetType(), buff, index,true);
         }
 
         bool IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity>.RemoveBuff<TBuff>(IcSkSEntity entity, TBuff buff)
         {
-            return _removeBuff(entity, buff);
+            return _removeBuff(entity,buff.GetType(), buff,true);
         }
 
         bool IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity>.HasBuff<TBuff>(IcSkSEntity entity, TBuff buff)
