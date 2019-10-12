@@ -19,12 +19,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
     {
         public FasterReadOnlyList<T> Buffs => AsReadOnly();
     }
-
-    class CreateAndDestroyEventInfo
-    {
-        public Action<IcSkSEntity, int> OnCreate;
-        public Action<IcSkSEntity, int> OnDestroy;
-    }
     
     public class BuffManager:IStructBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity>
     {
