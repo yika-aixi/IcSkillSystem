@@ -27,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         public Action<BuffEntity, int> OnDestroy;
     }
     
-    public class NewBuffManager:INewBuffManager<AIcStructBuffSystem>
+    public class NewBuffManager:IStructBuffManager<AIcStructBuffSystem>
     {
         public FasterReadOnlyList<BuffEntity> Entitys => _entitys.AsReadOnly();
         private IBuffList _currentBuffs;
@@ -64,61 +64,28 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return this;
         }
 
-        private int _id = -1;
-
-        /// <summary>
-        /// id累加创建实体
-        /// </summary>
-        /// <returns></returns>
-        public BuffEntity CreateEntity()
+        public void AddEntity(BuffEntity entity)
         {
-            ++_id;
-            
-            return CreateEntity(_id);
-        }
-        
-        /// <summary>
-        /// 创建实体
-        /// </summary>
-        /// <param name="id">id存在的话将创建失败</param>
-        /// <returns>id为-1为创建失败</returns>
-        public BuffEntity CreateEntity(int id)
-        {
-            var entity = id;
-
             if (_entitys.Contains(entity))
             {
-                return -1;
+                return;
             }
             
             _entitys.Add(entity);
+            
             _buffMaps.Add(entity,new Dictionary<Type, IBuffList>());
-            return entity;
         }
         
-        /// <summary>
-        /// 删除实体
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public bool DestroyEntity(BuffEntity entity)
+        public void RemoveEntity(BuffEntity entity)
         {
             if (!_checkEntityExist(entity))
             {
-                return false;
-            }
-
-            //id减一下;
-            if (entity == _id)
-            {
-                --_id;
+                return;
             }
             
             _entitys.Remove(entity);
 
             _buffMaps.Remove(entity);
-            
-            return true;
         }
 
         public void AddBuff<T>(BuffEntity entity,in T buff) where T : struct, IBuffDataComponent
@@ -172,7 +139,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             if (!_checkEntityExist(entity))
             {
-                throw new ArgumentException($"{entity.ID} entity not exist! Please Call {nameof(CreateEntity)}.");
+                throw new ArgumentException($"{entity.ID} entity not exist! Please Call {nameof(AddEntity)}.");
             }
             
             var type = typeof(T);
@@ -316,7 +283,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
 
-        public IEnumerable<T> GetBuffs<T>(BuffEntity entity,T condition) where T : IBuffDataComponent
+        public IEnumerable<T> GetBuffs<T>(BuffEntity entity,T condition) where T :struct, IBuffDataComponent
         {
             var buffs = GetBuffs<T>(entity);
 
@@ -328,7 +295,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return FasterReadOnlyList<T>.DefaultList;
         }
         
-        public FasterReadOnlyList<T> GetBuffs<T>(BuffEntity entity) where T : IBuffDataComponent
+        public FasterReadOnlyList<T> GetBuffs<T>(BuffEntity entity) where T :struct, IBuffDataComponent
         {
             if (_checkEntityExist(entity))
             {
@@ -343,7 +310,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return FasterReadOnlyList<T>.DefaultList;
         }
         
-        public int GetBuffCount<T>(BuffEntity entity) where T : IBuffDataComponent
+        public int GetBuffCount<T>(BuffEntity entity) where T : struct,IBuffDataComponent
         {
             int count = 0;
             
@@ -366,5 +333,54 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             _onUpdate?.Invoke();
         }
+
+        #region Cover
+        
+        void INewBuffManager<AIcStructBuffSystem>.AddBuff<TBuff>(BuffEntity entity, in TBuff buff)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+        
+        TBuff INewBuffManager<AIcStructBuffSystem>.GetCurrentBuffData<TBuff>(int index)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        TBuff INewBuffManager<AIcStructBuffSystem>.GetBuffData<TBuff>(BuffEntity entity, int index)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        void INewBuffManager<AIcStructBuffSystem>.SetBuffData<TBuff>(BuffEntity entity, in TBuff buff, int index)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        bool INewBuffManager<AIcStructBuffSystem>.RemoveBuff<TBuff>(BuffEntity entity, TBuff buff)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        bool INewBuffManager<AIcStructBuffSystem>.HasBuff<TBuff>(BuffEntity entity, TBuff buff)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        IEnumerable<TBuff> INewBuffManager<AIcStructBuffSystem>.GetBuffs<TBuff>(BuffEntity entity, TBuff condition)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        FasterReadOnlyList<TBuff> INewBuffManager<AIcStructBuffSystem>.GetBuffs<TBuff>(BuffEntity entity)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        int INewBuffManager<AIcStructBuffSystem>.GetBuffCount<TBuff>(BuffEntity entity)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<AIcStructBuffSystem>)}");
+        }
+
+        #endregion
     }
 }
