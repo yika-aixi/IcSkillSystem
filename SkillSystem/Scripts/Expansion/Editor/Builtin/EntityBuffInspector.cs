@@ -9,11 +9,22 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
 {
+    struct BuffInfo
+    {
+        public IBuffDataComponent Buff;
+        public int Index;
+
+        public BuffInfo(IBuffDataComponent buff, int index)
+        {
+            Buff = buff;
+            Index = index;
+        }
+    }
     [CustomEditor(typeof(BuffEntityLinkComponent))]
     public class EntityBuffInspector : Editor
     {
         private BuffEntityLinkComponent _entityBuff;
-        private Dictionary<Type, List<IBuffDataComponent>> _buffGroup;
+        private Dictionary<Type, List<BuffInfo>> _buffGroup;
         private List<bool> _foldoutState1;
         private List<bool> _foldoutState2;
         private List<IBuffDataComponent> _buffs;
@@ -21,7 +32,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
         private void OnEnable()
         {
             _entityBuff = (BuffEntityLinkComponent) target;
-            _buffGroup = new Dictionary<Type, List<IBuffDataComponent>>();
+            _buffGroup = new Dictionary<Type, List<BuffInfo>>();
             _foldoutState1 = new List<bool>();
             _foldoutState2 = new List<bool>();
             _buffs = new List<IBuffDataComponent>();
@@ -56,16 +67,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 return;
             }
 
-            foreach (var buff in _buffs)
+            for (var i = 0; i < _buffs.Count; i++)
             {
+                var buff = _buffs[i];
                 if (!_buffGroup.ContainsKey(buff.GetType()))
                 {
-                    _buffGroup.Add(buff.GetType(), new List<IBuffDataComponent>());
+                    _buffGroup.Add(buff.GetType(), new List<BuffInfo>());
                 }
 
-                _buffGroup[buff.GetType()].Add(buff);
+                _buffGroup[buff.GetType()].Add(new BuffInfo(buff,i));
             }
-            
+
             EditorGUILayout.LabelField($"Buff同类数量:{_buffGroup.Count}");
 
             if (_foldoutState1.Count < _buffGroup.Count)
@@ -102,8 +114,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
 
                 for (var j = 0; j < buffP.Value.Count; j++)
                 {
-                    var buff = buffP.Value[j];
-
+                    var buffInfo = buffP.Value[j];
+                    var buff = buffInfo.Buff;
                     EditorGUILayout.BeginHorizontal();
                     {
                         if (buffP.Value.Count > 1)
@@ -121,8 +133,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         }
                     }
                     EditorGUILayout.EndHorizontal();
-
-                    GUILayout.Label("buff 的更新暂时没更新为新方式,无法更新哈");
                     
                     if (_foldoutState2[j])
                     {
@@ -130,13 +140,25 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         MemberInfo[] properties = buff.GetType().GetProperties();
                         EditorGUI.indentLevel++;
                         {
-                            _memberInfoDraw(fields, buff, (info, component) => ((FieldInfo) info).GetValue(component),
+                            _memberInfoDraw(fields, buffInfo, (info, component) => ((FieldInfo) info).GetValue(component),
                                 (info => true), 
                                 (info, component, value) => ((FieldInfo) info).SetValue(component, value));
 
-                            _memberInfoDraw(properties, buff, (info, component) => ((PropertyInfo) info).GetValue(component),
+                            _memberInfoDraw(properties, buffInfo, (info, component) => ((PropertyInfo) info).GetValue(component),
                                 (info => ((PropertyInfo) info).CanWrite), 
-                                (info, component, value) => ((PropertyInfo) info).SetValue(component, value));
+                                (info, component, value) =>
+                                {
+                                    var oldValue = ((PropertyInfo) info).GetValue(component);
+                                    
+                                    ((PropertyInfo) info).SetValue(component, value);
+                                    
+                                    var newValue = ((PropertyInfo) info).GetValue(component);
+
+                                    if (oldValue.Equals(newValue))
+                                    {
+                                        Debug.LogError("Property `Set` Function is Null implement");
+                                    }
+                                });
                         }
                         EditorGUI.indentLevel--;
                     }
@@ -154,14 +176,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
             Repaint();
         }
 
-        private void _memberInfoDraw(MemberInfo[] fields, IBuffDataComponent buff,
+        private void _memberInfoDraw(MemberInfo[] fields, BuffInfo buff,
             Func<MemberInfo, IBuffDataComponent, object> getValue,
             Func<MemberInfo,bool> isSet,
             Action<MemberInfo, IBuffDataComponent, object> setValue)
         {
             foreach (var info in fields)
             {
-                var infoValue = getValue(info, buff);
+                var infoValue = getValue(info, buff.Buff);
 
                 GUIContent title = new GUIContent($"{info.Name}");
                 
@@ -170,6 +192,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                     EditorGUILayout.LabelField($"{info.Name}:{infoValue}");
                     continue;
                 }
+
+                GUI.changed = false;
                 
                 switch (infoValue)
                 {
@@ -179,7 +203,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
 
                         if (GUI.changed)
                         {
-                            setValue(info, buff, value);
+                            setValue(info, buff.Buff, value);
+                            _entityBuff.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -188,7 +213,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         value = EditorGUILayout.DelayedIntField(title, value);
                         if (GUI.changed)
                         {
-                            setValue(info, buff, value);
+                            setValue(info, buff.Buff, value);
+                            _entityBuff.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -197,7 +223,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         value = EditorGUILayout.DelayedFloatField(title, value);
                         if (GUI.changed)
                         {
-                            setValue(info, buff, value);
+                            setValue(info, buff.Buff, value);
+                            _entityBuff.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -206,7 +233,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         value = EditorGUILayout.Toggle(title, value);
                         if (GUI.changed)
                         {
-                            setValue(info, buff, value);
+                            setValue(info, buff.Buff, value);
+                            _entityBuff.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -215,13 +243,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                         value = EditorGUILayout.EnumPopup(title, value);
                         if (GUI.changed)
                         {
-                            setValue(info, buff, value);
+                            setValue(info, buff.Buff, value);
+                            _entityBuff.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
                         continue;
                 }
+                
+                
             }
+            
+            
         }
     }
 }
