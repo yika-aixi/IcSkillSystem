@@ -7,13 +7,13 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
-    public interface INewBuffManager
+    public interface IBuffManager
     {
     }
 
-    public interface INewBuffManager<in T,in TEntity>:INewBuffManager where T : IBuffSystem where TEntity : IIcSkSEntity
+    public interface IBuffManager<in T,in TEntity>:IBuffManager where T : IBuffSystem where TEntity : IIcSkSEntity
     {
-        INewBuffManager<T,TEntity> AddBuffSystem(T buffSystem);
+        IBuffManager<T,TEntity> AddBuffSystem(T buffSystem);
 
         void Update();
 
@@ -46,7 +46,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         int GetBuffCount<TBuff>(TEntity entity) where TBuff : IBuffDataComponent;
     }
 
-    public interface IStructBuffManager<in T,in TEntity> : INewBuffManager<T,TEntity> where T : IBuffSystem where TEntity : struct,IIcSkSEntity,IEquatable<TEntity>
+    public interface IStructBuffManager<in T,in TEntity> : IBuffManager<T,TEntity> where T : IBuffSystem where TEntity : struct,IIcSkSEntity,IEquatable<TEntity>
     {
         new void AddBuff<TBuff>(TEntity entity, in TBuff buff) where TBuff : struct, IBuffDataComponent;
 

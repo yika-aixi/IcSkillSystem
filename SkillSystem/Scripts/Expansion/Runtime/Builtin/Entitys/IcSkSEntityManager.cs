@@ -8,14 +8,14 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
-    public class IcSkSEntityManager:IStructIcSkSEntityManager<NewBuffManager>
+    public class IcSkSEntityManager:IStructIcSkSEntityManager<BuffManager>
     {
         private FasterList<IcSkSEntity> _entitys;
 
         
-        public NewBuffManager BuffManager { get; }
+        public BuffManager BuffManager { get; }
         
-        public IcSkSEntityManager(NewBuffManager buffManager)
+        public IcSkSEntityManager(BuffManager buffManager)
         {
             BuffManager = buffManager;
             _entitys = new FasterList<IcSkSEntity>();
@@ -83,19 +83,19 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         #region Cover
 
-        void IIcSkSEntityManager<NewBuffManager>.AddBuff<T>(IcSkSEntity entity, T buff)
+        void IIcSkSEntityManager<BuffManager>.AddBuff<T>(IcSkSEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<BuffManager>)}");
         }
 
-        bool IIcSkSEntityManager<NewBuffManager>.RemoveBuff<T>(IcSkSEntity entity, T buff)
+        bool IIcSkSEntityManager<BuffManager>.RemoveBuff<T>(IcSkSEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<BuffManager>)}");
         }
 
-        bool IIcSkSEntityManager<NewBuffManager>.HasBuff<T>(IcSkSEntity entity, T buff)
+        bool IIcSkSEntityManager<BuffManager>.HasBuff<T>(IcSkSEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<NewBuffManager>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<BuffManager>)}");
         }
 
         #endregion

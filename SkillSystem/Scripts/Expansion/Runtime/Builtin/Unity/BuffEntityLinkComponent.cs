@@ -9,11 +9,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity
     public class BuffEntityLinkComponent : MonoBehaviour
     {
         [NonSerialized] 
-        public INewBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> BuffManager;
+        public IBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> BuffManager;
         [NonSerialized] 
         public IcSkSEntity IcSkSEntity;
 
-        public void Init(INewBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager,IcSkSEntity icSkSEntity)
+        public void Init(IBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager,IcSkSEntity icSkSEntity)
         {
             BuffManager = buffManager;
             Link(icSkSEntity);

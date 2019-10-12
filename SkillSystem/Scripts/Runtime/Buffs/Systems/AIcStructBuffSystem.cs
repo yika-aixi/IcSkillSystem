@@ -5,9 +5,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
     public abstract class AIcStructBuffSystem<TEntity>: IBuffCreateSystem<TEntity>,IBuffUpdateSystem,IBuffDestroySystem<TEntity> where TEntity : IIcSkSEntity
     {
-        protected readonly INewBuffManager<AIcStructBuffSystem<TEntity>,TEntity> BuffManager;
+        protected readonly IBuffManager<AIcStructBuffSystem<TEntity>,TEntity> BuffManager;
 
-        protected AIcStructBuffSystem(INewBuffManager<AIcStructBuffSystem<TEntity>,TEntity> buffManager)
+        protected AIcStructBuffSystem(IBuffManager<AIcStructBuffSystem<TEntity>,TEntity> buffManager)
         {
             BuffManager = buffManager;
         }

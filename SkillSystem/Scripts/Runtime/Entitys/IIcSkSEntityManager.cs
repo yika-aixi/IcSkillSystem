@@ -2,7 +2,7 @@
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
-    public interface IIcSkSEntityManager<TBM> where TBM : INewBuffManager
+    public interface IIcSkSEntityManager<TBM> where TBM : IBuffManager
     {
         TBM BuffManager { get;}
 
@@ -23,7 +23,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
         bool HasBuff<T>(IcSkSEntity entity, T buff) where T : IBuffDataComponent;
     }
 
-    public interface IStructIcSkSEntityManager<TBM> : IIcSkSEntityManager<TBM> where TBM : INewBuffManager
+    public interface IStructIcSkSEntityManager<TBM> : IIcSkSEntityManager<TBM> where TBM : IBuffManager
     {
         new void AddBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
         

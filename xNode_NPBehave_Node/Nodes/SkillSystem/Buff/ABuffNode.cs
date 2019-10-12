@@ -15,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buf
         private string _buffAQName;
 
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
-        protected INewBuffManager<IBuffSystem,IIcSkSEntity> BuffManager;
+        protected IBuffManager<IBuffSystem,IIcSkSEntity> BuffManager;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]

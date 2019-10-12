@@ -45,7 +45,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 简单的添加Buff()
         {
-            NewBuffManager buffManager = new NewBuffManager();
+            BuffManager buffManager = new BuffManager();
 
             IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
@@ -60,7 +60,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 添加Buff_10001()
         {
-            NewBuffManager buffManager = new NewBuffManager();
+            BuffManager buffManager = new BuffManager();
             IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
@@ -77,7 +77,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 添加Buff_10001_查找Value为0的()
         {
-            NewBuffManager buffManager = new NewBuffManager();
+            BuffManager buffManager = new BuffManager();
             IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
@@ -121,7 +121,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                }
             }
 
-            public TestSystem(INewBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager) : base(buffManager)
+            public TestSystem(IBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager) : base(buffManager)
             {
             }
         }
@@ -147,7 +147,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 //                }
             }
 
-            public TestSystem1(INewBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager) : base(buffManager)
+            public TestSystem1(IBuffManager<AIcStructBuffSystem<IcSkSEntity>,IcSkSEntity> buffManager) : base(buffManager)
             {
             }
         }
@@ -155,9 +155,9 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 添加Buff_10001_Value为0的将他们修改为100()
         {
-            NewBuffManager buffManager = new NewBuffManager();
+            BuffManager buffManager = new BuffManager();
             for (var i = 0; i < 100; i++)
-                buffManager.AddBuffSystem(new TestSystem(new NewBuffManager()))
+                buffManager.AddBuffSystem(new TestSystem(new BuffManager()))
                     .AddBuffSystem(new TestSystem1(buffManager));
             IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
@@ -184,7 +184,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 简单的添加删除Buff()
         {
-            NewBuffManager buffManager = new NewBuffManager();
+            BuffManager buffManager = new BuffManager();
             IcSkSEntity entity = new IcSkSEntity();
             buffManager.AddEntity(entity);
 
