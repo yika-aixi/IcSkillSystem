@@ -67,15 +67,26 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 return;
             }
 
+            int index = 0;
+            Type lastBuffType = null;
             for (var i = 0; i < _buffs.Count; i++)
             {
                 var buff = _buffs[i];
+
+                if (lastBuffType == null || lastBuffType != buff.GetType())
+                {
+                    lastBuffType = buff.GetType();
+                    index = 0;
+                }
+                
                 if (!_buffGroup.ContainsKey(buff.GetType()))
                 {
                     _buffGroup.Add(buff.GetType(), new List<BuffInfo>());
                 }
 
-                _buffGroup[buff.GetType()].Add(new BuffInfo(buff,i));
+                _buffGroup[buff.GetType()].Add(new BuffInfo(buff,index));
+
+                index++;
             }
 
             EditorGUILayout.LabelField($"Buff同类数量:{_buffGroup.Count}");
@@ -88,7 +99,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                 }
             }
 
-            int index = 0;
+            index = 0;
             foreach (var buffP in _buffGroup)
             {
                 if (buffP.Value.Count > 1)
