@@ -6,7 +6,11 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
-    public interface INewBuffManager<in T> where T : IBuffSystem
+    public interface INewBuffManager
+    {
+    }
+
+    public interface INewBuffManager<in T>:INewBuffManager where T : IBuffSystem
     {
         INewBuffManager<T> AddBuffSystem(T buffSystem);
 
