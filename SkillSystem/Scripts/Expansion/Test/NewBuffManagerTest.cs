@@ -45,54 +45,54 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 简单的添加Buff()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
 
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
-            buffManager.AddBuff(entity,new Buff(){});
+            buffManagerStruct.AddBuff(entity,new Buff(){});
             stop.Stop();
             Debug.Log($"Time:{stop.Elapsed} {stop.Elapsed.Milliseconds}");
-            Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),1);
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),1);
         }
         
         [Test]
         public void 添加Buff_10001()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 10001; i++)
             {
-                buffManager.AddBuff(entity,new Buff(){});
+                buffManagerStruct.AddBuff(entity,new Buff(){});
             }
             stop.Stop();
             Debug.Log($"Time:{stop.Elapsed}");
-            Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),10001);
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),10001);
         }
         
         [Test]
         public void 添加Buff_10001_查找Value为0的()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 10001; i++)
             {
-                buffManager.AddBuff(entity,new Buff(){Value = i % 5});
+                buffManagerStruct.AddBuff(entity,new Buff(){Value = i % 5});
             }
             stop.Stop();
             Debug.Log($"Add Time:{stop.Elapsed}");
-            Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),10001);
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),10001);
 
             stop.Restart();
 
-            var result = buffManager.GetBuffs(entity, new Buff() {Value = 0});
+            var result = buffManagerStruct.GetBuffs(entity, new Buff() {Value = 0});
             
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
@@ -155,17 +155,17 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 添加Buff_10001_Value为0的将他们修改为100()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             for (var i = 0; i < 100; i++)
-                buffManager.AddBuffSystem(new TestSystem(new BuffManager()))
-                    .AddBuffSystem(new TestSystem1(buffManager));
+                buffManagerStruct.AddBuffSystem(new TestSystem(new BuffManager_Struct()))
+                    .AddBuffSystem(new TestSystem1(buffManagerStruct));
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 1; i++)
             {
-                buffManager.AddBuff(entity,new Buff(){Value = i % 5});
+                buffManagerStruct.AddBuff(entity,new Buff(){Value = i % 5});
             }
             stop.Stop();
             Debug.Log($"Add Time:{stop.Elapsed}");
@@ -173,7 +173,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             stop.Restart();
 
-            var result = buffManager.GetBuffs(entity, new Buff() {Value = 100});
+            var result = buffManagerStruct.GetBuffs(entity, new Buff() {Value = 100});
             
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
@@ -184,45 +184,45 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [Test]
         public void 简单的添加删除Buff()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
 
             var buff = new Buff(){};
             
-            buffManager.AddBuff(entity,buff);
-            buffManager.RemoveBuff(entity,buff);
+            buffManagerStruct.AddBuff(entity,buff);
+            buffManagerStruct.RemoveBuff(entity,buff);
             
-            Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),0);
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),0);
         }
         
         [Test]
         public void 简单的添加修改Buff_正常()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
 
             var buff = new Buff(){};
             
-            buffManager.AddBuff(entity,buff);
-            buffManager.SetBuffData(entity,new Buff(){Value = 100}, 0);
+            buffManagerStruct.AddBuff(entity,buff);
+            buffManagerStruct.SetBuffData(entity,new Buff(){Value = 100}, 0);
 
-            Assert.GreaterOrEqual(buffManager.GetBuffData<Buff>(entity,0).Value, 100);
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffData<Buff>(entity,0).Value, 100);
         }
         
         [Test]
         public void 简单的添加修改Buff_BOX()
         {
-            BuffManager buffManager = new BuffManager();
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             IcSkSEntity entity = new IcSkSEntity();
-            buffManager.AddEntity(entity);
+            buffManagerStruct.AddEntity(entity);
 
             var buff = new Buff(){};
 
-            buffManager.AddBuff(entity,buff);
+            buffManagerStruct.AddBuff(entity,buff);
 
-            IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity> b = buffManager;
+            IBuffManager<AIcStructBuffSystem<IcSkSEntity>, IcSkSEntity> b = buffManagerStruct;
             
             b .SetBuffData(entity,new Buff(){Value = 100}, 0);
 

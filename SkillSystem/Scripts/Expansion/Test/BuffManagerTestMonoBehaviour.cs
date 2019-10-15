@@ -2,7 +2,12 @@
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -83,10 +88,10 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         private int _maxEntityId;
 
         private IcSkSEntityManager _entityManager;
-        
+
         private void Awake()
         {
-            _entityManager = new IcSkSEntityManager(new BuffManager());
+            _entityManager = new IcSkSEntityManager(new BuffManager_Struct());
             _maxEntityId = EntityCount;
         }
 
@@ -101,8 +106,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
                 GameObject go = new GameObject($"Entity ID:{id}");
 
                 var link = go.AddComponent<BuffEntityLinkComponent>();
-                
-                link.Init(_entityManager,_entityManager.BuffManager,entity);
+                link.Init(_entityManager, _entityManager.BuffManager,entity);
             }
         }
 
