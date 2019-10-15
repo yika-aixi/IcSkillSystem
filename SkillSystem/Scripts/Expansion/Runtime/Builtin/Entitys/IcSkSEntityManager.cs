@@ -67,16 +67,31 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         public void AddBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
         {
+            if (!_checkEntity(entity))
+            {
+                return;
+            }
+            
             BuffManager.AddBuff(entity,buff);
         }
 
         public bool RemoveBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
         {
+            if (!_checkEntity(entity))
+            {
+                return false;
+            }
+            
             return BuffManager.RemoveBuff(entity, buff);
         }
 
         public bool HasBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
         {
+            if (!_checkEntity(entity))
+            {
+                return false;
+            }
+            
             return BuffManager.HasBuff(entity, buff);
         }
 
