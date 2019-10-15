@@ -49,6 +49,8 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             {
                 return false;
             }
+
+            _entitys.Remove(entity);
             
             BuffManager.RemoveEntity(entity);
 
