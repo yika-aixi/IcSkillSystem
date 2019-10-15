@@ -39,5 +39,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
             return new IcSkSEntity(id);
         }
 
+        public override string ToString()
+        {
+            return $"ID: {ID}";
+        }
     }
 }
