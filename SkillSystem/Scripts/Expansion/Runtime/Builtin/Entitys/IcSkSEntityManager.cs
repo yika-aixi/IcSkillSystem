@@ -1,20 +1,21 @@
 ﻿using System;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
-    public class IcSkSEntityManager:IStructIcSkSEntityManager<BuffManager,IcSkSEntity>
+    public class IcSkSEntityManager:IStructIcSkSEntityManager<IBuffSystem,IcSkSEntity>
     {
         private FasterList<IcSkSEntity> _entitys;
 
         public FasterReadOnlyList<IcSkSEntity> Entitys => _entitys.AsReadOnly();
-        
-        public BuffManager BuffManager { get; }
-        
-        public IcSkSEntityManager(BuffManager buffManager)
+        public IBuffManager<IBuffSystem, IcSkSEntity> BuffManager { get; }
+
+        public IcSkSEntityManager(IBuffManager<IBuffSystem, IcSkSEntity> buffManager)
         {
             BuffManager = buffManager;
             _entitys = new FasterList<IcSkSEntity>();
@@ -104,19 +105,19 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         #region Cover
 
-        void IIcSkSEntityManager<BuffManager,IcSkSEntity>.AddBuff<T>(IcSkSEntity entity, T buff)
+        void IIcSkSEntityManager<IBuffSystem, IcSkSEntity>.AddBuff<T>(IcSkSEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<BuffManager,IcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<IBuffSystem,IcSkSEntity>)}");
         }
 
-        bool IIcSkSEntityManager<BuffManager,IcSkSEntity>.RemoveBuff<T>(IcSkSEntity entity, T buff)
+        bool IIcSkSEntityManager<IBuffSystem, IcSkSEntity>.RemoveBuff<T>(IcSkSEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<BuffManager,IcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<IBuffSystem,IcSkSEntity>)}");
         }
 
-        bool IIcSkSEntityManager<BuffManager,IcSkSEntity>.HasBuff<T>(IcSkSEntity entity, T buff)
+        bool IIcSkSEntityManager<IBuffSystem, IcSkSEntity>.HasBuff<T>(IcSkSEntity entity, T buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<BuffManager,IcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructIcSkSEntityManager<IBuffSystem,IcSkSEntity>)}");
         }
 
         #endregion
