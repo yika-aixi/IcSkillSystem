@@ -32,7 +32,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
         public IcSkSEntity CreateEntity(int id)
         {
             IcSkSEntity entity = id;
-            
+            _entitys.Add(entity);
             BuffManager.AddEntity(entity);
             
             return entity;
