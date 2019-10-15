@@ -1,13 +1,14 @@
 ﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
-    public interface IIcSkSEntityManager<out TBM,TEntity> where TBM : IBuffManager<TEntity> where TEntity : IIcSkSEntity
+    public interface IIcSkSEntityManager<in TBuffSystem, TEntity> where TBuffSystem : IBuffSystem where TEntity : IIcSkSEntity
     {
         FasterReadOnlyList<TEntity> Entitys { get; }
         
-        TBM BuffManager { get;}
+        IBuffManager<TBuffSystem,TEntity> BuffManager { get;}
 
         TEntity CreateEntity();
         
@@ -26,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
         bool HasBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
     }
 
-    public interface IStructIcSkSEntityManager<out TBM,TEntity> : IIcSkSEntityManager<TBM,TEntity> where TBM : IBuffManager<TEntity> where TEntity : IIcSkSEntity
+    public interface IStructIcSkSEntityManager<in TBuffSystem, TEntity> : IIcSkSEntityManager<TBuffSystem,TEntity> where TBuffSystem : IBuffSystem where TEntity : IIcSkSEntity
     {
         new void AddBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
         
