@@ -140,7 +140,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
                             _foldoutState2[j] = EditorGUILayout.Foldout(_foldoutState2[j], $"{buffP.Key.Name}", true);
                         }
 
-                        var icon = EditorGUIUtility.FindTexture("vcs_delete");
+                        var icon = EditorGUIUtility.FindTexture("d_P4_DeletedLocal");
                         EditorGUIUtility.SetIconSize(new Vector2(icon.width,icon.height));
                         if (GUILayout.Button(icon,GUILayout.Width(icon.width + 2),GUILayout.Height(icon.height + 2)))
                         {
