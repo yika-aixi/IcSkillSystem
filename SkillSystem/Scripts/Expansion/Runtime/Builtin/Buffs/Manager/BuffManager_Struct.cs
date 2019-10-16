@@ -164,17 +164,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 
                 buffMap.Add(buffType, result);
             }
+            
+            if (!isBox)
+            {
+                buffList = (BuffList<T>) result;
+                buffList.Add(buff);
+            }
             else
             {
-                if (!isBox)
-                {
-                    buffList = (BuffList<T>) result;
-                    buffList.Add(buff);
-                }
-                else
-                {
-                    result.AddBuff((IBuffDataComponent) buff);
-                }
+                result.AddBuff((IBuffDataComponent) buff);
             }
 
             _currentBuffs = result;
