@@ -1,5 +1,4 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
@@ -8,7 +7,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
-    public class IcSkSEntityManager:IStructIcSkSEntityManager<IBuffSystem,IcSkSEntity>
+    public partial class IcSkSEntityManager:IStructIcSkSEntityManager<IBuffSystem,IcSkSEntity>
     {
         private FasterList<IcSkSEntity> _entitys;
 
@@ -30,9 +29,20 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             return CreateEntity(_id);
         }
 
+        /// <summary>
+        /// 创建实体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>如果已经存在将返回id为-1的实体</returns>
         public IcSkSEntity CreateEntity(int id)
         {
             IcSkSEntity entity = id;
+
+            if (_checkEntity(entity))
+            {
+                return -1;
+            }
+            
             _entitys.Add(entity);
             BuffManager.AddEntity(entity);
             
@@ -58,7 +68,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             return true;
         }
 
-        private bool _checkEntity(IcSkSEntity entity)
+        private bool _checkEntity(in IcSkSEntity entity)
         {
             return _entitys.Contains(entity);
         }
