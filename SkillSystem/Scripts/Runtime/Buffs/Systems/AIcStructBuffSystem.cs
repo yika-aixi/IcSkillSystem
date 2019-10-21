@@ -1,13 +1,14 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
-    public abstract class AIcStructBuffSystem<TEntity>: IBuffCreateSystem<TEntity>,IBuffUpdateSystem,IBuffDestroySystem<TEntity> where TEntity : IIcSkSEntity
+    public abstract class AIcStructBuffSystem<TEntity>: IBuffCreateSystem<TEntity>,IBuffUpdateSystem,IBuffDestroySystem<TEntity> where TEntity : struct, IIcSkSEntity, IEquatable<TEntity>
     {
-        protected readonly IBuffManager<TEntity> BuffManager;
+        protected readonly IStructBuffManager<TEntity> BuffManager;
 
-        protected AIcStructBuffSystem(IBuffManager<TEntity> buffManager)
+        protected AIcStructBuffSystem(IStructBuffManager<TEntity> buffManager)
         {
             BuffManager = buffManager;
         }
