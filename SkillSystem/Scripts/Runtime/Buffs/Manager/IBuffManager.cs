@@ -46,6 +46,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 
     public interface IStructBuffManager<in TEntity> : IBuffManager<TEntity> where TEntity : struct,IIcSkSEntity,IEquatable<TEntity>
     {
+        new IStructBuffManager<TEntity> AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent;
+        
         new void AddBuff<TBuff>(TEntity entity, in TBuff buff) where TBuff : struct, IBuffDataComponent;
 
         new TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : struct, IBuffDataComponent;
