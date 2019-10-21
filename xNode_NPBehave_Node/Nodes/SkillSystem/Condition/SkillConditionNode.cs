@@ -14,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
     public class SkillConditionNode:ANPNode<Func<bool>>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IBuffManager<IBuffSystem,IIcSkSEntity> _buffManagerValue;
+        private IBuffManager<IIcSkSEntity> _buffManagerValue;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]

@@ -4,11 +4,11 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
-    public interface IIcSkSEntityManager<in TBuffSystem, TEntity> where TBuffSystem : IBuffSystem where TEntity : IIcSkSEntity
+    public interface IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
     {
         FasterReadOnlyList<TEntity> Entitys { get; }
         
-        IBuffManager<TBuffSystem,TEntity> BuffManager { get;}
+        IBuffManager<TEntity> BuffManager { get;}
 
         TEntity CreateEntity();
         
@@ -27,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
         bool HasBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
     }
 
-    public interface IStructIcSkSEntityManager<in TBuffSystem, TEntity> : IIcSkSEntityManager<TBuffSystem,TEntity> where TBuffSystem : IBuffSystem where TEntity : IIcSkSEntity
+    public interface IStructIcSkSEntityManager<TEntity> : IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
     {
         new void AddBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
         

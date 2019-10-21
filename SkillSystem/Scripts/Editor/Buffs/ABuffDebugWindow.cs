@@ -10,7 +10,7 @@ namespace DefaultNamespace
 {
     public abstract class ABuffDebugWindow<TEntity> : UnityEditor.EditorWindow where TEntity : IIcSkSEntity
     {
-        public static IIcSkSEntityManager<IBuffSystem, TEntity> EntityManager;
+        public static IIcSkSEntityManager<TEntity> EntityManager;
         
         private void OnGUI()
         {

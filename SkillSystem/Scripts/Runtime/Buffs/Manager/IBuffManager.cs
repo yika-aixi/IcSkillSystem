@@ -9,12 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
     public interface IBuffManager<in TEntity> where TEntity : IIcSkSEntity
     {
-        IEnumerable<IBuffDataComponent> GetAllBuff(TEntity entity);
-    }
-
-    public interface IBuffManager<in TBuffSystem,in TEntity>:IBuffManager<TEntity> where TBuffSystem : IBuffSystem where TEntity : IIcSkSEntity
-    {
-        IBuffManager<TBuffSystem,TEntity> AddBuffSystem(TBuffSystem buffSystem);
+        IBuffManager<TEntity> AddBuffSystem(IBuffSystem buffSystem);
 
         void Update();
 
@@ -41,11 +36,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         IEnumerable<TBuff> GetBuffs<TBuff>(TEntity entity, TBuff condition) where TBuff : IBuffDataComponent;
 
         FasterReadOnlyList<TBuff> GetBuffs<TBuff>(TEntity entity) where TBuff : IBuffDataComponent;
+        
+        IEnumerable<IBuffDataComponent> GetAllBuff(TEntity entity);
 
         int GetBuffCount<TBuff>(TEntity entity) where TBuff : IBuffDataComponent;
     }
 
-    public interface IStructBuffManager<in TBuffSystem,in TEntity> : IBuffManager<TBuffSystem,TEntity> where TBuffSystem : IBuffSystem where TEntity : struct,IIcSkSEntity,IEquatable<TEntity>
+    public interface IStructBuffManager<in TEntity> : IBuffManager<TEntity> where TEntity : struct,IIcSkSEntity,IEquatable<TEntity>
     {
         new void AddBuff<TBuff>(TEntity entity, in TBuff buff) where TBuff : struct, IBuffDataComponent;
 
