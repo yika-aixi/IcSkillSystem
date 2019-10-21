@@ -11,13 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     
     public struct Mechanics:IMechanicBuff
     {
-        public float BaseValue;
-        public float Value
-        {
-            get => BaseValue + AddValue;
-            set{}
-        }
-        public float AddValue;
         public MechanicsType MechanicsType { get; set; }
+        public float Value { get; set; }
     }
 }
