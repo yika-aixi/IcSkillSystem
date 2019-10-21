@@ -102,74 +102,38 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
         class TestSystem:AIcStructBuffSystem<IcSkSEntity>
         {
-//            private readonly NewBuffManager _buffManager;
-//
-//
-//            public TestSystem(NewBuffManager buffManager)
-//            {
-//                this._buffManager = buffManager;
-//            }
 
             public override void Create(IcSkSEntity entity, int index)
             {
-                Debug.Log("1");
-//                var buff = _buffManager.GetCurrentBuffData<Buff>(index);
-////                var buff = _buffManager.GetBuffData<Buff>(entity, index);
-//                if ((int)buff.Value == 0)
-//                {
-//                    _buffManager.SetBuffData(entity,new Buff(){Value = 100}, index);
-//                }
+                var buff = BuffManager.GetCurrentBuffData<Buff>(index);
+                if ((int)buff.Value == 0)
+                {
+                    BuffManager.SetBuffData(entity,new Buff(){Value = 100}, index);
+                }
             }
 
-            public TestSystem(IBuffManager<IcSkSEntity> buffManager) : base(buffManager)
+            public TestSystem(IStructBuffManager<IcSkSEntity> buffManager) : base(buffManager)
             {
             }
         }
-        
-        class TestSystem1:AIcStructBuffSystem<IcSkSEntity>
-        {
-//            private readonly NewBuffManager _buffManager;
-//
-//
-//            public TestSystem1(NewBuffManager buffManager)
-//            {
-//                this._buffManager = buffManager;
-//            }
 
-            public override void Create(IcSkSEntity entity, int index)
-            {
-                Debug.Log("2");
-//                var buff = _buffManager.GetCurrentBuffData<Buff>(index);
-////                var buff = _buffManager.GetBuffData<Buff>(entity, index);
-//                if ((int)buff.Value == 0)
-//                {
-//                    _buffManager.SetBuffData(entity,new Buff(){Value = 100}, index);
-//                }
-            }
-
-            public TestSystem1(IBuffManager<IcSkSEntity> buffManager) : base(buffManager)
-            {
-            }
-        }
         
         [Test]
-        public void 添加Buff_10001_Value为0的将他们修改为100()
+        public void 添加Buff_10001和一个处理系统_Value为0的将他们修改为100()
         {
             BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
-            for (var i = 0; i < 100; i++)
-                buffManagerStruct.AddBuffSystem(new TestSystem(new BuffManager_Struct()))
-                    .AddBuffSystem(new TestSystem1(buffManagerStruct));
+            buffManagerStruct.AddBuffSystem(new TestSystem(buffManagerStruct));
             IcSkSEntity entity = new IcSkSEntity();
             buffManagerStruct.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
             stop.Start();
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 10001; i++)
             {
                 buffManagerStruct.AddBuff(entity,new Buff(){Value = i % 5});
             }
             stop.Stop();
             Debug.Log($"Add Time:{stop.Elapsed}");
-            //Assert.GreaterOrEqual(buffManager.GetBuffCount<Buff>(entity),10001);
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),10001);
 
             stop.Restart();
 
@@ -178,7 +142,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
 
-            //Assert.GreaterOrEqual(result.Count(),2001);
+            Assert.GreaterOrEqual(result.Count(),2001);
         }
         
         [Test]
