@@ -29,17 +29,22 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
-            foreach (var buff in buffs)
+            for (var i = 0; i < buffs.Count; i++)
             {
-                var mechanics = buff;
-                
-                mechanics.Value -= damage.Value;
-                
-                _buffManager.SetBuffData(entity,mechanics,0);
-                
-                //todo 一个单位只有第一条血条会受伤
-                break;
+                var buff = buffs[i];
+
+                if (buff.MechanicsType == MechanicsType.Health)
+                {
+                    buff.Value = buff.Value - damage.Value;
+
+                    _buffManager.SetBuffData(entity, buff, i);
+
+                    //todo 一个单位只有第一条血条会受伤
+                    break;
+                }
             }
+
+            _buffManager.RemoveBuff(entity, damage);
         }
     }
 }
