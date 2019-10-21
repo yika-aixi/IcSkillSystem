@@ -383,8 +383,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     }
                     
                     _currentBuffs = result;
+                    _callSystem(entity,buffType, index, false);
                     result.RemoveAt(index);
-                    _callSystem(entity, index, false);
                 }
             }
 
