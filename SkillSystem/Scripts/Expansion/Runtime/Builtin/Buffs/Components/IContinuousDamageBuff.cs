@@ -11,7 +11,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
         IBuffValueDataComponent,
         IBuffDescriptionComponent,
         IBuffType,
-        IBuffTriggerTime
+        IBuffTriggerTime,
+        IMakerEntity
     {
     }
     

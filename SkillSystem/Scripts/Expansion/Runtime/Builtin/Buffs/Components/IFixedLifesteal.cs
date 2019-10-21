@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 固定值吸血
     /// </summary>
-    public interface IFixedLifesteal:ILifesteal,IBuffDataComponent
+    public interface IFixedLifesteal:ILifesteal,IBuffDataComponent,IBuffType
     {
     }
     
