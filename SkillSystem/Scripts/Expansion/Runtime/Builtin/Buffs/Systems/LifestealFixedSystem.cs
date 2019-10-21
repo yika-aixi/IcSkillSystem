@@ -1,67 +1,79 @@
-﻿//using System.Collections.Generic;
-//using System.Linq;
-//using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
-//using CabinIcarus.IcSkillSystem.Runtime.Buffs;
-//using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
-//using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-//using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
-//
-//namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
-//{
-//    /// <summary>
-//    /// 固定吸血,可多个
-//    /// </summary>
-//    public class LifestealFixedSystem:ABuffDestroySystem<IBuffDataComponent>
-//    {
-//        private List<IFixedLifesteal> _fixedLifesteals;
-//        private List<IMechanicBuff> _mechanicBuffs;
-//
-//        public LifestealFixedSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
-//        {
-//            _fixedLifesteals = new List<IFixedLifesteal>();
-//            _mechanicBuffs = new List<IMechanicBuff>();
-//        }
-//
-//        public override bool Filter(IEntity entity, IBuffDataComponent buff)
-//        {
-//            //伤害来源需要有固定吸血buff并且存在生命
-//            return buff is IDamageBuff damageBuff && damageBuff.Maker != null && BuffManager.HasBuff<IFixedLifesteal>(damageBuff.Maker) && 
-//                   BuffManager.HasBuff<IMechanicBuff>(damageBuff.Maker,x=>x.MechanicsType == MechanicsType.Health);
-//        }
-//
-//        public override void Destroy(IEntity entity, IBuffDataComponent buff)
-//        {
-//            IDamageBuff damageBuff = (IDamageBuff) buff;
-//
-//            BuffManager.GetBuffs(damageBuff.Maker,_fixedLifesteals);
-//
-//            BuffManager.GetBuffs(damageBuff.Maker, _mechanicBuffs);
-//
-//            if (_mechanicBuffs.Count < 1)
-//            {
-//                return;
-//            }
-//
-//            var health = _mechanicBuffs[0];
-//            var maxHealth = _mechanicBuffs[1];
-//            
-//            foreach (var fixedLifesteal in _fixedLifesteals)
-//            {
-//                if (fixedLifesteal is IBuffType buffType)
-//                {
-//                    if (damageBuff.Type != buffType.Type)
-//                    {
-//                        continue;
-//                    }
-//                }
-//
-//                health.Value += fixedLifesteal.Value;
-//
-//                if (health.Value > maxHealth.Value)
-//                {
-//                    health.Value = maxHealth.Value;
-//                }
-//            }
-//        }
-//    }
-//}
+﻿using System.Collections.Generic;
+using System.Linq;
+using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
+{
+    /// <summary>
+    /// 固定吸血,可多个
+    /// </summary>
+    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem<IcSkSEntity,TDamageBuff> 
+        where TMechanics : struct, IMechanicBuff
+        where TFixedLifesteal : struct, IFixedLifesteal
+        where TDamageBuff : struct,IDamageBuff
+    {
+        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
+
+        public LifestealFixedSystem(IStructBuffManager<IcSkSEntity> buffManager)
+        {
+            this._buffManager = buffManager;
+        }
+
+        public void Destroy(IcSkSEntity entity, int index)
+        {
+            var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
+
+            var fixedLifesteals = _buffManager.GetBuffs<TFixedLifesteal>(damage.Entity);
+
+            if (fixedLifesteals.Count == 0)
+            {
+                return;
+            }
+
+            float lifestealValue = 0;
+            
+            foreach (var fixedLifesteal in fixedLifesteals)
+            {
+                if (fixedLifesteal.Type == damage.Type)
+                {
+                    lifestealValue += fixedLifesteal.Value;
+                }
+            }
+
+            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity);
+
+            if (mechanicBuffs.Count == 0)
+            {
+                return;
+            }
+            
+            for (var i = 0; i < mechanicBuffs.Count; i++)
+            {
+                var mechanicBuff = mechanicBuffs[i];
+                
+                if (mechanicBuff.MechanicsType == MechanicsType.Health)
+                {
+                    mechanicBuff.Value += lifestealValue;
+
+                    //第二条血把他当最大血量
+                    if (mechanicBuffs.Count >= 2)
+                    {
+                        if (mechanicBuff.Value > mechanicBuffs[1].Value)
+                        {
+                            mechanicBuff.Value = mechanicBuffs[1].Value;
+                        }
+                    }
+                   
+                    _buffManager.SetBuffData(damage.Entity,mechanicBuff,i);
+                    
+                    break;
+                }
+            }
+        }
+    }
+}
