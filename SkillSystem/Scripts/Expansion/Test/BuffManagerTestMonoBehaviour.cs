@@ -47,6 +47,8 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             Value = value;
             Type = type;
         }
+
+        public IcSkSEntity Entity { get; set; }
     }
     
     struct TestBuff2:IMechanicBuff,IEquatable<TestBuff2>

@@ -100,7 +100,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             Assert.GreaterOrEqual(result.Count(),2001);
         }
 
-        class TestSystem:AIcStructBuffSystem<IcSkSEntity>
+        class TestSystem:AIcStructBuffSystem<IcSkSEntity,Buff>
         {
 
             public override void Create(IcSkSEntity entity, int index)
