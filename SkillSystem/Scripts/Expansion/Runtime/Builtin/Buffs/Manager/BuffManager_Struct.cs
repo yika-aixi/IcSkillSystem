@@ -62,8 +62,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         private IBuffList _currentBuffs;
         private FasterList<IcSkSEntity> _entitys;
         private Dictionary<IcSkSEntity, Dictionary<Type,IBuffList>> _buffMaps;
-        private Action<IcSkSEntity, int> _onCreate;
-        private Action<IcSkSEntity, int> _onDestroy;
+        private Dictionary<Type,Action<IcSkSEntity, int>> _onCreateMap;
+        private Dictionary<Type,Action<IcSkSEntity, int>> _onDestroyMap;
         private Action _onUpdate;
         public BuffManager_Struct()
         {
@@ -71,15 +71,24 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffMaps = new Dictionary<IcSkSEntity, Dictionary<Type,IBuffList>>();
         }
 
-        public IBuffManager<IcSkSEntity> AddBuffSystem(IBuffSystem buffSystem)
+        public IStructBuffManager<IcSkSEntity> AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent
         {
             var type = buffSystem.GetType();
-            
-            if (buffSystem is IBuffCreateSystem<IcSkSEntity> createSystem)
+            var buffType = typeof(TBuffType);
+            if (buffSystem is IBuffCreateSystem<IcSkSEntity,TBuffType> createSystem)
             {
-                if (_onCreate == null || !_existHandle(_onCreate.GetInvocationList(),type))
+                if (!_onCreateMap.ContainsKey(buffType))
                 {
-                    _onCreate += createSystem.Create;
+                    _onCreateMap.Add(buffType,createSystem.Create);
+                }
+                else
+                {
+                    var action = _onCreateMap[buffType];
+                    
+                    if (!_existHandle(action.GetInvocationList(),type))
+                    {
+                        _onCreateMap[buffType] += createSystem.Create;
+                    }
                 }
             }
 
@@ -91,11 +100,20 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
             
-            if (buffSystem is IBuffDestroySystem<IcSkSEntity> destroySystem)
+            if (buffSystem is IBuffDestroySystem<IcSkSEntity,TBuffType> destroySystem)
             {
-                if (_onDestroy == null || !_existHandle(_onDestroy.GetInvocationList(),type))
+                if (!_onDestroyMap.ContainsKey(buffType))
                 {
-                    _onCreate += destroySystem.Destroy;
+                    _onDestroyMap.Add(buffType,destroySystem.Destroy);
+                }
+                else
+                {
+                    var action = _onDestroyMap[buffType];
+                    
+                    if (!_existHandle(action.GetInvocationList(),type))
+                    {
+                        _onDestroyMap[buffType] += destroySystem.Destroy;
+                    }
                 }
             }
             
@@ -183,7 +201,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
 
             _currentBuffs = result;
-            _callSystem(entity,result.Count - 1, true);
+            _callSystem(entity,buffType,result.Count - 1, true);
         }
 
         /// <summary>
@@ -277,15 +295,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
            
         }
 
-        private void _callSystem(IcSkSEntity entity,int index,bool isCreate)
+        private void _callSystem(IcSkSEntity entity,Type buffType,int index,bool isCreate)
         {
             if (isCreate)
             {
-                _onCreate?.Invoke(entity,index);
+                if (_onCreateMap.TryGetValue(buffType,out var action))
+                {
+                    action(entity,index);
+                }
             }
             else
             {
-                _onDestroy?.Invoke(entity,index);
+                if (_onDestroyMap.TryGetValue(buffType,out var action))
+                {
+                    action(entity,index);
+                }
             }
         }
 
@@ -507,6 +531,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
 
         #region Cover
+
+        public IBuffManager<IcSkSEntity> AddBuffSystem(IBuffSystem buffSystem)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
 
         void IBuffManager<IcSkSEntity>.AddBuff<TBuff>(IcSkSEntity entity, in TBuff buff)
         {

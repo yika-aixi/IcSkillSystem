@@ -5,6 +5,7 @@
 //2019年09月14日-19:05
 //CabinIcarus.SkillSystem.Runtime
 
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
@@ -12,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// <summary>
     /// buff 销毁系统
     /// </summary>
-    public interface IBuffDestroySystem<in TEntity>:IBuffSystem where TEntity : IIcSkSEntity
+    public interface IBuffDestroySystem<in TEntity,TBuffType>:IBuffSystem where TEntity : IIcSkSEntity where TBuffType :struct,IBuffDataComponent
     {
         void Destroy(TEntity entity,int index);
     }
