@@ -46,6 +46,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             Value = value;
             Type = type;
+            Entity = -1;
         }
 
         public IcSkSEntity Entity { get; set; }
