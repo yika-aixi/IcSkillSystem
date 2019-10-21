@@ -74,27 +74,29 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         public IBuffManager<IcSkSEntity> AddBuffSystem(IBuffSystem buffSystem)
         {
             var type = buffSystem.GetType();
-
-            switch (type)
+            
+            if (buffSystem is IBuffCreateSystem<IcSkSEntity> createSystem)
             {
-                case IBuffCreateSystem<IcSkSEntity> createSystem:
-                    if (!_existHandle(_onCreate.GetInvocationList(),type))
-                    {
-                        _onCreate += createSystem.Create;
-                    }
-                    break;
-                case IBuffUpdateSystem updateSystem:
-                    if (!_existHandle(_onUpdate.GetInvocationList(),type))
-                    {
-                        _onUpdate += updateSystem.Execute;
-                    }
-                    break;
-                case IBuffDestroySystem<IcSkSEntity> destroySystem:
-                    if (!_existHandle(_onDestroy.GetInvocationList(),type))
-                    {
-                        _onCreate += destroySystem.Destroy;
-                    }
-                    break;
+                if (_onCreate == null || !_existHandle(_onCreate.GetInvocationList(),type))
+                {
+                    _onCreate += createSystem.Create;
+                }
+            }
+
+            if (buffSystem is IBuffUpdateSystem updateSystem)
+            {
+                if (_onUpdate == null || !_existHandle(_onUpdate.GetInvocationList(),type))
+                {
+                    _onUpdate += updateSystem.Execute;
+                }
+            }
+            
+            if (buffSystem is IBuffDestroySystem<IcSkSEntity> destroySystem)
+            {
+                if (_onDestroy == null || !_existHandle(_onDestroy.GetInvocationList(),type))
+                {
+                    _onCreate += destroySystem.Destroy;
+                }
             }
             
             return this;
