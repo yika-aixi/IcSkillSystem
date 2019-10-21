@@ -7,13 +7,14 @@
 
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
-    public class BuffTimeSystem<T>:IBuffUpdateSystem where T:struct,IContinuousDamageBuff
+    public class BuffTimeSystem<T>:IBuffUpdateSystem where T:struct,IBuffDataComponent,IBuffTimeDataComponent
     {
         private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
