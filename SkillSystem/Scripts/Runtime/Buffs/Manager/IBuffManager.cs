@@ -9,6 +9,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
     public interface IBuffManager<in TEntity> where TEntity : IIcSkSEntity
     {
+        FasterReadOnlyList<IcSkSEntity> Entitys { get; }
+        
         IBuffManager<TEntity> AddBuffSystem(IBuffSystem buffSystem);
 
         void Update();
