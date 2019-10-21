@@ -539,6 +539,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         #region Cover
 
+        /// <summary>
+        /// 不受支持
+        /// </summary>
+        /// <param name="buffSystem"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [Obsolete("please use -> AddBuffSystem<TBuffType>()")]
         public IBuffManager<IcSkSEntity> AddBuffSystem(IBuffSystem buffSystem)
         {
             throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
