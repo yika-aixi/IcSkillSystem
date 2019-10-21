@@ -450,6 +450,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
 
+        /// <summary>
+        /// 暂时不要 使用该方法,因为修改后你设置buff时索引无法得到正确的保障
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="condition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public IEnumerable<T> GetBuffs<T>(IcSkSEntity entity,T condition) where T :struct, IBuffDataComponent
         {
             var buffs = GetBuffs<T>(entity);
