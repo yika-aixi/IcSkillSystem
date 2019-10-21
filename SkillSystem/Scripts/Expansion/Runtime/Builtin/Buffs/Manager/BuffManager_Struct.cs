@@ -62,8 +62,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         private IBuffList _currentBuffs;
         private FasterList<IcSkSEntity> _entitys;
         private Dictionary<IcSkSEntity, Dictionary<Type,IBuffList>> _buffMaps;
-        private Dictionary<Type,Action<IcSkSEntity, int>> _onCreateMap;
-        private Dictionary<Type,Action<IcSkSEntity, int>> _onDestroyMap;
+        private Dictionary<Type,Action<IcSkSEntity, int>> _onCreateMap = new Dictionary<Type, Action<IcSkSEntity, int>>();
+        private Dictionary<Type,Action<IcSkSEntity, int>> _onDestroyMap = new Dictionary<Type, Action<IcSkSEntity, int>>();
         private Action _onUpdate;
         public BuffManager_Struct()
         {
