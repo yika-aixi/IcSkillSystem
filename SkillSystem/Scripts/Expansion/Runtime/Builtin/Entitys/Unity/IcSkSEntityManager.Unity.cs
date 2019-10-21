@@ -6,7 +6,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
     public partial class IcSkSEntityManager
     {
-//        private Dictionary<IcSkSEntity, GameObject> _entityBindMap;
+        private Dictionary<IcSkSEntity, GameObject> _entityBindMap = new Dictionary<IcSkSEntity, GameObject>();
         
         /// <summary>
         /// unity物体绑定,绑定成功将会给go添加一个 <see cref="EntityBindComponent"/>组件
@@ -21,10 +21,14 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
                 return false;
             }
 
-//            if (!_entityBindMap.ContainsKey(entity))
-//            {
-//                _entityBindMap.Add(entity,go);
-//            }
+            if (!_entityBindMap.ContainsKey(entity))
+            {
+                _entityBindMap.Add(entity,go);
+            }
+            else
+            {
+                _entityBindMap[entity] = go;
+            }
 
             var entityBind = go.GetComponent<EntityBindComponent>();
             
@@ -38,6 +42,23 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>不存在返回null</returns>
+        public GameObject FindBindGo(IcSkSEntity entity)
+        {
+            if (!_checkEntity(entity))
+            {
+                return null;
+            }
+
+            _entityBindMap.TryGetValue(entity, out var go);
+
+            return go;
+        }
+        
         /// <summary>
         /// 创建实体并绑定
         /// </summary>
