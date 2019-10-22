@@ -92,12 +92,16 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             stop.Restart();
 
-            var result = buffManagerStruct.GetBuffs(entity, new Buff() {Value = 0});
-            
+            var result = buffManagerStruct.GetBuffsCondition<Buff>(entity, x=> (int) x.Value == 0);
+
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
 
-            Assert.GreaterOrEqual(result.Count(),2001);
+#if ENABLE_MANAGED_JOBS
+            Assert.GreaterOrEqual(result.Length,2001);
+#else
+            Assert.GreaterOrEqual(result.Count,2001);
+#endif
         }
 
         class TestSystem:AIcStructBuffSystem<IcSkSEntity,Buff>
@@ -122,7 +126,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         public void 添加Buff_10001和一个处理系统_Value为0的将他们修改为100()
         {
             BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
-            buffManagerStruct.AddBuffSystem(new TestSystem(buffManagerStruct));
+            buffManagerStruct.AddBuffSystem<Buff>(new TestSystem(buffManagerStruct));
             IcSkSEntity entity = new IcSkSEntity();
             buffManagerStruct.AddEntity(entity);
             Stopwatch stop = new Stopwatch();
@@ -137,12 +141,16 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             stop.Restart();
 
-            var result = buffManagerStruct.GetBuffs(entity, new Buff() {Value = 100});
+            var result = buffManagerStruct.GetBuffsCondition<Buff>(entity, x=> (int) x.Value == 100);
             
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
-
-            Assert.GreaterOrEqual(result.Count(),2001);
+            
+#if ENABLE_MANAGED_JOBS
+            Assert.GreaterOrEqual(result.Length,2001);
+#else
+            Assert.GreaterOrEqual(result.Count,2001);
+#endif
         }
         
         [Test]
