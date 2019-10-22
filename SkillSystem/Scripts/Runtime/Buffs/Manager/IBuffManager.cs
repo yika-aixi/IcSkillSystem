@@ -61,9 +61,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 
         new bool HasBuff<TBuff>(TEntity entity, TBuff buff) where TBuff : struct, IBuffDataComponent;
 
-        new IEnumerable<TBuff> GetBuffs<TBuff>(TEntity entity, TBuff condition)
-            where TBuff : struct, IBuffDataComponent;
-
         new FasterReadOnlyList<TBuff> GetBuffs<TBuff>(TEntity entity) where TBuff : struct, IBuffDataComponent;
 
         new int GetBuffCount<TBuff>(TEntity entity) where TBuff : struct, IBuffDataComponent;
