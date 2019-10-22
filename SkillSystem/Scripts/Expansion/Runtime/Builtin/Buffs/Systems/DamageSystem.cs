@@ -16,35 +16,44 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         where TMechanics : struct, IMechanicBuff
         where TDamageBuff : struct, IDamageBuff
     {
-        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
+//        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
+        private readonly BuffManager_Struct _buffManager;
         public DamageSystem(IStructBuffManager<IcSkSEntity> buffManager)
         {
-            this._buffManager = buffManager;
+            this._buffManager = (BuffManager_Struct) buffManager;
         }
 
         public void Create(IcSkSEntity entity, int index)
         {
-            var buffs = _buffManager.GetBuffs<TMechanics>(entity);
+            var buffs = _buffManager.GetBuffsCondition<TMechanics>(entity,_getHealth);
 
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
+#if ENABLE_MANAGED_JOBS
+            for (var i = 0; i < buffs.Length; i++)
+#else
             for (var i = 0; i < buffs.Count; i++)
+#endif
             {
-                var buff = buffs[i];
+                var buffInfo = buffs[i];
 
-                if (buff.MechanicsType == MechanicsType.Health)
-                {
-                    buff.Value = buff.Value - damage.Value;
+                var buff = buffInfo.Buff;
+                
+                buff.Value = buff.Value - damage.Value;
 
-                    _buffManager.SetBuffData(entity, buff, i);
+                _buffManager.SetBuffData(entity, buff, buffInfo.Index);
 
-                    //todo 一个单位只有第一条血条会受伤
-                    break;
-                }
+                //todo 一个单位只有第一条血条会受伤
+                break;
             }
 
             _buffManager.RemoveBuff(entity, damage);
+        }
+
+        private bool _getHealth(TMechanics arg)
+        {
+            return arg.MechanicsType == MechanicsType.Health;
         }
     }
 }
