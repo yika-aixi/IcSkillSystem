@@ -35,7 +35,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
         
         bool HasBuff(TEntity entity, Type buffType, IBuffDataComponent buff);
 
-        IEnumerable<TBuff> GetBuffs<TBuff>(TEntity entity, TBuff condition) where TBuff : IBuffDataComponent;
+        IEnumerable<TBuff> GetBuffs<TBuff>(TEntity entity, Func<TBuff,bool> condition) where TBuff : IBuffDataComponent;
 
         FasterReadOnlyList<TBuff> GetBuffs<TBuff>(TEntity entity) where TBuff : IBuffDataComponent;
         

@@ -524,12 +524,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             
             return result;
         }
-
-        [Obsolete("use -> `GetBuffsCondition`")]
-        public IEnumerable<T> GetBuffs<T>(IcSkSEntity entity,T condition) where T :IBuffDataComponent
-        {
-            throw new NotImplementedException($"please use {nameof(GetBuffsCondition)}.");
-        }
         
         public FasterReadOnlyList<T> GetBuffs<T>(IcSkSEntity entity) where T :struct, IBuffDataComponent
         {
@@ -600,6 +594,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
 
         #region Cover
+        
+        [Obsolete("use -> `GetBuffsCondition`")]
+        public IEnumerable<T> GetBuffs<T>(IcSkSEntity entity,Func<T,bool> condition) where T :IBuffDataComponent
+        {
+            throw new NotImplementedException($"please use {nameof(GetBuffsCondition)}.");
+        }
 
         /// <summary>
         /// 不受支持
