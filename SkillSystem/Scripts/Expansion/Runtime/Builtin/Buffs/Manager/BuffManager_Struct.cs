@@ -4,9 +4,11 @@ using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
+#if ENABLE_MANAGED_JOBS
+using Unity.Collections;
+#endif
 using Debug = UnityEngine.Debug;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
@@ -24,6 +26,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         IEnumerable<IBuffDataComponent> GetBuffs();
 
         void RemoveAt(int index);
+    }
+
+    public struct BuffDataInfo<T> where T : struct,IBuffDataComponent
+    {
+        public int Index { get; }
+        public T Buff { get; }
+
+        public BuffDataInfo(in int index,in T buff):this()
+        {
+            Index = index;
+            Buff = buff;
+        }
     }
 
     class BuffList<T>:FasterList<T>,IBuffList
@@ -450,23 +464,56 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
 
+#if ENABLE_MANAGED_JOBS
         /// <summary>
-        /// 暂时不要 使用该方法,因为修改后你设置buff时索引无法得到正确的保障
+        /// 
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="condition"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IEnumerable<T> GetBuffs<T>(IcSkSEntity entity,T condition) where T :struct, IBuffDataComponent
+        public NativeArray<BuffDataInfo<T>> GetBuffsCondition<T>(IcSkSEntity entity, Func<T,bool> condition) where T :struct, IBuffDataComponent
+#else
+        public FasterList<BuffDataInfo<T>> GetBuffsCondition<T>(IcSkSEntity entity, Func<T,bool> condition) where T :struct, IBuffDataComponent
+#endif
         {
             var buffs = GetBuffs<T>(entity);
 
-            if (buffs.Count > 0)
+            if (buffs.Count == 0)
             {
-                return buffs.Where(x => x.Equals(condition));
+#if ENABLE_MANAGED_JOBS
+               return new NativeArray<BuffDataInfo<T>>(0,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
+#else
+                return null;
+#endif
+            }
+
+#if ENABLE_MANAGED_JOBS
+            var result = new NativeArray<BuffDataInfo<T>>(buffs.Count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
+#else
+            FasterList<BuffDataInfo<T>> result = new FasterList<BuffDataInfo<T>>(buffs.Count);
+#endif
+            for (var i = 0; i < buffs.Count; i++)
+            {
+                var buff = buffs[i];
+
+                if (condition?.Invoke(buff) ?? true)
+                {
+#if ENABLE_MANAGED_JOBS
+                        result[i] = new BuffDataInfo<T>(i,buff);
+#else
+                    result.Add(new BuffDataInfo<T>(i,buff));
+#endif
+                }
             }
             
-            return FasterReadOnlyList<T>.DefaultList;
+            return result;
+        }
+
+        [Obsolete("use -> `GetBuffsCondition`")]
+        public IEnumerable<T> GetBuffs<T>(IcSkSEntity entity,T condition) where T :IBuffDataComponent
+        {
+            throw new NotImplementedException($"please use {nameof(GetBuffsCondition)}.");
         }
         
         public FasterReadOnlyList<T> GetBuffs<T>(IcSkSEntity entity) where T :struct, IBuffDataComponent
@@ -577,11 +624,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
 
         bool IBuffManager<IcSkSEntity>.HasBuff<TBuff>(IcSkSEntity entity, TBuff buff)
-        {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
-        }
-
-        IEnumerable<TBuff> IBuffManager<IcSkSEntity>.GetBuffs<TBuff>(IcSkSEntity entity, TBuff condition)
         {
             throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
         }
