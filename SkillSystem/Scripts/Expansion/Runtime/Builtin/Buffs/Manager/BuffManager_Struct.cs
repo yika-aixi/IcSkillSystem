@@ -488,20 +488,35 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #endif
             }
 
+            int count = buffs.Count(condition);
+
 #if ENABLE_MANAGED_JOBS
-            var result = new NativeArray<BuffDataInfo<T>>(buffs.Count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
+            var result = new NativeArray<BuffDataInfo<T>>(count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
 #else
-            FasterList<BuffDataInfo<T>> result = new FasterList<BuffDataInfo<T>>(buffs.Count);
+            FasterList<BuffDataInfo<T>> result = new FasterList<BuffDataInfo<T>>(count);
 #endif
             for (var i = 0; i < buffs.Count; i++)
             {
                 var buff = buffs[i];
-
+                
                 if (condition?.Invoke(buff) ?? true)
                 {
 #if ENABLE_MANAGED_JOBS
+                    try
+                    {
                         result[i] = new BuffDataInfo<T>(i,buff);
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        //已经找到所有,结束后续
+                        break;
+                    }
 #else
+                    if (result.Count == result.ToArrayFast().Length)
+                    {
+                        //已经找到所有,结束后续
+                        break;
+                    }
                     result.Add(new BuffDataInfo<T>(i,buff));
 #endif
                 }
