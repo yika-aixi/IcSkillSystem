@@ -12,14 +12,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity
     {
         [NonSerialized] 
         public IIcSkSEntityManager<IcSkSEntity> EntityManager;
-        public IBuffManager<IcSkSEntity> BuffManager;
         [NonSerialized] 
         public IcSkSEntity IcSkSEntity;
 
-        public void Init(IIcSkSEntityManager<IcSkSEntity> entityManager, IBuffManager<IcSkSEntity> buffManager, IcSkSEntity icSkSEntity)
+        public void Init(IIcSkSEntityManager<IcSkSEntity> entityManager, IcSkSEntity icSkSEntity)
         {
             EntityManager = entityManager;
-            BuffManager = buffManager;
             Link(icSkSEntity);
         }
 
