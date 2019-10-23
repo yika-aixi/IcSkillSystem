@@ -477,9 +477,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         public FasterList<BuffDataInfo<T>> GetBuffsCondition<T>(IcSkSEntity entity, Func<T,bool> condition) where T :struct, IBuffDataComponent
 #endif
         {
-            var buffs = GetBuffs<T>(entity);
+            var buffs = _getBuffs<T>(entity);
 
-            if (buffs.Count == 0)
+            if (buffs == null)
             {
 #if ENABLE_MANAGED_JOBS
                return new NativeArray<BuffDataInfo<T>>(0,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
@@ -488,10 +488,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #endif
             }
 
-            int count = buffs.Count(condition);
+            int count = condition == null ? buffs.Count : buffs.Count(condition);
 
 #if ENABLE_MANAGED_JOBS
             var result = new NativeArray<BuffDataInfo<T>>(count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
+            count = 0;
 #else
             FasterList<BuffDataInfo<T>> result = new FasterList<BuffDataInfo<T>>(count);
 #endif
@@ -504,7 +505,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #if ENABLE_MANAGED_JOBS
                     try
                     {
-                        result[i] = new BuffDataInfo<T>(i,buff);
+                        result[count] = new BuffDataInfo<T>(i,buff);
+                        count++;
                     }
                     catch (IndexOutOfRangeException e)
                     {
@@ -525,7 +527,84 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return result;
         }
         
+#if ENABLE_MANAGED_JOBS
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="condition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public NativeArray<int> GetBuffsCondition<T>(IcSkSEntity entity, Func<T,bool> condition,out FasterList<T> outBuffs) where T :struct, IBuffDataComponent
+#else
+        public FasterList<int> GetBuffsCondition<T>(IcSkSEntity entity, Func<T,bool> condition,out FasterList<T> outBuffs) where T :struct, IBuffDataComponent
+#endif
+        {
+            var buffs = _getBuffs<T>(entity);
+           
+            outBuffs = buffs;
+           
+            if (buffs == null)
+            {
+#if ENABLE_MANAGED_JOBS
+                return new NativeArray<int>(0,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
+#else
+                return null;
+#endif
+            }
+
+            int count = condition == null ? buffs.Count : buffs.Count(condition);
+
+#if ENABLE_MANAGED_JOBS
+            var result = new NativeArray<int>(count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
+            count = 0;
+#else
+            FasterList<int> result = new FasterList<int>(count);
+#endif
+            for (var i = 0; i < buffs.Count; i++)
+            {
+                var buff = buffs[i];
+                
+                if (condition?.Invoke(buff) ?? true)
+                {
+#if ENABLE_MANAGED_JOBS
+                    try
+                    {
+                        result[count] = i;
+                        count++;
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        //已经找到所有,结束后续
+                        break;
+                    }
+#else
+                    if (result.Count == result.ToArrayFast().Length)
+                    {
+                        //已经找到所有,结束后续
+                        break;
+                    }
+                    result.Add(i);
+#endif
+                }
+            }
+            
+            return result;
+        }
+        
         public FasterReadOnlyList<T> GetBuffs<T>(IcSkSEntity entity) where T :struct, IBuffDataComponent
+        {
+            var buffs = _getBuffs<T>(entity);
+
+            if (buffs == null)
+            {
+                return FasterReadOnlyList<T>.DefaultList;
+            }
+
+            return buffs.AsReadOnly();
+        }
+        
+        private FasterList<T> _getBuffs<T>(IcSkSEntity entity) where T :struct, IBuffDataComponent
         {
             if (_checkEntityExist(entity))
             {
@@ -533,11 +612,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             
                 if (buffMap.TryGetValue(typeof(T), out var result))
                 {
-                    return ((BuffList<T>)result).Buffs;
+                    return ((BuffList<T>)result);
                 }
             }
-            
-            return FasterReadOnlyList<T>.DefaultList;
+
+            return null;
         }
 
         /// <summary>
