@@ -109,7 +109,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
                 GameObject go = new GameObject($"Entity ID:{id}");
 
                 var link = go.AddComponent<BuffEntityLinkComponent>();
-                link.Init(_entityManager, _entityManager.BuffManager,entity);
+                link.Init(_entityManager,entity);
             }
         }
 

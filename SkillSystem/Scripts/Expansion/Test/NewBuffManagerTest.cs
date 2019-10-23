@@ -80,6 +80,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
             IcSkSEntity entity = new IcSkSEntity();
             buffManagerStruct.AddEntity(entity);
+            buffManagerStruct.GetBuffsCondition<Buff>(entity, null);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 10001; i++)
@@ -93,6 +94,38 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             stop.Restart();
 
             var result = buffManagerStruct.GetBuffsCondition<Buff>(entity, x=> (int) x.Value == 0);
+
+            stop.Stop();
+            Debug.Log($"Find Time:{stop.Elapsed}");
+
+#if ENABLE_MANAGED_JOBS
+            Assert.GreaterOrEqual(result.Length,2001);
+#else
+            Assert.GreaterOrEqual(result.Count,2001);
+#endif
+        }
+        
+        [Test]
+        public void 添加Buff_10001_查找Value为0的_Out()
+        {
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
+            IcSkSEntity entity = new IcSkSEntity();
+            buffManagerStruct.AddEntity(entity);
+            buffManagerStruct.GetBuffsCondition<Buff>(entity, null,out _);
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
+            for (var i = 0; i < 10001; i++)
+            {
+                buffManagerStruct.AddBuff(entity,new Buff(){Value = i % 5});
+            }
+            stop.Stop();
+            Debug.Log($"Add Time:{stop.Elapsed}");
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),10001);
+
+            FasterList<Buff> _result;
+            stop.Restart();
+
+            var result = buffManagerStruct.GetBuffsCondition(entity, x=> (int) x.Value == 0,out _result);
 
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
@@ -129,6 +162,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             buffManagerStruct.AddBuffSystem<Buff>(new TestSystem(buffManagerStruct));
             IcSkSEntity entity = new IcSkSEntity();
             buffManagerStruct.AddEntity(entity);
+            buffManagerStruct.GetBuffsCondition<Buff>(entity, null);
             Stopwatch stop = new Stopwatch();
             stop.Start();
             for (var i = 0; i < 10001; i++)
@@ -146,6 +180,43 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             stop.Stop();
             Debug.Log($"Find Time:{stop.Elapsed}");
             
+#if ENABLE_MANAGED_JOBS
+            Assert.GreaterOrEqual(result.Length,2001);
+#else
+            Assert.GreaterOrEqual(result.Count,2001);
+#endif
+        }
+        
+          [Test]
+        public void 添加Buff_10001_Value为0的将他们修改为100_Out()
+        {
+            BuffManager_Struct buffManagerStruct = new BuffManager_Struct();
+            IcSkSEntity entity = new IcSkSEntity();
+            buffManagerStruct.AddEntity(entity);
+            buffManagerStruct.GetBuffsCondition<Buff>(entity, null,out _);
+            Stopwatch stop = new Stopwatch();
+            stop.Start();
+            for (var i = 0; i < 10001; i++)
+            {
+                buffManagerStruct.AddBuff(entity,new Buff(){Value = i % 5});
+            }
+            stop.Stop();
+            Debug.Log($"Add Time:{stop.Elapsed}");
+            Assert.GreaterOrEqual(buffManagerStruct.GetBuffCount<Buff>(entity),10001);
+
+            stop.Restart();
+
+            var result = buffManagerStruct.GetBuffsCondition<Buff>(entity, x=> (int) x.Value == 0,out var buffs);
+            
+            foreach (var i in result)
+            {
+                buffs[i].Value = 100;
+            }
+            
+            stop.Stop();
+            Debug.Log($"Find Time:{stop.Elapsed}");
+            
+            result = buffManagerStruct.GetBuffsCondition<Buff>(entity, x=> (int) x.Value == 100,out _);
 #if ENABLE_MANAGED_JOBS
             Assert.GreaterOrEqual(result.Length,2001);
 #else
