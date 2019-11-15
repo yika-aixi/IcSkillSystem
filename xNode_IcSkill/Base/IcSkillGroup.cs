@@ -6,6 +6,7 @@
 //Assembly-CSharp
 
 using System;
+using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using NPBehave;
 using UnityEngine;
@@ -15,10 +16,11 @@ using Node = NPBehave.Node;
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
-    public class IcSkillGroup:NodeGraph
+    public class IcSkillGroup:NodeGraph,ISerializationCallbackReceiver
     {
         private GameObject _owner;
-
+        private Dictionary<string, object> _varMap = new Dictionary<string, object>();
+            
         public GameObject Owner
         {
             get
@@ -70,6 +72,29 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             }
 
             return main;
+        }
+
+        [SerializeField]
+        private List<string> _kyes = new List<string>();
+
+        [SerializeField]
+        private List<object> _values = new List<object>();
+        public void OnBeforeSerialize()
+        {
+            _kyes.Clear();
+            _values.Clear();
+            _kyes.AddRange(_varMap.Keys);
+            _values.AddRange(_varMap.Values);
+        }
+
+        public void OnAfterDeserialize()
+        {
+            _varMap.Clear();
+            
+            for (var i = 0; i < _kyes.Count; i++)
+            {
+                _varMap.Add(_kyes[i], _values[i]);
+            }
         }
     }
 }
