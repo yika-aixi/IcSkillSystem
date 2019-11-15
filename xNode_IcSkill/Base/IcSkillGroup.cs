@@ -12,14 +12,22 @@ using NPBehave;
 using UnityEngine;
 using XNode;
 using Node = NPBehave.Node;
+using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
+    public struct ValueS
+    {
+        public string ValueTypeAqName;
+
+        public object Value;
+    }
+    
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
     public class IcSkillGroup:NodeGraph,ISerializationCallbackReceiver
     {
         private GameObject _owner;
-        private Dictionary<string, object> _varMap = new Dictionary<string, object>();
+        private Dictionary<string, ValueS> _varMap = new Dictionary<string, ValueS>();
             
         public GameObject Owner
         {
@@ -74,27 +82,53 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             return main;
         }
 
-        [SerializeField]
-        private List<string> _kyes = new List<string>();
+        #region Serialize
 
-        [SerializeField]
-        private List<object> _values = new List<object>();
+        [SerializeField] 
+        private string _serializeStr;
+        
+#if UNITY_EDITOR
+        public const string SerializeFieldName = nameof(_serializeStr);
+
+        public Dictionary<string, ValueS> VariableMap
+        {
+            get => _varMap;
+            set => _varMap = value;
+        }
+#endif
+        List<string> _keys = new List<string>();
+        List<ValueS> _objectValues = new List<ValueS>();
+        List<Object> _unityValues = new List<Object>();
+        
         public void OnBeforeSerialize()
         {
-            _kyes.Clear();
-            _values.Clear();
-            _kyes.AddRange(_varMap.Keys);
-            _values.AddRange(_varMap.Values);
+            _keys.Clear();
+            _objectValues.Clear();
+            _unityValues.Clear();
+            
+            foreach (var keyValuePair in _varMap)
+            {
+                _keys.Add(keyValuePair.Key);
+
+                var value = keyValuePair.Value;
+
+               if (value.Value is Object uObj)
+               {
+                   _unityValues.Add(uObj);
+               }
+               else
+               {
+                   _objectValues.Add(value);
+               }
+            }
         }
 
         public void OnAfterDeserialize()
         {
             _varMap.Clear();
-            
-            for (var i = 0; i < _kyes.Count; i++)
-            {
-                _varMap.Add(_kyes[i], _values[i]);
-            }
         }
+
+        #endregion
+
     }
 }
