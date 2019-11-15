@@ -1,6 +1,6 @@
 [submodule "NPBehave"]
 	path = NPBehave
-	url = https://github.com/meniku/NPBehave.git
+	url = https://github.com/yika-aixi/NPBehave.git
 [submodule "xNode"]
 	path = xNode
 	url = https://github.com/yika-aixi/xNode.git
