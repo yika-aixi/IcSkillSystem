@@ -1,9 +1,12 @@
 {
     "name": "CabinIcarus.IcSkillSystem.xNodeIc.Editor",
     "references": [
+        "GUID:35d5fc268037eb7409b6c3462ed4f8ce",
+        "GUID:7acbcb6bac0f3f345abd3119ae9e707b",
+        "GUID:1612ff21af6b7d14583d4a7a77c3e206",
         "GUID:79a2db83a53a0cd488b45b860db81a67",
-        "GUID:002c1bbed08fa44d282ef34fd5edb138",
-        "GUID:b8e24fd1eb19b4226afebb2810e3c19b"
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
+        "GUID:002c1bbed08fa44d282ef34fd5edb138"
     ],
     "includePlatforms": [
         "Editor"
