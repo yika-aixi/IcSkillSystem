@@ -1,12 +1,13 @@
 {
-    "name": "CabinIcarus.IcSkillSystem.Expansion.Runtime",
+    "name": "CabinIcarus.IcSkillSystem.xNodeIc.Editor",
     "references": [
-        "CabinIcarus.IcSkillSystem.Runtime",
-        "CabinIcarus.IcSkillSystem.xNodeIc",
-        "CabinIcarus.NPBehave",
-        "XNode"
+        "GUID:79a2db83a53a0cd488b45b860db81a67",
+        "GUID:002c1bbed08fa44d282ef34fd5edb138",
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

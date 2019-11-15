@@ -1,10 +1,9 @@
 {
-    "name": "CabinIcarus.IcSkillSystem.Expansion.Runtime",
+    "name": "CabinIcarus.IcSkillSystem.xNodeIc",
     "references": [
-        "CabinIcarus.IcSkillSystem.Runtime",
-        "CabinIcarus.IcSkillSystem.xNodeIc",
-        "CabinIcarus.NPBehave",
-        "XNode"
+        "GUID:79a2db83a53a0cd488b45b860db81a67",
+        "GUID:35d5fc268037eb7409b6c3462ed4f8ce",
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

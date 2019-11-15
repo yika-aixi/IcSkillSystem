@@ -5,6 +5,7 @@
 //2019年09月19日-21:25
 //Assembly-CSharp
 
+using System;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
 using NPBehave;
 using UnityEngine;
@@ -16,6 +17,23 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
     public class IcSkillGroup:NodeGraph
     {
+        private GameObject _owner;
+
+        public GameObject Owner
+        {
+            get
+            {
+                if (!_owner)
+                {
+                    throw new NullReferenceException("no set Owner");
+                }
+
+                return _owner;
+            }
+
+            set => _owner = value;
+        }
+
         /// <summary>
         /// 开始,返回Node
         /// </summary>
