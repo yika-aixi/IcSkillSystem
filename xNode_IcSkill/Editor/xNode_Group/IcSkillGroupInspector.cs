@@ -1,44 +1,55 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
+using SkillSystem.xNode_IcSkill.Editor.Util;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
     [CustomEditor(typeof(IcSkillGroup))]
     public class IcSkillGroupInspector : UnityEditor.Editor
     {
-        private SerializedProperty _serializedSer;
-        private IcSkillGroup _group;
+        private SerializedProperty _keysSer;
+        private SerializedProperty _valuesSer;
         
+        private IcSkillGroup _group;
+
+        private static Type[] _types;
+
         private void OnEnable()
         {
+            if (_types == null)
+            {
+                _types = TypeAQNameSelect.Types.ToArray();                
+            }
+            
             _group = (IcSkillGroup) target;
-            _serializedSer = serializedObject.FindProperty(IcSkillGroup.SerializeFieldName);
+            _keysSer = serializedObject.FindProperty(IcSkillGroup.KeysName);
+            _valuesSer = serializedObject.FindProperty(IcSkillGroup.ValuesName);
             _des();
         }
 
         private void _des()
         {
-            var str = _serializedSer.stringValue;
+//            var str = _serializedSer.stringValue;
             
-            if (!string.IsNullOrEmpty(str))
+//            if (!string.IsNullOrEmpty(str))
             {
-                _group.VariableMap = SerializationUtil.ToValue<Dictionary<string, ValueS>>(str);
+                //_group.VariableMap = SerializationUtil.ToValue<Dictionary<string, ValueS>>(str);
             }
         }
         
         private void _ser()
         {
-            _serializedSer.stringValue = SerializationUtil.ToString(_group.VariableMap);
+            //_serializedSer.stringValue = SerializationUtil.ToString(_group.VariableMap);
         }
 
         void _save()
         {
-            _ser();
-            _des();
+//            _ser();
+//            _des();
+            EditorUtility.SetDirty(target);
         }
 
         public override void OnInspectorGUI()
@@ -67,7 +78,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 {
                     if (GUILayout.Button("Add Variable"))
                     {
-                        _group.VariableMap.Add(string.Empty, new ValueS());
+                        _group.VariableMap.Add(_group.VariableMap.Count.ToString(), new IcSkillGroup.ValueS());
                     }
 
                     var keys = _group.VariableMap.Keys.ToList();
@@ -94,13 +105,25 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                                 }
                             }
 
-                            if (string.IsNullOrWhiteSpace(value.ValueTypeAqName))
+                            if (value.ValueType == null)
                             {
-                                _drawValueTypeSelect(key,value);
+                                _drawValueTypeSelect(value);
                             }
                             else
                             {
-                                _drawValue(key,value);
+                                _drawValue(value);
+                            }
+
+                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("Refresh"),"Change Type")))
+                            {
+                                value.ValueType = null;
+                                _save();
+                            }
+
+                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("d_P4_DeletedLocal"),"Remove Item")))
+                            {
+                                _group.VariableMap.Remove(key);
+                                _save();
                             }
                         }
                         EditorGUILayout.EndHorizontal();
@@ -111,15 +134,43 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             EditorGUI.indentLevel--;
         }
 
-        private void _drawValueTypeSelect(string key, ValueS value)
+        private void _drawValueTypeSelect(IcSkillGroup.ValueS value)
         {
             //todo draw Value Type Select
+            int index = 0;
             
+            EditorGUI.BeginChangeCheck();
+            
+            var type = TypeAQNameSelect.DrawSelectPopType(new GUIContent(), ref index, _types);
+            
+            if (EditorGUI.EndChangeCheck())
+            {
+                value.ValueType = type;
+                _save();
+            }
         }
 
-        private void _drawValue(string key, ValueS value)
+        private void _drawValue(IcSkillGroup.ValueS value)
         {
             //todo draw Value
+            if (value.IsUnity)
+            {
+                Object obj;
+                EditorGUI.BeginChangeCheck();
+                {
+                    obj = EditorGUILayout.ObjectField(value.UValue, value.ValueType, false);
+                }
+                if (EditorGUI.EndChangeCheck())
+                {
+                    value.SetValue(obj);
+                    _save();
+                }
+            }
+            else
+            {
+                //todo non Unity Type
+//                EditorGUILayout.field
+            }
         }
     }
 }

@@ -16,13 +16,6 @@ using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
-    public struct ValueS
-    {
-        public string ValueTypeAqName;
-
-        public object Value;
-    }
-    
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
     public class IcSkillGroup:NodeGraph,ISerializationCallbackReceiver
     {
@@ -56,6 +49,12 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 if (node.GetType() == typeof(RootNode))
                 {
                     rootNode = (Root) node.GetValue(null);
+                    
+                    foreach (var item in _varMap)
+                    {
+                        rootNode.Blackboard.Set(item.Key,item.Value.GetValue());  
+                    }
+
                     break;
                 }
             }
@@ -83,28 +82,91 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         }
 
         #region Serialize
-
-        [SerializeField] 
-        private string _serializeStr;
         
-#if UNITY_EDITOR
-        public const string SerializeFieldName = nameof(_serializeStr);
+        [Serializable]
+        public class ValueS
+        {
+            [SerializeField]
+            private bool _isUnity;
+            
+            public bool IsUnity => _isUnity;
 
+            [SerializeField]
+            private string ValueTypeAqName;
+
+            [SerializeField]
+            private string _value;
+
+            [SerializeField]
+            private Object _uValue;
+            public Object UValue => _uValue;
+
+            private Type _type;
+        
+            public Type ValueType
+            {
+                get
+                {
+                    if (_type == null && !string.IsNullOrWhiteSpace(ValueTypeAqName))
+                    {
+                        _type = Type.GetType(ValueTypeAqName);
+                    }
+                
+                    return _type;
+                } 
+
+                set
+                {
+                    _isUnity = typeof(Object).IsAssignableFrom(value);
+
+                    _type = value;
+
+                    ValueTypeAqName = value != null ? value.AssemblyQualifiedName : string.Empty;
+                }
+            }
+
+            public void SetValue(object value)
+            {
+                if (_isUnity)
+                {
+                    _uValue = (Object) value;
+                    return;
+                }
+                
+                //todo Serialization
+                
+            }
+
+            public object GetValue()
+            {
+                if (_isUnity)
+                {
+                    return UValue;
+                }
+                //todo Deserialization
+                return null;
+            }
+        }
+
+#if UNITY_EDITOR
+        public const string KeysName = nameof(_keys);
+        public const string ValuesName = nameof(_values);
         public Dictionary<string, ValueS> VariableMap
         {
             get => _varMap;
             set => _varMap = value;
         }
 #endif
-        List<string> _keys = new List<string>();
-        List<ValueS> _objectValues = new List<ValueS>();
-        List<Object> _unityValues = new List<Object>();
         
+        [SerializeField]
+        List<string> _keys = new List<string>();
+        
+        [SerializeField]
+        List<ValueS> _values = new List<ValueS>();
         public void OnBeforeSerialize()
         {
             _keys.Clear();
-            _objectValues.Clear();
-            _unityValues.Clear();
+            _values.Clear();
             
             foreach (var keyValuePair in _varMap)
             {
@@ -112,23 +174,23 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
                 var value = keyValuePair.Value;
 
-               if (value.Value is Object uObj)
-               {
-                   _unityValues.Add(uObj);
-               }
-               else
-               {
-                   _objectValues.Add(value);
-               }
+                _values.Add(value);
             }
         }
 
         public void OnAfterDeserialize()
         {
             _varMap.Clear();
+
+            for (var i = 0; i < _keys.Count; i++)
+            {
+                var key = _keys[i];
+                var value = _values[i];
+                
+                _varMap.Add(key,value);
+            }
         }
 
         #endregion
-
     }
 }
