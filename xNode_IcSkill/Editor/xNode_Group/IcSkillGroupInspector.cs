@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using SkillSystem.xNode_IcSkill.Editor.Util;
 using UnityEditor;
 using UnityEngine;
@@ -17,43 +18,38 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
         private static Type[] _types;
 
+        private static ValueEditPopupWindow _ValueEditPopup;
+        private static TypeSelectPopupWindow _TypeSelect;
+        private Rect _rect;
+
         private void OnEnable()
         {
             if (_types == null)
             {
                 _types = TypeAQNameSelect.Types.ToArray();                
+                _ValueEditPopup = new ValueEditPopupWindow();
+                _ValueEditPopup.OnEdit = _save;
+                _TypeSelect = new TypeSelectPopupWindow(true,_types);
+
             }
             
             _group = (IcSkillGroup) target;
             _keysSer = serializedObject.FindProperty(IcSkillGroup.KeysName);
             _valuesSer = serializedObject.FindProperty(IcSkillGroup.ValuesName);
-            _des();
-        }
-
-        private void _des()
-        {
-//            var str = _serializedSer.stringValue;
-            
-//            if (!string.IsNullOrEmpty(str))
-            {
-                //_group.VariableMap = SerializationUtil.ToValue<Dictionary<string, ValueS>>(str);
-            }
-        }
-        
-        private void _ser()
-        {
-            //_serializedSer.stringValue = SerializationUtil.ToString(_group.VariableMap);
         }
 
         void _save()
         {
-//            _ser();
-//            _des();
             EditorUtility.SetDirty(target);
         }
 
         public override void OnInspectorGUI()
         {
+            if (EditorWindow.mouseOverWindow)
+            {
+                _rect = EditorWindow.mouseOverWindow.position;
+            }
+
             serializedObject.Update();
             {
                 _drawBlackboardVar();
@@ -114,13 +110,19 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                                 _drawValue(value);
                             }
 
-                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("Refresh"),"Change Type")))
+                            if (value.ValueType != null)
                             {
-                                value.ValueType = null;
-                                _save();
+                                if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("Refresh"),$"Change Type,Current Type:{value.ValueType.FullName}"),
+                                    GUILayout.Width(26)))
+                                {
+                                    value.ValueType = null;
+                                    value.SetValue(null);
+                                    _save();
+                                    return;
+                                }
                             }
 
-                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("d_P4_DeletedLocal"),"Remove Item")))
+                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("d_P4_DeletedLocal"),"Remove Item"),GUILayout.Width(26)))
                             {
                                 _group.VariableMap.Remove(key);
                                 _save();
@@ -136,40 +138,103 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
         private void _drawValueTypeSelect(IcSkillGroup.ValueS value)
         {
-            //todo draw Value Type Select
             int index = 0;
             
-            EditorGUI.BeginChangeCheck();
-            
-            var type = TypeAQNameSelect.DrawSelectPopType(new GUIContent(), ref index, _types);
-            
-            if (EditorGUI.EndChangeCheck())
+            if (GUILayout.Button(new GUIContent("Ｔ","Select Type")))
             {
-                value.ValueType = type;
-                _save();
+                _TypeSelect.OnChangeTypeSelect = type =>
+                {
+                    value.ValueType = type;
+                    _save();
+                    _TypeSelect.editorWindow.Close();
+                };
+                
+                var size = 250;
+
+                PopupWindow.Show(
+                    new Rect(new Vector2(Event.current.mousePosition.x - size / 2, -(_rect.height - size - (Event.current.mousePosition.y + 60)) )
+                        ,new Vector2(size,size)),
+                    _TypeSelect);
             }
+
         }
 
-        private void _drawValue(IcSkillGroup.ValueS value)
+        private void _drawValue(IcSkillGroup.ValueS valueS)
         {
             //todo draw Value
-            if (value.IsUnity)
+            if (valueS.IsUnity)
             {
                 Object obj;
                 EditorGUI.BeginChangeCheck();
                 {
-                    obj = EditorGUILayout.ObjectField(value.UValue, value.ValueType, false);
+                    obj = EditorGUILayout.ObjectField(valueS.UValue, valueS.ValueType, false);
                 }
                 if (EditorGUI.EndChangeCheck())
                 {
-                    value.SetValue(obj);
+                    valueS.SetValue(obj);
                     _save();
                 }
             }
             else
             {
                 //todo non Unity Type
-//                EditorGUILayout.field
+
+                var value = valueS.GetValue();
+
+                if (value == null)
+                {
+                    valueS.SetValue(Activator.CreateInstance(valueS.ValueType));
+                    _save();
+                }
+
+               
+                _drawNonUnityValue<int>(valueS, x => EditorGUILayout.DelayedIntField((int) x.GetValue()));
+                _drawNonUnityValue<float>(valueS, x => EditorGUILayout.DelayedFloatField((float) x.GetValue()));
+                _drawNonUnityValue<double>(valueS, x => EditorGUILayout.DelayedDoubleField((double) x.GetValue()));
+                _drawNonUnityValue<long>(valueS, x => EditorGUILayout.LongField((long) x.GetValue()));
+                _drawNonUnityValue<string>(valueS, x => EditorGUILayout.DelayedTextField((string) x.GetValue()));
+                _drawNonUnityValue<Vector2>(valueS, x => EditorGUILayout.Vector2Field("",(Vector2) x.GetValue()));
+                _drawNonUnityValue<Vector2Int>(valueS, x => EditorGUILayout.Vector2IntField("",(Vector2Int) x.GetValue()));
+                _drawNonUnityValue<Vector3>(valueS, x => EditorGUILayout.Vector3Field("",(Vector3) x.GetValue()));
+                _drawNonUnityValue<Vector3Int>(valueS, x => EditorGUILayout.Vector3IntField("",(Vector3Int) x.GetValue()));
+                _drawNonUnityValue<Vector4>(valueS, x => EditorGUILayout.Vector4Field("",(Vector4) x.GetValue()));
+                _drawNonUnityValue<Color>(valueS, x => EditorGUILayout.ColorField((Color) x.GetValue()));
+                _drawNonUnityValue<AnimationCurve>(valueS, x => EditorGUILayout.CurveField((AnimationCurve) x.GetValue()));
+                _drawNonUnityValue<Bounds>(valueS, x => EditorGUILayout.BoundsField((Bounds) x.GetValue()));
+                _drawNonUnityValue<BoundsInt>(valueS, x => EditorGUILayout.BoundsIntField((BoundsInt) x.GetValue()));
+                _drawNonUnityValue<Rect>(valueS, x => EditorGUILayout.RectField((Rect) x.GetValue()));
+                _drawNonUnityValue<RectInt>(valueS, x => EditorGUILayout.RectIntField((RectInt) x.GetValue()));
+                _drawNonUnityValue<Enum>(valueS, x => EditorGUILayout.EnumFlagsField((Enum) x.GetValue()));
+                _drawNonUnityValue<Gradient>(valueS, x => EditorGUILayout.GradientField((Gradient) x.GetValue()));
+
+                if (GUILayout.Button("Edit Value"))
+                {
+                    var size = 250;
+
+                    _ValueEditPopup.ValueS = valueS;
+
+                    PopupWindow.Show(
+                        new Rect(new Vector2( Event.current.mousePosition.x - size / 2, -(_rect.height - size - (Event.current.mousePosition.y + 60)) )
+                            ,new Vector2(size,size)),
+                        _ValueEditPopup);
+                }
+            }
+        }
+
+        void _drawNonUnityValue<T>(IcSkillGroup.ValueS valueS, Func<IcSkillGroup.ValueS,object> drawAction)
+        {
+            if (!typeof(T).IsAssignableFrom(valueS.ValueType))
+            {
+                return;
+            }
+            
+            var value = drawAction(valueS);
+            
+            if (GUI.changed)
+            {
+                valueS.SetValue(value);
+                
+                _save();
             }
         }
     }

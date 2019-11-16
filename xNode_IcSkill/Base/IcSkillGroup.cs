@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 using XNode;
@@ -95,7 +96,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             private string ValueTypeAqName;
 
             [SerializeField]
-            private string _value;
+            private string _valueStr;
+
+            private object _value;
 
             [SerializeField]
             private Object _uValue;
@@ -133,8 +136,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                     return;
                 }
                 
-                //todo Serialization
-                
+                _valueStr = SerializationUtil.ToString(value);
+
             }
 
             public object GetValue()
@@ -143,8 +146,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 {
                     return UValue;
                 }
-                //todo Deserialization
-                return null;
+                
+                return SerializationUtil.ToValue(_valueStr,_type);
             }
         }
 
