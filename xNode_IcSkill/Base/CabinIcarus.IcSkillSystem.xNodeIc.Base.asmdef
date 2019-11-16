@@ -1,6 +1,7 @@
 {
     "name": "CabinIcarus.IcSkillSystem.xNodeIc.Base",
     "references": [
+        "CabinIcarus.IcSkillSystem.Runtime",
         "XNode",
         "CabinIcarus.NPBehave"
     ],
