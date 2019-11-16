@@ -5,6 +5,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.xNode_Group;
+using NPBehave;
 using UnityEngine;
 
 namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Component
@@ -15,5 +16,42 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Compo
     public class SkillBehaveComponent:MonoBehaviour
     {
         public IcSkillGroup Group;
+
+        private Root _root;
+        
+        private void Awake()
+        {
+            _root = Group.Start();
+
+#if UNITY_EDITOR
+            gameObject.AddComponent<Debugger>().BehaviorTree = _root;
+#endif
+        }
+
+        public void Use()
+        {
+            _root.Start();
+        }
+
+        public void Stop()
+        {
+            _root.Stop();
+        }
+
+        #region Test
+
+        [ContextMenu("Test Use")]
+        void _test()
+        {
+            Use();
+        }
+
+        [ContextMenu("Test Stop")]
+        void _testStop()
+        {
+            Stop();
+        }
+        
+        #endregion
     }
 }
