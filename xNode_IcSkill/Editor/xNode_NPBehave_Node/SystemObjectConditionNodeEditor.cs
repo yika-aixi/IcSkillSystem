@@ -18,7 +18,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         private NodePort _aInput;
         private NodePort _bInput;
         
-        private static TypeSelectPopupWindow windowContent;
+        private static SimpleTypeSelectPopupWindow windowContent;
 
         protected override void OnInit()
         {
@@ -41,7 +41,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
                     }
                 }
                 
-                windowContent = new TypeSelectPopupWindow(true,types);
+                windowContent = new SimpleTypeSelectPopupWindow(true,types);
             }
 
             _refreshInputPort();
