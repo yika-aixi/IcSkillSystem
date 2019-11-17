@@ -138,8 +138,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
         private void _drawValueTypeSelect(IcSkillGroup.ValueS value)
         {
-            int index = 0;
-            
             if (GUILayout.Button(new GUIContent("Ｔ","Select Type")))
             {
                 _SimpleTypeSelect.OnChangeTypeSelect = type =>
