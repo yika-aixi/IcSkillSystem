@@ -14,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         private ValueNode _valueNode;
         private NodePort _valueOutPut;
         
-        private TypeSelectPopupWindow windowContent;
+        private SimpleTypeSelectPopupWindow windowContent;
 
         protected override void Init()
         {
@@ -29,7 +29,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 }
             }
             
-            windowContent = new TypeSelectPopupWindow(true);
+            windowContent = new SimpleTypeSelectPopupWindow(true);
             
             windowContent.OnChangeTypeSelect = type =>
             {
