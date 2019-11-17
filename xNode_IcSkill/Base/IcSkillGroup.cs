@@ -147,7 +147,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                     return UValue;
                 }
                 
-                return SerializationUtil.ToValue(_valueStr,_type);
+                return SerializationUtil.ToValue(_valueStr,ValueType);
             }
         }
 
