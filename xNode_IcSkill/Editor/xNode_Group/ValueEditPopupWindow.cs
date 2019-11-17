@@ -66,7 +66,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
         }
 
-        private object _temp;
+        private object _fieldValue;
+        private object _obj;
         private void _drawNonUnityValue<T>(FieldInfo fieldInfo, Func<T, T> drawValueAction)
         {
             if (!typeof(T).IsAssignableFrom(fieldInfo.FieldType))
@@ -74,12 +75,16 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 return;
             }
             
-            _temp = drawValueAction((T) fieldInfo.GetValue(ValueS.GetValue()));
-
-            if (GUI.changed)
+            EditorGUI.BeginChangeCheck();
             {
-                Debug.LogError(_temp);
-                fieldInfo.SetValue(ValueS.GetValue(),_temp);
+                _obj = ValueS.GetValue();
+                _fieldValue = fieldInfo.GetValue(_obj);
+                _fieldValue = drawValueAction((T) _fieldValue);
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                fieldInfo.SetValue(_obj,_fieldValue);
+                ValueS.SetValue(_obj);
                 OnEdit?.Invoke();
             }
         }
