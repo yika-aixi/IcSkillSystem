@@ -4,7 +4,8 @@
         "CabinIcarus.IcSkillSystem.Runtime",
         "CabinIcarus.NPBehave",
         "XNode",
-        "CabinIcarus.IcSkillSystem.xNodeIc.Base"
+        "CabinIcarus.IcSkillSystem.xNodeIc.Base",
+        "CabinIcarus.IcSkillSystem.xNodeIc"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -13,6 +14,5 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "versionDefines": []
 }
