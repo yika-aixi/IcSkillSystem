@@ -19,7 +19,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private static Type[] _types;
 
         private static ValueEditPopupWindow _ValueEditPopup;
-        private static TypeSelectPopupWindow _TypeSelect;
+        private static SimpleTypeSelectPopupWindow _SimpleTypeSelect;
         private Rect _rect;
 
         private void OnEnable()
@@ -29,7 +29,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _types = TypeAQNameSelect.Types.ToArray();                
                 _ValueEditPopup = new ValueEditPopupWindow();
                 _ValueEditPopup.OnEdit = _save;
-                _TypeSelect = new TypeSelectPopupWindow(true,_types);
+                _SimpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
 
             }
             
@@ -142,11 +142,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             
             if (GUILayout.Button(new GUIContent("Ｔ","Select Type")))
             {
-                _TypeSelect.OnChangeTypeSelect = type =>
+                _SimpleTypeSelect.OnChangeTypeSelect = type =>
                 {
                     value.ValueType = type;
                     _save();
-                    _TypeSelect.editorWindow.Close();
+                    _SimpleTypeSelect.editorWindow.Close();
                 };
                 
                 var size = 250;
@@ -154,7 +154,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 PopupWindow.Show(
                     new Rect(new Vector2(Event.current.mousePosition.x - size / 2, -(_rect.height - size - (Event.current.mousePosition.y + 60)) )
                         ,new Vector2(size,size)),
-                    _TypeSelect);
+                    _SimpleTypeSelect);
             }
 
         }
