@@ -40,9 +40,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                     continue;    
                 }
                 
-                _drawNonUnityValue<int>(field, x => EditorGUILayout.DelayedIntField(field.Name,x));
-                _drawNonUnityValue<float>(field, x => EditorGUILayout.DelayedFloatField(field.Name,x));
-                _drawNonUnityValue<double>(field, x => EditorGUILayout.DelayedDoubleField(field.Name,x));
+                _drawNonUnityValue<int>(field, x => EditorGUILayout.IntField(field.Name,x));
+                _drawNonUnityValue<float>(field, x => EditorGUILayout.FloatField(field.Name, x));
+                _drawNonUnityValue<double>(field, x => EditorGUILayout.DoubleField(field.Name,x));
                 _drawNonUnityValue<long>(field, x => EditorGUILayout.LongField(field.Name,x));
                 _drawNonUnityValue<string>(field, x => EditorGUILayout.DelayedTextField(field.Name,x));
                 _drawNonUnityValue<Vector2>(field, x => EditorGUILayout.Vector2Field(field.Name,x));
