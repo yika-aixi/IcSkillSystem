@@ -35,7 +35,19 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 return _owner;
             }
 
-            set => _owner = value;
+            set
+            {
+                _owner = value;
+
+                foreach (var node in nodes)
+                {
+                    if (node.GetType() == typeof(GetChildGroupNode))
+                    {
+                        var subNode = (GetChildGroupNode) node;
+                        subNode.GetGroup().Owner = _owner;
+                    }
+                }
+            }
         }
 
         /// <summary>
