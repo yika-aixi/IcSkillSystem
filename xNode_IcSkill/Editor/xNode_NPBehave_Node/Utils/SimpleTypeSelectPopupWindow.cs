@@ -80,16 +80,14 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
                     _state.Add(false);
                 }
 
-                bool isSkip = false;
+                bool isSkip = true;
+                
                 foreach (var valueType in @group)
                 {
-                    if (_isSkip(valueType))
-                    {
-                        isSkip = true;
-                    }
-                    else
+                    if (!_isSkip(valueType))
                     {
                         isSkip = false;
+                        break;
                     }
                 }
 
