@@ -23,6 +23,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
         private IcSkillGroup _group;
+
+        public IcSkillGroup GetGroup()
+        {
+            return GetInputValue(nameof(_group), _group);
+        }
         
         protected override NPBehave.Node GetOutValue()
         {
