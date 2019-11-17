@@ -21,6 +21,8 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Compo
         
         private void Awake()
         {
+            Group.Owner = gameObject;
+            
             _root = Group.Start();
 
 #if UNITY_EDITOR
