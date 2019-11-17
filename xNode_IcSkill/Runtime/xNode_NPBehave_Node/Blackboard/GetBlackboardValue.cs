@@ -31,6 +31,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
             }
 #endif
             var blackboard = GetInputValue(nameof(_blackBoard), _blackBoard);
+            
             return blackboard?.Get(_key);
         }
     }
