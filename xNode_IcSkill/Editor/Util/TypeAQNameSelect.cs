@@ -49,7 +49,7 @@ namespace SkillSystem.xNode_IcSkill.Editor.Util
         #if IcEditorFrame
             _types.AddRange(CabinIcarus.EditorFrame.Utils.TypeUtil.GetFilterSystemAssemblyQualifiedNames(GetBaseType()));
         #else
-            _types.AddRange(TypeUtil.UnityRuntimeTypes
+            _types.AddRange(TypeUtil.GetRuntimeTypes
             .Where(x=> !x.IsInterface && !x.IsAbstract)
             .Select(x=>x.AssemblyQualifiedName));
         #endif
