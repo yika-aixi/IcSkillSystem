@@ -11,8 +11,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
         
         protected override Action GetOutValue()
         {
-            return new Action(() =>
+            return new Action(multiframeFunc: request =>
             {
+                if (request)
+                {
+                    return Action.Result.SUCCESS;
+                }
+                
                 var root = OutValue.RootNode;
                 
                 if (_start)
@@ -24,7 +29,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
                     root.Stop();
                 }
 
-                return false;
+                return Action.Result.PROGRESS;
             });
         }
     }
