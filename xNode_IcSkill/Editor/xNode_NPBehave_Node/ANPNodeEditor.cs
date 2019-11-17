@@ -20,7 +20,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
                     TNode = (T) target;
 
             }
+#pragma warning disable 168
             catch (Exception e)
+#pragma warning restore 168
             {
                 Debug.LogError(target);
             }           
