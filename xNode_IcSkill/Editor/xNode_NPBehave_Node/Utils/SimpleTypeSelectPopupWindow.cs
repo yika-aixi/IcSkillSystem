@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -128,9 +129,21 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
 
         private bool _isSkip(Type valueType)
         {
-            return !string.IsNullOrWhiteSpace(_ser) &&
-                   !valueType.FullName.ToLower().Contains(_ser.ToLower()) || 
-                   BaseType != null && !BaseType.IsAssignableFrom(valueType);
+            var typeMatch = BaseType != null && BaseType.IsAssignableFrom(valueType);
+
+            if (typeMatch)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(_ser))
+            {
+                return false;
+            }
+
+            var searchMatch = Regex.IsMatch(valueType.FullName,_ser,RegexOptions.IgnoreCase);
+            
+            return !searchMatch;
         }
     }
 }
