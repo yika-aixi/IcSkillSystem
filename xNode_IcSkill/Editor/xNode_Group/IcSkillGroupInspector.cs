@@ -112,7 +112,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
                             if (value.ValueType != null)
                             {
-                                if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("Refresh"),$"Change Type,Current Type:{value.ValueType.FullName}"),
+                                if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("Refresh"),$"Change Type,Current Type '{value.ValueType.FullName}'"),
                                     GUILayout.Width(26)))
                                 {
                                     value.ValueType = null;
