@@ -12,6 +12,22 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         private static List<Type> _objectTypes = new List<Type>();
 
         public static IEnumerable<Type> AllTypes => _objectTypes;
+
+        public static IEnumerable<Type> GetRuntimeTypes
+        {
+            get
+            {
+                return UnityRuntimeTypes
+                        .Append(typeof(byte))
+                        .Append(typeof(int))
+                        .Append(typeof(float))
+                        .Append(typeof(double))
+                        .Append(typeof(long))
+                        .Append(typeof(bool))
+                        .Append(typeof(char))
+                        .Append(typeof(string));
+            }
+        }
         
         public static IEnumerable<Type> UnityRuntimeTypes
         {
