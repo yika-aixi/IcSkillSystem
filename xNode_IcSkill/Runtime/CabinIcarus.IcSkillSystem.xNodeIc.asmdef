@@ -2,7 +2,6 @@
     "name": "CabinIcarus.IcSkillSystem.xNodeIc",
     "references": [
         "CabinIcarus.IcSkillSystem.Runtime",
-        "CabinIcarus.IcSkillSystem.Expansion.Runtime",
         "CabinIcarus.IcSkillSystem.xNodeIc.Base",
         "CabinIcarus.NPBehave",
         "XNode"
