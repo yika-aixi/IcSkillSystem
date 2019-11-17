@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
 {
-    public class TypeSelectPopupWindow : PopupWindowContent
+    public class SimpleTypeSelectPopupWindow : PopupWindowContent
     {
         private readonly bool _focus;
         private Type _baseType;
         private string _ser;
         private SearchField searchField;
-        public TypeSelectPopupWindow(bool focus):this(focus,TypeUtil.UnityRuntimeTypes) { }
+        public SimpleTypeSelectPopupWindow(bool focus):this(focus,TypeUtil.UnityRuntimeTypes) { }
 
-        public TypeSelectPopupWindow(bool focus,IEnumerable<Type> types)
+        public SimpleTypeSelectPopupWindow(bool focus,IEnumerable<Type> types)
         {
             this._focus = focus;
             var typs = types;
