@@ -6,12 +6,11 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks;
 using NPBehave;
 using UnityEngine;
 using Node = XNode.Node;
 
-namespace Cabin_Icarus.SkillSystem.Scripts.Expansion.Runtime.Builtin.Nodes
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [Node.CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Create GameObject")]
     public class CreateGoNode:ANPBehaveNode<Action>
