@@ -5,47 +5,33 @@
 //2019年11月17日-22:09
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
-using NPBehave;
-using UnityEngine;
-
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Animator/Trigger")]
-    public class AnimatorTriggerNode:AAnimatorNode
+    public class AnimatorTriggerNode:AAnimatorSetXXXNode
     {
-        //todo 需要editor 进行对应的显示/隐藏
-        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        [SerializeField]
-        private bool _useHash;
-
-        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        [SerializeField]
-        private string _name;
-
-        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        [SerializeField]
-        private int _hash;
-        
-        protected override Action CreateAction()
+        protected override void NameMode()
         {
-            return new Action(_trigger);
+            Anim.SetTrigger(Name);
         }
 
-        private void _trigger()
+        protected override void HashMode(in int hash)
         {
-            _useHash = GetInputValue(nameof(_useHash),_useHash);
+            Anim.SetTrigger(hash);
+        }
+    }
+    
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Animator/Reset Trigger")]
+    public class AnimatorResetTriggerNode:AAnimatorSetXXXNode
+    {
+        protected override void NameMode()
+        {
+            Anim.ResetTrigger(Name);
+        }
 
-            if (_useHash)
-            {
-                GetInputValue(nameof(_hash),_hash);
-
-                Anim.SetTrigger(_hash);
-            }else
-            {
-                _name = GetInputValue(nameof(_name),_name);
-
-                Anim.SetTrigger(_name);
-            }
+        protected override void HashMode(in int hash)
+        {
+            Anim.ResetTrigger(hash);
         }
     }
 }
