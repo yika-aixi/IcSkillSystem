@@ -18,15 +18,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField]
         private AudioClip _clip;
 
-        protected AudioClip Clip { get; private set; }
-        
-        protected sealed override Action GetOutValue()
-        {
-            Clip = GetInputValue(nameof(_clip), _clip);
-
-            return CreateAction();
-        }
-
-        protected abstract Action CreateAction();
+        protected AudioClip Clip => GetInputValue(nameof(_clip), _clip);
     }
 }

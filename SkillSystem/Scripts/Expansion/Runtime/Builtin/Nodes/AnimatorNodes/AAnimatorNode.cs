@@ -13,8 +13,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     public abstract class AAnimatorNode:ANPBehaveNode<Action>
     {
-        protected Animator Anim;
-       
+        protected Animator Anim { get; private set; }
+
         protected override Action GetOutValue()
         {
             Anim = SkillGroup.Owner.GetComponent<Animator>();
