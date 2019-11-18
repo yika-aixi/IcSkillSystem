@@ -1,25 +1,15 @@
-//创建者:Icarus
-//手动滑稽,滑稽脸
-//ヾ(•ω•`)o
-//https://www.ykls.app
-//2019年09月19日-22:24
-//Assembly-CSharp
-
-using System;
+﻿using System;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes
 {
     /// <summary>
-    /// 临时的节点提示
+    /// 临时的节点提示 -- 方法或属性名, 方法优先级高于属性
+    /// string xxx(){}
+    /// string xxxxx => ""
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field,AllowMultiple = false,Inherited = false)]
-    public class PortTooltipAttribute:APortTooltipAttribute
+    public class PortTooltipMethodOrPropertyGetAttribute:APortTooltipAttribute
     {
-        /// <summary>
-        /// 悬浮的提示
-        /// </summary>
-        public string Tooltip { get; }
-
         /// <summary>
         /// 方法或属性名
         /// </summary>
@@ -29,9 +19,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes
         /// 
         /// </summary>
         /// <param name="tooltip">节点是输入时悬浮的提示</param>
-        public PortTooltipAttribute(string tooltip)
+        public PortTooltipMethodOrPropertyGetAttribute(string tooltip)
         {
-            Tooltip = tooltip;
+            MethodOrPropertyName = tooltip;
         }
     }
 }

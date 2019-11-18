@@ -40,11 +40,13 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
             var node = port.node;
             
-            var attrs = node.GetType().GetField(port.fieldName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetCustomAttributes(typeof(PortTooltipAttribute), false);
+            var attrs = node.GetType().GetField(port.fieldName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                ?.GetCustomAttributes(typeof(APortTooltipAttribute), false);
 
             if (attrs == null || attrs.Length == 0)
             {
-                attrs = node.GetType().GetProperty(port.fieldName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetCustomAttributes(typeof(PortTooltipAttribute), false);
+                attrs = node.GetType().GetProperty(port.fieldName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    ?.GetCustomAttributes(typeof(APortTooltipAttribute), false);
             }
             
             if (attrs != null && attrs.Length == 1)
@@ -52,6 +54,34 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 var tooltipAttribute = ((PortTooltipAttribute) attrs[0]);
 
                 tooltip = string.IsNullOrEmpty(tooltipAttribute.Tooltip) ? tooltip : tooltipAttribute.Tooltip;
+                
+                var tooltipAttribute1 = ((PortTooltipMethodOrPropertyGetAttribute) attrs[0]);
+
+                var method = node.GetType().GetMethod(tooltipAttribute1.MethodOrPropertyName,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                if (method != null)
+                {
+                    if (method.ReturnType != typeof(string))
+                    {
+                        throw new ArgumentException($"{tooltipAttribute1.MethodOrPropertyName} Method return type need is {typeof(string)}");
+                    }
+
+                    tooltip = (string) method.Invoke(node,null);
+                }
+                else
+                {
+                    var property = node.GetType().GetProperty(tooltipAttribute1.MethodOrPropertyName,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (property != null)
+                    {
+                        if (property.PropertyType != typeof(string))
+                        {
+                            throw new ArgumentException($"{tooltipAttribute1.MethodOrPropertyName} Property type need is {typeof(string)}");
+                        }
+
+                        tooltip = (string) property.GetValue(node);
+                    }
+                }
             }
 
             return tooltip;
