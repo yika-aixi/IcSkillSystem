@@ -51,36 +51,38 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             
             if (attrs != null && attrs.Length == 1)
             {
-                var tooltipAttribute = ((PortTooltipAttribute) attrs[0]);
-
-                tooltip = string.IsNullOrEmpty(tooltipAttribute.Tooltip) ? tooltip : tooltipAttribute.Tooltip;
-                
-                var tooltipAttribute1 = ((PortTooltipMethodOrPropertyGetAttribute) attrs[0]);
-
-                var method = node.GetType().GetMethod(tooltipAttribute1.MethodOrPropertyName,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-                if (method != null)
+                if (attrs[0] is PortTooltipAttribute tooltipAttribute)
                 {
-                    if (method.ReturnType != typeof(string))
-                    {
-                        throw new ArgumentException($"{tooltipAttribute1.MethodOrPropertyName} Method return type need is {typeof(string)}");
-                    }
-
-                    tooltip = (string) method.Invoke(node,null);
+                    tooltip = string.IsNullOrEmpty(tooltipAttribute.Tooltip) ? tooltip : tooltipAttribute.Tooltip;
                 }
-                else
-                {
-                    var property = node.GetType().GetProperty(tooltipAttribute1.MethodOrPropertyName,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-                    if (property != null)
+                if (attrs[0] is PortTooltipMethodOrPropertyGetAttribute tooltipAttribute1)
+                {
+                    var method = node.GetType().GetMethod(tooltipAttribute1.MethodOrPropertyName,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (method != null)
                     {
-                        if (property.PropertyType != typeof(string))
+                        if (method.ReturnType != typeof(string))
                         {
-                            throw new ArgumentException($"{tooltipAttribute1.MethodOrPropertyName} Property type need is {typeof(string)}");
+                            throw new ArgumentException($"{tooltipAttribute1.MethodOrPropertyName} Method return type need is {typeof(string)}");
                         }
 
-                        tooltip = (string) property.GetValue(node);
+                        tooltip = (string) method.Invoke(node,null);
                     }
+                    else
+                    {
+                        var property = node.GetType().GetProperty(tooltipAttribute1.MethodOrPropertyName,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                        if (property != null)
+                        {
+                            if (property.PropertyType != typeof(string))
+                            {
+                                throw new ArgumentException($"{tooltipAttribute1.MethodOrPropertyName} Property type need is {typeof(string)}");
+                            }
+
+                            tooltip = (string) property.GetValue(node);
+                        }
+                    } 
                 }
             }
 
