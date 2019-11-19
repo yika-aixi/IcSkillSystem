@@ -33,7 +33,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         {
             _group = GetInputValue(nameof(_group), _group);
 
-            return _group.GetChildGroupNode();
+            return _group.GetChildGroupNode((IcSkillGroup) graph);
         }
     }
 }
