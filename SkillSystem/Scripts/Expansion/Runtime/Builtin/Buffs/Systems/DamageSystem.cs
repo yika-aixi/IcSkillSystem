@@ -4,6 +4,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
@@ -11,41 +12,48 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 伤害处理系统
     /// </summary>
-    public class DamageSystem:ABuffCreateSystem<IBuffDataComponent>
+    public class DamageSystem<TMechanics,TDamageBuff>:IBuffCreateSystem<IcSkSEntity> 
+        where TMechanics : struct, IMechanicBuff
+        where TDamageBuff : struct, IDamageBuff
     {
-        private List<IMechanicBuff> _buffs;
+//        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
-        public DamageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
+        private readonly BuffManager_Struct _buffManager;
+        public DamageSystem(IStructBuffManager<IcSkSEntity> buffManager)
         {
-            _buffs = new List<IMechanicBuff>();
+            this._buffManager = (BuffManager_Struct) buffManager;
         }
 
-        public override bool Filter(IEntity entity, IBuffDataComponent buff)
+        public void Create(IcSkSEntity entity, int index)
         {
-            return buff is IDamageBuff; 
-        }
+            var buffs = _buffManager.GetBuffsCondition<TMechanics>(entity,_getHealth);
 
-        private static bool _healthMatch(IMechanicBuff x)
-        {
-            return x.MechanicsType == MechanicsType.Health;
-        }
+            var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
-        public override void Create(IEntity entity, IBuffDataComponent buff)
-        {
-            BuffManager.GetBuffs(entity, _healthMatch, _buffs);
-            
-            foreach (var hpBuff in _buffs)
+#if ENABLE_MANAGED_JOBS
+            for (var i = 0; i < buffs.Length; i++)
+#else
+            for (var i = 0; i < buffs.Count; i++)
+#endif
             {
-                var damageBuff = ((IDamageBuff) buff);
+                var buffInfo = buffs[i];
+
+                var buff = buffInfo.Buff;
                 
-                hpBuff.Value -= damageBuff.Value;
-                
+                buff.Value = buff.Value - damage.Value;
+
+                _buffManager.SetBuffData(entity, buff, buffInfo.Index);
+
                 //todo 一个单位只有第一条血条会受伤
                 break;
             }
-            
-            BuffManager.RemoveBuffEx(entity,buff);
 
+            _buffManager.RemoveBuff(entity, damage);
+        }
+
+        private bool _getHealth(TMechanics arg)
+        {
+            return arg.MechanicsType == MechanicsType.Health;
         }
     }
 }

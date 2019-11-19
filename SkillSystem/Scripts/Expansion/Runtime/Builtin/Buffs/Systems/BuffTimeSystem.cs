@@ -5,43 +5,39 @@
 //2019年09月23日-23:00
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
-using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
-    public class BuffTimeSystem<T>:ABuffUpdateSystem<T> where T : IBuffDataComponent
+    public class BuffTimeSystem<T>:IBuffUpdateSystem where T:struct,IBuffDataComponent,IBuffTimeDataComponent
     {
-        private List<T> _buffs;
+        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
-        public BuffTimeSystem(IBuffManager<T> buffManager) : base(buffManager)
+        public BuffTimeSystem(IStructBuffManager<IcSkSEntity> buffManager)
         {
-            _buffs = new List<T>();
+            this._buffManager = buffManager;
         }
-
-        public override bool Filter(IEntity entity)
+        public void Execute()
         {
-            return BuffManager.HasBuff<T>(entity);
-        }
-
-        public override void Execute(IEntity entity)
-        {
-            BuffManager.GetBuffs(entity, x => x is T,_buffs);
-            
-            foreach (var dataComponent in _buffs)
+            foreach (var entity in _buffManager.Entitys)
             {
-                IBuffTimeDataComponent timeData = (IBuffTimeDataComponent) dataComponent;
+                var buffs = _buffManager.GetBuffs<T>(entity);
 
-                timeData.Duration -= Time.deltaTime;
-
-                if (timeData.Duration <= 0)
+                for (var i = 0; i < buffs.Count; i++)
                 {
-                    BuffManager.RemoveBuffEx(entity, dataComponent);
+                    var buff = buffs[i];
+                    
+                    buff.Duration -= Time.deltaTime;
+                    
+                    if (buff.Duration <= 0)
+                    {
+                        _buffManager.RemoveBuff(entity, buff);
+                    }
                 }
             }
         }

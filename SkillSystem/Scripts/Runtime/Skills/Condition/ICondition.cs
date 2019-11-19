@@ -4,6 +4,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
 {
     public interface ICondition
     {
-        bool Check(IEntity entity);
+        bool Check(IIcSkSEntity icSkSEntity);
     }
 }

@@ -6,21 +6,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 伤害 buff
     /// </summary>
-    public interface IDamage:IBuffValueDataComponent,IBuffType
+    public interface IDamage:IBuffValueDataComponent,IBuffType,IMakerEntity
     {
     }
     
     /// <summary>
     /// 伤害 buff
     /// </summary>
-    public interface IDamageBuff:IDamage,IBuffDataComponent,IBuffMakerEntityComponent
-    {
-    }
-    
-    /// <summary>
-    /// 伤害 buff - 结构体
-    /// </summary>
-    public interface IDamageStructBuff:IDamage,IStructBuffDataComponent
+    public interface IDamageBuff:IDamage,IBuffDataComponent
     {
     }
 }

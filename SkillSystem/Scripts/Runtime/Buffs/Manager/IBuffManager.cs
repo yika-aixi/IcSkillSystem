@@ -1,101 +1,68 @@
-//创建者:Icarus
-//手动滑稽,滑稽脸
-//ヾ(•ω•`)o
-//https://www.ykls.app
-//2019年09月15日-19:28
-//CabinIcarus.SkillSystem.Runtime
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 {
-    public interface IBuffManager<T> where T : IBuffDataComponent 
+    public interface IBuffManager<in TEntity> where TEntity : IIcSkSEntity
     {
-        /// <summary>
-        /// 添加buff System
-        /// </summary>
-        /// <param name="buffSystem"></param>
-        /// <returns></returns>
-        IBuffManager<T> AddBuffSystem(IBuffSystem buffSystem);
+        FasterReadOnlyList<IcSkSEntity> Entitys { get; }
         
-        /// <summary>
-        /// 获取所有实体
-        /// </summary>
-        /// <param name="entitys"></param>
-        void GetAllEntity(List<IEntity> entitys);
-        
-        /// <summary>
-        /// 添加实体
-        /// </summary>
-        /// <param name="entity"></param>
-        void AddEntity(IEntity entity);
-        
-        /// <summary>
-        /// 销毁实体
-        /// </summary>
-        /// <param name="entity"></param>
-        void DestroyEntity(IEntity entity);
+        IBuffManager<TEntity> AddBuffSystem(IBuffSystem buffSystem);
 
-        void AddBuff(IEntity entity,T buff);
-
-        bool RemoveBuff(IEntity entity,T buff);
-        
-        /// <summary>
-        /// 获取指定类型得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <typeparam name="T1"></typeparam>
-        /// <returns></returns>
-        void GetBuffs<T1>(IEntity entity,List<T1> buffs) where T1 : T;
-
-        /// <summary>
-        /// 获取指定类型得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <typeparam name="T1"></typeparam>
-        /// <returns></returns>
-        void GetBuffs<T1>(IEntity entity,Predicate<T1> match,List<T1> buffs) where T1 : T;
-        
-        /// <summary>
-        /// 指定得实体是否有该类型得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <typeparam name="T1"></typeparam>
-        /// <returns></returns>
-        bool HasBuff<T1>(IEntity entity) where T1 : T;
-
-        /// <summary>
-        /// 指定得实体是否有该类型得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <typeparam name="buffType"></typeparam>
-        /// <returns></returns>
-        bool HasBuff(IEntity entity, Type buffType);
-
-        /// <summary>
-        /// 指定得实体是否有匹配得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="match"></param>
-        /// <typeparam name="T1"></typeparam>
-        /// <returns></returns>
-        bool HasBuff<T1>(IEntity entity, Predicate<T1> match) where T1 : T;
-
-        /// <summary>
-        /// 指定得实体是否有匹配得buff
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="match"></param>
-        /// <returns></returns>
-        bool HasBuff(IEntity entity, Type buffType, Predicate<T> match);
-
-        /// <summary>
-        /// 更新
-        /// </summary>
         void Update();
+
+        void AddEntity(TEntity entity);
+
+        void RemoveEntity(TEntity entity);
+
+        void AddBuff<TBuff>(TEntity entity, in TBuff buff);
+
+        TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : IBuffDataComponent;
+
+        TBuff GetBuffData<TBuff>(TEntity entity, int index) where TBuff : IBuffDataComponent;
+
+        void SetBuffData<TBuff>(TEntity entity, in TBuff buff, int index) where TBuff : IBuffDataComponent;
+
+        bool RemoveBuff<TBuff>(TEntity entity, TBuff buff) where TBuff : IBuffDataComponent;
+
+        bool HasBuff<TBuff>(TEntity entity, TBuff buff) where TBuff : IBuffDataComponent;
+
+        bool HasBuff(TEntity entity, Type buffType);
+        
+        bool HasBuff(TEntity entity, Type buffType, IBuffDataComponent buff);
+
+        IEnumerable<TBuff> GetBuffs<TBuff>(TEntity entity, Func<TBuff,bool> condition) where TBuff : IBuffDataComponent;
+
+        FasterReadOnlyList<TBuff> GetBuffs<TBuff>(TEntity entity) where TBuff : IBuffDataComponent;
+        
+        IEnumerable<IBuffDataComponent> GetAllBuff(TEntity entity);
+
+        int GetBuffCount<TBuff>(TEntity entity) where TBuff : IBuffDataComponent;
+    }
+
+    public interface IStructBuffManager<in TEntity> : IBuffManager<TEntity> where TEntity : struct,IIcSkSEntity,IEquatable<TEntity>
+    {
+        new IStructBuffManager<TEntity> AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent;
+        
+        new void AddBuff<TBuff>(TEntity entity, in TBuff buff) where TBuff : struct, IBuffDataComponent;
+
+        new TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : struct, IBuffDataComponent;
+
+        new TBuff GetBuffData<TBuff>(TEntity entity, int index) where TBuff : struct, IBuffDataComponent;
+
+        new void SetBuffData<TBuff>(TEntity entity, in TBuff buff, int index)
+            where TBuff : struct, IBuffDataComponent;
+
+        new bool RemoveBuff<TBuff>(TEntity entity, TBuff buff) where TBuff : struct, IBuffDataComponent;
+
+        new bool HasBuff<TBuff>(TEntity entity, TBuff buff) where TBuff : struct, IBuffDataComponent;
+
+        new FasterReadOnlyList<TBuff> GetBuffs<TBuff>(TEntity entity) where TBuff : struct, IBuffDataComponent;
+
+        new int GetBuffCount<TBuff>(TEntity entity) where TBuff : struct, IBuffDataComponent;
     }
 }

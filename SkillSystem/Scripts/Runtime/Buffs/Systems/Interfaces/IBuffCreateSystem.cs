@@ -5,7 +5,6 @@
 //2019年09月14日-19:03
 //CabinIcarus.SkillSystem.Runtime
 
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Com;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
@@ -14,8 +13,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces
     /// <summary>
     /// buff 创建系统
     /// </summary>
-    public interface IBuffCreateSystem<in T>:IBuffSystem,IBuffFilter<T> where T : IBuffDataComponent
+    public interface IBuffCreateSystem<in TEntity>:IBuffSystem where TEntity : IIcSkSEntity
     {
-        void Create(IEntity entity,T buff);
+        void Create(TEntity entity,int index);
     }
 }

@@ -1,0 +1,16 @@
+{
+    "name": "CabinIcarus.IcSkillSystem.xNodeIc.Base",
+    "references": [
+        "CabinIcarus.IcSkillSystem.Runtime",
+        "XNode",
+        "CabinIcarus.NPBehave"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

@@ -1,61 +1,56 @@
-﻿using System.Collections.Generic;
-using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
+﻿using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
-using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
     /// <summary>
     /// 持续伤害
     /// </summary>
-    public class ContinuousDamageSystem<T>:ABuffUpdateSystem<IBuffDataComponent>,IBuffCreateSystem<IBuffDataComponent> where T : IDamageBuff,new()
+    public class ContinuousDamageSystem<T,TDamageBuff>:AIcStructBuffSystem<IcSkSEntity,TDamageBuff> where T:struct,IContinuousDamageBuff where TDamageBuff : struct,IDamageBuff
     {
-        private List<IContinuousDamageBuff> _continuousBuffs;
-        public ContinuousDamageSystem(IBuffManager<IBuffDataComponent> buffManager) : base(buffManager)
+        public override void Execute()
         {
-            _continuousBuffs = new List<IContinuousDamageBuff>();
-        }
-        public override bool Filter(IEntity entity)
-        {
-            return BuffManager.HasBuff<IMechanicBuff>(entity,x=>x.MechanicsType == MechanicsType.Health);
-        }
-        public override void Execute(IEntity entity)
-        {
-            BuffManager.GetBuffs(entity,_continuousBuffs);
-            for (var i = 0; i < _continuousBuffs.Count; i++)
+            foreach (var entity in BuffManager.Entitys)
             {
-                var buff = _continuousBuffs[i];
-            
-                if (buff.LastTriggerTime - buff.Duration >= buff.TriggerInterval)
+                var buffs = BuffManager.GetBuffs<T>(entity);
+
+                for (var i = 0; i < buffs.Count; i++)
                 {
-                    buff.LastTriggerTime = buff.Duration;
-                    
-                    BuffManager.CreateAndAddBuff<T>(entity, x =>
+                    var buff = buffs[i];
+
+                    if (buff.LastTriggerTime - buff.Duration >=
+                        buff.TriggerInterval)
                     {
-                        x.Maker = buff.Maker;
-                        x.Type = buff.Type;
-                        x.Value = buff.Value;
-                    });
+                        buff.LastTriggerTime = buff.Duration;
+
+                        BuffManager.AddBuff(entity, new TDamageBuff()
+                        {
+                            Entity = buff.Entity,
+                            Type = buff.Type,
+                            Value = buff.Value,
+                        });
+                    }
+                    
+                    BuffManager.SetBuffData(entity,buff,i);
                 }
             }
         }
 
         #region Init 
 
-        public bool Filter(IEntity entity, IBuffDataComponent buff)
+        public override void Create(IcSkSEntity entity, int index)
         {
-            return BuffManager.HasBuff<IMechanicBuff>(entity,x=>x.MechanicsType == MechanicsType.Health) && buff is IContinuousDamageBuff;
-        }
-        public void Create(IEntity entity, IBuffDataComponent buff)
-        {
-            IContinuousDamageBuff continuousDamageBuff = (IContinuousDamageBuff) buff;
-            continuousDamageBuff.LastTriggerTime = continuousDamageBuff.Duration;
+            var buff = BuffManager.GetBuffData<T>(entity, index);
+            
+            buff.LastTriggerTime =  buff.Duration;
         }
 
         #endregion
+
+        public ContinuousDamageSystem(IStructBuffManager<IcSkSEntity> buffManager) : base(buffManager)
+        {
+        }
     }
 }

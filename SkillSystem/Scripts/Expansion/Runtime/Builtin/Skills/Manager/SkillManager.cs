@@ -15,13 +15,13 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Manag
             _skillSystem = new List<ISkillExecuteSystem>();
         }
 
-        public void UseSkill(IEntity entity, ISkillDataComponent skill)
+        public void UseSkill(IIcSkSEntity icSkSEntity, ISkillDataComponent skill)
         {
             foreach (var system in _skillSystem)
             {
-                if (system.Filter(entity,skill))
+                if (system.Filter(icSkSEntity,skill))
                 {
-                    system.Execute(entity,skill);
+                    system.Execute(icSkSEntity,skill);
                 }
             }
         }

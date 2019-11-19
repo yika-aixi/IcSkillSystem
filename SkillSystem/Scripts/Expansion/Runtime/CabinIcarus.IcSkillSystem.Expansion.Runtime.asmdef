@@ -1,14 +1,18 @@
 {
     "name": "CabinIcarus.IcSkillSystem.Expansion.Runtime",
     "references": [
-        "CabinIcarus.IcSkillSystem.Runtime"
+        "CabinIcarus.IcSkillSystem.Runtime",
+        "CabinIcarus.NPBehave",
+        "XNode",
+        "CabinIcarus.IcSkillSystem.xNodeIc.Base",
+        "CabinIcarus.IcSkillSystem.xNodeIc"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": []
 }
