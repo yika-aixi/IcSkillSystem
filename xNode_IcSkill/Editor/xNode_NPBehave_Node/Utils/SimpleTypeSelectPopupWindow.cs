@@ -131,7 +131,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         {
             var typeMatch = BaseType != null && BaseType.IsAssignableFrom(valueType);
 
-            if (typeMatch)
+            if (!typeMatch)
             {
                 return true;
             }
