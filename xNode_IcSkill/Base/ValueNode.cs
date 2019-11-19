@@ -1,5 +1,6 @@
 ﻿using System;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using CabinIcarus.IcSkillSystem.xNode_Group;
 using UnityEngine;
 using XNode;
 
@@ -43,6 +44,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         /// </summary>
         /// <returns></returns>
         protected abstract object GetOutValue();
+
+        public IcSkillGroup SkillGroup { get; set; }
     }
     
     /// <summary>
