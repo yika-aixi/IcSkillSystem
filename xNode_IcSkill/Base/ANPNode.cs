@@ -5,6 +5,7 @@
 //2019年09月19日-21:33
 //Assembly-CSharp
 
+using CabinIcarus.IcSkillSystem.xNode_Group;
 using UnityEngine;
 using XNode;
 
@@ -12,6 +13,8 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
     public abstract class ANPNode<T>:Node,IIcSkillSystemNode
     {
+        public IcSkillGroup SkillGroup { get; set; }
+
         [Output()]
         public T OutValue;
         
