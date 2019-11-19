@@ -12,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 伤害处理系统
     /// </summary>
-    public class DamageSystem<TMechanics,TDamageBuff>:IBuffCreateSystem<IcSkSEntity,TDamageBuff> 
+    public class DamageSystem<TMechanics,TDamageBuff>:IBuffCreateSystem<IcSkSEntity> 
         where TMechanics : struct, IMechanicBuff
         where TDamageBuff : struct, IDamageBuff
     {

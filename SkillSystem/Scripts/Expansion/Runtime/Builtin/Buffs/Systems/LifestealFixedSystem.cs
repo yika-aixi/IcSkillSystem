@@ -12,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 固定吸血,可多个
     /// </summary>
-    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem<IcSkSEntity,TDamageBuff> 
+    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem<IcSkSEntity> 
         where TMechanics : struct, IMechanicBuff
         where TFixedLifesteal : struct, IFixedLifesteal
         where TDamageBuff : struct,IDamageBuff

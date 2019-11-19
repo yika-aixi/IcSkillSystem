@@ -6,8 +6,8 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
     public abstract class AIcStructBuffSystem<TEntity,TBuffType>: 
-        IBuffCreateSystem<TEntity,TBuffType>,
-        IBuffUpdateSystem,IBuffDestroySystem<TEntity,TBuffType> 
+        IBuffCreateSystem<TEntity>,
+        IBuffUpdateSystem,IBuffDestroySystem<TEntity> 
         where TEntity : struct, IIcSkSEntity, IEquatable<TEntity> 
         where TBuffType : struct, IBuffDataComponent
     {

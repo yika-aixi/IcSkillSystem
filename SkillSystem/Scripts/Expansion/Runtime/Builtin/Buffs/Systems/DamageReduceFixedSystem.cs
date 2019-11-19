@@ -8,7 +8,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 固定减少伤害,如果存在多个一样的buff,只会使用最后一个
     /// </summary>
-    public class DamageReduceFixedSystem<TDamageReduceFixedBuff,TDamageBuff>:IBuffCreateSystem<IcSkSEntity,TDamageBuff>
+    public class DamageReduceFixedSystem<TDamageReduceFixedBuff,TDamageBuff>:IBuffCreateSystem<IcSkSEntity>
         where TDamageReduceFixedBuff : struct,IDamageReduceFixedBuff
         where TDamageBuff : struct,IDamageBuff
     {

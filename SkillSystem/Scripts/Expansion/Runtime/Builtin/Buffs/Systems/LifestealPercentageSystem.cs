@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 百分比吸血,可叠加
     /// </summary>
-    public class LifestealPercentageSystem<TMechanics,TPercentageLifesteal,TDamageBuff>:IBuffDestroySystem<IcSkSEntity,TDamageBuff> 
+    public class LifestealPercentageSystem<TMechanics,TPercentageLifesteal,TDamageBuff>:IBuffDestroySystem<IcSkSEntity> 
         where TMechanics : struct, IMechanicBuff
         where TPercentageLifesteal : struct, IPercentageLifesteal
         where TDamageBuff : struct,IDamageBuff
