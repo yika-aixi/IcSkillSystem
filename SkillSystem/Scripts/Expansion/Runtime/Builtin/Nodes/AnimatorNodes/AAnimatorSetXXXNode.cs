@@ -32,7 +32,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         protected int Hash => GetInputValue(nameof(_hash), _hash);
 
-        protected override Action CreateAction()
+        protected override Task CreateAction()
         {
             return new Action(_setXxx);
         }

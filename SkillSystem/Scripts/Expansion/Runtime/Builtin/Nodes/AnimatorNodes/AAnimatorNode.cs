@@ -6,22 +6,23 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using NPBehave;
 using UnityEngine;
 using Action = NPBehave.Action;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    public abstract class AAnimatorNode:ANPBehaveNode<Action>
+    public abstract class AAnimatorNode:ANPBehaveNode<Task>
     {
         protected Animator Anim { get; private set; }
 
-        protected override Action GetOutValue()
+        protected override Task GetOutValue()
         {
             Anim = SkillGroup.Owner.GetComponent<Animator>();
             
             return CreateAction();
         }
 
-        protected abstract Action CreateAction();
+        protected abstract Task CreateAction();
     }
 }
