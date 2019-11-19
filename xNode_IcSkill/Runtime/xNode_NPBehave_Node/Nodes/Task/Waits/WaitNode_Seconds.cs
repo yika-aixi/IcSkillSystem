@@ -8,12 +8,17 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
     [NodeWidth(300)]
     public class WaitNode_Seconds:ANPBehaveNode<Wait>
     {
-        [SerializeField] 
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)] 
         private float _seconds;
 
         protected override Wait GetOutValue()
         {
-            return new Wait(_seconds);
+            return new Wait(_getSeconds);
+        }
+
+        private float _getSeconds()
+        {
+            return GetInputValue(nameof(_seconds),_seconds);
         }
     }
 }
