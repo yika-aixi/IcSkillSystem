@@ -76,9 +76,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         private IBuffList _currentBuffs;
         private FasterList<IcSkSEntity> _entitys;
         private Dictionary<IcSkSEntity, Dictionary<Type,IBuffList>> _buffMaps;
-        private Dictionary<Type,Action<IcSkSEntity, int>> _onCreateMap = new Dictionary<Type, Action<IcSkSEntity, int>>();
-        private Dictionary<Type,Action<IcSkSEntity, int>> _onDestroyMap = new Dictionary<Type, Action<IcSkSEntity, int>>();
-        private Action _onUpdate;
+        private Dictionary<Type,List<IBuffCreateSystem<IcSkSEntity>>> _onCreateMap = new Dictionary<Type, List<IBuffCreateSystem<IcSkSEntity>>>();
+        private Dictionary<Type,List<IBuffDestroySystem<IcSkSEntity>>> _onDestroyMap = new Dictionary<Type, List<IBuffDestroySystem<IcSkSEntity>>>();
+        private event Action _onUpdate;
         public BuffManager_Struct()
         {
             _entitys = new FasterList<IcSkSEntity>();
@@ -89,20 +89,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             var type = buffSystem.GetType();
             var buffType = typeof(TBuffType);
-            if (buffSystem is IBuffCreateSystem<IcSkSEntity,TBuffType> createSystem)
+            if (buffSystem is IBuffCreateSystem<IcSkSEntity> createSystem)
             {
-                if (!_onCreateMap.ContainsKey(buffType))
+                if (!_onCreateMap.TryGetValue(buffType,out var actions))
                 {
-                    _onCreateMap.Add(buffType,createSystem.Create);
+                    actions = new List<IBuffCreateSystem<IcSkSEntity>>();
+                    _onCreateMap.Add(buffType,actions);
                 }
-                else
+
+                if (!_existHandle(actions,type))
                 {
-                    var action = _onCreateMap[buffType];
-                    
-                    if (!_existHandle(action.GetInvocationList(),type))
-                    {
-                        _onCreateMap[buffType] += createSystem.Create;
-                    }
+                    actions.Add(createSystem);
                 }
             }
 
@@ -114,31 +111,44 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
             
-            if (buffSystem is IBuffDestroySystem<IcSkSEntity,TBuffType> destroySystem)
+            if (buffSystem is IBuffDestroySystem<IcSkSEntity> destroySystem)
             {
-                if (!_onDestroyMap.ContainsKey(buffType))
+                if (!_onDestroyMap.TryGetValue(buffType,out var actions))
                 {
-                    _onDestroyMap.Add(buffType,destroySystem.Destroy);
+                    actions = new List<IBuffDestroySystem<IcSkSEntity>>();
+                    _onDestroyMap.Add(buffType,actions);
                 }
-                else
+                
+                if (!_existHandle(actions,type))
                 {
-                    var action = _onDestroyMap[buffType];
-                    
-                    if (!_existHandle(action.GetInvocationList(),type))
-                    {
-                        _onDestroyMap[buffType] += destroySystem.Destroy;
-                    }
+                    actions.Add(destroySystem);
                 }
             }
             
             return this;
         }
 
-        private bool _existHandle(Delegate[] handles, Type type)
+        private bool _existHandle(Delegate[] getInvocationList, Type type)
+        {
+            foreach (var handle in getInvocationList)
+            {
+                if (handle.Target.GetType() == type)
+                {
+#if UNITY_EDITOR
+                    Debug.LogWarning($"{type} System already exists, skip");
+#endif
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool _existHandle(IEnumerable<IBuffSystem> handles, Type type)
         {
             foreach (var handle in handles)
             {
-                if (handle.Target.GetType() == type)
+                if (handle.GetType() == type)
                 {
 #if UNITY_EDITOR
                     Debug.LogWarning($"{type} System already exists, skip");
@@ -184,6 +194,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _addBuff(entity,typeof(T), buff,false);
         }
 
+#if UNITY_EDITOR
+        private bool _createExecute;
+#endif
+
         private void _addBuff<T>(IcSkSEntity entity,Type buffType, T buff,bool isBox)
         {
             _checkType<T>();
@@ -215,7 +229,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
 
             _currentBuffs = result;
-            _callSystem(entity,buffType,result.Count - 1, true);
+
+#if UNITY_EDITOR
+            _createExecute = true;
+#endif
+            _callSystem(entity, buffType, result.Count - 1, true);
+#if UNITY_EDITOR
+            _createExecute = false;
+#endif
         }
 
         /// <summary>
@@ -308,21 +329,35 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
            
         }
-
+#if UNITY_EDITOR
+        private Type _lastExecuteCreateBuffSystem;
+#endif
         private void _callSystem(IcSkSEntity entity,Type buffType,int index,bool isCreate)
         {
             if (isCreate)
             {
                 if (_onCreateMap.TryGetValue(buffType,out var action))
                 {
-                    action(entity,index);
+                    var count = action.Count;
+                    for (var i = 0; i < count; i++)
+                    {
+#if UNITY_EDITOR
+                        _lastExecuteCreateBuffSystem = action[i].GetType();        
+#endif
+                        action[i].Create(entity, index);
+                    }
                 }
             }
             else
             {
                 if (_onDestroyMap.TryGetValue(buffType,out var action))
                 {
-                    action(entity,index);
+                    var count = action.Count;
+                    
+                    for (var i = 0; i < count; i++)
+                    {
+                        action[i].Destroy(entity, index);
+                    }
                 }
             }
         }
@@ -367,6 +402,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 return false;
             }
 
+#if UNITY_EDITOR
+            if (_createExecute)
+            {
+                Debug.LogError($"{_lastExecuteCreateBuffSystem} Remove buff,Subsequent `Create System` will be abnormal, please change the System to the last execution or not add the `{buffType}` type buff `Create System` after this System");
+            }
+#endif
             var buffMap = _buffMaps[entity];
 
             if (buffMap.TryGetValue(buffType, out var result))
@@ -377,8 +418,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 {
                     buffList = (BuffList<T>) result;
                 }
-                
-                for (var index = result.Count - 1; index >= 0; index--)
+
+                var count = result.Count;
+                for (var index = count - 1; index >= 0; index--)
                 {
                     if (!isBox)
                     {
@@ -399,6 +441,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     _currentBuffs = result;
                     _callSystem(entity,buffType, index, false);
                     result.RemoveAt(index);
+                    break;
                 }
             }
 
