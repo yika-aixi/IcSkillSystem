@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
     public class GetBlackboardValue:ValueNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        [PortTooltip("黑板")]
+        [PortTooltip("no input use Blackboard of from Root")]
         private Blackboard _blackBoard;
         
         [SerializeField]
@@ -31,8 +31,14 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
             }
 #endif
             var blackboard = GetInputValue(nameof(_blackBoard), _blackBoard);
+
+            if (blackboard == null)
+            {
+                blackboard = SkillGroup.RootNode.Blackboard;
+            }
             
-            return blackboard?.Get(_key);
+            
+            return blackboard.Get(_key);
         }
     }
 }
