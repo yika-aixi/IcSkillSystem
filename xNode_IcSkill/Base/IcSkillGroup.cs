@@ -49,6 +49,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 }
             }
         }
+        
+        public Root RootNode { get; private set; }
 
         /// <summary>
         /// 开始,返回Node
@@ -56,32 +58,48 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         /// <returns></returns>
         public Root Start()
         {
-            Root rootNode = null;
+            _init(this);
+
             foreach (var node in nodes)
             {
                 if (node.GetType() == typeof(RootNode))
                 {
-                    rootNode = (Root) node.GetValue(null);
-                    
+                    RootNode = (Root) node.GetValue(null);
+
                     foreach (var item in _varMap)
                     {
-                        rootNode.Blackboard.Set(item.Key,item.Value.GetValue());  
+                        RootNode.Blackboard.Set(item.Key,item.Value.GetValue());  
                     }
 
                     break;
                 }
             }
 
-            return rootNode;
+            return RootNode;
         }
-        
+
+        private void _init(IcSkillGroup group)
+        {
+            foreach (var node in nodes)
+            {
+                if (node is IIcSkillSystemNode skillNode)
+                {
+                    skillNode.SkillGroup = group;
+                }
+            }
+        }
+
         /// <summary>
         /// 获取子图,返回Node
         /// </summary>
         /// <returns></returns>
-        public Node GetChildGroupNode()
+        public Node GetChildGroupNode(IcSkillGroup parent)
         {
+            _init(parent);
+//            RootNode = parent.RootNode;
+            
             Node main = null;
+            
             foreach (var node in nodes)
             {
                 if (node.GetType() == typeof(ChildGroupNode))
@@ -117,7 +135,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             public Object UValue => _uValue;
 
             private Type _type;
-        
+            
             public Type ValueType
             {
                 get
