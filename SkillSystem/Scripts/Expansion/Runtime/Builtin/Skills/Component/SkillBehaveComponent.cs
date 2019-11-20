@@ -23,11 +23,16 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Compo
         {
             Group.Owner = gameObject;
             
-            _root = Group.Start();
+            _init();
 
 #if UNITY_EDITOR
             gameObject.AddComponent<Debugger>().BehaviorTree = _root;
 #endif
+        }
+
+        private void _init()
+        {
+            _root = Group.Start();
         }
 
         public void Use()
@@ -42,16 +47,10 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Compo
 
         #region Test
 
-        [ContextMenu("Test Use")]
-        void _test()
+        [ContextMenu("ReLoad Group")]
+        void _reload()
         {
-            Use();
-        }
-
-        [ContextMenu("Test Stop")]
-        void _testStop()
-        {
-            Stop();
+            _init();
         }
         
         #endregion
