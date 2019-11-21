@@ -286,7 +286,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
                 PopupWindow.Show(
                     new Rect(new Vector2(Event.current.mousePosition.x - size / 2, -(_rect.height - size - (Event.current.mousePosition.y + 60)) )
-                        ,new Vector2(size,size)),
+                        ,new Vector2(size + 150,size)),
                     _SimpleTypeSelect);
             }
 
