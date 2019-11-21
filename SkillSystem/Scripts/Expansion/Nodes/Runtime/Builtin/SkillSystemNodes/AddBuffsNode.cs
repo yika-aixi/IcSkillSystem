@@ -1,13 +1,16 @@
-﻿using NPBehave;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using NPBehave;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes.BuffNodes
 {
     public class AddBuffsNode:ASKNode
     {
         [Input(ShowBackingValue.Unconnected,ConnectionType.Multiple,TypeConstraint.Inherited)]
-        private string _buffs;
+        [PortTooltip("support multi Connection")]
+        private IBuffDataComponent _buffs;
 
-        private string[] _getBuffs => GetInputValues<string>(nameof(_buffs), null);
+        private IBuffDataComponent[] _getBuffs => GetInputValues<IBuffDataComponent>(nameof(_buffs), null);
         
         protected override Task GetTask()
         {
@@ -20,7 +23,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes.BuffNodes
             {
                 foreach (var buff in _getBuffs)
                 {
-                    
+                    BuffFactory.AddBuff(EntityManager, Entity, buff.GetType().FullName, buff);
                 }
             }
         }
