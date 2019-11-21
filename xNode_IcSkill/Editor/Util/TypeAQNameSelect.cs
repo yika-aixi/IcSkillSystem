@@ -4,6 +4,7 @@ using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SkillSystem.xNode_IcSkill.Editor.Util
 {
@@ -50,8 +51,26 @@ namespace SkillSystem.xNode_IcSkill.Editor.Util
             _types.AddRange(CabinIcarus.EditorFrame.Utils.TypeUtil.GetFilterSystemAssemblyQualifiedNames(GetBaseType()));
         #else
             _types.AddRange(TypeUtil.GetRuntimeTypes
-            .Where(x=> !x.IsInterface && !x.IsAbstract)
-            .Select(x=>x.AssemblyQualifiedName));
+                .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
+                .Where(x => !x.IsPointer)
+                .Where(x => !typeof(Delegate).IsAssignableFrom(x))
+                .Where(x => !typeof(Exception).IsAssignableFrom(x))
+                .Where(x => !typeof(Attribute).IsAssignableFrom(x))
+                .Where(x => !x.IsGenericType)
+                .Where(x => !x.IsAbstract)
+                .Where(x =>
+                {
+                    if (x.IsSealed)
+                    {
+                        return x.IsSealed && x.IsPublic || x.IsPublic;
+                    }
+
+                    return x.IsPublic;
+                })
+                .Where(x => x.IsValueType || x.IsEnum ||
+                            x.IsClass && x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
+                            typeof(Object).IsAssignableFrom(x))
+                .Select(x=>x.AssemblyQualifiedName));
         #endif
 
             Types = _types.Select(x => Type.GetType(x)).ToList();
