@@ -1,5 +1,4 @@
-﻿using CabinIcarus.IcSkillSystem.xNode_Group;
-using NPBehave;
+﻿using NPBehave;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
 {
