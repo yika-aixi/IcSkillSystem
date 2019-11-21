@@ -1,0 +1,29 @@
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+
+//### Using
+                
+//###
+
+namespace  CabinIcarus.IcSkillSystem.BuffFactory
+{
+    public static class BuffFactory
+    {
+        public static void AddBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
+            IBuffDataComponent buff)
+        {
+            AddBuff<IIcSkSEntity>(entityManager, entity, buff);
+        }
+        
+        public static void AddBuff<TE>(IIcSkSEntityManager<TE> entityManager, TE entity,
+            IBuffDataComponent buff) where TE : IIcSkSEntity
+        {
+            if (entityManager is IStructIcSkSEntityManager<TE> structIcSkSEntityManager)
+            {
+                //### Switch
+                
+                //###
+            }
+        }
+    }
+}

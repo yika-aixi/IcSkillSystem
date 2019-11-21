@@ -1,0 +1,16 @@
+{
+    "name": "CabinIcarus.IcSkillSystem.BuffFactory",
+    "references": [
+        "CabinIcarus.IcSkillSystem.Expansion.Runtime",
+        "CabinIcarus.IcSkillSystem.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
