@@ -6,7 +6,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
                 
 //###
 
-namespace  CabinIcarus.IcSkillSystem.BuffFactory
+namespace  CabinIcarus.IcSkillSystem
 {
     public static class BuffFactory
     {
