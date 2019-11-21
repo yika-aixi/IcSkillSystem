@@ -1,0 +1,20 @@
+{
+    "name": "CabinIcarus.IcSkillSystem.Expansion.Nodes.Runtime",
+    "references": [
+        "CabinIcarus.IcSkillSystem.Runtime",
+        "CabinIcarus.IcSkillSystem.Expansion.Runtime",
+        "CabinIcarus.IcSkillSystem.xNodeIc.Base",
+        "CabinIcarus.IcSkillSystem.BuffFactory",
+        "CabinIcarus.NPBehave",
+        "XNode"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
