@@ -106,7 +106,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         private string _ser;
         private SearchField searchField;
         private TypeTreeView _tree;
-        public SimpleTypeSelectPopupWindow(bool focus):this(focus,TypeUtil.GetRuntimeTypes) { }
+        public SimpleTypeSelectPopupWindow(bool focus):this(focus,TypeUtil.GetRuntimeFilterTypes) { }
 
         public SimpleTypeSelectPopupWindow(bool focus,IEnumerable<Type> types)
         {
