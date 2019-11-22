@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
-using SkillSystem.xNode_IcSkill.Editor.Util;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -31,7 +30,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         {
             if (_types == null)
             {
-                _types = TypeAQNameSelect.Types.ToArray();                
+                _types = TypeUtil.GetRuntimeFilterTypes.ToArray();                
                 _ValueEditPopup = new ValueEditPopupWindow();
                 _ValueEditPopup.OnEdit = _save;
                 _SimpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
