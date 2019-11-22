@@ -21,6 +21,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buf
             }
             
             _buff = (IBuffDataComponent) this.DynamicInputCreateInstance(BuffType);
+            
             if (_isAddBuff)
             {
                 return () => BuffManager.AddBuff(Target, _buff);

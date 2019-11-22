@@ -14,10 +14,10 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buf
             {
                 if (!DynamicInputs.Any())
                 {
-                    return BuffManager.HasBuff(Target, BuffType);
+                    return BuffManager.BuffManager.HasBuff(Target, BuffType);
                 }
                 
-                return BuffManager.HasBuff(Target, BuffType, _hasBuff());
+                return BuffManager.BuffManager.HasBuff(Target, BuffType, _hasBuff());
             };
         }
 
