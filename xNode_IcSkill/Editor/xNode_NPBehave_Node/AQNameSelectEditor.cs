@@ -32,8 +32,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         }
         
         protected SerializedProperty _aQNameProperty;
-        protected List<string> Types;
-        protected int CurrentSelectIndex;
+        private SimpleTypeSelectPopupWindow _typeSelectWindow;
 
         protected override IEnumerable<string> GetExcludesField()
         {
@@ -49,20 +48,20 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 
         protected override void OnInit()
         {
-            Types = new List<string>();
             _aQNameProperty = serializedObject.FindProperty(GetAQNamePropertyName());
-
             if (_aQNameProperty == null)
             {
                 throw new NullReferenceException($"没有找到名为:'{GetAQNamePropertyName()}'的属性");
             }
             
-#if IcEditorFrame
-            Types.AddRange(CabinIcarus.EditorFrame.Utils.TypeUtil.GetFilterSystemAssemblyQualifiedNames(GetBaseType()));
-#else
-            Types.AddRange(AppDomain.CurrentDomain.GetAllTypes().Where(x=> GetBaseType().IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).Select(x=>x.AssemblyQualifiedName));
-#endif
-            CurrentSelectIndex = Types.FindIndex(x=> x == _aQNameProperty.stringValue);
+            _typeSelectWindow = new SimpleTypeSelectPopupWindow(true,TypeUtil.GetRuntimeFilterTypes
+                .Where(x=> GetBaseType().IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract));
+            _typeSelectWindow.OnChangeTypeSelect = type =>
+            {
+                _aQNameProperty.stringValue = type.AssemblyQualifiedName;
+                serializedObject.ApplyModifiedProperties();
+                UpdateDynamicPort();
+            };
         }
 
         /// <summary>
@@ -78,14 +77,13 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         /// <param name="options"></param>
         protected void DrawSelectPop(GUIContent title,params GUILayoutOption[] options)
         {
-            CurrentSelectIndex = EditorGUILayout.Popup(title, CurrentSelectIndex,
-                Types.Select(x=>x.Split(',')[0].Split('.').Last()).ToArray(),options);
-
-            if (GUI.changed)
+            var size = 250;
+            if (GUILayout.Button(_aQNameProperty.stringValue.Split(',')[0].Split('.').Last(),"popup"))
             {
-                _aQNameProperty.stringValue = Types[CurrentSelectIndex];
-                serializedObject.ApplyModifiedProperties();
-                UpdateDynamicPort();
+                PopupWindow.Show(
+                    new Rect(new Vector2(Event.current.mousePosition.x - size / 2, size)
+                        ,new Vector2(size + 150,size)),
+                    _typeSelectWindow);
             }
         }
 
@@ -116,12 +114,18 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             
             var fields = type.GetFields();
             var properties = type.GetProperties();
-            var defaultCtor =  type.GetConstructors()[0];
-            var args = defaultCtor.GetParameters();
             List<TypeInfo> memberInfos = new List<TypeInfo>();
-            memberInfos.AddRange(args.Select(x=> new TypeInfo(_getParameterName(x.Name),x.ParameterType)));
             memberInfos.AddRange(fields.Select(x=> new TypeInfo(x.Name,x.FieldType)));
             memberInfos.AddRange(properties.Where(x=>x.CanWrite).Select(x=> new TypeInfo(x.Name,x.PropertyType)));
+
+            var ctros = type.GetConstructors();
+            if (ctros.Length > 0)
+            {
+                var defaultCtor =  ctros[0];
+                var args = defaultCtor.GetParameters();
+                memberInfos.AddRange(args.Select(x=> new TypeInfo(_getParameterName(x.Name),x.ParameterType)));
+            }
+
             var inputs = new List<NodePort>();
             inputs.AddRange(dynamicPorts);
             
@@ -140,15 +144,19 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
             }
             else
             {
-                var defaultCtor =  type.GetConstructors()[0];
-                var args = defaultCtor.GetParameters();
-                foreach (var ctorArg in args)
+                var ctors = type.GetConstructors();
+                if (ctors.Length > 0)
                 {
-                    var inputPort = TNode.GetInputPort(_getParameterName(ctorArg.Name));
-
-                    if (!inputPort.IsConnected)
+                    var defaultCtor = ctors[0];
+                    var args = defaultCtor.GetParameters();
+                    foreach (var ctorArg in args)
                     {
-                        Error = true;
+                        var inputPort = TNode.GetInputPort(_getParameterName(ctorArg.Name));
+
+                        if (!inputPort.IsConnected)
+                        {
+                            Error = true;
+                        }
                     }
                 }
             }
