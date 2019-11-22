@@ -29,6 +29,34 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
             }
         }
         
+        public static IEnumerable<Type> GetRuntimeFilterTypes
+        {
+            get
+            {
+                return GetRuntimeTypes
+                    .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
+                    .Where(x => !x.IsPointer)
+                    .Where(x => !typeof(Delegate).IsAssignableFrom(x))
+                    .Where(x => !typeof(Exception).IsAssignableFrom(x))
+                    .Where(x => !typeof(Attribute).IsAssignableFrom(x))
+                    .Where(x => !x.IsGenericType)
+                    .Where(x => !x.IsAbstract)
+                    .Where(x =>
+                    {
+                        if (x.IsSealed)
+                        {
+                            return x.IsSealed && x.IsPublic || x.IsPublic;
+                        }
+
+                        return x.IsPublic;
+                    })
+                    .Where(x => x.IsValueType || x.IsEnum ||
+                                x.IsClass &&
+                                x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
+                                typeof(Object).IsAssignableFrom(x));
+            }
+        }
+        
         public static IEnumerable<Type> UnityRuntimeTypes
         {
             get
