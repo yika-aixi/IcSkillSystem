@@ -33,15 +33,19 @@ namespace SkillSystem.xNode_NPBehave_Node.Utils
             
             if (args == null || args.Length == 0)
             {
-                var defaultCtor = instanceType.GetConstructors()[0];
-                List<object> cArg = new List<object>();
-                foreach (var parameterInfo in defaultCtor.GetParameters())
+                var constructors = instanceType.GetConstructors();
+                if (constructors.Length > 0)
                 {
-                     var ctorInput = self.GetInputPort(GetCtorParameterName(parameterInfo.Name));
-                     cArg.Add(ctorInput.GetInputValue());
-                }
+                    var defaultCtor = constructors[0];
+                    List<object> cArg = new List<object>();
+                    foreach (var parameterInfo in defaultCtor.GetParameters())
+                    {
+                         var ctorInput = self.GetInputPort(GetCtorParameterName(parameterInfo.Name));
+                         cArg.Add(ctorInput.GetInputValue());
+                    }
 
-                args = cArg.ToArray();
+                    args = cArg.ToArray();
+                }
             }
             
             var ins = Activator.CreateInstance(instanceType,args);
