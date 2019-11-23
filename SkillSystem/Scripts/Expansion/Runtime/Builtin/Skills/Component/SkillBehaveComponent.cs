@@ -8,7 +8,7 @@ using CabinIcarus.IcSkillSystem.xNode_Group;
 using NPBehave;
 using UnityEngine;
 
-namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Skills.Component
+namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
 {
     /// <summary>
     /// 技能行为

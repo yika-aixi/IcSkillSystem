@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buff;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems.Buff;
 using UnityEngine;
 using XNode;
 using XNodeEditor;
+using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {

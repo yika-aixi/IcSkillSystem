@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 

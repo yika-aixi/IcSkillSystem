@@ -1,9 +1,7 @@
-﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
-using SkillSystem.xNode_NPBehave_Node.Utils;
+﻿using NPBehave;
 using UnityEngine;
-
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems.Buff
+using Action = NPBehave.Action;
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems.Buff
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Buff/Add or Remove")]
     public class AddOrRemoveBuffNode:ABuffNode<Action>
