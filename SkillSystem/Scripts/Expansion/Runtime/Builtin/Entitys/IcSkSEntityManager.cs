@@ -7,7 +7,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 {
-    public partial class IcSkSEntityManager:IStructIcSkSEntityManager<IcSkSEntity>
+    public partial class IcSkSEntityManager:IStructIcSkSEntityManager<IcSkSEntity>,IStructIcSkSEntityManager<IIcSkSEntity>
     {
         private FasterList<IcSkSEntity> _entitys;
 
@@ -117,6 +117,55 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
         }
 
         #region Cover
+
+        FasterReadOnlyList<IIcSkSEntity> IIcSkSEntityManager<IIcSkSEntity>.Entitys => throw new NotImplementedException();
+
+        IBuffManager<IIcSkSEntity> IIcSkSEntityManager<IIcSkSEntity>.BuffManager => throw new NotImplementedException();
+
+        IIcSkSEntity IIcSkSEntityManager<IIcSkSEntity>.CreateEntity()
+        {
+            throw new NotImplementedException();
+        }
+
+        IIcSkSEntity IIcSkSEntityManager<IIcSkSEntity>.CreateEntity(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DestroyEntity(IIcSkSEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IIcSkSEntityManager<IIcSkSEntity>.AddBuff<T>(IIcSkSEntity entity, T buff)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IIcSkSEntityManager<IIcSkSEntity>.RemoveBuff<T>(IIcSkSEntity entity, T buff)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IIcSkSEntityManager<IIcSkSEntity>.HasBuff<T>(IIcSkSEntity entity, T buff)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IStructIcSkSEntityManager<IIcSkSEntity>.AddBuff<T>(IIcSkSEntity entity, T buff)
+        {
+            AddBuff((IcSkSEntity)entity,buff);
+        }
+
+        bool IStructIcSkSEntityManager<IIcSkSEntity>.RemoveBuff<T>(IIcSkSEntity entity, T buff)
+        {
+            return RemoveBuff((IcSkSEntity)entity,buff);
+        }
+
+        bool IStructIcSkSEntityManager<IIcSkSEntity>.HasBuff<T>(IIcSkSEntity entity, T buff)
+        {
+            return RemoveBuff((IcSkSEntity)entity,buff);
+        }
 
         void IIcSkSEntityManager<IcSkSEntity>.AddBuff<T>(IcSkSEntity entity, T buff)
         {
