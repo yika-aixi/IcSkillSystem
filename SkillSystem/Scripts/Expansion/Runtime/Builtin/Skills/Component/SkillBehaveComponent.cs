@@ -53,6 +53,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
             _init();
         }
         
+        [ContextMenu("Use")]
+        void _use()
+        {
+            Use();
+        }
+        
         #endregion
     }
 }
