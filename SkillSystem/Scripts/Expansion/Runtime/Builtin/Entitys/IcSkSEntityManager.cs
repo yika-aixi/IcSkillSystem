@@ -12,16 +12,19 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
         private FasterList<IcSkSEntity> _entitys;
 
         public FasterReadOnlyList<IcSkSEntity> Entitys => _entitys.AsReadOnly();
+
         public IBuffManager<IcSkSEntity> BuffManager { get; }
+
+        private IStructBuffManager<IcSkSEntity> SBuffManager => (IStructBuffManager<IcSkSEntity>) BuffManager;
 
         public IcSkSEntityManager(IBuffManager<IcSkSEntity> buffManager)
         {
-            BuffManager = buffManager;
+            this.BuffManager = buffManager;
             _entitys = new FasterList<IcSkSEntity>();
         }
 
         private int _id;
-        
+
         public IcSkSEntity CreateEntity()
         {
             ++_id;
@@ -44,7 +47,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             }
             
             _entitys.Add(entity);
-            BuffManager.AddEntity(entity);
+            SBuffManager.AddEntity(entity);
             
             return entity;
         }
@@ -63,7 +66,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
             _entitys.Remove(entity);
             
-            BuffManager.RemoveEntity(entity);
+            SBuffManager.RemoveEntity(entity);
 
             return true;
         }
@@ -75,7 +78,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         public void Update()
         {
-            BuffManager.Update();
+            SBuffManager.Update();
         }
 
         public void AddBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
@@ -85,7 +88,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
                 return;
             }
             
-            BuffManager.AddBuff(entity,buff);
+            SBuffManager.AddBuff(entity,buff);
         }
 
         public bool RemoveBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
@@ -95,7 +98,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
                 return false;
             }
             
-            return BuffManager.RemoveBuff(entity, buff);
+            return SBuffManager.RemoveBuff(entity, buff);
         }
 
         public bool HasBuff<T>(IcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
@@ -105,7 +108,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
                 return false;
             }
             
-            return BuffManager.HasBuff(entity, buff);
+            return SBuffManager.HasBuff(entity, buff);
         }
 
         public int GetEntityCount()
