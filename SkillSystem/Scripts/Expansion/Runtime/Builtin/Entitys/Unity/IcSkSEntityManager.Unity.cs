@@ -41,6 +41,24 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
             return true;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>不存在返回null</returns>
+        public IcSkSEntity FindBindEntity(GameObject go)
+        {
+            foreach (var pair in _entityBindMap)
+            {
+                if (pair.Value == go)
+                {
+                    return pair.Key;
+                }
+            }
+            
+            return -1;
+        }
 
         /// <summary>
         /// 
