@@ -10,30 +10,33 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems.Buff
 {
-    public abstract class ABuffNode<T>:ANPNode<T> where T : Delegate
+    public abstract class ABuffNode:ASkillSNode
     {
         [SerializeField]
         private string _buffAQName;
-
-        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
-        protected IIcSkSEntityManager<IIcSkSEntity> BuffManager;
         
-        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        [PortTooltip("目标")]
-        protected IIcSkSEntity Target;
-
         protected Type BuffType;
-        
-        protected sealed override T GetOutValue()
-        {
-            BuffManager = GetInputValue(nameof(BuffManager), BuffManager);
-            Target = GetInputValue(nameof(Target), Target);;
 
+        protected IBuffDataComponent Buff
+        {
+            get
+            {
+                if (BuffType == null)
+                {
+                    return null;
+                }
+            
+                return (IBuffDataComponent) this.DynamicInputCreateInstance(BuffType);
+            }
+        }
+
+        protected sealed override Node GetOutValue()
+        {
             BuffType = Type.GetType(_buffAQName);
 
             return Execute();
         }
 
-        protected abstract T Execute();
+        protected abstract Node Execute();
     }
 }

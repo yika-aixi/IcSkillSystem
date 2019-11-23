@@ -9,7 +9,7 @@ using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
 {
-    public abstract class ABuffNodeEditor<AT>:AQNameSelectEditor<ABuffNode<AT>,AT> where AT : Delegate
+    public abstract class ABuffNodeEditor:AQNameSelectEditor<ABuffNode,Node>
     {
         protected override Type GetBaseType()
         {
@@ -41,12 +41,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     }
     
     [NodeEditor.CustomNodeEditorAttribute(typeof(AddOrRemoveBuffNode))]
-    public class AddOrRemoveBuffNodeEditor:ABuffNodeEditor<Action>
+    public class AddOrRemoveBuffNodeEditor:ABuffNodeEditor
     {
     }
     
-    [NodeEditor.CustomNodeEditorAttribute(typeof(HasBuffNode))]
-    public class HasBuffNodeNodeEditor:ABuffNodeEditor<Func<bool>>
+    [NodeEditor.CustomNodeEditorAttribute(typeof(HasBuffConditionNode))]
+    public class HasBuffNodeNodeEditor:ABuffNodeEditor
     {
     }
 }
