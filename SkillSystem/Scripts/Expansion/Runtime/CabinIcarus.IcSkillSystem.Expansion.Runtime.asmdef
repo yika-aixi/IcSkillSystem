@@ -4,8 +4,7 @@
         "CabinIcarus.IcSkillSystem.Runtime",
         "CabinIcarus.NPBehave",
         "XNode",
-        "CabinIcarus.IcSkillSystem.xNodeIc.Base",
-        "CabinIcarus.IcSkillSystem.xNodeIc"
+        "CabinIcarus.IcSkillSystem.xNodeIc.Base"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
