@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
             this.types = types;
             this.useScrollView = true;
         }
-
+        
         protected override bool CanMultiSelect(TreeViewItem item)
         {
             if (item is TypeItem typeItem)

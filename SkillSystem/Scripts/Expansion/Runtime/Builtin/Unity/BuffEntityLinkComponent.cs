@@ -6,7 +6,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity
+namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Component
 {
     public class BuffEntityLinkComponent : MonoBehaviour
     {

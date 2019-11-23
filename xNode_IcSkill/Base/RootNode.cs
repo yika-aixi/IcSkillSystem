@@ -1,8 +1,8 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Root")]
     public class RootNode : ANPBehaveNode<Root>

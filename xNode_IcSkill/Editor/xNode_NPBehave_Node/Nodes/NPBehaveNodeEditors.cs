@@ -1,8 +1,8 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Composite;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks;
 using NPBehave;
 using XNodeEditor;
 using Action = NPBehave.Action;

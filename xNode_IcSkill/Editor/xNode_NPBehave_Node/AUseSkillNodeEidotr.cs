@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems;
 using UnityEditor;
 using UnityEngine;
 using XNode;

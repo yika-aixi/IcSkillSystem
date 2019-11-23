@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator;
 using NPBehave;
 using UnityEngine;
 using XNode;

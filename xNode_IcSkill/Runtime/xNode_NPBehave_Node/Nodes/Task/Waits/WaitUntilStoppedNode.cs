@@ -1,7 +1,7 @@
 ﻿using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Until Stopped")]
     [NodeWidth(300)]

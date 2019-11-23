@@ -1,5 +1,5 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes;
 using UnityEngine;
 using Action = NPBehave.Action;
 

@@ -1,6 +1,6 @@
 ﻿using NPBehave;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Inverter")]
     public class InverterNode:ADecoratorNode<Inverter>

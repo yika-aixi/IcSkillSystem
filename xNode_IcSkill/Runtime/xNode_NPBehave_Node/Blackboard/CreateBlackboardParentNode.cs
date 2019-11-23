@@ -2,7 +2,7 @@
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Create Parent")]
     public class CreateBlackboardParentNode:CreateBlackboardNode

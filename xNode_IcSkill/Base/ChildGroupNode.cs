@@ -2,9 +2,9 @@
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
 {
-    [Node.CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Main")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Main")]
     public class ChildGroupNode:ANPBehaveNode<NPBehave.Node>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
@@ -18,7 +18,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
         }
     }
     
-    [Node.CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Get")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Get")]
     public class GetChildGroupNode:ANPBehaveNode<NPBehave.Node>
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]

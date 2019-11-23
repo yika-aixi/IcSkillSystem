@@ -7,7 +7,7 @@
 
 using System;
 using System.Reflection;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using UnityEngine;
 using XNode;
 using XNodeEditor;

@@ -1,7 +1,7 @@
 ﻿using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Cooldown")]
     public class CooldownNode:ADecoratorNode<Cooldown>

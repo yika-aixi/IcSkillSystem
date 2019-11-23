@@ -3,12 +3,12 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
     public class SkillConditionNode:ANPNode<Func<bool>>

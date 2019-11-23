@@ -1,8 +1,8 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Blackboard Get Seconds")]
     [NodeWidth(300)]

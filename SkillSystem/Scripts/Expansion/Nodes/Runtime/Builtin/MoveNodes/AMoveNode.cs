@@ -1,5 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using NPBehave;
 using UnityEngine;
 

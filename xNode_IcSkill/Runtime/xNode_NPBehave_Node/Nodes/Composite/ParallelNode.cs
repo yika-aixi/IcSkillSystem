@@ -10,7 +10,7 @@ using System.Linq;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Composite
 {
     [XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Parallel")]
     public class ParallelNode:ACompositeNode<Parallel>

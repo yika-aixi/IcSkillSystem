@@ -8,9 +8,9 @@
 using Action = System.Action;
 using Node = XNode.Node;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems
 {
-    [Node.CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Skill/Use/Action")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use/Action")]
     public class UseSkillNodeNodeAction:AUseSkillNode<Action>
     {
         protected override Action UseSkill()

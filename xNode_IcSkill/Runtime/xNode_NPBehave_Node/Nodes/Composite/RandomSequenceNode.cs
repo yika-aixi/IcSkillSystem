@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NPBehave;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Composite
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Composite
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Random Sequence")]
     public class RandomSequenceNode:ACompositeNode<RandomSequence>

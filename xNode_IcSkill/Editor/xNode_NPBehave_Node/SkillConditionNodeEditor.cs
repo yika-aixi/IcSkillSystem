@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;

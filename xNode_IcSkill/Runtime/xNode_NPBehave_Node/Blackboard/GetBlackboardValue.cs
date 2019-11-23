@@ -1,13 +1,13 @@
 ﻿using System;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using NPBehave;
 using UnityEngine;
 using Node = XNode.Node;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
 {
-    [Node.CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Get Blackboard Value")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Get Blackboard Value")]
     public class GetBlackboardValue:ValueNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]

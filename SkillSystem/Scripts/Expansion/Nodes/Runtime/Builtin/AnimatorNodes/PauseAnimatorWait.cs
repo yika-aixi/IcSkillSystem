@@ -5,7 +5,7 @@
 //2019年11月19日-21:21
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using NPBehave;
 using UnityEngine;
 

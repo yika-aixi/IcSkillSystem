@@ -7,13 +7,13 @@
 
 using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Attributes;
 using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.SkillSystems
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems
 {
     public abstract class AUseSkillNode<T>:ANPNode<T> where T : Delegate
     {

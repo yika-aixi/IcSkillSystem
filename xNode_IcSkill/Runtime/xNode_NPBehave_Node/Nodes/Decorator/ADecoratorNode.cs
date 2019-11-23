@@ -1,7 +1,7 @@
 ﻿using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Decorator
+namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
 {
     public abstract class ADecoratorNode<T>:ANPBehaveNode<T> where T : Node
     {

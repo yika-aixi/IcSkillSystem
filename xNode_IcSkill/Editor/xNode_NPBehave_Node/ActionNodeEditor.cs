@@ -1,6 +1,6 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_NPBehave_Node.Tasks;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks;
 using Action = NPBehave.Action;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node

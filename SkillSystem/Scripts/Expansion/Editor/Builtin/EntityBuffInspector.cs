@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Unity;
+using CabinIcarus.IcSkillSystem.Expansion.Builtin.Component;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using DefaultNamespace;
