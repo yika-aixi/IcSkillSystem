@@ -70,7 +70,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 //        Dictionary<>
 //    }
 //    
-    public class BuffManager_Struct:IStructBuffManager<IcSkSEntity>
+    public class BuffManager_Struct:IStructBuffManager<IcSkSEntity>,IBuffManager<IIcSkSEntity>
     {
         public FasterReadOnlyList<IcSkSEntity> Entitys => _entitys.AsReadOnly();
         private IBuffList _currentBuffs;
@@ -716,6 +716,87 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
 
         #region Cover
+
+        #region IBuffManager<IIcSkSEntity>
+
+        IBuffManager<IIcSkSEntity> IBuffManager<IIcSkSEntity>.AddBuffSystem(IBuffSystem buffSystem)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public void AddEntity(IIcSkSEntity entity)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public void RemoveEntity(IIcSkSEntity entity)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public void AddBuff<TBuff>(IIcSkSEntity entity, in TBuff buff)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        TBuff IBuffManager<IIcSkSEntity>.GetCurrentBuffData<TBuff>(int index)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public TBuff GetBuffData<TBuff>(IIcSkSEntity entity, int index) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public void SetBuffData<TBuff>(IIcSkSEntity entity, in TBuff buff, int index) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public bool RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public bool HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public bool HasBuff(IIcSkSEntity entity, Type buffType)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public bool HasBuff(IIcSkSEntity entity, Type buffType, IBuffDataComponent buff)
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        [Obsolete("use IStructBuffManager<IcSkSEntity>.GetBuffs<struct>(IcSkSEntity)")]
+        public IEnumerable<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity, Func<TBuff, bool> condition) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        [Obsolete("use IStructBuffManager<IcSkSEntity>.GetBuffs<struct>(IcSkSEntity)")]
+        public FasterReadOnlyList<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IcSkSEntity>)}");
+        }
+
+        public IEnumerable<IBuffDataComponent> GetAllBuff(IIcSkSEntity entity)
+        {
+            return GetAllBuff((IcSkSEntity) entity);
+        }
+
+        public int GetBuffCount<TBuff>(IIcSkSEntity entity) where TBuff : IBuffDataComponent
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
         
         [Obsolete("use -> `GetBuffsCondition`")]
         public IEnumerable<T> GetBuffs<T>(IcSkSEntity entity,Func<T,bool> condition) where T :IBuffDataComponent
