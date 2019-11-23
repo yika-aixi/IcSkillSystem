@@ -96,7 +96,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         public Node GetChildGroupNode(IcSkillGroup parent)
         {
             _init(parent);
-//            RootNode = parent.RootNode;
+            
+            RootNode = parent.RootNode;
             
             Node main = null;
             
