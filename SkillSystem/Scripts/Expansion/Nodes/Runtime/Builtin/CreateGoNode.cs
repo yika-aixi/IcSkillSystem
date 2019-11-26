@@ -8,6 +8,7 @@
 using CabinIcarus.IcSkillSystem.Runtime.Nodes;
 using NPBehave;
 using UnityEngine;
+using XNode;
 using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -32,9 +33,22 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField]
         private Quaternion _quaternion = Quaternion.identity;
 
+        [Output(ShowBackingValue.Always)]
+        private GameObject _instantiates;
+        
         protected override Action GetOutValue()
         {
             return new NPBehave.Action(_create);
+        }
+
+        protected override object GetPortValue(NodePort port)
+        {
+            if (port.fieldName == nameof(_instantiates))
+            {
+                return _instantiates;
+            }
+
+            return null;
         }
 
         private void _create()
@@ -50,7 +64,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             
             _quaternion = GetInputValue(nameof(_quaternion),_quaternion);
 
-            Instantiate(_go,pos, _quaternion);
+            _instantiates = Instantiate(_go,pos, _quaternion);
         }
     }
 }
