@@ -39,9 +39,18 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
                 return null;
             }
 
-            OutValue = GetOutValue();
+            if (port.fieldName == nameof(OutValue))
+            {
+                OutValue = GetOutValue();
 
-            return OutValue;
+                return OutValue;
+            }
+            return GetPortValue(port);
+        }
+
+        protected virtual object GetPortValue(NodePort port)
+        {
+            return null;
         }
 
         bool _editorNoPlay()
