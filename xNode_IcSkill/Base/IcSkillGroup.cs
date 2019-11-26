@@ -62,9 +62,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
             foreach (var node in nodes)
             {
-                if (node.GetType() == typeof(RootNode))
+                if (node is RootNode rootNode)
                 {
-                    RootNode = (Root) node.GetValue(null);
+                    RootNode = rootNode.GetDefaultOutputValue();
 
                     foreach (var item in _varMap)
                     {
@@ -103,9 +103,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             
             foreach (var node in nodes)
             {
-                if (node.GetType() == typeof(ChildGroupNode))
+                if (node is ChildGroupNode childGroupNode)
                 {
-                    main = (Node) node.GetValue(null);
+                    main = childGroupNode.GetDefaultOutputValue();
                     break;
                 }
             }
