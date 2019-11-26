@@ -12,6 +12,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 using XNode;
+using Exception = System.Exception;
 using Node = NPBehave.Node;
 using Object = UnityEngine.Object;
 
@@ -68,7 +69,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
                     foreach (var item in _varMap)
                     {
-                        RootNode.Blackboard.Set(item.Key,item.Value.GetValue());  
+                        RootNode.Blackboard.Set(item.Key,item.Value.GetValue());
                     }
 
                     break;
