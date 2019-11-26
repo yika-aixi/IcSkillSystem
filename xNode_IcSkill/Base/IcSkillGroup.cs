@@ -177,6 +177,12 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 {
                     return UValue;
                 }
+
+                if (ValueType == null)
+                {
+                    Debug.LogWarning("No Select Type!");
+                    return null;
+                }
                 
                 return SerializationUtil.ToValue(_valueStr,ValueType);
             }
