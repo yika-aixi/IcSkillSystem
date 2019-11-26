@@ -17,6 +17,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
 
         [Output()]
         public T OutValue;
+
+        public T GetDefaultOutputValue()
+        {
+            return (T) GetOutputPort(nameof(OutValue)).GetOutputValue();
+        }
         
         protected sealed override void Init()
         {
