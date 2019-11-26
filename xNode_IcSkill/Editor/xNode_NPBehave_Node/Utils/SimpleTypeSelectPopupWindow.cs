@@ -54,6 +54,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         protected override TreeViewItem BuildRoot()
         {
             int depth = -1;
+            
             TreeViewItem root = new TreeViewItem(-1,depth);
 
             int id = 0;
@@ -111,8 +112,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         public SimpleTypeSelectPopupWindow(bool focus,IEnumerable<Type> types)
         {
             this._focus = focus;
-            _typeGroup = types.GroupBy(x => x.Assembly);
-            
             _tree = new TypeTreeView(types,new TreeViewState());
             _tree.OnSelect = x=> OnChangeTypeSelect?.Invoke(x);
             _tree.Reload();
@@ -128,8 +127,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         {
             base.OnOpen();
             searchField = new SearchField();
-            _state = new List<bool>();
-
             if (_focus)
             {
                 searchField.SetFocus();
@@ -146,20 +143,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
         public Action<Type> OnChangeTypeSelect;
 
         private Vector2 _pos;
-        private List<bool> _state;
-        private IEnumerable<IGrouping<Assembly, Type>> _typeGroup;
-
         public override void OnGUI(Rect rect)
         {
             _ser = searchField.OnGUI(new Rect(rect.position,new Vector2(rect.width,20)), _ser);
 
             if (GUI.changed)
             {
-                for (var i1 = 0; i1 < _state.Count; i1++)
-                {
-                    _state[i1] = false;
-                }
-
                 _tree.searchString = _ser;
             }
 
