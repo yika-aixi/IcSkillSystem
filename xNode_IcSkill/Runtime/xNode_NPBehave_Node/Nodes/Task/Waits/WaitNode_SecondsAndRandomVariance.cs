@@ -1,8 +1,8 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/Seconds and Variance")]
     [NodeWidth(300)]

@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Boo.Lang;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
-using NPBehave;
+﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -11,9 +6,9 @@ using XNode;
 using XNodeEditor;
 using Node = XNode.Node;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(ChildGroupNode))]
+    [CustomNodeEditor(typeof(ChildGroupNode))]
     public class ChildGroupNodeEditor:NodeEditor 
     {
         private ChildGroupNode rootNode;

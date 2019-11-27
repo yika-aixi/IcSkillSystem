@@ -7,7 +7,7 @@
 
 using System;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes
 {
     /// <summary>
     /// 临时的节点提示

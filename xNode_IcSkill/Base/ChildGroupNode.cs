@@ -2,7 +2,7 @@
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Main")]
     public class ChildGroupNode:ANPBehaveNode<NPBehave.Node>

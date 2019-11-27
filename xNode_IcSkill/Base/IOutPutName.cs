@@ -5,7 +5,7 @@
 //2019年09月23日-00:59
 //Assembly-CSharp
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     public interface IOutPutName
     {

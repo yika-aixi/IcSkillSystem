@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NPBehave;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Composite
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Composite
 {
     [XNode.Node.CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Composite/Selector")]
     public class SelectorNode:ACompositeNode<Selector>

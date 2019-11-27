@@ -1,4 +1,4 @@
-﻿namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
+﻿namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
 {
 
 }

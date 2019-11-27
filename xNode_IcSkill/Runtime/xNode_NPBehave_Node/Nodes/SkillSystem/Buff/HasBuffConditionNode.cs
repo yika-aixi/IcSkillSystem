@@ -1,7 +1,7 @@
 ﻿using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems.Buff
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems.Buff
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Buff/Has Condition")]
     public class HasBuffConditionNode:ABuffNode

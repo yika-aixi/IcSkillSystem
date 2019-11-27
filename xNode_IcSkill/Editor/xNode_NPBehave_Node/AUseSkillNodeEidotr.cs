@@ -8,15 +8,15 @@
 using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems;
 using UnityEditor;
 using UnityEngine;
 using XNode;
 using XNodeEditor;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNodeNodeAction))]
+    [CustomNodeEditor(typeof(UseSkillNodeNodeAction))]
     public abstract class AUseSkillNodeEditor<T>:AQNameSelectEditor<AUseSkillNode<T>,T> where T: Delegate
     {
         protected override Type GetBaseType()
@@ -50,12 +50,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
     }
 
 
-    [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNodeNodeAction))]
+    [CustomNodeEditor(typeof(UseSkillNodeNodeAction))]
     public class UseSkillNodeNodeActionEditor : AUseSkillNodeEditor<Action>
     {
     }
     
-    [NodeEditor.CustomNodeEditorAttribute(typeof(UseSkillNodeNodeSingleFrame))]
+    [CustomNodeEditor(typeof(UseSkillNodeNodeSingleFrame))]
     public class UseSkillNodeNodeSingleFrameEditor : AUseSkillNodeEditor<Func<bool>>
     {
     }

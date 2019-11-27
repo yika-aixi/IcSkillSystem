@@ -2,7 +2,7 @@
 using UnityEngine;
 using Action = System.Action;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Service")]
     public class ServiceNode:ADecoratorNode<Service>

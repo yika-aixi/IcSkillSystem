@@ -8,7 +8,7 @@
 using Action = System.Action;
 using Node = XNode.Node;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use/Action")]
     public class UseSkillNodeNodeAction:AUseSkillNode<Action>

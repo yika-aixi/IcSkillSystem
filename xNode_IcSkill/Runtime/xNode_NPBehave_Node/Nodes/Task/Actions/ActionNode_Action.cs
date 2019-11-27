@@ -1,6 +1,6 @@
 ﻿using Action = NPBehave.Action;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Action")]
     public class ActionNode_Action:AActionNode<System.Action>

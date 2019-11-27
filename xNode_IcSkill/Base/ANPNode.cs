@@ -9,7 +9,7 @@ using CabinIcarus.IcSkillSystem.xNode_Group;
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     public abstract class ANPNode<T>:Node,IIcSkillSystemNode
     {

@@ -6,10 +6,10 @@
 //Assembly-CSharp
 
 using System.Collections.Generic;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Composite
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Composite
 {
     public abstract class ACompositeNode<T>:ANPBehaveNode<T> where T : Node
     {

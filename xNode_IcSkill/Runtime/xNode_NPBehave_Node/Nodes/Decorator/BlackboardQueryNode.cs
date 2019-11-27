@@ -1,9 +1,9 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Blackboard Query")]
     public class BlackboardQueryNode:AObservingDecoratorNode<BlackboardQuery>

@@ -9,7 +9,7 @@ using System;
 using UnityEngine;
 using Node = XNode.Node;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use/Single Frame")]
     public class UseSkillNodeNodeSingleFrame:AUseSkillNode<Func<bool>>

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
     public abstract class ANPBehaveNodeEditor<T,AT>: ANPNodeEditor<T,AT> where T : ANPBehaveNode<AT> where AT : Node
     {

@@ -1,11 +1,11 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using NPBehave;
 using UnityEngine;
 using Node = XNode.Node;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Get Blackboard Value")]
     public class GetBlackboardValue:ValueNode

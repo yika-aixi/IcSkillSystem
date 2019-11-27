@@ -16,7 +16,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using Sirenix.OdinInspector.Editor;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity.Entitys
+namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
 {
     public class EntityOdinShowID<T>:OdinAttributeProcessor<T> where T : IIcSkSEntity 
     {

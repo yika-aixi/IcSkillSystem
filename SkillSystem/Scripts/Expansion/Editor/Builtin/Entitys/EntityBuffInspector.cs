@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
+using CabinIcarus.IcSkillSystem.Editor;
 using CabinIcarus.IcSkillSystem.Expansion.Builtin.Component;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using DefaultNamespace;
 using UnityEditor;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
+namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
 {
     struct BuffInfo
     {
@@ -23,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity
         }
     }
     [CustomEditor(typeof(BuffEntityLinkComponent))]
-    public class EntityBuffInspector : Editor
+    public class EntityBuffInspector : UnityEditor.Editor
     {
         private BuffEntityLinkComponent _entityBuff;
         private Dictionary<Type, List<BuffInfo>> _buffGroup;

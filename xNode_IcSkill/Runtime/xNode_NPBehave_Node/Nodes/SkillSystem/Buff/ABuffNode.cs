@@ -1,14 +1,10 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Utils;
 using NPBehave;
-using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems.Buff
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems.Buff
 {
     public abstract class ABuffNode:ASkillSNode
     {

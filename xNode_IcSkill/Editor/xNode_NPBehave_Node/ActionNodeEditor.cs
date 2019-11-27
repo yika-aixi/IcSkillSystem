@@ -1,11 +1,11 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks;
 using Action = NPBehave.Action;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [CustomNodeEditorAttribute(typeof(ANPBehaveNode<Action>))]
+    [CustomNodeEditor(typeof(ANPBehaveNode<Action>))]
     public class ActionNodeEditor:ANPNodeEditor<ANPBehaveNode<Action>,Action>
     {
         protected override void ColorCheck()

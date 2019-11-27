@@ -1,111 +1,107 @@
-﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Composite;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks;
+﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Composite;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator;
 using NPBehave;
-using XNodeEditor;
-using Action = NPBehave.Action;
 using Random = NPBehave.Random;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [CustomNodeEditorAttribute(typeof(ParallelNode))]
+    [CustomNodeEditor(typeof(ParallelNode))]
     public class ParallelNodeEditor : ANPBehaveNodeEditor<ParallelNode, Parallel>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(RandomSelectorNode))]
+    [CustomNodeEditor(typeof(RandomSelectorNode))]
     public class RandomSelectorNodeEditor : ANPBehaveNodeEditor<RandomSelectorNode, RandomSelector>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(RandomSequenceNode))]
+    [CustomNodeEditor(typeof(RandomSequenceNode))]
     public class RandomSequenceNodeEditor : ANPBehaveNodeEditor<RandomSequenceNode, RandomSequence>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(SelectorNode))]
+    [CustomNodeEditor(typeof(SelectorNode))]
     public class SelectorNodeEditor : ANPBehaveNodeEditor<SelectorNode, Selector>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(SequenceNode))]
+    [CustomNodeEditor(typeof(SequenceNode))]
     public class SequenceNodeEditor : ANPBehaveNodeEditor<SequenceNode, Sequence>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(BlackboardConditionNode))]
+    [CustomNodeEditor(typeof(BlackboardConditionNode))]
     public class BlackboardConditionNodeEditor : ANPBehaveNodeEditor<BlackboardConditionNode, BlackboardCondition>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(BlackboardQueryNode))]
+    [CustomNodeEditor(typeof(BlackboardQueryNode))]
     public class BlackboardQueryNodeEditor : ANPBehaveNodeEditor<BlackboardQueryNode, BlackboardQuery>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(ConditionNode))]
+    [CustomNodeEditor(typeof(ConditionNode))]
     public class ConditionNodeEditor : ANPBehaveNodeEditor<ConditionNode, Condition>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(CooldownNode))]
+    [CustomNodeEditor(typeof(CooldownNode))]
     public class CooldownNodeEditor : ANPBehaveNodeEditor<CooldownNode, Cooldown>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(FailerNode))]
+    [CustomNodeEditor(typeof(FailerNode))]
     public class FailerNodeEditor : ANPBehaveNodeEditor<FailerNode, Failer>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(InverterNode))]
+    [CustomNodeEditor(typeof(InverterNode))]
     public class InverterNodeEditor : ANPBehaveNodeEditor<InverterNode, Inverter>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(ObserverNode))]
+    [CustomNodeEditor(typeof(ObserverNode))]
     public class ObserverNodeEditor : ANPBehaveNodeEditor<ObserverNode, Observer>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(RandomNode))]
+    [CustomNodeEditor(typeof(RandomNode))]
     public class RandomNodeEditor : ANPBehaveNodeEditor<RandomNode, Random>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(ServiceNode))]
+    [CustomNodeEditor(typeof(ServiceNode))]
     public class ServiceNodeEditor : ANPBehaveNodeEditor<ServiceNode, Service>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(SucceederNode))]
+    [CustomNodeEditor(typeof(SucceederNode))]
     public class SucceederNodeEditor : ANPBehaveNodeEditor<SucceederNode, Succeeder>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(TimeMaxNode))]
+    [CustomNodeEditor(typeof(TimeMaxNode))]
     public class TimeMaxNodeEditor : ANPBehaveNodeEditor<TimeMaxNode, TimeMax>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(TimeMinNode))]
+    [CustomNodeEditor(typeof(TimeMinNode))]
     public class TimeMinNodeEditor : ANPBehaveNodeEditor<TimeMinNode, TimeMin>
     {
     }
 
-    [CustomNodeEditorAttribute(typeof(ANPBehaveNode<Wait>))]
+    [CustomNodeEditor(typeof(ANPBehaveNode<Wait>))]
     public class WaitNodeEditor : ANPBehaveNodeEditor<ANPBehaveNode<Wait>, Wait>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(RepeaterNode))]
+    [CustomNodeEditor(typeof(RepeaterNode))]
     public class RepeaterNodeEditor : ANPBehaveNodeEditor<RepeaterNode, Repeater>
     {
     }
     
-    [CustomNodeEditorAttribute(typeof(WaitForConditionNode))]
+    [CustomNodeEditor(typeof(WaitForConditionNode))]
     public class WaitForConditionNodeEditor : ANPBehaveNodeEditor<WaitForConditionNode, WaitForCondition>
     {
     }

@@ -1,7 +1,7 @@
 ﻿using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/TimeMin")]
     public class TimeMinNode : ADecoratorNode<TimeMin>

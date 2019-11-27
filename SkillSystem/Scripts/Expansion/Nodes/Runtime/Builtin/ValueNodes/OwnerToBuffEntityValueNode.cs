@@ -3,7 +3,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys;
 
-namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes.ValueNodes
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Entity/Go To Entity")]
     public class OwnerToBuffEntityValueNode:ValueNode

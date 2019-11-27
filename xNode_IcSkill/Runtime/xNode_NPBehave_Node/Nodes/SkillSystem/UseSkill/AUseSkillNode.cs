@@ -6,14 +6,14 @@
 //Assembly-CSharp
 
 using System;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
-using SkillSystem.xNode_NPBehave_Node.Utils;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 {
     public abstract class AUseSkillNode<T>:ANPNode<T> where T : Delegate
     {

@@ -1,9 +1,9 @@
 using CabinIcarus.IcSkillSystem.Expansion.Builtin.Component;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Get Owner")]
     public class GetOwnerBlackboardNode : BlackboardNode

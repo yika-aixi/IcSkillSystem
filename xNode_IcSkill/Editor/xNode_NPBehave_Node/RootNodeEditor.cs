@@ -1,12 +1,12 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(RootNode))]
+    [CustomNodeEditor(typeof(RootNode))]
     public class RootNodeEditor:NodeEditor 
     {
         private RootNode rootNode;

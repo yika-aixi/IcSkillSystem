@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
