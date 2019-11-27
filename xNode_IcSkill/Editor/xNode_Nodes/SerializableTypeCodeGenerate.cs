@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
+using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEngine;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Action = NPBehave.Action;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Multi Frame bool arg")]
     public class ActionNode_MultiFrameBoolArg:AActionNode<Func<bool,Action.Result>>

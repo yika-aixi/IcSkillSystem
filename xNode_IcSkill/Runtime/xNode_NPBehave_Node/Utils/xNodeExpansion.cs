@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using XNode;
 
-namespace SkillSystem.xNode_NPBehave_Node.Utils
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Utils
 {
     public static class xNodeExpansion
     {

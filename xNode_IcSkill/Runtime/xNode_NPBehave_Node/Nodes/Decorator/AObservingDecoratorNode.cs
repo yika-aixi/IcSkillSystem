@@ -8,7 +8,7 @@
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     public abstract class AObservingDecoratorNode<T>:ADecoratorNode<T> where T : Node
     {

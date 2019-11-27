@@ -5,10 +5,10 @@
 //2019年10月16日-01:45
 //CabinIcarus.IcSkillSystem.Expansion.Editor
 
+using CabinIcarus.IcSkillSystem.Editor;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using DefaultNamespace;
 
-namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs.Unity.Buffs
+namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
 {
     public class IcSkSEntityBuffDebugWindow:ABuffDebugWindow<IcSkSEntity>
     {

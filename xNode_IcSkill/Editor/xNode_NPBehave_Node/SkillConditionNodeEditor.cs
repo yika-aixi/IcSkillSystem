@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(SkillConditionNode))]
+    [CustomNodeEditor(typeof(SkillConditionNode))]
     public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode,Func<bool>>
     {
         protected override Type GetBaseType()

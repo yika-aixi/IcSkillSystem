@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.SkillSystems.Buff;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems.Buff;
 using UnityEngine;
 using XNode;
 using XNodeEditor;
 using Node = NPBehave.Node;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
     public abstract class ABuffNodeEditor:AQNameSelectEditor<ABuffNode,Node>
     {
@@ -40,12 +40,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
         }
     }
     
-    [NodeEditor.CustomNodeEditorAttribute(typeof(AddOrRemoveBuffNode))]
+    [CustomNodeEditor(typeof(AddOrRemoveBuffNode))]
     public class AddOrRemoveBuffNodeEditor:ABuffNodeEditor
     {
     }
     
-    [NodeEditor.CustomNodeEditorAttribute(typeof(HasBuffConditionNode))]
+    [CustomNodeEditor(typeof(HasBuffConditionNode))]
     public class HasBuffNodeNodeEditor:ABuffNodeEditor
     {
     }

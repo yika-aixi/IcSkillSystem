@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
-using SkillSystem.xNode_NPBehave_Node.Utils;
+using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Utils;
 using UnityEditor;
 using UnityEngine;
 using XNode;
-using XNodeEditor;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
     /// <summary>
     /// 

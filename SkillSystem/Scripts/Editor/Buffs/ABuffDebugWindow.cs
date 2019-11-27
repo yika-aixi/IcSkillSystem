@@ -6,7 +6,7 @@ using UnityEditor;
 using EditorGUI = UnityEditor.EditorGUI;
 using EditorGUILayout = UnityEditor.EditorGUILayout;
 
-namespace DefaultNamespace
+namespace  CabinIcarus.IcSkillSystem.Editor
 {
     public abstract class ABuffDebugWindow<TEntity> : UnityEditor.EditorWindow where TEntity : IIcSkSEntity
     {

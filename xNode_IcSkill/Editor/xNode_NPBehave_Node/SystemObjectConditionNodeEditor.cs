@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils;
+using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator;
 using NPBehave;
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [CustomNodeEditorAttribute(typeof(SystemObjectConditionNode))]
-    public class ConditionNodeEditor : ANPBehaveNodeEditor<SystemObjectConditionNode,Condition>
+    [CustomNodeEditor(typeof(SystemObjectConditionNode))]
+    public class SystemObjectConditionNodeEditor : ANPBehaveNodeEditor<SystemObjectConditionNode,Condition>
     {
         private SystemObjectConditionNode _valueNode;
         private NodePort _aInput;

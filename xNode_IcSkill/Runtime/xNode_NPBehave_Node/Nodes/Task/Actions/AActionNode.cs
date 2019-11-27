@@ -2,7 +2,7 @@
 using UnityEngine;
 using Action = NPBehave.Action;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Tasks
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 {
     public abstract class AActionNode<T>:ANPBehaveNode<Action> where T : Delegate
     {

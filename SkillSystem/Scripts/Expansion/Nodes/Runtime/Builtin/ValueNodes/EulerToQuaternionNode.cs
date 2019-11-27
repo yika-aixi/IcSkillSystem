@@ -9,7 +9,7 @@ using System;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes.ValueNodes
+namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Euler To Quaternion")]
     public class EulerToQuaternionNode:ValueNode

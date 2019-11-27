@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Editor.xNode_NPBehave_Node.Utils
+namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
 {
     internal class TypeTreeView : TreeView
     {

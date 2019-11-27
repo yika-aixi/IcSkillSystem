@@ -1,9 +1,9 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Nodes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using UnityEngine;
 using Action = NPBehave.Action;
 
-namespace SkillSystem.xNode_IcSkill.Runtime.xNode_NPBehave_Node.Nodes.Task.Debug
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 {
     public enum LogType
     {

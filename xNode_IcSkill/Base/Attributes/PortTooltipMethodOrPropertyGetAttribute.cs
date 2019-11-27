@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes
 {
     /// <summary>
     /// 临时的节点提示 -- 方法或属性名, 方法优先级高于属性

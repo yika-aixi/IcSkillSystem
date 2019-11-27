@@ -5,11 +5,11 @@
 //2019年11月18日-02:59
 //CabinIcarus.IcSkillSystem.xNodeIc
 
-using CabinIcarus.IcSkillSystem.Runtime.Nodes.Attributes;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Set Blackboard Value")]
     public class SetBlackBoardValueActionNode:ANPBehaveNode<Action>

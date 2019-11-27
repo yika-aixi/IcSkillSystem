@@ -4,7 +4,7 @@ using NPBehave;
 using UnityEngine;
 using XNode;
 
-namespace CabinIcarus.IcSkillSystem.Runtime.Nodes.Decorator
+namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/System object Condition")]
     public class SystemObjectConditionNode:AObservingDecoratorNode<Condition>
