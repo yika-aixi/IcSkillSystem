@@ -10,6 +10,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private NPBehave.Node _main;
         
+#if UNITY_EDITOR
+        public const string MainNodeFieldName = nameof(_main);
+#endif
+        
         protected override NPBehave.Node GetOutValue()
         {
             _main = GetInputValue(nameof(_main), _main);
@@ -21,19 +25,50 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Get")]
     public class GetChildGroupNode:ANPBehaveNode<NPBehave.Node>
     {
-        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
+        [SerializeField]
         private IcSkillGroup _group;
 
+#if UNITY_EDITOR
+        public const string GroupFieldName = nameof(_group);
+#endif
+        
         public IcSkillGroup GetGroup()
         {
-            return GetInputValue(nameof(_group), _group);
+            return _group;
         }
         
         protected override NPBehave.Node GetOutValue()
         {
-            _group = GetInputValue(nameof(_group), _group);
+            if (_group == null)
+            {
+                return null;
+            }
+//            _group = GetInputValue(nameof(_group), _group);
 
             return _group.GetChildGroupNode((IcSkillGroup) graph);
+        }
+
+        protected override object GetPortValue(NodePort port)
+        {
+            return _getChildGroupNode(GetGroup()).GetInputValue<object>(port.fieldName);
+        }
+        
+        ChildGroupNode _getChildGroupNode(IcSkillGroup skillGroup)
+        {
+            if (!skillGroup)
+            {
+                return null;
+            }
+            
+            foreach (var node in skillGroup.nodes)
+            {
+                if (node is ChildGroupNode childGroupNode)
+                {
+                    return childGroupNode;
+                }
+            }
+
+            return null;
         }
     }
 }

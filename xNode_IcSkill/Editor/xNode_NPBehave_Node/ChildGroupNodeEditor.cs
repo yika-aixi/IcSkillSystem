@@ -1,4 +1,6 @@
-﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+﻿using System;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.xNode_Group.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -25,16 +27,50 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return new Color(30 / 255f,147 / 255f,65 / 255f);
         }
 
-        private ReorderableList _dynamicIn;
+        protected override void Init()
+        {
+            base.Init();
 
+            IcSkillGroupEditor.OnAllowCreate += type =>
+            {
+                if (type != typeof(RootNode) && type != typeof(ChildGroupNode))
+                {
+                    return true;
+                }
+                
+                foreach (var node in target.graph.nodes)
+                {
+                    if (node is  RootNode && type == typeof(RootNode) ||
+                        node is  ChildGroupNode && type == typeof(ChildGroupNode))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+        }
+
+        public static event Action<ChildGroupNode,string> OnAddPort;
+        public static event Action<ChildGroupNode,string> OnRemovePort;
+        /// <summary>
+        /// arg 1: index
+        /// arg 2: Port old Name;
+        /// arg 3: Port new Name;
+        /// </summary>
+        public static event Action<ChildGroupNode,int,string,string> OnRename;
+        
+        private ReorderableList _dynamicIn;
+        private ReorderableList _dynamicOut;
         private double _lastTime;
+        private ReorderableList _lastList;
         private int _lastIndex;
         private int _clickCount;
         private bool _editMode;
 
-        void _setEdit(int index)
+        void _setEdit(ReorderableList list,int index)
         {
-            _dynamicIn.index = index;
+            list.index = index;
             _editMode = true;
         }
 
@@ -42,37 +78,46 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         {
             _editMode = false;
             _lastIndex = -1;
+            _lastList = null;
         }
-        
-        private void DrawElementCallback(Rect rect, int index, bool isactive, bool isfocused)
+
+        private void DrawElementCallback(ReorderableList list,Rect rect, int index, bool isactive, bool isfocused)
         {
-            if (_lastIndex != index && isactive)
+            if ((_lastIndex != index || _lastList != list) && isactive)
             {
-                _clearEdit();
-                _lastIndex = index;
-            }
-
-            if (isactive)
-            {
-                Event e = Event.current;
-
-                if (e.type == EventType.KeyDown)
+                if (_lastList != null)
                 {
-                    if (e.keyCode == KeyCode.Escape)
-                    {
-                        _dynamicIn.ReleaseKeyboardFocus();
-                        _clearEdit();
-                        e.Use();
-                        return;
-                    }
+                    _lastList.ReleaseKeyboardFocus();
+                    _lastList.index = -1;
                 }
                 
-                if (e.type == EventType.MouseDown || 
-                    !_editMode && e.type == EventType.KeyDown && _dynamicIn.index == index)
+                _clearEdit();
+                _lastIndex = index;
+                _lastList = list;
+                _lastTime = -1;
+            }
+            
+            Event e = Event.current;
+            
+            if (e.type == EventType.KeyDown)
+            {
+                if (e.keyCode == KeyCode.Escape)
                 {
-                    if (e.button == 0 || e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter)
+                    list.ReleaseKeyboardFocus();
+                    _clearEdit();
+                    e.Use();
+                    return;
+                }
+            }
+            
+            if (isactive)
+            {
+                if (e.type == EventType.MouseDown)
+                {
+                    if (e.button == 0)
                     {
-                        if (EditorApplication.timeSinceStartup - _lastTime > 0.5f)
+//                        Debug.LogError($"{_clickCount} == {EditorApplication.timeSinceStartup - _lastTime}");
+                        if (EditorApplication.timeSinceStartup - _lastTime > 1f)
                         {
                             _clickCount = 0;
                         }
@@ -82,14 +127,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
                         if (_clickCount >= 2)
                         {
-                            _setEdit(index);
+                            _setEdit(list,index);
                             e.Use();
                         }
                     }
                 }
             }
             
-            NodePort oldPort = ((NodePort) _dynamicIn.list[index]);
+            NodePort oldPort = ((NodePort) list.list[index]);
             
             if (_editMode && isactive)
             {
@@ -108,8 +153,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
                     target.RemoveDynamicPort(oldPort);
 
-                    _dynamicIn.list.Add(port);
-                    _dynamicIn.list.Remove(oldPort);
+                    OnRename?.Invoke((ChildGroupNode) target,index, oldPort.fieldName,newName);
                 }
             }
         }
@@ -117,13 +161,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         public override void OnBodyGUI()
         {
             serializedObject.Update();
-            
-            NodeEditorGUILayout.DynamicPortList("arg",typeof(object),serializedObject,NodePort.IO.Input,Node.ConnectionType.Override,onCreation:_listSetting);
+
+            NodeEditorGUILayout.DynamicPortList("out",typeof(object),serializedObject,NodePort.IO.Input,
+                Node.ConnectionType.Override,onCreation:_inListSetting,onAdd: name =>
+                {
+                    OnAddPort?.Invoke((ChildGroupNode) target, name);
+                });
+        
+            NodeEditorGUILayout.DynamicPortList("in", typeof(object), serializedObject, NodePort.IO.Output,
+                Node.ConnectionType.Multiple, onCreation: _outListSetting);
             
             EditorGUILayout.BeginHorizontal();
             {
                 EditorGUILayout.LabelField(string.Empty,GUILayout.Width(GetWidth() / 2));
-                NodeEditorGUILayout.PortField(new GUIContent("Main Node"),target.GetPort("_main"));
+                NodeEditorGUILayout.PortField(new GUIContent("Main Node"),target.GetPort(ChildGroupNode.MainNodeFieldName));
             }
             EditorGUILayout.EndHorizontal();
 
@@ -131,20 +182,50 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void _listSetting(ReorderableList list)
+        private void _outListSetting(ReorderableList list)
+        {
+            _dynamicOut = list;
+            
+            _dynamicOut.onAddCallback += x =>
+            {
+                var index = _dynamicOut.list.Count;
+                
+                _setEdit(list,index);
+            };
+ 
+            _dynamicOut.drawElementCallback += (rect, index, active, focused) => DrawElementCallback(list, rect, index, active, focused);
+
+            _dynamicOut.onRemoveCallback += x =>
+            {
+                OnRemovePort?.Invoke((ChildGroupNode) target, ((NodePort)x.list[x.index]).fieldName);
+            };
+            
+            _dynamicOut.drawHeaderCallback = rect =>
+            {
+                EditorGUI.LabelField(rect, "Out Values");
+            };
+        }
+        
+        private void _inListSetting(ReorderableList list)
         {
             _dynamicIn = list;
-            
+
             _dynamicIn.onAddCallback += x =>
             {
-                _setEdit(list.index);
+                var index = _dynamicIn.list.Count;
+                _setEdit(list,index);
             };
+ 
+           _dynamicIn.drawElementCallback += (rect, index, active, focused) => DrawElementCallback(list, rect, index, active, focused);
 
-           _dynamicIn.drawElementCallback += DrawElementCallback;
+           _dynamicIn.onRemoveCallback += x =>
+           {
+               OnRemovePort?.Invoke((ChildGroupNode) target, ((NodePort)x.list[x.index]).fieldName);
+           };
             
             _dynamicIn.drawHeaderCallback = rect =>
             {
-                EditorGUI.LabelField(rect, "Out Values");
+                EditorGUI.LabelField(rect, "Input Values");
             };
         }
 

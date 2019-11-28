@@ -1,4 +1,5 @@
 ﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.xNode_Group.Editor;
 using NPBehave;
 using UnityEditor;
 using UnityEngine;
@@ -21,6 +22,27 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             }            
             
             return new Color(30 / 255f,147 / 255f,65 / 255f);
+        }
+
+        protected override void Init()
+        {
+            IcSkillGroupEditor.OnAllowCreate += type =>
+            {
+                if (type != typeof(RootNode) && type != typeof(ChildGroupNode))
+                {
+                    return true;
+                }
+
+                foreach (var node in target.graph.nodes)
+                {
+                    if (node is  RootNode && type == typeof(RootNode) || type == typeof(ChildGroupNode))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
         }
 
         public override void OnBodyGUI()
