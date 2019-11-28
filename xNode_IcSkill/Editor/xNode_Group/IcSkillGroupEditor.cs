@@ -6,6 +6,7 @@
 //Assembly-CSharp
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using UnityEngine;
@@ -17,10 +18,17 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
     [CustomNodeGraphEditor(typeof(IcSkillGroup),"CabinIcarus.IcSkillSystem")]
     public class IcSkillGroupEditor:NodeGraphEditor
     {
+        public static event Func<Type,bool> OnAllowCreate; 
+        
         private string _noInputNPBehaveNode = "No Input NPBehave Node";
 
         public override string GetNodeMenuName(Type type)
         {
+            if (!OnAllowCreate?.Invoke(type) ?? false)
+            {
+                return null;
+            }
+            
             return typeof(IIcSkillSystemNode).IsAssignableFrom(type) ? base.GetNodeMenuName(type) : null;
         }
 
