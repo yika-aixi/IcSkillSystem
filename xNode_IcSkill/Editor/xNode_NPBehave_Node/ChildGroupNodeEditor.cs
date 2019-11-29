@@ -51,7 +51,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             };
         }
 
-        public static event Action<ChildGroupNode,string> OnAddPort;
+//        public static event Action<ChildGroupNode,string> OnAddPort;
         public static event Action<ChildGroupNode,string> OnRemovePort;
         /// <summary>
         /// arg 1: index
@@ -163,10 +163,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             serializedObject.Update();
 
             NodeEditorGUILayout.DynamicPortList("out",typeof(object),serializedObject,NodePort.IO.Input,
-                Node.ConnectionType.Override,onCreation:_inListSetting,onAdd: name =>
-                {
-                    OnAddPort?.Invoke((ChildGroupNode) target, name);
-                });
+                Node.ConnectionType.Override,onCreation:_inListSetting);
         
             NodeEditorGUILayout.DynamicPortList("in", typeof(object), serializedObject, NodePort.IO.Output,
                 Node.ConnectionType.Multiple, onCreation: _outListSetting);

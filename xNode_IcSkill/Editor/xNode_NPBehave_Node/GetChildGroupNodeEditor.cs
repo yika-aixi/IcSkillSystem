@@ -32,7 +32,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         
         protected override void Init()
         {
-            ChildGroupNodeEditor.OnAddPort += _addPort;
+            _updatePort();
+//            ChildGroupNodeEditor.OnAddPort += _addPort;
 
             ChildGroupNodeEditor.OnRemovePort += _removePort;
             
@@ -57,6 +58,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         private void _removePort(ChildGroupNode node, string name)
         {
+            string[] guids = AssetDatabase.FindAssets ("t:" + typeof(IcSkillGroup));
+            
             if (node.graph != _childGroup)
             {
                 return;
@@ -93,41 +96,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 }
                 if (EditorGUI.EndChangeCheck())
                 {
-                    var groupPort = _getChildGroupNode(_currentGroup);
-                    
-                    if (groupPort)
-                    {
-                        var childGroupNodePort = groupPort.DynamicInputs.ToList();
-                    
-                        //todo switch Child Group need refresh port
-                        var thisPort = target.DynamicOutputs.ToList();
-
-                        //remove 
-                        foreach (var port in thisPort)
-                        {
-                            if (!childGroupNodePort.Exists(x=>x.fieldName == port.fieldName))
-                            {
-                                target.RemoveDynamicPort(port);
-                            }
-                        }
-                        
-                        //add
-                        foreach (var port in childGroupNodePort)
-                        {
-                            if (!target.HasPort(port.fieldName))
-                            {
-                                target.AddDynamicOutput(port.ValueType, port.connectionType, port.typeConstraint,
-                                    port.fieldName);
-                                
-                                EditorUtility.SetDirty(target);
-                                serializedObject.ApplyModifiedProperties();
-                                serializedObject.Update();
-                                
-                                _dynamicOut.list = target.DynamicPorts.ToList();
-                            }
-                        }
-                        
-                    }
+                    _updatePort();
                 }
 
                 NodeEditorGUILayout.DynamicPortList("", typeof(object), serializedObject, NodePort.IO.Output,
@@ -137,6 +106,47 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             }
             // Apply property modifications
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void _updatePort()
+        {
+            if(_currentGroup == null)
+                return;
+            
+            var groupPort = _getChildGroupNode(_currentGroup);
+
+            if (groupPort)
+            {
+                var childGroupNodePort = groupPort.DynamicInputs.ToList();
+
+                //todo switch Child Group need refresh port
+                var thisPort = target.DynamicOutputs.ToList();
+
+                //remove 
+                foreach (var port in thisPort)
+                {
+                    if (!childGroupNodePort.Exists(x => x.fieldName == port.fieldName))
+                    {
+                        target.RemoveDynamicPort(port);
+                    }
+                }
+
+                //add
+                foreach (var port in childGroupNodePort)
+                {
+                    if (!target.HasPort(port.fieldName))
+                    {
+                        target.AddDynamicOutput(port.ValueType, port.connectionType, port.typeConstraint,
+                            port.fieldName);
+
+                        EditorUtility.SetDirty(target);
+                        serializedObject.ApplyModifiedProperties();
+                        serializedObject.Update();
+
+                        _dynamicOut.list = target.DynamicPorts.ToList();
+                    }
+                }
+            }
         }
 
         ChildGroupNode _getChildGroupNode(IcSkillGroup skillGroup)
