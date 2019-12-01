@@ -1,6 +1,4 @@
-﻿using CabinIcarus.IcSkillSystem.xNode_Group;
-using UnityEngine;
-using XNode;
+﻿using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
@@ -13,6 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 #if UNITY_EDITOR
         public const string MainNodeFieldName = nameof(_main);
 #endif
+        internal GetChildGroupNode GetChildGroupNode;
         
         protected override NPBehave.Node GetOutValue()
         {
@@ -20,55 +19,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
             return _main;
         }
-    }
-    
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Get")]
-    public class GetChildGroupNode:ANPBehaveNode<NPBehave.Node>
-    {
-        [SerializeField]
-        private IcSkillGroup _group;
-
-#if UNITY_EDITOR
-        public const string GroupFieldName = nameof(_group);
-#endif
         
-        public IcSkillGroup GetGroup()
-        {
-            return _group;
-        }
-        
-        protected override NPBehave.Node GetOutValue()
-        {
-            if (_group == null)
-            {
-                return null;
-            }
-//            _group = GetInputValue(nameof(_group), _group);
-
-            return _group.GetChildGroupNode((IcSkillGroup) graph);
-        }
-
         protected override object GetPortValue(NodePort port)
         {
-            return _getChildGroupNode(GetGroup()).GetInputValue<object>(port.fieldName);
-        }
-        
-        ChildGroupNode _getChildGroupNode(IcSkillGroup skillGroup)
-        {
-            if (!skillGroup)
-            {
-                return null;
-            }
-            
-            foreach (var node in skillGroup.nodes)
-            {
-                if (node is ChildGroupNode childGroupNode)
-                {
-                    return childGroupNode;
-                }
-            }
-
-            return null;
+            return GetChildGroupNode.GetInputValue<object>(port.fieldName);
         }
     }
 }
