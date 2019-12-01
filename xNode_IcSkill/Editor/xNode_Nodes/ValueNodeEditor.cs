@@ -44,10 +44,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             {
                 if (_valueOutPut == null)
                 {
-                    if (_valueNode.ValueType != null)
-                    {
-                        _valueOutPut = _valueNode.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
-                    }
+                    _valueOutPut = _valueNode.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
                 }
                 
                 base.OnBodyGUI();
