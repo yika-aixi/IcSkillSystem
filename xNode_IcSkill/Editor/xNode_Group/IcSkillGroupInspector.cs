@@ -130,7 +130,14 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                                             {
                                                 var output = connections.GetArrayElementAtIndex(index);
                                                 var targetNode = output.FindPropertyRelative("node");
-                                                EditorGUI.LabelField(rect, $"{index + 1} : {targetNode.objectReferenceValue.name}");
+                                                try
+                                                {
+                                                    EditorGUI.LabelField(rect, $"{index + 1} : {targetNode.objectReferenceValue.name}");
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    EditorGUI.LabelField(rect, $"{index + 1} Missing");
+                                                }
                                             };
                                             list.onReorderCallback = _ =>
                                             {
