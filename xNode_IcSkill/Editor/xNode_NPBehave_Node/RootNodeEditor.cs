@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+﻿using System.Linq;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.xNode_Group.Editor;
 using NPBehave;
 using UnityEditor;
@@ -26,22 +27,17 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         public override void OnInit()
         {
-            IcSkillGroupEditor.OnAllowCreate += type =>
+            
+            IcSkillGroupEditor.OnAllowCreate += (group,type) =>
             {
                 if (type != typeof(RootNode) && type != typeof(ChildGroupNode))
                 {
                     return true;
                 }
 
-                foreach (var node in target.graph.nodes)
-                {
-                    if (node is  RootNode && type == typeof(RootNode) || type == typeof(ChildGroupNode))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
+                var result = group.nodes.Any(x => x is RootNode || x is ChildGroupNode);
+ 
+                return !result;
             };
         }
 
