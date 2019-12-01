@@ -18,13 +18,13 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
     [CustomNodeGraphEditor(typeof(IcSkillGroup),"CabinIcarus.IcSkillSystem")]
     public class IcSkillGroupEditor:NodeGraphEditor
     {
-        public static event Func<Type,bool> OnAllowCreate; 
+        public static event Func<NodeGraph,Type,bool> OnAllowCreate; 
         
         private string _noInputNPBehaveNode = "No Input NPBehave Node";
 
         public override string GetNodeMenuName(Type type)
         {
-            if (!OnAllowCreate?.Invoke(type) ?? false)
+            if (!OnAllowCreate?.Invoke(target,type) ?? false)
             {
                 return null;
             }
