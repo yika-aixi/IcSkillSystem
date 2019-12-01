@@ -30,7 +30,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         private IcSkillGroup _childGroup => ((GetChildGroupNode)target).GetGroup();
         
-        protected override void Init()
+        public override void OnInit()
         {
             _updatePort();
 //            ChildGroupNodeEditor.OnAddPort += _addPort;

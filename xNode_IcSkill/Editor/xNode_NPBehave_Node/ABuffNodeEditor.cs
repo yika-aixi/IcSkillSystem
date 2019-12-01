@@ -21,9 +21,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return "_buffAQName";
         }
         
-        protected override void OnInit()
+        protected override void Init()
         {
-            base.OnInit();
             UpdateDynamicPort();
         }
         

@@ -44,7 +44,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return new[] {AQName};
         }
 
-        protected override void OnInit()
+        protected override void Init()
         {
             _aQNameProperty = serializedObject.FindProperty(GetAQNamePropertyName());
             if (_aQNameProperty == null)

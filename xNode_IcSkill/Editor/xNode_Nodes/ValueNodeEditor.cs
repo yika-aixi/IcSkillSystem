@@ -14,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         
         private SimpleTypeSelectPopupWindow windowContent;
 
-        protected override void Init()
+        public override void OnInit()
         {
             _valueNode = (ValueNode) target;
             _valueOutPut = _valueNode.GetOutputPort(ValueNode.ValueOutPutPortName);
@@ -62,6 +62,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                             windowContent);
                     }
                 }
+                
             }
             serializedObject.ApplyModifiedProperties();
         }

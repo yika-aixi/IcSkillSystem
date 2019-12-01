@@ -24,7 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return new Color(30 / 255f,147 / 255f,65 / 255f);
         }
 
-        protected override void Init()
+        public override void OnInit()
         {
             IcSkillGroupEditor.OnAllowCreate += type =>
             {

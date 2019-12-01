@@ -17,9 +17,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return typeof(ACondition);
         }
 
-        protected override void OnInit()
+        protected override void Init()
         {
-            base.OnInit();
             UpdateDynamicPort();
         }
 

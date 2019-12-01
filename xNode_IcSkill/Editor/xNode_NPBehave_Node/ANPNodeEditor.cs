@@ -43,13 +43,19 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return base.GetTint();
         }
 
-        protected sealed override void Init()
+        public sealed override void OnCreate()
         {
+            base.OnCreate();
+            
             _check();
-            OnInit();
         }
 
-        protected virtual void OnInit()
+        public sealed override void OnInit()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
         {
         }
 

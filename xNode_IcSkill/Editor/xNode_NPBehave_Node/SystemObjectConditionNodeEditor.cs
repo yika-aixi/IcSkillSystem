@@ -20,7 +20,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         
         private static SimpleTypeSelectPopupWindow windowContent;
 
-        protected override void OnInit()
+        protected override void Init()
         {
             _valueNode = (SystemObjectConditionNode) target;
             
