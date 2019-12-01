@@ -50,7 +50,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     Node.ConnectionType.Override, onCreation: _listSettingInput);
                 
                 NodeEditorGUILayout.DynamicPortList("", typeof(object), serializedObject, NodePort.IO.Output,
-                    Node.ConnectionType.Override, onCreation: _listSettingOutput);
+                    Node.ConnectionType.Multiple, onCreation: _listSettingOutput);
                 
                 NodeEditorGUILayout.PortField(new GUIContent("Group Root"),target.GetPort(nameof(GetChildGroupNode.OutValue)));
             }
@@ -99,12 +99,12 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     {
                         if (port.direction == NodePort.IO.Input)
                         {
-                            target.AddDynamicOutput(port.ValueType, port.connectionType, port.typeConstraint,
+                            target.AddDynamicOutput(port.ValueType, Node.ConnectionType.Multiple, port.typeConstraint,
                                 port.fieldName);
                         }
                         else
                         {
-                            target.AddDynamicInput(port.ValueType, port.connectionType, port.typeConstraint,port.TypeConstraintBaseType,port.fieldName);                              
+                            target.AddDynamicInput(port.ValueType, Node.ConnectionType.Override, port.typeConstraint,port.TypeConstraintBaseType,port.fieldName);                              
                         }
                      
 
