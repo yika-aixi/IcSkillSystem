@@ -16,66 +16,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         private ChildGroupNode rootNode;
 
         private ReorderableList _dynamicOut;
-
-        private double _lastTime;
-        private int _lastIndex;
-        private int _clickCount;
-        private bool _editMode;
-
-        void _setEdit(int index)
-        {
-            _dynamicOut.index = index;
-            _editMode = true;
-        }
+        private ReorderableList _dynamicIn;
 
         private IcSkillGroup _childGroup => ((GetChildGroupNode)target).GetGroup();
         
         public override void OnInit()
         {
             _updatePort();
-//            ChildGroupNodeEditor.OnAddPort += _addPort;
-
-            ChildGroupNodeEditor.OnRemovePort += _removePort;
-            
-            ChildGroupNodeEditor.OnRename += _rename;
-        }
-
-        private void _rename(ChildGroupNode node,int index, string oldName, string newName)
-        {
-            if (node.graph != _childGroup)
-            {
-                return;
-            }
-            
-            NodePort oldPort = ((NodePort) _dynamicOut.list[index]);
-            
-            var port = target.AddDynamicOutput(typeof(object), fieldName: newName);
-
-            port.AddConnections(oldPort);
-
-            target.RemoveDynamicPort(oldPort);
-        }
-
-        private void _removePort(ChildGroupNode node, string name)
-        {
-            string[] guids = AssetDatabase.FindAssets ("t:" + typeof(IcSkillGroup));
-            
-            if (node.graph != _childGroup)
-            {
-                return;
-            }
-            
-            target.RemoveDynamicPort(name);
-        }
-
-        private void _addPort(ChildGroupNode node, string name)
-        {
-            if (node.graph != _childGroup)
-            {
-                return;
-            }
-
-            target.AddDynamicOutput(typeof(object), fieldName: name);
         }
 
         private IcSkillGroup _currentGroup;
@@ -99,8 +46,11 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     _updatePort();
                 }
 
+                NodeEditorGUILayout.DynamicPortList("", typeof(object), serializedObject, NodePort.IO.Input,
+                    Node.ConnectionType.Override, onCreation: _listSettingInput);
+                
                 NodeEditorGUILayout.DynamicPortList("", typeof(object), serializedObject, NodePort.IO.Output,
-                    Node.ConnectionType.Override, onCreation: _listSetting);
+                    Node.ConnectionType.Override, onCreation: _listSettingOutput);
                 
                 NodeEditorGUILayout.PortField(new GUIContent("Group Root"),target.GetPort(nameof(GetChildGroupNode.OutValue)));
             }
@@ -117,14 +67,19 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
             if (groupPort)
             {
-                var childGroupNodePort = groupPort.DynamicInputs.ToList();
+                var childGroupNodePort = groupPort.DynamicPorts.ToList();
 
-                //todo switch Child Group need refresh port
-                var thisPort = target.DynamicOutputs.ToList();
-
+                var thisPort = target.DynamicPorts.ToList();
+                
                 //remove 
                 foreach (var port in thisPort)
                 {
+                    // continue OutValue
+                    if (port.fieldName == nameof(GetChildGroupNode.OutValue))
+                    {
+                        continue;
+                    }
+                    
                     if (!childGroupNodePort.Exists(x => x.fieldName == port.fieldName))
                     {
                         target.RemoveDynamicPort(port);
@@ -134,16 +89,28 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 //add
                 foreach (var port in childGroupNodePort)
                 {
+                    // continue OutValue
+                    if (port.fieldName == nameof(GetChildGroupNode.OutValue))
+                    {
+                        continue;
+                    }
+                    
                     if (!target.HasPort(port.fieldName))
                     {
-                        target.AddDynamicOutput(port.ValueType, port.connectionType, port.typeConstraint,
-                            port.fieldName);
+                        if (port.direction == NodePort.IO.Input)
+                        {
+                            target.AddDynamicOutput(port.ValueType, port.connectionType, port.typeConstraint,
+                                port.fieldName);
+                        }
+                        else
+                        {
+                            target.AddDynamicInput(port.ValueType, port.connectionType, port.typeConstraint,port.TypeConstraintBaseType,port.fieldName);                              
+                        }
+                     
 
                         EditorUtility.SetDirty(target);
                         serializedObject.ApplyModifiedProperties();
                         serializedObject.Update();
-
-                        _dynamicOut.list = target.DynamicPorts.ToList();
                     }
                 }
             }
@@ -167,7 +134,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return null;
         }
 
-        private void _listSetting(ReorderableList list)
+        private void _listSettingOutput(ReorderableList list)
         {
             _dynamicOut = list;
             //todo Because the submap will be used in multiple places, port add and delete actions are currently not given.
@@ -179,10 +146,18 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 EditorGUI.LabelField(rect, "Out Values");
             };
         }
-
-        private void _check()
+        
+        private void _listSettingInput(ReorderableList list)
         {
-            if (rootNode == null) rootNode = target as ChildGroupNode;
+            _dynamicIn = list;
+            //todo Because the submap will be used in multiple places, port add and delete actions are currently not given.
+            _dynamicIn.displayAdd = false;
+            _dynamicIn.displayRemove = false;
+            
+            _dynamicIn.drawHeaderCallback = rect =>
+            {
+                EditorGUI.LabelField(rect, "Input Values");
+            };
         }
     }
 }

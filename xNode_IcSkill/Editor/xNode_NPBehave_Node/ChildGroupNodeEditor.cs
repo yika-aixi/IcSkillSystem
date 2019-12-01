@@ -1,6 +1,7 @@
 ﻿using System;
+using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
-using CabinIcarus.IcSkillSystem.xNode_Group.Editor;
+using CabinIcarus.IcSkillSystem.xNode_Group;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -27,39 +28,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return new Color(30 / 255f,147 / 255f,65 / 255f);
         }
 
-        protected override void Init()
-        {
-            base.Init();
-
-            IcSkillGroupEditor.OnAllowCreate += type =>
-            {
-                if (type != typeof(RootNode) && type != typeof(ChildGroupNode))
-                {
-                    return true;
-                }
-                
-                foreach (var node in target.graph.nodes)
-                {
-                    if (node is  RootNode && type == typeof(RootNode) ||
-                        node is  ChildGroupNode && type == typeof(ChildGroupNode))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            };
-        }
-
-//        public static event Action<ChildGroupNode,string> OnAddPort;
-        public static event Action<ChildGroupNode,string> OnRemovePort;
-        /// <summary>
-        /// arg 1: index
-        /// arg 2: Port old Name;
-        /// arg 3: Port new Name;
-        /// </summary>
-        public static event Action<ChildGroupNode,int,string,string> OnRename;
-        
         private ReorderableList _dynamicIn;
         private ReorderableList _dynamicOut;
         private double _lastTime;
@@ -116,7 +84,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     if (e.button == 0)
                     {
-//                        Debug.LogError($"{_clickCount} == {EditorApplication.timeSinceStartup - _lastTime}");
                         if (EditorApplication.timeSinceStartup - _lastTime > 1f)
                         {
                             _clickCount = 0;
@@ -147,13 +114,33 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     _clearEdit();
                     
-                    var port = target.AddDynamicInput(typeof(object), fieldName: newName);
+                    target.PortRename(oldPort,newName);
+                    
+                    //update all use this group of graph GetChildGroup Node
+                    _updateGetChildNodeGroup((group,node) =>
+                    {
+                        node.PortRename(node.GetPort(oldPort.fieldName),newName);
+                    });
+                }
+            }
+        }
 
-                    port.AddConnections(oldPort);
+        void _updateGetChildNodeGroup(Action<IcSkillGroup,Node> onAction)
+        {
+            string[] guids = AssetDatabase.FindAssets ("t:" + typeof(IcSkillGroup));
+                    
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
 
-                    target.RemoveDynamicPort(oldPort);
-
-                    OnRename?.Invoke((ChildGroupNode) target,index, oldPort.fieldName,newName);
+                var group = AssetDatabase.LoadAssetAtPath<IcSkillGroup>(path);
+                        
+                foreach (var node in @group.nodes)
+                {
+                    if (node is GetChildGroupNode)
+                    {
+                        onAction?.Invoke(group,node);
+                    }
                 }
             }
         }
@@ -163,10 +150,26 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             serializedObject.Update();
 
             NodeEditorGUILayout.DynamicPortList("out",typeof(object),serializedObject,NodePort.IO.Input,
-                Node.ConnectionType.Override,onCreation:_inListSetting);
+                Node.ConnectionType.Override,onCreation:_inListSetting,onAdd: x =>
+                {
+                    _updateGetChildNodeGroup((group,node) =>
+                    {
+                        Debug.LogError($"{group.name} Add output port : {x}");
+                        
+                        node.AddDynamicOutput(typeof(object), Node.ConnectionType.Multiple, fieldName: x);
+                    });
+                });
         
             NodeEditorGUILayout.DynamicPortList("in", typeof(object), serializedObject, NodePort.IO.Output,
-                Node.ConnectionType.Multiple, onCreation: _outListSetting);
+                Node.ConnectionType.Multiple, onCreation: _outListSetting, onAdd:x =>
+                {
+                    _updateGetChildNodeGroup((group,node) =>
+                    {
+                        Debug.LogError($"{group.name} Add Input port : {x} ");
+                        
+                        node.AddDynamicInput(typeof(object), Node.ConnectionType.Override, fieldName: x);
+                    });
+                });
             
             EditorGUILayout.BeginHorizontal();
             {
@@ -192,14 +195,21 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
  
             _dynamicOut.drawElementCallback += (rect, index, active, focused) => DrawElementCallback(list, rect, index, active, focused);
 
-            _dynamicOut.onRemoveCallback += x =>
-            {
-                OnRemovePort?.Invoke((ChildGroupNode) target, ((NodePort)x.list[x.index]).fieldName);
-            };
-            
             _dynamicOut.drawHeaderCallback = rect =>
             {
                 EditorGUI.LabelField(rect, "Out Values");
+            };
+
+            _dynamicOut.onRemoveCallback += x =>
+            {
+                var port = (NodePort) x.list[x.index];
+                
+                _updateGetChildNodeGroup((group,node) =>
+                {
+                    Debug.LogError($"{group.name} Remove Output port : {port.fieldName} ");
+                        
+                    node.RemoveDynamicPort(port.fieldName);
+                });
             };
         }
         
@@ -215,14 +225,21 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
  
            _dynamicIn.drawElementCallback += (rect, index, active, focused) => DrawElementCallback(list, rect, index, active, focused);
 
-           _dynamicIn.onRemoveCallback += x =>
-           {
-               OnRemovePort?.Invoke((ChildGroupNode) target, ((NodePort)x.list[x.index]).fieldName);
-           };
-            
             _dynamicIn.drawHeaderCallback = rect =>
             {
                 EditorGUI.LabelField(rect, "Input Values");
+            };
+            
+            _dynamicIn.onRemoveCallback += x =>
+            {
+                var port = (NodePort) x.list[x.index];
+                
+                _updateGetChildNodeGroup((group,node) =>
+                {
+                    Debug.LogError($"{group.name} Remove Input port : {port.fieldName} ");
+                        
+                    node.RemoveDynamicPort(port.fieldName);
+                });
             };
         }
 
