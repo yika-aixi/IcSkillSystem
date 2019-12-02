@@ -5,7 +5,6 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    //todo  Collider And RaycastHit
     public abstract class ACast3DColliderNode:ACastNode
     {
         protected Collider[] Buffer;

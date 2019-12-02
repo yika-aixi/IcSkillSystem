@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator;
 using NPBehave;
@@ -51,6 +53,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             if (_drawGizmosCom == null)
             {
                 GameObject go = new GameObject("Cast Node Debug");
+                go.transform.SetParent(SkillGroup.Owner.transform);
                 _drawGizmosCom = go.AddComponent<DrawGizmosCom>();
                 _drawGizmosCom.OnDraw += () => { Gizmos.color = Color; };
                 _drawGizmosCom.OnDraw += OnDrawGizmos;
@@ -92,17 +95,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField,Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [Node.LabelAttribute("Owner Add Offset")]
         private Vector3 _offset;
-        
-        [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        [Node.LabelAttribute("Use All")]
-        private bool _all;
 
         protected Vector3 Origin => SkillGroup.Owner.transform.position + Offset;
         
         protected Vector3 Offset => GetInputValue(nameof(_offset), _offset);
-
-        protected bool UseAll => GetInputValue(nameof(_all), _all);
-
+        
         protected sealed override Condition GetDecoratorNode()
         {
             return new Condition(CastCheck,Stops,DecorateeNode);

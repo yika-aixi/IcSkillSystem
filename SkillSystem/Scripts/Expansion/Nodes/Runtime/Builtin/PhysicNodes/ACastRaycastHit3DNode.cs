@@ -5,8 +5,7 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    //todo  Collider And RaycastHit
-    public abstract class ACast3DRaycastHitNode:ACastNode
+    public abstract class ACastRaycastHit3DNode:ACastRaycastHitNode
     {
         [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         private Vector3 _direction;
@@ -27,7 +26,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [PortTooltip("result is `IEnumerable<RaycastHit>`")]
         protected IEnumerable<RaycastHit> Result;
         
-        protected ACast3DRaycastHitNode()
+        protected ACastRaycastHit3DNode()
         {
             if (MaxHitSize < 1)
             {
