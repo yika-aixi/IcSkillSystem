@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
 using XNode;
-using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
+    [CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/For Execute")]
     public class ForExecuteActionNode:ANPBehaveNode<Action>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IEnumerable<object> _enumerables;
+        private IEnumerable _enumerables;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private Node _action;
+        private System.Action _action;
         
         [Output(ShowBackingValue.Always)]
         private object _currentValue;
@@ -20,9 +20,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Output(ShowBackingValue.Always)]
         private int _index;
 
+        private Action _selfAction;
         protected override Action GetOutValue()
         {
-            return new Action(_for);
+            _selfAction = new Action(_for);
+            return _selfAction;
         }
 
         protected override object GetPortValue(NodePort port)
@@ -43,7 +45,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         private void _for()
         {
             var action = GetInputValue(nameof(_action), _action);
-
+            
             if (action == null)
             {
                 return;
@@ -56,10 +58,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 var ator = enumerables.GetEnumerator();
 
                 _index = 0;
+                
                 while (ator.MoveNext())
                 {
                     _currentValue = ator.Current;
-                    action.Start();
+                    action();
                     _index++;
                 }
             }
