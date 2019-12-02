@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Condition/Physic/Sphere Cast")]
+    [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Condition/Physic/Overlap Sphere Cast")]
     public class OverlapSphereNode:ACast3DColliderNode
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
@@ -12,23 +12,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         protected override bool CastCheck()
         {
             DebugStart();
-            bool result;
-            if (UseAll)
-            {
-                var size = Physics.OverlapSphereNonAlloc(Origin, GetInputValue(nameof(_radius),_radius), Buffer, Mask,TriggerInteraction);
+            
+            bool result = false;
+            
+            var size = Physics.OverlapSphereNonAlloc(Origin, GetInputValue(nameof(_radius),_radius), Buffer, Mask,TriggerInteraction);
 
-                if (size == 0)
-                {
-                    result = false;
-                }
-                else
-                {
-                    Result = Buffer.Take(size);
-                
-                    DebugStop();
-                
-                    result = true;
-                }
+            if (size > 0)
+            {
+                Result = Buffer.Take(size);
+            
+                DebugStop();
+            
+                result = true;
             }
 
             DebugStop();
