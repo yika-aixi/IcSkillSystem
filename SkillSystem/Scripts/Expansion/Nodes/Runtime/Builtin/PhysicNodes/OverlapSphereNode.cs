@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Condition/Physic/Sphere Cast")]
-    public class SphereCastNode:ACast3DNode
+    public class OverlapSphereNode:ACast3DColliderNode
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private float _radius;
@@ -12,29 +12,25 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         protected override bool CastCheck()
         {
             DebugStart();
-            
+            bool result;
             if (UseAll)
             {
-                var size = Physics.SphereCastNonAlloc(Origin, GetInputValue(nameof(_radius),_radius), Direction, Buffer, MaxDistance, Mask);
+                var size = Physics.OverlapSphereNonAlloc(Origin, GetInputValue(nameof(_radius),_radius), Buffer, Mask,TriggerInteraction);
 
                 if (size == 0)
                 {
-                    return false;
+                    result = false;
                 }
+                else
+                {
+                    Result = Buffer.Take(size);
                 
-                Result = Buffer.Take(size);
-
-                return true;
+                    DebugStop();
+                
+                    result = true;
+                }
             }
 
-            var result = Physics.SphereCast(Origin,GetInputValue(nameof(_radius),_radius),Direction,out var hit,MaxDistance,Mask);
-
-            if (result)
-            {
-                Result = new[] {hit};
-            }
-
-            
             DebugStop();
             
             return result;

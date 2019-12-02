@@ -1,26 +1,32 @@
 ﻿using System.Collections.Generic;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    public abstract class ACast3DNode:ACastNode
+    //todo  Collider And RaycastHit
+    public abstract class ACast3DColliderNode:ACastNode
     {
-        protected RaycastHit[] Buffer;
+        protected Collider[] Buffer;
+
+        [SerializeField]
+        protected QueryTriggerInteraction TriggerInteraction;
         
-        [Output(ShowBackingValue.Never,ConnectionType.Multiple,TypeConstraint.Inherited)]    
-        protected IEnumerable<RaycastHit> Result;
+        [Node.OutputAttribute()]    
+        [PortTooltip("result is `IEnumerable<Collider>`")]
+        protected IEnumerable<Collider> Result;
         
-        protected ACast3DNode()
+        protected ACast3DColliderNode()
         {
             if (MaxHitSize < 1)
             {
                 MaxHitSize = 1;
             }
             
-            Result = new RaycastHit[MaxHitSize];
+            Buffer = new Collider[MaxHitSize];
         }
-
+        
         protected override object GetPortValue(NodePort port)
         {
             if (port.fieldName == nameof(Result))

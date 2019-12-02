@@ -96,22 +96,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [Node.LabelAttribute("Use All")]
         private bool _all;
-        
-        [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        private Vector3 _direction;
-        
-        [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        private float _maxDistance;
 
         protected Vector3 Origin => SkillGroup.Owner.transform.position + Offset;
         
         protected Vector3 Offset => GetInputValue(nameof(_offset), _offset);
 
         protected bool UseAll => GetInputValue(nameof(_all), _all);
-
-        protected Vector3 Direction => GetInputValue(nameof(_direction), _direction);
-
-        public float MaxDistance => GetInputValue(nameof(_maxDistance),_maxDistance);
 
         protected sealed override Condition GetDecoratorNode()
         {
