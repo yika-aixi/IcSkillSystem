@@ -4,13 +4,17 @@ using CabinIcarus.IcSkillSystem.Nodes.Runtime.Utils;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
+using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Condition")]
-    public class SkillConditionNode:ANPNode<Func<bool>>
+    public class SkillConditionNode:ANPNode<Condition>
     {
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+        private Stops _stops;
+        
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private IBuffManager<IIcSkSEntity> _buffManagerValue;
         
@@ -18,12 +22,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
         [PortTooltip("目标")]
         protected IIcSkSEntity Target;
         
+        [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
+        protected Node DecorateeNode;
+        
         [SerializeField]
         private string _conditionAQName;
 
         private ACondition _condition;
         
-        protected override Func<bool> GetOutValue()
+        protected override Condition GetOutValue()
+        {
+            return new Condition(_execute,GetInputValue(nameof(_stops),_stops),GetInputValue(nameof(DecorateeNode),DecorateeNode));
+        }
+
+        private bool _execute()
         {
             _buffManagerValue = GetInputValue(nameof(_buffManagerValue), _buffManagerValue);
             Target = GetInputValue(nameof(Target), Target);;
@@ -32,16 +44,11 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 
             if (conditionType == null)
             {
-                return null;
+                return false;
             }
             
             _condition = (ACondition) this.DynamicInputCreateInstance(conditionType,_buffManagerValue);
             
-            return _execute;
-        }
-
-        private bool _execute()
-        {
             return _condition.Check(Target);
         }
     }

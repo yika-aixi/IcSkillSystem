@@ -3,6 +3,7 @@ using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems;
+using NPBehave;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
@@ -10,7 +11,7 @@ using XNodeEditor;
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
     [CustomNodeEditor(typeof(SkillConditionNode))]
-    public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode,Func<bool>>
+    public class SkillConditionNodeEditor:AQNameSelectEditor<SkillConditionNode,Condition>
     {
         protected override Type GetBaseType()
         {

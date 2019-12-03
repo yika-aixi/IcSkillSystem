@@ -5,17 +5,14 @@
 //2019年09月19日-23:12
 //Assembly-CSharp
 
-using Action = System.Action;
-using Node = XNode.Node;
-
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use/Action")]
-    public class UseSkillNodeNodeAction:AUseSkillNode<Action>
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Skill/Use")]
+    public class UseSkillNodeNodeAction:AUseSkillNode
     {
-        protected override Action UseSkill()
+        protected override void UseSkill()
         {
-            return () => SkillManager.UseSkill(Target,Skill);
+            SkillManager.UseSkill(Target,Skill);
         }
     }
 }

@@ -12,10 +12,11 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Manager;
 using UnityEngine;
+using Action = NPBehave.Action;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 {
-    public abstract class AUseSkillNode<T>:ANPNode<T> where T : Delegate
+    public abstract class AUseSkillNode:ANPNode<Action>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         protected ISkillManager SkillManager;
@@ -29,7 +30,12 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 
         protected ISkillDataComponent Skill;
 
-        protected sealed override T GetOutValue()
+        protected sealed override Action GetOutValue()
+        {
+            return new Action(_use);
+        }
+
+        private void _use()
         {
             SkillManager = GetInputValue(nameof(SkillManager), SkillManager);
             Target = GetInputValue(nameof(Target), Target);
@@ -38,14 +44,12 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
 
             if (skillType == null)
             {
-                return default;
+                return;
             }
             
             Skill = (ISkillDataComponent) this.DynamicInputCreateInstance(skillType);
-
-            return UseSkill();
         }
 
-        protected abstract T UseSkill();
+        protected abstract void UseSkill();
     }
 }

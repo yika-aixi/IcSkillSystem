@@ -1,5 +1,4 @@
-﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
-using NPBehave;
+﻿using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator

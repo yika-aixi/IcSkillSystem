@@ -36,13 +36,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     {
     }
     
-    [CustomNodeEditor(typeof(BlackboardQueryNode))]
-    public class BlackboardQueryNodeEditor : ANPBehaveNodeEditor<BlackboardQueryNode, BlackboardQuery>
+    [CustomNodeEditor(typeof(ABlackboardQueryNode))]
+    public class BlackboardQueryNodeEditor : ANPBehaveNodeEditor<ABlackboardQueryNode, BlackboardQuery>
     {
     }
     
-    [CustomNodeEditor(typeof(ConditionNode))]
-    public class ConditionNodeEditor : ANPBehaveNodeEditor<ConditionNode, Condition>
+    [CustomNodeEditor(typeof(AConditionNode))]
+    public class ConditionNodeEditor : ANPBehaveNodeEditor<AConditionNode, Condition>
     {
     }
     
@@ -61,8 +61,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     {
     }
     
-    [CustomNodeEditor(typeof(ObserverNode))]
-    public class ObserverNodeEditor : ANPBehaveNodeEditor<ObserverNode, Observer>
+    [CustomNodeEditor(typeof(AObserverNode))]
+    public class ObserverNodeEditor : ANPBehaveNodeEditor<AObserverNode, Observer>
     {
     }
     
@@ -71,8 +71,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     {
     }
     
-    [CustomNodeEditor(typeof(ServiceNode))]
-    public class ServiceNodeEditor : ANPBehaveNodeEditor<ServiceNode, Service>
+    [CustomNodeEditor(typeof(AServiceNode))]
+    public class ServiceNodeEditor : ANPBehaveNodeEditor<AServiceNode, Service>
     {
     }
     
@@ -101,8 +101,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     {
     }
     
-    [CustomNodeEditor(typeof(WaitForConditionNode))]
-    public class WaitForConditionNodeEditor : ANPBehaveNodeEditor<WaitForConditionNode, WaitForCondition>
+    [CustomNodeEditor(typeof(AWaitForConditionNode))]
+    public class WaitForConditionNodeEditor : ANPBehaveNodeEditor<AWaitForConditionNode, WaitForCondition>
     {
     }
 }

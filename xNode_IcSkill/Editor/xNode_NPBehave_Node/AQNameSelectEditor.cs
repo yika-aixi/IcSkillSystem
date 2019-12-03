@@ -57,7 +57,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
             if (types.Count() == 0)
             {
-                Debug.LogError($"No {GetBaseType()} Types");
+                Debug.LogWarning($"No {GetBaseType()} Types");
                 return;
             }
 

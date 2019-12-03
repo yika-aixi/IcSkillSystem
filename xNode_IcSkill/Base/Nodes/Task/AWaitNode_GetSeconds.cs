@@ -1,22 +1,20 @@
-﻿using System;
-using NPBehave;
+﻿using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Wait/FuncAction Get Seconds")]
     [NodeWidth(300)]
-    public class WaitNode_GetSecondsFunc:ANPBehaveNode<Wait>
+    public abstract class AWaitNode_GetSeconds:ANPBehaveNode<Wait>
     {
-        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private Func<float> _getSeconds;
-
         [SerializeField]
         private float _randomVariance;
 
         protected override Wait GetOutValue()
         {
-            return new Wait(_getSeconds,_randomVariance);
+            return new Wait(GetSeconds,_randomVariance);
         }
+
+        protected abstract float GetSeconds();
     }
 }
