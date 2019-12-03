@@ -18,8 +18,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         private ReorderableList _dynamicOut;
         private ReorderableList _dynamicIn;
 
-        private IcSkillGroup _childGroup => ((GetChildGroupNode)target).GetGroup();
-        
         public override void OnInit()
         {
             _updatePort();

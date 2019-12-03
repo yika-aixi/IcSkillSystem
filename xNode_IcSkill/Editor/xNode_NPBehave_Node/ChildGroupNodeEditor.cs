@@ -185,7 +185,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     _updateGetChildNodeGroup((group,node) =>
                     {
-                        node.AddDynamicInput(typeof(object), Node.ConnectionType.Override, fieldName: x);
+                        node.AddDynamicInput(typeof(object), Node.ConnectionType.Override,Node.TypeConstraint.Inherited, fieldName: x);
                     });
                 });
             
@@ -213,6 +213,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
  
             _dynamicOut.drawElementCallback += (rect, index, active, focused) => DrawElementCallback(list, rect, index, active, focused);
 
+            _dynamicOut.drawElementCallback += (rect, index, active, focused) => _valueTypeSelect(list,rect,index,active,focused);
+            
             _dynamicOut.drawHeaderCallback = rect =>
             {
                 EditorGUI.LabelField(rect, "Out Values");
@@ -224,8 +226,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 
                 _updateGetChildNodeGroup((group,node) =>
                 {
-                    Debug.LogError($"{group.name} Remove Output port : {port.fieldName} ");
-                        
                     node.RemoveDynamicPort(port.fieldName);
                 });
             };
@@ -243,6 +243,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
  
            _dynamicIn.drawElementCallback += (rect, index, active, focused) => DrawElementCallback(list, rect, index, active, focused);
 
+           _dynamicIn.drawElementCallback += (rect, index, active, focused) => _synPortValueType(list,index);
+           
             _dynamicIn.drawHeaderCallback = rect =>
             {
                 EditorGUI.LabelField(rect, "Input Values");
@@ -254,11 +256,64 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 
                 _updateGetChildNodeGroup((group,node) =>
                 {
-                    Debug.LogError($"{group.name} Remove Input port : {port.fieldName} ");
-                        
                     node.RemoveDynamicPort(port.fieldName);
                 });
             };
+        }
+
+        private SimpleTypeSelectPopupWindow _typeSelectPopupWindow;
+        private void _valueTypeSelect(ReorderableList list, Rect rect, int index, bool isActive, bool isFocused)
+        {
+            if (_typeSelectPopupWindow == null)
+            {
+                _typeSelectPopupWindow = new SimpleTypeSelectPopupWindow(true,TypeUtil.GetRuntimeTypes);
+            }
+
+            _typeSelectPopupWindow.OnChangeTypeSelect = type =>
+            {
+                _typeSelectPopupWindow.editorWindow.Close();
+                
+                NodePort port = (NodePort) list.list[index];
+
+                port.ValueType = type;
+                
+                _updateGetChildNodeGroup((group, node) =>
+                {
+                    var nodePort = node.GetPort(port.fieldName);
+                    
+                    nodePort.ValueType = type;
+                });
+            };
+
+            var newRect = new Rect(rect);
+
+            newRect.position = new Vector2(GetWidth() - 40,newRect.position.y);
+            
+            newRect.size = new Vector2(18,18);
+            
+            if (GUI.Button(newRect,"T"))
+            {
+                newRect = rect;
+                
+                newRect.position += new Vector2(0, 20);
+                PopupWindow.Show(newRect, _typeSelectPopupWindow);
+            }
+        }
+
+        private void _synPortValueType(ReorderableList list, int index)
+        {
+            NodePort port = (NodePort) list.list[index];
+
+            if (port.IsConnected)
+            {
+                var type = port.GetConnection(0).ValueType;
+                
+                if (port.ValueType != type)
+                {
+                    port.ValueType = type;
+                    _updateGetChildNodeGroup((group, node) => { node.GetPort(port.fieldName).ValueType = type; });
+                }
+            }
         }
 
         private void _check()
