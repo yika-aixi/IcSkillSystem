@@ -36,6 +36,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         protected override void Init()
         {
+            base.Init();
+            
             UpdateDynamicPort();
         }
 
