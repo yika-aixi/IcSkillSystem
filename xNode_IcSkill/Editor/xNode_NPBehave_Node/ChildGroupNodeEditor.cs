@@ -49,29 +49,32 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         private void DrawElementCallback(ReorderableList list,Rect rect, int index, bool isactive, bool isfocused)
         {
-            if ((_lastIndex != index || _lastList != list) && isactive)
-            {
-                if (_lastList != null)
-                {
-                    _lastList.ReleaseKeyboardFocus();
-                    _lastList.index = -1;
-                }
-                
-                _clearEdit();
-                _lastIndex = index;
-                _lastList = list;
-            }
-            
             Event e = Event.current;
-            
-            if (e.type == EventType.KeyDown)
+
+            if (_editMode)
             {
-                if (e.keyCode == KeyCode.Escape)
+                if (_editMode && (_lastIndex != index || _lastList != list) && isactive)
                 {
-                    list.ReleaseKeyboardFocus();
+                    if (_lastList != null)
+                    {
+                        _lastList.ReleaseKeyboardFocus();
+                        _lastList.index = -1;
+                    }
+                
                     _clearEdit();
-                    e.Use();
-                    return;
+                    _lastIndex = index;
+                    _lastList = list;
+                }
+            
+                if (e.type == EventType.KeyDown)
+                {
+                    if (e.keyCode == KeyCode.Escape)
+                    {
+                        list.ReleaseKeyboardFocus();
+                        _clearEdit();
+                        e.Use();
+                        return;
+                    }
                 }
             }
             
@@ -81,7 +84,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     if (e.button == 0)
                     {
-                        if (e.clickCount >= 2)
+                        if (e.clickCount >= 2 && !_editMode)
                         {
                             _setEdit(list,index);
                             e.Use();
@@ -89,24 +92,46 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     }
                 }
             }
-
-            NodePort oldPort = ((NodePort) list.list[index]);
             
             if (_editMode && isactive)
             {
+                NodePort oldPort = ((NodePort) list.list[index]);
                 GUI.SetNextControlName(index.ToString());
                 EditorGUI.FocusTextInControl(index.ToString());
-                
-                Debug.LogError(GUILayoutUtility.GetLastRect ().Contains (e.mousePosition));
-                if (e.type == EventType.MouseDown && !GUILayoutUtility.GetLastRect ().Contains (e.mousePosition))
-                {
-                    Debug.LogError("释放");
-                    _clearEdit();
-                    Event.current.Use();
-                }
-                
+
+                string newName = oldPort.fieldName;
                 EditorGUI.BeginChangeCheck();
-                    var newName = EditorGUI.DelayedTextField(rect, oldPort.fieldName);
+                {
+                    bool contains = false;
+                    Rect lastRect;
+                    try
+                    {
+                        newName = EditorGUI.DelayedTextField(rect, oldPort.fieldName);
+                        lastRect = new Rect(GUILayoutUtility.GetLastRect());
+                        var y = lastRect.yMax - list.GetHeight(); // ReorderableList start Y pos
+                        y += 20; // add ReorderableList title pos
+                        y += index * 20f;//add element y pos
+                        lastRect.position = new Vector2(lastRect.position.x,y);
+                        contains = lastRect.Contains(e.mousePosition);
+                        if (e.type == EventType.MouseDown && !contains)
+                        {
+                            _clearEdit();
+                            Event.current.Use();
+                        }
+
+                        if (e.type == EventType.Repaint && !contains)
+                        {
+                            _clearEdit();
+                        }
+                    }
+                    catch (ArgumentException)
+                    {
+                        if (!contains)
+                        {
+                            _clearEdit();
+                        }
+                    }
+                }
                 if (EditorGUI.EndChangeCheck())
                 {
                     _clearEdit();
@@ -151,19 +176,15 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     _updateGetChildNodeGroup((group,node) =>
                     {
-                        Debug.LogError($"{group.name} Add output port : {x}");
-                        
                         node.AddDynamicOutput(typeof(object), Node.ConnectionType.Multiple, fieldName: x);
                     });
                 });
-        
+    
             NodeEditorGUILayout.DynamicPortList("in", typeof(object), serializedObject, NodePort.IO.Output,
                 Node.ConnectionType.Multiple, onCreation: _outListSetting, onAdd:x =>
                 {
                     _updateGetChildNodeGroup((group,node) =>
                     {
-                        Debug.LogError($"{group.name} Add Input port : {x} ");
-                        
                         node.AddDynamicInput(typeof(object), Node.ConnectionType.Override, fieldName: x);
                     });
                 });
