@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
-using NPBehave;
+using UnityEngine;
 using XNode;
+using Action = NPBehave.Action;
 using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -70,6 +72,35 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                     action.Start();
                     _index++;
                 }
+            }
+        }
+
+        public override void OnCreateConnection(NodePort @from, NodePort to)
+        {
+            if (to.fieldName == nameof(_enumerables))
+            {
+                var port = GetPort(nameof(_currentValue));
+                
+                Type newType = port.ValueType;
+
+                if (from.ValueType.IsArray)
+                {
+                    newType = from.ValueType.GetElementType();
+                }
+                else if (from.ValueType.IsGenericType)
+                {
+                    newType = from.ValueType.GetGenericArguments()[0];
+                }
+
+                port.ValueType = newType;
+            }
+        }
+
+        public override void OnRemoveConnection(NodePort port)
+        {
+            if (port.fieldName == nameof(_enumerables))
+            {
+                GetPort(nameof(_currentValue)).ValueType = typeof(object);
             }
         }
     }
