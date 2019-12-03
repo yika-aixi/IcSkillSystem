@@ -31,11 +31,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
         
         protected override bool CanMultiSelect(TreeViewItem item)
         {
-            if (item is TypeItem typeItem)
-            {
-                OnSelect?.Invoke(typeItem.Type);
-            }
-
             SetSelection(new List<int>(item.id));
             
             return base.CanMultiSelect(item);
@@ -47,7 +42,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
 
             if (item.hasChildren)
             {
-                SetExpanded(id, true);
+                SetExpanded(id, !IsExpanded(item.id));
+            }
+            else
+            {
+                if (item is TypeItem typeItem)
+                {
+                    OnSelect?.Invoke(typeItem.Type);
+                }
             }
         }
 
@@ -98,6 +100,21 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
 
             return root;
         }
+        
+        protected override void KeyEvent()
+        {
+            Event e = Event.current;
+            switch (e.type)
+            {
+                case EventType.KeyDown:
+                    if (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter)
+                    {
+                        DoubleClickedItem(GetSelection()[0]);
+                        e.Use();
+                    }
+                    break;
+            }
+        }
     }
     
     public class SimpleTypeSelectPopupWindow : PopupWindowContent
@@ -145,6 +162,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
         private Vector2 _pos;
         public override void OnGUI(Rect rect)
         {
+            _action();
+
             _ser = searchField.OnGUI(new Rect(rect.position,new Vector2(rect.width,20)), _ser);
 
             if (GUI.changed)
@@ -153,6 +172,22 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
             }
 
             _tree.OnGUI(new Rect(rect.position + new Vector2(0,25),rect.size - new Vector2(0,25)));
+        }
+        
+        private void _action()
+        {
+            Event e = Event.current;
+            switch (e.type)
+            {
+                case EventType.KeyDown:
+                    
+                    if (e.keyCode == KeyCode.DownArrow && !_tree.HasFocus())
+                    {
+                        _tree.SetFocusAndEnsureSelectedItem();
+                        e.Use();
+                    }
+                    break;
+            }
         }
     }
 }
