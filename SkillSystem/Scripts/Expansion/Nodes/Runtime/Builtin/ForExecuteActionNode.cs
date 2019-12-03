@@ -60,6 +60,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 var ator = enumerables.GetEnumerator();
 
                 _index = 0;
+
+                if (action.IsActive)
+                {
+                    action.Stop();
+                }
                 
                 while (ator.MoveNext())
                 {
