@@ -30,10 +30,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         private ReorderableList _dynamicIn;
         private ReorderableList _dynamicOut;
-        private double _lastTime;
         private ReorderableList _lastList;
         private int _lastIndex;
-        private int _clickCount;
         private bool _editMode;
 
         void _setEdit(ReorderableList list,int index)
@@ -62,7 +60,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 _clearEdit();
                 _lastIndex = index;
                 _lastList = list;
-                _lastTime = -1;
             }
             
             Event e = Event.current;
@@ -84,15 +81,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     if (e.button == 0)
                     {
-                        if (EditorApplication.timeSinceStartup - _lastTime > 1f)
-                        {
-                            _clickCount = 0;
-                        }
-
-                        _lastTime = EditorApplication.timeSinceStartup;
-                        _clickCount++;
-
-                        if (_clickCount >= 2)
+                        if (e.clickCount >= 2)
                         {
                             _setEdit(list,index);
                             e.Use();
@@ -100,13 +89,21 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     }
                 }
             }
-            
+
             NodePort oldPort = ((NodePort) list.list[index]);
             
             if (_editMode && isactive)
             {
                 GUI.SetNextControlName(index.ToString());
                 EditorGUI.FocusTextInControl(index.ToString());
+                
+                Debug.LogError(GUILayoutUtility.GetLastRect ().Contains (e.mousePosition));
+                if (e.type == EventType.MouseDown && !GUILayoutUtility.GetLastRect ().Contains (e.mousePosition))
+                {
+                    Debug.LogError("释放");
+                    _clearEdit();
+                    Event.current.Use();
+                }
                 
                 EditorGUI.BeginChangeCheck();
                     var newName = EditorGUI.DelayedTextField(rect, oldPort.fieldName);
