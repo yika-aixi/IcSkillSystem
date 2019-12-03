@@ -51,9 +51,18 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             {
                 throw new NullReferenceException($"没有找到名为:'{GetAQNamePropertyName()}'的属性");
             }
+
+            var types = TypeUtil.GetRuntimeFilterTypes
+                .Where(x=> GetBaseType().IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract);
+
+            if (types.Count() == 0)
+            {
+                Debug.LogError($"No {GetBaseType()} Types");
+                return;
+            }
+
+            _typeSelectWindow = new SimpleTypeSelectPopupWindow(true,types);
             
-            _typeSelectWindow = new SimpleTypeSelectPopupWindow(true,TypeUtil.GetRuntimeFilterTypes
-                .Where(x=> GetBaseType().IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract));
             _typeSelectWindow.OnChangeTypeSelect = type =>
             {
                 _aQNameProperty.stringValue = type.AssemblyQualifiedName;
@@ -76,13 +85,32 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         protected void DrawSelectPop(GUIContent title,params GUILayoutOption[] options)
         {
             var size = 250;
-            if (GUILayout.Button(_aQNameProperty.stringValue.Split(',')[0].Split('.').Last(),"popup"))
+
+            EditorGUILayout.BeginHorizontal();
             {
-                PopupWindow.Show(
-                    new Rect(new Vector2(Event.current.mousePosition.x - size / 2, size)
-                        ,new Vector2(size + 150,size)),
-                    _typeSelectWindow);
+                var titleSize = EditorStyles.label.CalcSize(title);
+                
+                EditorGUILayout.LabelField(title,GUILayout.Width( titleSize.x));
+
+                float width = GetWidth() - titleSize.x - 30;
+                
+                if (_typeSelectWindow != null)
+                {
+                    if (GUILayout.Button(_aQNameProperty.stringValue.Split(',')[0].Split('.').Last(),"popup",GUILayout.Width(width)))
+                    {
+                        PopupWindow.Show(
+                            new Rect(new Vector2(Event.current.mousePosition.x - size / 2, size)
+                                ,new Vector2(size + 150,size)),
+                            _typeSelectWindow);
+                    } 
+                }
+                else
+                {
+                    EditorGUILayout.LabelField(new GUIContent($"No Impl.",$"No {GetBaseType()} Impl."),style:"popup",GUILayout.Width(width));
+                }
+                
             }
+            EditorGUILayout.EndHorizontal();
         }
 
         /// <summary>
