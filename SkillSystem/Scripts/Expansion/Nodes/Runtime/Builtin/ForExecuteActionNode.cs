@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
-using UnityEngine;
 using XNode;
 using Action = NPBehave.Action;
 using Node = NPBehave.Node;
