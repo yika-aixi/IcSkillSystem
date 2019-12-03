@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
-using UnityEngine;
 using XNode;
 using Node = NPBehave.Node;
 
@@ -66,7 +65,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                     _currentValue = ator.Current;
                     if (action.RootNode == null)
                     {
-                        Debug.LogError("12");
                         action.SetRoot(_selfAction.RootNode);
                     }
                     action.Start();
