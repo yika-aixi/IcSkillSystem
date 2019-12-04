@@ -10,16 +10,16 @@ namespace CabinIcarus.IcSkillSystem.Editor
     [CustomPropertyDrawer(typeof(ValueSDict))]
     public class ValueSDictPropertyDrawer : SerializationDictDrawer<string,ValueS>
     {
-        private static ValueEditPopupWindow _ValueEditPopup;
+        private static ValueEditPopupWindow _valueEditPopup;
         private static SimpleTypeSelectPopupWindow _simpleTypeSelectPopup;
         protected override float DrawItem(Rect rect, SerializationDict<string, ValueS> map,
             KeyValuePair<string, ValueS> item)
         {
             float height = 20;
             
-            if (_ValueEditPopup == null || _simpleTypeSelectPopup == null)
+            if (_valueEditPopup == null || _simpleTypeSelectPopup == null)
             {
-                _ValueEditPopup = new ValueEditPopupWindow();
+                _valueEditPopup = new ValueEditPopupWindow();
                 _simpleTypeSelectPopup = new SimpleTypeSelectPopupWindow(true);
             }
 
@@ -171,10 +171,10 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 {
                     var size = 250;
 
-                    _ValueEditPopup.ValueS = valueS;
+                    _valueEditPopup.ValueS = valueS;
 
                     var pos = rect;
-                    PopupWindow.Show(pos,_ValueEditPopup);
+                    PopupWindow.Show(pos,_valueEditPopup);
                 }
 
                 rect.position += new Vector2(rect.size.x,0);
