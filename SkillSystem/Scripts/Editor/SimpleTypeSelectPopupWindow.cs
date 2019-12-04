@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using CabinIcarus.IcSkillSystem.Editor.Utils;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
+namespace CabinIcarus.IcSkillSystem.Editor
 {
     internal class TypeTreeView : TreeView
     {

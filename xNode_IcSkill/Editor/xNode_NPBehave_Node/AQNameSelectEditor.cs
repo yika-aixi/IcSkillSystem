@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
+using CabinIcarus.IcSkillSystem.Editor;
+using CabinIcarus.IcSkillSystem.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Utils;
 using UnityEditor;

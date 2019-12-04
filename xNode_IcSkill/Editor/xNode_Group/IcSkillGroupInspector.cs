@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CabinIcarus.IcSkillSystem.Editor;
+using CabinIcarus.IcSkillSystem.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
@@ -19,7 +21,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private static Type[] _types;
 
         private static ValueEditPopupWindow _ValueEditPopup;
-        private static SimpleTypeSelectPopupWindow _SimpleTypeSelect;
+        private static SimpleTypeSelectPopupWindow _simpleTypeSelect;
         private Rect _rect;
         
         private void OnEnable()
@@ -29,7 +31,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _types = TypeUtil.GetRuntimeFilterTypes.ToArray();                
                 _ValueEditPopup = new ValueEditPopupWindow();
                 _ValueEditPopup.OnEdit = _save;
-                _SimpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
+                _simpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
 
             }
             
@@ -276,11 +278,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         {
             if (GUILayout.Button(new GUIContent("Ｔ","Select Type")))
             {
-                _SimpleTypeSelect.OnChangeTypeSelect = type =>
+                _simpleTypeSelect.OnChangeTypeSelect = type =>
                 {
                     value.ValueType = type;
                     _save();
-                    _SimpleTypeSelect.editorWindow.Close();
+                    _simpleTypeSelect.editorWindow.Close();
                 };
                 
                 var size = 250;
@@ -288,7 +290,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 PopupWindow.Show(
                     new Rect(new Vector2(Event.current.mousePosition.x - size / 2, -(_rect.height - size - (Event.current.mousePosition.y + 60)) )
                         ,new Vector2(size + 150,size)),
-                    _SimpleTypeSelect);
+                    _simpleTypeSelect);
             }
 
         }

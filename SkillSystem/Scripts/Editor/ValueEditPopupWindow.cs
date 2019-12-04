@@ -14,7 +14,7 @@ using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
+namespace CabinIcarus.IcSkillSystem.Editor
 {
     class ValueEditTree:TreeView
     {
