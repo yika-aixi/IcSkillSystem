@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -280,7 +281,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
     public class ValueEditPopupWindow : PopupWindowContent
     {
-        private IcSkillGroup.ValueS _valueS;
+        private ValueS _valueS;
         public Action OnEdit;
 
         private ValueEditTree _editTree;
@@ -313,7 +314,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
         }
 
-        public IcSkillGroup.ValueS ValueS
+        public ValueS ValueS
         {
             get => _valueS;
             set

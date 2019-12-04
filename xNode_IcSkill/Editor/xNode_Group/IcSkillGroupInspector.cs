@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -209,7 +210,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 {
                     if (GUILayout.Button("Add Variable"))
                     {
-                        _group.VariableMap.Add(_group.VariableMap.Count.ToString(), new IcSkillGroup.ValueS());
+                        _group.VariableMap.Add(_group.VariableMap.Count.ToString(), new ValueS());
                     }
 
                     var keys = _group.VariableMap.Keys.ToList();
@@ -271,7 +272,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             EditorGUI.indentLevel--;
         }
 
-        private void _drawValueTypeSelect(IcSkillGroup.ValueS value)
+        private void _drawValueTypeSelect(ValueS value)
         {
             if (GUILayout.Button(new GUIContent("Ｔ","Select Type")))
             {
@@ -292,7 +293,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
         }
 
-        private void _drawValue(IcSkillGroup.ValueS valueS)
+        private void _drawValue(ValueS valueS)
         {
             //todo draw Value
             if (valueS.IsUnity)
@@ -354,7 +355,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
         }
 
-        void _drawNonUnityValue<T>(IcSkillGroup.ValueS valueS, Func<IcSkillGroup.ValueS,object> drawAction)
+        void _drawNonUnityValue<T>(ValueS valueS, Func<ValueS,object> drawAction)
         {
             if (!typeof(T).IsAssignableFrom(valueS.ValueType))
             {

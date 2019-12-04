@@ -10,12 +10,9 @@ using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
-using SkillSystem.xNode_IcSkill.Base;
 using UnityEngine;
 using XNode;
-using Exception = System.Exception;
 using Node = NPBehave.Node;
-using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
@@ -23,12 +20,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
     public class IcSkillGroup:NodeGraph
     {
         private GameObject _owner;
-     
-        [Serializable]
-        class ValueSDict:SerializationDict<string,ValueS>
-        {
-        }
-        
+
         [SerializeField]
         private ValueSDict _varMap = new ValueSDict();
             
@@ -124,6 +116,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         public void SetBlackboardVariable(Dictionary<string, object> variable)
         {
+            if (variable == null)
+            {
+                Debug.LogWarning("variable map is null");
+                return;
+            }
             _varMap.Clear();
             
             foreach (var valuePair in variable)
@@ -135,80 +132,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         }
         
         #region Serialize
-        
-        [Serializable]
-        public class ValueS
-        {
-            [SerializeField]
-            private bool _isUnity;
-            
-            public bool IsUnity => _isUnity;
-
-            [SerializeField]
-            private string ValueTypeAqName;
-
-            [SerializeField]
-            private string _valueStr;
-
-            private object _value;
-
-            [SerializeField]
-            private Object _uValue;
-            public Object UValue => _uValue;
-
-            private Type _type;
-            
-            public Type ValueType
-            {
-                get
-                {
-                    if (_type == null && !string.IsNullOrWhiteSpace(ValueTypeAqName))
-                    {
-                        _type = Type.GetType(ValueTypeAqName);
-                    }
-                
-                    return _type;
-                } 
-
-                set
-                {
-                    _isUnity = typeof(Object).IsAssignableFrom(value);
-
-                    _type = value;
-
-                    ValueTypeAqName = value != null ? value.AssemblyQualifiedName : string.Empty;
-                }
-            }
-
-            public void SetValue(object value)
-            {
-                ValueType = value.GetType();
-                
-                if (_isUnity)
-                {
-                    _uValue = (Object) value;
-                    return;
-                }
-                
-                _valueStr = SerializationUtil.ToString(value);
-            }
-
-            public object GetValue()
-            {
-                if (_isUnity)
-                {
-                    return UValue;
-                }
-
-                if (ValueType == null)
-                {
-                    Debug.LogWarning("No Select Type!");
-                    return null;
-                }
-                
-                return SerializationUtil.ToValue(_valueStr,ValueType);
-            }
-        }
 
 #if UNITY_EDITOR
         public Dictionary<string, ValueS> VariableMap
