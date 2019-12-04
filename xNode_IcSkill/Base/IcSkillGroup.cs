@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
+using SkillSystem.xNode_IcSkill.Base;
 using UnityEngine;
 using XNode;
 using Exception = System.Exception;
@@ -19,10 +20,17 @@ using Object = UnityEngine.Object;
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
-    public class IcSkillGroup:NodeGraph,ISerializationCallbackReceiver
+    public class IcSkillGroup:NodeGraph
     {
         private GameObject _owner;
-        private Dictionary<string, ValueS> _varMap = new Dictionary<string, ValueS>();
+     
+        [Serializable]
+        class ValueSDict:SerializationDict<string,ValueS>
+        {
+        }
+        
+        [SerializeField]
+        private ValueSDict _varMap = new ValueSDict();
             
         public GameObject Owner
         {
@@ -67,7 +75,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 {
                     RootNode = rootNode.GetDefaultOutputValue();
 
-                    foreach (var item in _varMap)
+                    foreach (var item in (Dictionary<string, ValueS>)_varMap)
                     {
                         RootNode.Blackboard.Set(item.Key,item.Value.GetValue());
                     }
@@ -114,6 +122,18 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             return main;
         }
 
+        public void SetBlackboardVariable(Dictionary<string, object> variable)
+        {
+            _varMap.Clear();
+            
+            foreach (var valuePair in variable)
+            {
+                var value = new ValueS();
+                value.SetValue(valuePair.Value);
+                _varMap.Add(valuePair.Key,value);
+            }
+        }
+        
         #region Serialize
         
         [Serializable]
@@ -162,6 +182,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
             public void SetValue(object value)
             {
+                ValueType = value.GetType();
+                
                 if (_isUnity)
                 {
                     _uValue = (Object) value;
@@ -169,7 +191,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 }
                 
                 _valueStr = SerializationUtil.ToString(value);
-
             }
 
             public object GetValue()
@@ -190,48 +211,12 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         }
 
 #if UNITY_EDITOR
-        public const string KeysName = nameof(_keys);
-        public const string ValuesName = nameof(_values);
         public Dictionary<string, ValueS> VariableMap
         {
             get => _varMap;
-            set => _varMap = value;
+            set => _varMap = (ValueSDict) value;
         }
 #endif
-        
-        [SerializeField]
-        List<string> _keys = new List<string>();
-        
-        [SerializeField]
-        List<ValueS> _values = new List<ValueS>();
-        public void OnBeforeSerialize()
-        {
-            _keys.Clear();
-            _values.Clear();
-            
-            foreach (var keyValuePair in _varMap)
-            {
-                _keys.Add(keyValuePair.Key);
-
-                var value = keyValuePair.Value;
-
-                _values.Add(value);
-            }
-        }
-
-        public void OnAfterDeserialize()
-        {
-            _varMap.Clear();
-
-            for (var i = 0; i < _keys.Count; i++)
-            {
-                var key = _keys[i];
-                var value = _values[i];
-                
-                _varMap.Add(key,value);
-            }
-        }
-
         #endregion
     }
 }
