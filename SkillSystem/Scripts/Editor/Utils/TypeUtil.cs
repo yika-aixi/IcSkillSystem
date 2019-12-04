@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor.Compilation;
 using Assembly = System.Reflection.Assembly;
 
-namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
+namespace CabinIcarus.IcSkillSystem.Editor.Utils
 {
     public static class TypeUtil
     {
