@@ -4,6 +4,7 @@
 //2019年11月15日-16:59
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
+using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.xNode_Group;
 using NPBehave;
 using UnityEngine;
@@ -35,8 +36,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
             _root = Group.Start();
         }
 
-        public void Use()
+        public void Use(Dictionary<string,object> data)
         {
+            Group.SetBlackboardVariable(data);
+            
             _root.Start();
         }
 
@@ -56,7 +59,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         [ContextMenu("Use")]
         void _use()
         {
-            Use();
+            _root.Start();
         }
         
         #endregion
