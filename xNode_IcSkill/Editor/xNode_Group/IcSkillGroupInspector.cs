@@ -13,9 +13,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
     [CustomEditor(typeof(IcSkillGroup))]
     public class IcSkillGroupInspector : UnityEditor.Editor
     {
-        private SerializedProperty _keysSer;
-        private SerializedProperty _valuesSer;
-        
         private IcSkillGroup _group;
 
         private static Type[] _types;
@@ -36,12 +33,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
             
             _group = (IcSkillGroup) target;
-            _keysSer = serializedObject.FindProperty(IcSkillGroup.KeysName);
-            _valuesSer = serializedObject.FindProperty(IcSkillGroup.ValuesName);
         }
 
         void _save()
         {
+            serializedObject.UpdateIfRequiredOrScript();
             EditorUtility.SetDirty(target);
         }
 
