@@ -7,7 +7,8 @@
         "CabinIcarus.IcSkillSystem.xNodeIc",
         "CabinIcarus.NPBehave",
         "XNode",
-        "XNodeEditor"
+        "XNodeEditor",
+        "CabinIcarus.IcSkillSystem.Editor"
     ],
     "includePlatforms": [
         "Editor"
