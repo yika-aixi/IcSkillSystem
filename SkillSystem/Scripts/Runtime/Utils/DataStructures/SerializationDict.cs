@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkillSystem.xNode_IcSkill.Base
+namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
     [Serializable]
     public class SerializationDict<TKey,TValue>:Dictionary<TKey,TValue>,ISerializationCallbackReceiver
@@ -37,6 +37,12 @@ namespace SkillSystem.xNode_IcSkill.Base
             for (var i = 0; i < _keys.Count; i++)
             {
                 var key = _keys[i];
+                
+                if (i >= _values.Count - 1)
+                {
+                    _values.Add(default);
+                }
+                
                 var value = _values[i];
                 
                 Add(key,value);
@@ -44,5 +50,10 @@ namespace SkillSystem.xNode_IcSkill.Base
         }
 
         #endregion
+    }
+
+    [Serializable]
+    public class StringObjDic : SerializationDict<string, object>
+    {
     }
 }
