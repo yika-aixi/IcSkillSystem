@@ -268,23 +268,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             {
                 _typeSelectPopupWindow = new SimpleTypeSelectPopupWindow(true,TypeUtil.GetRuntimeTypes);
             }
-
-            _typeSelectPopupWindow.OnChangeTypeSelect = type =>
-            {
-                _typeSelectPopupWindow.editorWindow.Close();
-                
-                NodePort port = (NodePort) list.list[index];
-
-                port.ValueType = type;
-                
-                _updateGetChildNodeGroup((group, node) =>
-                {
-                    var nodePort = node.GetPort(port.fieldName);
-                    
-                    nodePort.ValueType = type;
-                });
-            };
-
+            
             var newRect = new Rect(rect);
 
             newRect.position = new Vector2(GetWidth() - 40,newRect.position.y);
@@ -293,6 +277,22 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             
             if (GUI.Button(newRect,"T"))
             {
+                _typeSelectPopupWindow.OnChangeTypeSelect = type =>
+                {
+                    _typeSelectPopupWindow.editorWindow.Close();
+                    
+                    NodePort port = (NodePort) list.list[index];
+
+                    port.ValueType = type;
+                
+                    _updateGetChildNodeGroup((group, node) =>
+                    {
+                        var nodePort = node.GetPort(port.fieldName);
+                    
+                        nodePort.ValueType = type;
+                    });
+                };
+                
                 newRect = rect;
                 
                 newRect.position += new Vector2(0, 20);
