@@ -8,6 +8,11 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     public class SerializationDict<TKey,TValue>:Dictionary<TKey,TValue>,ISerializationCallbackReceiver
     {
         #region Serialize
+
+#if UNITY_EDITOR
+        public const string KeysFieldName = nameof(_keys);
+        public const string ValuesFieldName = nameof(_values);
+#endif
         
         [SerializeField]
         List<TKey> _keys = new List<TKey>();
@@ -50,10 +55,5 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         }
 
         #endregion
-    }
-
-    [Serializable]
-    public class StringObjDic : SerializationDict<string, object>
-    {
     }
 }
