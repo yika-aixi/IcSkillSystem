@@ -5,6 +5,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using System.Collections.Generic;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using CabinIcarus.IcSkillSystem.xNode_Group;
 using NPBehave;
 using UnityEngine;
@@ -14,16 +15,20 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
     /// <summary>
     /// 技能行为
     /// </summary>
-    public class SkillBehaveComponent:MonoBehaviour
+    public class SkillBehaveComponent : MonoBehaviour
     {
         public IcSkillGroup Group;
 
+        public bool Passive;
+
         private Root _root;
-        
+
+        public ValueSDict Data;
+
         private void Awake()
         {
             Group.Owner = gameObject;
-            
+
             _init();
 
 #if UNITY_EDITOR
@@ -31,12 +36,25 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
 #endif
         }
 
+        private void Start()
+        {
+            if (Passive)
+            {
+                Use(Data);
+            }
+        }
+
         private void _init()
         {
             _root = Group.Start();
         }
 
-        public void Use(Dictionary<string,object> data)
+        public void Use()
+        {
+            Use(Data);
+        }
+
+    public void Use(Dictionary<string,object> data)
         {
             Group.SetBlackboardVariable(data);
             
@@ -59,7 +77,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         [ContextMenu("Use")]
         void _use()
         {
-            _root.Start();
+            Use();
         }
         
         #endregion
