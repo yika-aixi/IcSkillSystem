@@ -44,6 +44,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         {
             return _getChildGroupNode(GetGroup()).GetInputValue<object>(port.fieldName);
         }
+
+        private ChildGroupNode _childNode;
+        private IcSkillGroup _lastGroup;
         
         ChildGroupNode _getChildGroupNode(IcSkillGroup skillGroup)
         {
@@ -56,11 +59,18 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             {
                 return null;
             }
+
+            if (_lastGroup == skillGroup && _childNode)
+            {
+                return _childNode;
+            }
             
             foreach (var node in skillGroup.nodes)
             {
                 if (node is ChildGroupNode childGroupNode)
                 {
+                    _lastGroup = skillGroup;
+                    _childNode = childGroupNode;
                     return childGroupNode;
                 }
             }
