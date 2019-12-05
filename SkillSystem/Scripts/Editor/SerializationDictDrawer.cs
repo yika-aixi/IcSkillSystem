@@ -101,7 +101,6 @@ namespace CabinIcarus.IcSkillSystem.Editor
             EditorUtility.SetDirty(Property.serializedObject.targetObject);
         }
 
-
         protected virtual float ItemHeight()
         {
             return 20f;
