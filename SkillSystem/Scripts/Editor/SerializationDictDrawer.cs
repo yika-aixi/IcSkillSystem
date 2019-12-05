@@ -8,19 +8,28 @@ namespace CabinIcarus.IcSkillSystem.Editor
 {
     public abstract class SerializationDictDrawer<TKey,TValue> : PropertyDrawer
     {
+        protected SerializationDict<TKey, TValue> Map;
         protected SerializationDict<TKey, TValue> GetMap(SerializedProperty property)
         {
-            return (SerializationDict<TKey, TValue>) this.fieldInfo.GetValue(property.serializedObject.targetObject); 
+            if (Map == null)
+            {
+                Map = (SerializationDict<TKey, TValue>) this.fieldInfo.GetValue(property.serializedObject.targetObject);
+            }
+
+            return Map;
         }
 
         protected Rect Position;
         float _height;
         private bool _foldoutState;
+        protected SerializedProperty Property;
         public override void OnGUI(Rect position, SerializedProperty property,
             GUIContent label)
         {
+            Property = property;
             Position = position;
             _height = 20;
+            GetMap(property);
             var rect = position;
             rect.size = new Vector2(position.size.x,20);
             if (GUI.Button(rect,GetButtonContent()))
@@ -49,19 +58,18 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
             var keys = map.Keys.ToList();
             
-            rect.position += new Vector2(0,10);
+            rect.position += new Vector2(0,ItemHeight());
             foreach (var key in keys)
             {
                 var value = map[key];
-                
-                rect.position += new Vector2(0,index * ItemHeight() + 10);
-
                 EditorGUI.indentLevel++;
                 {
                     _height += DrawItem(rect, map, new KeyValuePair<TKey, TValue>(key,value));
                 }
                 EditorGUI.indentLevel--;
                 
+                rect.position += new Vector2(0,ItemHeight() + 10);
+                _height += ItemHeight() + 10;
                 index++;
             }
             
@@ -88,9 +96,9 @@ namespace CabinIcarus.IcSkillSystem.Editor
         protected abstract float DrawItem(Rect rect, SerializationDict<TKey, TValue> map,
             KeyValuePair<TKey, TValue> item);
 
-        protected void Save(SerializationDict<TKey, TValue> map)
+        protected void Save()
         {
-            
+            EditorUtility.SetDirty(Property.serializedObject.targetObject);
         }
 
 

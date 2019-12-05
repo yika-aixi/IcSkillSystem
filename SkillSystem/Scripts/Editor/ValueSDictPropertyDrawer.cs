@@ -15,8 +15,6 @@ namespace CabinIcarus.IcSkillSystem.Editor
         protected override float DrawItem(Rect rect, SerializationDict<string, ValueS> map,
             KeyValuePair<string, ValueS> item)
         {
-            float height = 20;
-            
             if (_valueEditPopup == null || _simpleTypeSelectPopup == null)
             {
                 _valueEditPopup = new ValueEditPopupWindow();
@@ -25,13 +23,13 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
             var keyRect = rect;
             
-            keyRect.size = new Vector2(Position.width / 4,height);
+            keyRect.size = new Vector2(Position.width / 4,ItemHeight());
             
             var valueRect = keyRect;
             
             valueRect.position += new Vector2(keyRect.size.x + 10,0);
             valueRect.size = rect.size - keyRect.size;
-            valueRect.size += new Vector2(0,rect.height);
+            valueRect.size += new Vector2(0,keyRect.height);
             {
                 string newKey;
                 
@@ -54,7 +52,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                     {
                         map.Remove(key);
                         map.Add(newKey, item.Value);
-//                        _save();
+                        Save();
                     }
                 }
 
@@ -74,8 +72,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
                     {
                         value.ValueType = null;
                         value.SetValue(null);
-//                        _save();
-                        return height;
+                        Save();
+                        return 0;
                     }
                     
                     buttonRect.position += new Vector2(30,0);
@@ -84,10 +82,10 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 if (GUI.Button(buttonRect,new GUIContent(EditorGUIUtility.FindTexture("d_P4_DeletedLocal"),"Remove Item")))
                 {
                     map.Remove(key);
-//                    _save();
+                    Save();
                 }
             }
-            return height;
+            return 0;
         }
         
         private void _drawValueTypeSelect(ref Rect rect,ValueS value)
@@ -98,7 +96,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 _simpleTypeSelectPopup.OnChangeTypeSelect = type =>
                 {
                     value.ValueType = type;
-//                    _save();
+                    Save();
                     _simpleTypeSelectPopup.editorWindow.Close();
                 };
                 
@@ -117,21 +115,25 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
         private void _drawValue(ref Rect rect,ValueS valueS)
         {
-            var position = rect;
+            rect.size = new Vector2(rect.width - (70 + 30 + 10 + 30) // subtract EditValue and Refresh and Remove Button 
+                ,rect.height);
+           
             //todo draw Value
             if (valueS.IsUnity)
             {
-                position.size = new Vector2(rect.width - 80,position.height);
-                rect.position += new Vector2(position.width,0);
+                var offset = new Vector2(15,0);
+                rect.position -= offset; //subtract offset
+                
+                rect.size += new Vector2(70,0);// no Edit Value Button
                 Object obj;
                 EditorGUI.BeginChangeCheck();
                 {
-                    obj = EditorGUI.ObjectField(position,valueS.UValue, valueS.ValueType, false);
+                    obj = EditorGUI.ObjectField(rect,valueS.UValue, valueS.ValueType, false);
                 }
                 if (EditorGUI.EndChangeCheck())
                 {
                     valueS.SetValue(obj);
-//                    _save();
+                    Save();
                 }
             }
             else
@@ -143,30 +145,30 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 if (value == null)
                 {
                     valueS.SetValue(Activator.CreateInstance(valueS.ValueType));
-//                    _save();
+                    Save();
                 }
 
-                _drawNonUnityValue<int>(ref rect,valueS, x => EditorGUI.DelayedIntField(position,(int) x.GetValue()));
-                _drawNonUnityValue<float>(ref rect,valueS, x => EditorGUI.DelayedFloatField(position,(float) x.GetValue()));
-                _drawNonUnityValue<double>(ref rect,valueS, x => EditorGUI.DelayedDoubleField(position,(double) x.GetValue()));
-                _drawNonUnityValue<long>(ref rect,valueS, x => EditorGUI.LongField(position,(long) x.GetValue()));
-                _drawNonUnityValue<string>(ref rect,valueS, x => EditorGUI.DelayedTextField(position,(string) x.GetValue()));
-                _drawNonUnityValue<Vector2>(ref rect,valueS, x => EditorGUI.Vector2Field(position,"",(Vector2) x.GetValue()));
-                _drawNonUnityValue<Vector2Int>(ref rect,valueS, x => EditorGUI.Vector2IntField(position,"",(Vector2Int) x.GetValue()));
-                _drawNonUnityValue<Vector3>(ref rect,valueS, x => EditorGUI.Vector3Field(position,"",(Vector3) x.GetValue()));
-                _drawNonUnityValue<Vector3Int>(ref rect,valueS, x => EditorGUI.Vector3IntField(position,"",(Vector3Int) x.GetValue()));
-                _drawNonUnityValue<Vector4>(ref rect,valueS, x => EditorGUI.Vector4Field(position,"",(Vector4) x.GetValue()));
-                _drawNonUnityValue<Color>(ref rect,valueS, x => EditorGUI.ColorField(position,(Color) x.GetValue()));
-                _drawNonUnityValue<AnimationCurve>(ref rect,valueS, x => EditorGUI.CurveField(position,(AnimationCurve) x.GetValue()));
-                _drawNonUnityValue<Bounds>(ref rect,valueS, x => EditorGUI.BoundsField(position,(Bounds) x.GetValue()));
-                _drawNonUnityValue<BoundsInt>(ref rect,valueS, x => EditorGUI.BoundsIntField(position,(BoundsInt) x.GetValue()));
-                _drawNonUnityValue<Rect>(ref rect,valueS, x => EditorGUI.RectField(position,(Rect) x.GetValue()));
-                _drawNonUnityValue<RectInt>(ref rect,valueS, x => EditorGUI.RectIntField(position,(RectInt) x.GetValue()));
-                _drawNonUnityValue<Enum>(ref rect,valueS, x => EditorGUI.EnumFlagsField(position,(Enum) x.GetValue()));
-                _drawNonUnityValue<Gradient>(ref rect,valueS, x => EditorGUI.GradientField(position,(Gradient) x.GetValue()));
-
-                rect.position += new Vector2(10,0);
-                rect.size = new Vector2(100,26);
+                _drawNonUnityValue<int>(ref rect,valueS, (pos,x) => EditorGUI.DelayedIntField(pos,(int) x.GetValue()));
+                _drawNonUnityValue<float>(ref rect,valueS, (pos,x) => EditorGUI.DelayedFloatField(pos,(float) x.GetValue()));
+                _drawNonUnityValue<double>(ref rect,valueS, (pos,x) => EditorGUI.DelayedDoubleField(pos,(double) x.GetValue()));
+                _drawNonUnityValue<long>(ref rect,valueS, (pos,x) => EditorGUI.LongField(pos,(long) x.GetValue()));
+                _drawNonUnityValue<string>(ref rect,valueS, (pos,x) => EditorGUI.DelayedTextField(pos,(string) x.GetValue()));
+                _drawNonUnityValue<Vector2>(ref rect,valueS, (pos,x) => EditorGUI.Vector2Field(pos,"",(Vector2) x.GetValue()));
+                _drawNonUnityValue<Vector2Int>(ref rect,valueS, (pos,x) => EditorGUI.Vector2IntField(pos,"",(Vector2Int) x.GetValue()));
+                _drawNonUnityValue<Vector3>(ref rect,valueS, (pos,x) => EditorGUI.Vector3Field(pos,"",(Vector3) x.GetValue()));
+                _drawNonUnityValue<Vector3Int>(ref rect,valueS, (pos,x) => EditorGUI.Vector3IntField(pos,"",(Vector3Int) x.GetValue()));
+                _drawNonUnityValue<Vector4>(ref rect,valueS, (pos,x) => EditorGUI.Vector4Field(pos,"",(Vector4) x.GetValue()));
+                _drawNonUnityValue<Color>(ref rect,valueS, (pos,x) => EditorGUI.ColorField(pos,(Color) x.GetValue()));
+                _drawNonUnityValue<AnimationCurve>(ref rect,valueS, (pos,x) => EditorGUI.CurveField(pos,(AnimationCurve) x.GetValue()));
+                _drawNonUnityValue<Bounds>(ref rect,valueS, (pos,x) => EditorGUI.BoundsField(pos,(Bounds) x.GetValue()));
+                _drawNonUnityValue<BoundsInt>(ref rect,valueS, (pos,x) => EditorGUI.BoundsIntField(pos,(BoundsInt) x.GetValue()));
+                _drawNonUnityValue<Rect>(ref rect,valueS, (pos,x) => EditorGUI.RectField(pos,(Rect) x.GetValue()));
+                _drawNonUnityValue<RectInt>(ref rect,valueS, (pos,x) => EditorGUI.RectIntField(pos,(RectInt) x.GetValue()));
+                _drawNonUnityValue<Enum>(ref rect,valueS, (pos,x) => EditorGUI.EnumFlagsField(pos,(Enum) x.GetValue()));
+                _drawNonUnityValue<Gradient>(ref rect,valueS, (pos,x) => EditorGUI.GradientField(pos,(Gradient) x.GetValue()));
+                
+                rect.size = new Vector2(70,26);
+                
                 if (GUI.Button(rect,"Edit Value"))
                 {
                     var size = 250;
@@ -176,29 +178,30 @@ namespace CabinIcarus.IcSkillSystem.Editor
                     var pos = rect;
                     PopupWindow.Show(pos,_valueEditPopup);
                 }
-
-                rect.position += new Vector2(rect.size.x,0);
             }
-            rect.position += new Vector2(10,0);
+            rect.position += new Vector2(rect.size.x + 10,0);
         }
 
-        void _drawNonUnityValue<T>(ref  Rect rect,ValueS valueS, Func<ValueS,object> drawAction)
+        void _drawNonUnityValue<T>(ref  Rect rect,ValueS valueS, Func<Rect,ValueS,object> drawAction)
         {
             if (!typeof(T).IsAssignableFrom(valueS.ValueType))
             {
                 return;
             }
             
-            rect.size = new Vector2(rect.width - 80,rect.height);
-            rect.position += new Vector2(rect.width,0);
+            var offset = new Vector2(15,0);
+            rect.position -= offset; //subtract offset
             
-            var value = drawAction(valueS);
+            rect.size -= new Vector2(10,0);
+            
+            var value = drawAction(rect,valueS);
+            
+            rect.position += new Vector2(rect.size.x + 10,0);
             
             if (GUI.changed)
             {
                 valueS.SetValue(value);
-                
-//                _save();
+                Save();
             }
         }
     }
