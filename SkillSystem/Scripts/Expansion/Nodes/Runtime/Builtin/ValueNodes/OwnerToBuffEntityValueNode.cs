@@ -5,7 +5,7 @@ using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Entity/Go To Entity")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Entity/Go To Entity Value")]
     public class OwnerToBuffEntityValueNode:ValueNode
     {
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]

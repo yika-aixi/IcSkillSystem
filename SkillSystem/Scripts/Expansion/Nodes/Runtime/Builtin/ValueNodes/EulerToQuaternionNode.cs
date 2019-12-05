@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Euler To Quaternion")]
+    [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Euler To Quaternion Value")]
     public class EulerToQuaternionNode:ValueNode
     {
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]

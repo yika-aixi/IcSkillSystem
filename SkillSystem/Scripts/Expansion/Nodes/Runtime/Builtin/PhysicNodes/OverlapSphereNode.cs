@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Condition/Physic/Overlap Sphere Cast")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Condition/Physic/Overlap Sphere Cast")]
     public class OverlapSphereNode:ACast3DColliderNode
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]

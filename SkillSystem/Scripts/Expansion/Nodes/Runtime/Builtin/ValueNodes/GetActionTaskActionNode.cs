@@ -3,7 +3,7 @@ using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [CreateNodeMenu("CabinIcarus/Nodes/NPBehave/Get Action")]
+    [CreateNodeMenu("CabinIcarus/Nodes/NPBehave/Get Action Value")]
     public class GetActionTaskActionNode:ValueNode
     {
         public override Type ValueType { get; } = typeof(Action);
