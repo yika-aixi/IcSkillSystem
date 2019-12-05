@@ -31,8 +31,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _ValueEditPopup = new ValueEditPopupWindow();
                 _ValueEditPopup.OnEdit = _save;
                 _simpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
-                _varMapSer = serializedObject.FindProperty(IcSkillGroup.VarMapFieldName);
             }
+            
+            _varMapSer = serializedObject.FindProperty(IcSkillGroup.VarMapFieldName);
             
             _group = (IcSkillGroup) target;
         }
