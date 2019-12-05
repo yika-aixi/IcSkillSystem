@@ -3,9 +3,10 @@
     "references": [
         "CabinIcarus.IcSkillSystem.Expansion.Runtime",
         "CabinIcarus.IcSkillSystem.Runtime",
-        "CabinIcarus.IcSkillSystem.Editor"
+        "CabinIcarus.IcSkillSystem.Editor",
+        "CabinIcarus.IcSkillSystem.xNodeIc.Base",
+        "XNode"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -14,5 +15,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
