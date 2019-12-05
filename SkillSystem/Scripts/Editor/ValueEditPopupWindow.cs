@@ -98,7 +98,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
             {
                 var pubPro =
                     type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
-                        .Where(x => x.CanWrite);
+                        .Where(x => x.CanWrite)
+                        .Where(x => x.GetIndexParameters().Length == 0);
 
                 _memberInfos = _memberInfos.Concat(pubPro);
 
@@ -107,7 +108,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
                     var prePro = type
                         .GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty)
                         .Where(x => x.CanWrite)
-                        .Where(x => x.GetCustomAttribute<SerializeField>() != null);
+                        .Where(x => x.GetCustomAttribute<SerializeField>() != null)
+                        .Where(x => x.GetIndexParameters().Length == 0);
 
                     _memberInfos = _memberInfos.Concat(prePro);
                 }
