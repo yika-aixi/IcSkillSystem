@@ -45,6 +45,15 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             }
         }
 
+        public ValueS(ValueS valueS)
+        {
+            ValueType = valueS.ValueType;
+        }
+
+        public ValueS()
+        {
+        }
+
         public void SetValue(object value)
         {
             ValueType = value?.GetType();
