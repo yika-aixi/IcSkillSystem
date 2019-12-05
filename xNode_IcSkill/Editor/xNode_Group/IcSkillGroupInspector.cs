@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
-using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEditorInternal;
@@ -23,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private static ValueEditPopupWindow _ValueEditPopup;
         private static SimpleTypeSelectPopupWindow _simpleTypeSelect;
         private Rect _rect;
-        
+        private SerializedProperty _varMapSer;
         private void OnEnable()
         {
             if (_types == null)
@@ -32,7 +31,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _ValueEditPopup = new ValueEditPopupWindow();
                 _ValueEditPopup.OnEdit = _save;
                 _simpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
-
+                _varMapSer = serializedObject.FindProperty(IcSkillGroup.VarMapFieldName);
             }
             
             _group = (IcSkillGroup) target;
@@ -206,72 +205,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 return;
             }
 
-            EditorGUI.indentLevel++;
-            {
-                EditorGUILayout.BeginVertical("box");
-                {
-                    if (GUILayout.Button("Add Variable"))
-                    {
-                        _group.VariableMap.Add(_group.VariableMap.Count.ToString(), new ValueS());
-                    }
-
-                    var keys = _group.VariableMap.Keys.ToList();
-
-                    foreach (var key in keys)
-                    {
-                        var value = _group.VariableMap[key];
-
-                        EditorGUILayout.BeginHorizontal();
-                        {
-                            string newKey;
-
-                            EditorGUI.BeginChangeCheck();
-                            {
-                                newKey = EditorGUILayout.DelayedTextField(key);
-                            }
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                if (!string.IsNullOrEmpty(newKey))
-                                {
-                                    _group.VariableMap.Remove(key);
-                                    _group.VariableMap.Add(newKey, value);
-                                    _save();
-                                }
-                            }
-
-                            if (value.ValueType == null)
-                            {
-                                _drawValueTypeSelect(value);
-                            }
-                            else
-                            {
-                                _drawValue(value);
-                            }
-
-                            if (value.ValueType != null)
-                            {
-                                if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("Refresh"),$"Change Type,Current Type '{value.ValueType.FullName}'"),
-                                    GUILayout.Width(26)))
-                                {
-                                    value.ValueType = null;
-                                    value.SetValue(null);
-                                    _save();
-                                    return;
-                                }
-                            }
-
-                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.FindTexture("d_P4_DeletedLocal"),"Remove Item"),GUILayout.Width(26)))
-                            {
-                                _group.VariableMap.Remove(key);
-                                _save();
-                            }
-                        }
-                        EditorGUILayout.EndHorizontal();
-                    }
-                }
-                EditorGUILayout.EndVertical();
-            }
-            EditorGUI.indentLevel--;
+            EditorGUILayout.PropertyField(_varMapSer);
         }
 
         private void _drawValueTypeSelect(ValueS value)

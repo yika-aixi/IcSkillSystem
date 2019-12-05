@@ -139,7 +139,10 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             get => _varMap;
             set => _varMap = (ValueSDict) value;
         }
+
+        public const string VarMapFieldName = nameof(_varMap);
 #endif
+
         #endregion
     }
 }
