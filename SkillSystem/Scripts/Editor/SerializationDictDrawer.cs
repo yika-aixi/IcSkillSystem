@@ -48,8 +48,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
             int index = 0;
 
             var keys = map.Keys.ToList();
-            _height += 20;
-            rect.position += new Vector2(0,20);
+            
+            rect.position += new Vector2(0,10);
             foreach (var key in keys)
             {
                 var value = map[key];
@@ -64,6 +64,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 
                 index++;
             }
+            
+            _height += 10;
 
             property.serializedObject.ApplyModifiedProperties();
         }
