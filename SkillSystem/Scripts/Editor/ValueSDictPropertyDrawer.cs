@@ -78,7 +78,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                     
                     buttonRect.position += new Vector2(30,0);
                 }
-
+                buttonRect.position = new Vector2(rect.width - 10, buttonRect.position.y);
                 if (GUI.Button(buttonRect,new GUIContent(EditorGUIUtility.FindTexture("d_P4_DeletedLocal"),"Remove Item")))
                 {
                     map.Remove(key);
