@@ -47,7 +47,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public void SetValue(object value)
         {
-            ValueType = value.GetType();
+            ValueType = value?.GetType();
 
             if (_isUnity)
             {
