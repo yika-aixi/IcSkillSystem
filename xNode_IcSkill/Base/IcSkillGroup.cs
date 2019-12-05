@@ -67,16 +67,21 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 {
                     RootNode = rootNode.GetDefaultOutputValue();
 
-                    foreach (var item in (Dictionary<string, ValueS>)_varMap)
-                    {
-                        RootNode.Blackboard.Set(item.Key,item.Value.GetValue());
-                    }
+                    _setBlackboardValue();
 
                     break;
                 }
             }
 
             return RootNode;
+        }
+
+        private void _setBlackboardValue()
+        {
+            foreach (var item in _varMap)
+            {
+                RootNode.Blackboard.Set(item.Key, item.Value.GetValue());
+            }
         }
 
         private void _init(IcSkillGroup group)
@@ -129,6 +134,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 value.SetValue(valuePair.Value);
                 _varMap.Add(valuePair.Key,value);
             }
+
+            _setBlackboardValue();
         }
         
         #region Serialize
