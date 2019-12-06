@@ -99,7 +99,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
                     var node = _nodesSer.GetArrayElementAtIndex(i);
 
-                    _nodeStateMap[i] = EditorGUILayout.Foldout(_nodeStateMap[i], node.objectReferenceValue.name, true);
+                    _nodeStateMap[i] = EditorGUILayout.Foldout(_nodeStateMap[i], node.objectReferenceValue?.name ?? "Missing", true);
 
                     if (_nodeStateMap[i])
                     {
