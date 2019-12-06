@@ -70,7 +70,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 //        Dictionary<>
 //    }
 //    
-    public class BuffManager_Struct:IStructBuffManager<IIcSkSEntity>
+    public class BuffManager_Struct:IStructBuffManager
     {
         public FasterReadOnlyList<IIcSkSEntity> Entitys => _entitys.AsReadOnly();
         private IBuffList _currentBuffs;
@@ -85,7 +85,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffMaps = new Dictionary<IIcSkSEntity, Dictionary<Type,IBuffList>>();
         }
 
-        public IStructBuffManager<IIcSkSEntity> AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent
+        public IStructBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent
         {
             var type = buffSystem.GetType();
             var buffType = typeof(TBuffType);
@@ -716,13 +716,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
 
         #region Cover
-
-        #region IBuffManager<IIcSkSEntity>
-
-        IBuffManager<IIcSkSEntity> IBuffManager<IIcSkSEntity>.AddBuffSystem(IBuffSystem buffSystem)
-        {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IIcSkSEntity>)}");
-        }
+        
+        #region IBuffManager
 
 //        public void AddEntity(IIcSkSEntity entity)
 //        {
@@ -811,48 +806,48 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [Obsolete("please use -> AddBuffSystem<TBuffType>()")]
-        public IBuffManager<IIcSkSEntity> AddBuffSystem(IBuffSystem buffSystem)
+        IBuffManager IBuffManager.AddBuffSystem<TBuff>(IBuffSystem buffSystem)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IIcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager)}");
         }
 
-        void IBuffManager<IIcSkSEntity>.AddBuff<TBuff>(IIcSkSEntity entity, in TBuff buff)
+        void IBuffManager.AddBuff<TBuff>(IIcSkSEntity entity, in TBuff buff)
         {
             _addBuff(entity,typeof(TBuff),buff,true);
         }
         
-        TBuff IBuffManager<IIcSkSEntity>.GetCurrentBuffData<TBuff>(int index)
+        TBuff IBuffManager.GetCurrentBuffData<TBuff>(int index)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IIcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager)}");
         }
 
-        TBuff IBuffManager<IIcSkSEntity>.GetBuffData<TBuff>(IIcSkSEntity entity, int index)
+        TBuff IBuffManager.GetBuffData<TBuff>(IIcSkSEntity entity, int index)
         {
             return _getBuffData<TBuff>(entity, index,true);
         }
 
-        void IBuffManager<IIcSkSEntity>.SetBuffData<TBuff>(IIcSkSEntity entity, in TBuff buff, int index)
+        void IBuffManager.SetBuffData<TBuff>(IIcSkSEntity entity, in TBuff buff, int index)
         {
             _setBuffData(entity,buff.GetType(), buff, index,true);
         }
 
-        bool IBuffManager<IIcSkSEntity>.RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff)
+        bool IBuffManager.RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff)
         {
             return _removeBuff(entity,buff.GetType(), buff,true);
         }
 
-        bool IBuffManager<IIcSkSEntity>.HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff)
+        bool IBuffManager.HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IIcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager)}");
         }
 
-        [Obsolete("use IStructBuffManager<IIcSkSEntity>.GetBuffs<struct>(IIcSkSEntity)")]
-        FasterReadOnlyList<TBuff> IBuffManager<IIcSkSEntity>.GetBuffs<TBuff>(IIcSkSEntity entity)
+        [Obsolete("use IStructBuffManager.GetBuffs<struct>(IIcSkSEntity)")]
+        FasterReadOnlyList<TBuff> IBuffManager.GetBuffs<TBuff>(IIcSkSEntity entity)
         {
-            throw new NotImplementedException($"Type is {nameof(IStructBuffManager<IIcSkSEntity>)}");
+            throw new NotImplementedException($"Type is {nameof(IStructBuffManager)}");
         }
 
-        int IBuffManager<IIcSkSEntity>.GetBuffCount<TBuff>(IIcSkSEntity entity)
+        int IBuffManager.GetBuffCount<TBuff>(IIcSkSEntity entity)
         {
             return _getBuffCount<IBuffDataComponent>(entity);
         }

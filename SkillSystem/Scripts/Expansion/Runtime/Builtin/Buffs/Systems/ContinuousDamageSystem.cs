@@ -49,7 +49,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
         #endregion
 
-        public ContinuousDamageSystem(IStructBuffManager<IIcSkSEntity> buffManager) : base(buffManager)
+        public ContinuousDamageSystem(IStructBuffManager buffManager) : base(buffManager)
         {
         }
     }

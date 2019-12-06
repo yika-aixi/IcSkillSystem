@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
         private Stops _stops;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IBuffManager<IIcSkSEntity> _buffManagerValue;
+        private IBuffManager _buffManagerValue;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]

@@ -5,35 +5,35 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
-    public interface IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
+    public interface IIcSkSEntityManager
     {
-        FasterReadOnlyList<TEntity> Entitys { get; }
+        FasterReadOnlyList<IIcSkSEntity> Entitys { get; }
         
-        IBuffManager<TEntity> BuffManager { get;}
+        IBuffManager BuffManager { get;}
 
-        TEntity CreateEntity();
+        IIcSkSEntity CreateEntity();
         
-        TEntity CreateEntity(int id);
+        IIcSkSEntity CreateEntity(int id);
 
         bool DestroyEntity(int id);
         
-        bool DestroyEntity(TEntity entity);
+        bool DestroyEntity(IIcSkSEntity entity);
 
         void Update();
 
-        void AddBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
+        void AddBuff<T>(IIcSkSEntity entity, T buff) where T : IBuffDataComponent;
         
-        bool RemoveBuff<T>(TEntity entity,T buff) where T : IBuffDataComponent;
+        bool RemoveBuff<T>(IIcSkSEntity entity,T buff) where T : IBuffDataComponent;
 
-        bool HasBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
+        bool HasBuff<T>(IIcSkSEntity entity, T buff) where T : IBuffDataComponent;
     }
 
-    public interface IStructIcSkSEntityManager<TEntity> : IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
+    public interface IStructIcSkSEntityManager : IIcSkSEntityManager
     {
-        new void AddBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new void AddBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
         
-        new bool RemoveBuff<T>(TEntity entity,T buff) where T :struct, IBuffDataComponent;
+        new bool RemoveBuff<T>(IIcSkSEntity entity,T buff) where T :struct, IBuffDataComponent;
 
-        new bool HasBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new bool HasBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
     }
 }

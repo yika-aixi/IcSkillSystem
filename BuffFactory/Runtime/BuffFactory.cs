@@ -12,17 +12,11 @@ namespace  CabinIcarus.IcSkillSystem
     public static class BuffFactory
     {
         #region Has Buff
-
-        public static bool HasBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,IBuffDataComponent buff)
-        {
-            return HasBuff<IIcSkSEntity>(entityManager,entity, buff);
-        }
-        
-        public static bool HasBuff<TE>(IIcSkSEntityManager<TE> entityManager, TE entity,
-            IBuffDataComponent buff) where TE : IIcSkSEntity
+        public static bool HasBuff(IIcSkSEntityManager entityManager, IIcSkSEntity entity,
+            IBuffDataComponent buff)
         {
             bool result = false;
-            if (entityManager is IStructIcSkSEntityManager<TE> structIcSkSEntityManager)
+            if (entityManager is IStructIcSkSEntityManager structIcSkSEntityManager)
             {
                 //### Code
                 _buffAddOrRemove(ActionType.Has,out result ,entity, buff, structIcSkSEntityManager);
@@ -35,18 +29,12 @@ namespace  CabinIcarus.IcSkillSystem
 
         #region Remove Buff
 
-        public static bool RemoveBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
+        public static bool RemoveBuff(IIcSkSEntityManager entityManager, IIcSkSEntity entity,
             IBuffDataComponent buff)
-        {
-            return RemoveBuff<IIcSkSEntity>(entityManager, entity, buff);
-        }
-        
-        public static bool RemoveBuff<TE>(IIcSkSEntityManager<TE> entityManager, TE entity,
-            IBuffDataComponent buff) where TE : IIcSkSEntity
         {
             bool result = false;
             
-            if (entityManager is IStructIcSkSEntityManager<TE> structIcSkSEntityManager)
+            if (entityManager is IStructIcSkSEntityManager structIcSkSEntityManager)
             {
                 //### Code
                 _buffAddOrRemove(ActionType.Remove, out result,entity, buff, structIcSkSEntityManager);
@@ -60,18 +48,12 @@ namespace  CabinIcarus.IcSkillSystem
 
         #region Add Buff
 
-        public static void AddBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
+        public static void AddBuff(IIcSkSEntityManager entityManager, IIcSkSEntity entity,
             IBuffDataComponent buff)
         {
-            AddBuff<IIcSkSEntity>(entityManager, entity, buff);
-        }
-        
-        public static void AddBuff<Te>(IIcSkSEntityManager<Te> entityManager, Te entity,
-            IBuffDataComponent buff) where Te : IIcSkSEntity
-        {
-            if (entityManager is IStructIcSkSEntityManager<Te> skSEntityManager)
+            if (entityManager is IStructIcSkSEntityManager skSEntityManager)
             {
-                _buffAddOrRemove<Te>(ActionType.Add, out _,entity, buff, skSEntityManager);
+                _buffAddOrRemove(ActionType.Add, out _,entity, buff, skSEntityManager);
             }
         }
 
@@ -84,8 +66,8 @@ namespace  CabinIcarus.IcSkillSystem
             Has
         }
         
-        private static void _buffAddOrRemove<Te>(ActionType actionType,out bool result,Te entity, IBuffDataComponent buff,
-            IStructIcSkSEntityManager<Te> structIcSkSEntityManager) where Te : IIcSkSEntity
+        private static void _buffAddOrRemove(ActionType actionType,out bool result,IIcSkSEntity entity, IBuffDataComponent buff,
+            IStructIcSkSEntityManager structIcSkSEntityManager)
         {
             result = false;
             switch (buff)

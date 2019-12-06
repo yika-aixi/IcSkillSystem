@@ -19,7 +19,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 //        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
         private readonly BuffManager_Struct _buffManager;
-        public DamageSystem(IStructBuffManager<IIcSkSEntity> buffManager)
+        public DamageSystem(IStructBuffManager buffManager)
         {
             this._buffManager = (BuffManager_Struct) buffManager;
         }

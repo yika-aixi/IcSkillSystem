@@ -1,5 +1,4 @@
-﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
@@ -11,9 +10,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
         where TEntity : IIcSkSEntity
         where TBuffType : struct, IBuffDataComponent
     {
-        protected readonly IStructBuffManager<TEntity> BuffManager;
+        protected readonly IStructBuffManager BuffManager;
 
-        protected AIcStructBuffSystem(IStructBuffManager<TEntity> buffManager)
+        protected AIcStructBuffSystem(IStructBuffManager buffManager)
         {
             BuffManager = buffManager;
         }

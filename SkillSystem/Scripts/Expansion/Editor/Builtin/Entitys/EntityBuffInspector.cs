@@ -38,7 +38,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
             _foldoutState2 = new List<bool>();
             _buffs = new List<IBuffDataComponent>();
             
-            ABuffDebugWindow<IIcSkSEntity>.EntityManager = _entityBuff.EntityManager;
+            BuffDebugWindow.EntityManager = _entityBuff.EntityManager;
         }
 
         public override void OnInspectorGUI()

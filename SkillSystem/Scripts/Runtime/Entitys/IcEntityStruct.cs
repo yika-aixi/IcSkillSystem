@@ -24,7 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
             return ResourcesECSDB<IIcSkSEntity>.FromECS(entityStruct);
         }
 
-        public static IcEntityStruct FromIIcSkSEntity(IIcSkSEntity entity)
+        public static IcEntityStruct FromIIcSkSEntity(this IIcSkSEntity entity)
         {
             return new IcEntityStruct(ResourcesECSDB<IIcSkSEntity>.ToECS(entity));
         }

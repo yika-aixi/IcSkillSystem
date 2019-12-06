@@ -8,9 +8,9 @@ using EditorGUILayout = UnityEditor.EditorGUILayout;
 
 namespace  CabinIcarus.IcSkillSystem.Editor
 {
-    public abstract class ABuffDebugWindow<TEntity> : UnityEditor.EditorWindow where TEntity : IIcSkSEntity
+    public class BuffDebugWindow : EditorWindow
     {
-        public static IBuffManager<TEntity> EntityManager;
+        public static IBuffManager EntityManager;
         
         private void OnGUI()
         {
@@ -29,7 +29,7 @@ namespace  CabinIcarus.IcSkillSystem.Editor
             foreach (var entity in entitys)
             {
                 EditorGUILayout.LabelField($"{entity} Buff Count:" +
-                                           EntityManager.GetAllBuff((TEntity) entity).Count());
+                                           EntityManager.GetAllBuff(entity).Count());
             }
 
             EditorGUI.indentLevel--;

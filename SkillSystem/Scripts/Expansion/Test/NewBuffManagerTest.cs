@@ -160,7 +160,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
                 }
             }
 
-            public TestSystem(IStructBuffManager<IIcSkSEntity> buffManager) : base(buffManager)
+            public TestSystem(IStructBuffManager buffManager) : base(buffManager)
             {
             }
         }
@@ -276,7 +276,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
             buffManagerStruct.AddBuff(entity,buff);
 
-            IBuffManager<IIcSkSEntity> b = buffManagerStruct;
+            IBuffManager b = buffManagerStruct;
             
             b .SetBuffData(entity,new Buff(){Value = 100}, 0);
 
