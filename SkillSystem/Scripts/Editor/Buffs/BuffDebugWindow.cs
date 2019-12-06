@@ -3,6 +3,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 using UnityEditor;
+using UnityEngine;
 using EditorGUI = UnityEditor.EditorGUI;
 using EditorGUILayout = UnityEditor.EditorGUILayout;
 
@@ -20,7 +21,8 @@ namespace  CabinIcarus.IcSkillSystem.Editor
             window.titleContent = new UnityEngine.GUIContent("Buff Analysis");
             window.Show();
         }
-        
+
+        private Vector2 _pos;
         private void OnGUI()
         {
             if (EntityManager == null)
@@ -35,13 +37,18 @@ namespace  CabinIcarus.IcSkillSystem.Editor
             EditorGUILayout.LabelField("Entity count:" + entitys.Count);
 
             EditorGUI.indentLevel++;
-            foreach (var entity in entitys)
+            _pos = EditorGUILayout.BeginScrollView(_pos,"box");
             {
-                EditorGUILayout.LabelField($"{entity} Buff Count:" +
-                                           EntityManager.GetAllBuff(entity).Count());
+                foreach (var entity in entitys)
+                {
+                    EditorGUILayout.LabelField($"{entity} Buff Count:" +
+                                               EntityManager.GetAllBuff(entity).Count());
+                }
             }
-
+            EditorGUILayout.EndScrollView();
             EditorGUI.indentLevel--;
+            
+            Repaint();
         }
     }
 }
