@@ -16,9 +16,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
     public class BuffTimeSystem<T>:IBuffUpdateSystem where T:struct,IBuffDataComponent,IBuffTimeDataComponent
     {
-        private readonly IStructBuffManager _buffManager;
+        private readonly IStructBuffManager<IIcSkSEntity>  _buffManager;
 
-        public BuffTimeSystem(IStructBuffManager buffManager)
+        public BuffTimeSystem(IStructBuffManager<IIcSkSEntity>  buffManager)
         {
             this._buffManager = buffManager;
         }

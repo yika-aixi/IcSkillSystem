@@ -12,11 +12,11 @@ namespace  CabinIcarus.IcSkillSystem
     public static class BuffFactory
     {
         #region Has Buff
-        public static bool HasBuff(IIcSkSEntityManager entityManager, IIcSkSEntity entity,
+        public static bool HasBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
             IBuffDataComponent buff)
         {
             bool result = false;
-            if (entityManager is IStructIcSkSEntityManager structIcSkSEntityManager)
+            if (entityManager is IStructIcSkSEntityManager<IIcSkSEntity> structIcSkSEntityManager)
             {
                 //### Code
                 _buffAddOrRemove(ActionType.Has,out result ,entity, buff, structIcSkSEntityManager);
@@ -29,12 +29,12 @@ namespace  CabinIcarus.IcSkillSystem
 
         #region Remove Buff
 
-        public static bool RemoveBuff(IIcSkSEntityManager entityManager, IIcSkSEntity entity,
+        public static bool RemoveBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
             IBuffDataComponent buff)
         {
             bool result = false;
             
-            if (entityManager is IStructIcSkSEntityManager structIcSkSEntityManager)
+            if (entityManager is IStructIcSkSEntityManager<IIcSkSEntity> structIcSkSEntityManager)
             {
                 //### Code
                 _buffAddOrRemove(ActionType.Remove, out result,entity, buff, structIcSkSEntityManager);
@@ -48,10 +48,10 @@ namespace  CabinIcarus.IcSkillSystem
 
         #region Add Buff
 
-        public static void AddBuff(IIcSkSEntityManager entityManager, IIcSkSEntity entity,
+        public static void AddBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
             IBuffDataComponent buff)
         {
-            if (entityManager is IStructIcSkSEntityManager skSEntityManager)
+            if (entityManager is IStructIcSkSEntityManager<IIcSkSEntity> skSEntityManager)
             {
                 _buffAddOrRemove(ActionType.Add, out _,entity, buff, skSEntityManager);
             }
@@ -67,7 +67,7 @@ namespace  CabinIcarus.IcSkillSystem
         }
         
         private static void _buffAddOrRemove(ActionType actionType,out bool result,IIcSkSEntity entity, IBuffDataComponent buff,
-            IStructIcSkSEntityManager structIcSkSEntityManager)
+            IStructIcSkSEntityManager<IIcSkSEntity> structIcSkSEntityManager)
         {
             result = false;
             switch (buff)

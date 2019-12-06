@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
         private Stops _stops;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IBuffManager _buffManagerValue;
+        private IBuffManager<IIcSkSEntity> _buffManagerValue;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("目标")]
@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
         [SerializeField]
         private string _conditionAQName;
 
-        private ACondition _condition;
+        private ACondition<IIcSkSEntity> _condition;
         
         protected override Condition GetOutValue()
         {
@@ -47,7 +47,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems
                 return false;
             }
             
-            _condition = (ACondition) this.DynamicInputCreateInstance(conditionType,_buffManagerValue);
+            _condition = (ACondition<IIcSkSEntity>) this.DynamicInputCreateInstance(conditionType,_buffManagerValue);
             
             return _condition.Check(Target);
         }

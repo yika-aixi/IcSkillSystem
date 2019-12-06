@@ -18,10 +18,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     {
 //        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
-        private readonly BuffManager_Struct _buffManager;
-        public DamageSystem(IStructBuffManager buffManager)
+        private readonly BuffManager_Struct<IIcSkSEntity>  _buffManager;
+        public DamageSystem(IStructBuffManager<IIcSkSEntity>  buffManager)
         {
-            this._buffManager = (BuffManager_Struct) buffManager;
+            this._buffManager = (BuffManager_Struct<IIcSkSEntity>) buffManager;
         }
 
         public void Create(IIcSkSEntity entity, int index)

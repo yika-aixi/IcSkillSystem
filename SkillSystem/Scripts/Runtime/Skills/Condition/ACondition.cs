@@ -4,15 +4,15 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
 {
-    public abstract class ACondition:ICondition
+    public abstract class ACondition<TEntity>:ICondition<TEntity> where TEntity : IIcSkSEntity
     {
-        protected readonly IBuffManager _buffManager;
+        protected readonly IBuffManager<TEntity> _buffManager;
 
-        protected ACondition(IBuffManager buffManager)
+        protected ACondition(IBuffManager<TEntity> buffManager)
         {
             this._buffManager = buffManager;
         }
 
-        public abstract bool Check(IIcSkSEntity icSkSEntity);
+        public abstract bool Check(TEntity icSkSEntity);
     }
 }

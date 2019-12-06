@@ -10,7 +10,16 @@ namespace  CabinIcarus.IcSkillSystem.Editor
 {
     public class BuffDebugWindow : EditorWindow
     {
-        public static IBuffManager EntityManager;
+        public static IBuffManager<IIcSkSEntity> EntityManager;
+        
+        [UnityEditor.MenuItem("Icarus/Analysis/IIcSkSEntity Buff")]
+        private static void ShowWindow()
+        {
+            var window = GetWindow<BuffDebugWindow>();
+
+            window.titleContent = new UnityEngine.GUIContent("Buff Analysis");
+            window.Show();
+        }
         
         private void OnGUI()
         {

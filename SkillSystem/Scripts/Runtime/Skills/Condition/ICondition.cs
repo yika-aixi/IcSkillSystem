@@ -2,8 +2,8 @@
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
 {
-    public interface ICondition
+    public interface ICondition<in TEntity> where TEntity : IIcSkSEntity
     {
-        bool Check(IIcSkSEntity icSkSEntity);
+        bool Check(TEntity icSkSEntity);
     }
 }

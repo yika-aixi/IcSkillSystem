@@ -12,9 +12,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         where TDamageReducePercentageBuff : struct,IDamageReducePercentageBuff
         where TDamageBuff : struct,IDamageBuff
     {
-        private readonly IStructBuffManager _buffManager;
+        private readonly IStructBuffManager<IIcSkSEntity>  _buffManager;
 
-        public DamageReducePercentageSystem(IStructBuffManager buffManager)
+        public DamageReducePercentageSystem(IStructBuffManager<IIcSkSEntity>  buffManager)
         {
             this._buffManager = buffManager;
         }

@@ -8,11 +8,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Component
     public class BuffEntityLinkComponent : MonoBehaviour
     {
         [NonSerialized] 
-        public IBuffManager EntityManager;
+        public IBuffManager<IIcSkSEntity> EntityManager;
         [NonSerialized] 
         public IIcSkSEntity IcSkSEntity;
 
-        public void Init(IBuffManager entityManager, IIcSkSEntity icSkSEntity)
+        public void Init(IBuffManager<IIcSkSEntity> entityManager, IIcSkSEntity icSkSEntity)
         {
             EntityManager = entityManager;
             Link(icSkSEntity);

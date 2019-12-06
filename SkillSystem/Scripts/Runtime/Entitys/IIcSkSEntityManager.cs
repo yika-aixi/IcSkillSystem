@@ -1,39 +1,37 @@
-﻿using System;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+﻿using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
-    public interface IIcSkSEntityManager
+    public interface IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
     {
-        FasterReadOnlyList<IIcSkSEntity> Entitys { get; }
+        FasterReadOnlyList<TEntity> Entitys { get; }
         
-        IBuffManager BuffManager { get;}
+        IBuffManager<TEntity> BuffManager { get;}
 
-        IIcSkSEntity CreateEntity();
+        TEntity CreateEntity();
         
-        IIcSkSEntity CreateEntity(int id);
+        TEntity CreateEntity(int id);
 
         bool DestroyEntity(int id);
         
-        bool DestroyEntity(IIcSkSEntity entity);
+        bool DestroyEntity(TEntity entity);
 
         void Update();
 
-        void AddBuff<T>(IIcSkSEntity entity, T buff) where T : IBuffDataComponent;
+        void AddBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
         
-        bool RemoveBuff<T>(IIcSkSEntity entity,T buff) where T : IBuffDataComponent;
+        bool RemoveBuff<T>(TEntity entity,T buff) where T : IBuffDataComponent;
 
-        bool HasBuff<T>(IIcSkSEntity entity, T buff) where T : IBuffDataComponent;
+        bool HasBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
     }
 
-    public interface IStructIcSkSEntityManager : IIcSkSEntityManager
+    public interface IStructIcSkSEntityManager<TEntity> : IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
     {
-        new void AddBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new void AddBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
         
-        new bool RemoveBuff<T>(IIcSkSEntity entity,T buff) where T :struct, IBuffDataComponent;
+        new bool RemoveBuff<T>(TEntity entity,T buff) where T :struct, IBuffDataComponent;
 
-        new bool HasBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new bool HasBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
     }
 }

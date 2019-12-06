@@ -13,12 +13,12 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     public abstract class ASkillSNode :ANPBehaveNode<Node>
     {
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IIcSkSEntityManager _entityManager;
+        private IIcSkSEntityManager<IIcSkSEntity> _entityManager;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private IIcSkSEntity _target;
 
-        protected IIcSkSEntityManager EntityManager => GetInputValue(nameof(_entityManager),_entityManager);
+        protected IIcSkSEntityManager<IIcSkSEntity> EntityManager => GetInputValue(nameof(_entityManager),_entityManager);
 
         public IIcSkSEntity Target => GetInputValue(nameof(_target),_target);
     }

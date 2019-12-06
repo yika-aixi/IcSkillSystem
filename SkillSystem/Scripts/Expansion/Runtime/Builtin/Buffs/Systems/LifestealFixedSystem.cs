@@ -17,9 +17,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         where TFixedLifesteal : struct, IFixedLifesteal
         where TDamageBuff : struct,IDamageBuff
     {
-        private readonly IStructBuffManager _buffManager;
+        private readonly IStructBuffManager<IIcSkSEntity>  _buffManager;
 
-        public LifestealFixedSystem(IStructBuffManager buffManager)
+        public LifestealFixedSystem(IStructBuffManager<IIcSkSEntity>  buffManager)
         {
             this._buffManager = buffManager;
         }

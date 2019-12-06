@@ -2,6 +2,7 @@
 using CabinIcarus.IcSkillSystem.Expansion.Builtin.Component;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -84,11 +85,11 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
         private int _maxEntityId;
 
-        private BuffManager_Struct _entityManager;
+        private BuffManager_Struct<IIcSkSEntity> _entityManager;
 
         private void Awake()
         {
-            _entityManager = new BuffManager_Struct();
+            _entityManager = new BuffManager_Struct<IIcSkSEntity>();
             _maxEntityId = EntityCount;
         }
 

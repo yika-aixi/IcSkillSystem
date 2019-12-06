@@ -3,6 +3,7 @@ using System.Linq;
 using CabinIcarus.IcSkillSystem.Runtime.Skills.Condition;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems;
+using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using NPBehave;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     {
         protected override Type GetBaseType()
         {
-            return typeof(ACondition);
+            return typeof(ACondition<IIcSkSEntity>);
         }
 
         protected override void Init()

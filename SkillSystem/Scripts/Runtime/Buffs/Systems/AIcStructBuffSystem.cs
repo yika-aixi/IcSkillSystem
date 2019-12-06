@@ -10,9 +10,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
         where TEntity : IIcSkSEntity
         where TBuffType : struct, IBuffDataComponent
     {
-        protected readonly IStructBuffManager BuffManager;
+        protected readonly IStructBuffManager<TEntity> BuffManager;
 
-        protected AIcStructBuffSystem(IStructBuffManager buffManager)
+        protected AIcStructBuffSystem(IStructBuffManager<TEntity> buffManager)
         {
             BuffManager = buffManager;
         }
