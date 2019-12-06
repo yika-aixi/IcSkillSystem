@@ -405,7 +405,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #if UNITY_EDITOR
             if (_createExecute)
             {
-                Debug.LogError($"{_lastExecuteCreateBuffSystem} Remove buff,Subsequent `Create System` will be abnormal, please change the System to the last execution or not add the `{buffType}` type buff `Create System` after this System");
+                Debug.LogWarning($"(Only in Editor mode Give warning) {_lastExecuteCreateBuffSystem} Remove buff,Subsequent `Create System` will be abnormal, please change the System to the last execution or not add the `{buffType}` type buff `Create System` after this System");
             }
 #endif
             var buffMap = _buffMaps[entity];
