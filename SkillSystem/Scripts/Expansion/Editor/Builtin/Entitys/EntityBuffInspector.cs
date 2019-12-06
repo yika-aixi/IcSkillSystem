@@ -61,8 +61,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
             _buffGroup.Clear();
             
             var buffs = _entityBuff.EntityManager.GetAllBuff(_entityBuff.IcSkSEntity);
-            
-            _buffs.AddRange(buffs);
+
+            if (buffs != null)
+            {
+                _buffs.AddRange(buffs);
+            }
 
             if (_buffs.Count == 0)
             {
