@@ -10,9 +10,9 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
 {
-    public class IcSkSEntityBuffDebugWindow:ABuffDebugWindow<IcSkSEntity>
+    public class IcSkSEntityBuffDebugWindow:ABuffDebugWindow<IIcSkSEntity>
     {
-        [UnityEditor.MenuItem("Icarus/Analysis/IcSkSEntity Buff")]
+        [UnityEditor.MenuItem("Icarus/Analysis/IIcSkSEntity Buff")]
         private static void ShowWindow()
         {
             var window = GetWindow<IcSkSEntityBuffDebugWindow>();

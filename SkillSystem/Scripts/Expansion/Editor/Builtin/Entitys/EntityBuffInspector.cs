@@ -38,7 +38,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
             _foldoutState2 = new List<bool>();
             _buffs = new List<IBuffDataComponent>();
             
-            ABuffDebugWindow<IcSkSEntity>.EntityManager = _entityBuff.EntityManager;
+            ABuffDebugWindow<IIcSkSEntity>.EntityManager = _entityBuff.EntityManager;
         }
 
         public override void OnInspectorGUI()
@@ -60,7 +60,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
             _buffs.Clear();
             _buffGroup.Clear();
             
-            var buffs = _entityBuff.EntityManager.BuffManager.GetAllBuff(_entityBuff.IcSkSEntity);
+            var buffs = _entityBuff.EntityManager.GetAllBuff(_entityBuff.IcSkSEntity);
             
             _buffs.AddRange(buffs);
 
@@ -218,7 +218,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
                         if (GUI.changed)
                         {
                             setValue(info, buff.Buff, value);
-                            _entityBuff.EntityManager.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
+                            _entityBuff.EntityManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -228,7 +228,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
                         if (GUI.changed)
                         {
                             setValue(info, buff.Buff, value);
-                            _entityBuff.EntityManager.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
+                            _entityBuff.EntityManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -238,7 +238,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
                         if (GUI.changed)
                         {
                             setValue(info, buff.Buff, value);
-                            _entityBuff.EntityManager.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
+                            _entityBuff.EntityManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -248,7 +248,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
                         if (GUI.changed)
                         {
                             setValue(info, buff.Buff, value);
-                            _entityBuff.EntityManager.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
+                            _entityBuff.EntityManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 
@@ -258,7 +258,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
                         if (GUI.changed)
                         {
                             setValue(info, buff.Buff, value);
-                            _entityBuff.EntityManager.BuffManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
+                            _entityBuff.EntityManager.SetBuffData(_entityBuff.IcSkSEntity,buff.Buff,buff.Index);
                             GUI.changed = false;
                         }
 

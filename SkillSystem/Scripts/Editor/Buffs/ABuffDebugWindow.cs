@@ -10,7 +10,7 @@ namespace  CabinIcarus.IcSkillSystem.Editor
 {
     public abstract class ABuffDebugWindow<TEntity> : UnityEditor.EditorWindow where TEntity : IIcSkSEntity
     {
-        public static IIcSkSEntityManager<TEntity> EntityManager;
+        public static IBuffManager<TEntity> EntityManager;
         
         private void OnGUI()
         {
@@ -29,7 +29,7 @@ namespace  CabinIcarus.IcSkillSystem.Editor
             foreach (var entity in entitys)
             {
                 EditorGUILayout.LabelField($"{entity} Buff Count:" +
-                                           EntityManager.BuffManager.GetAllBuff(entity).Count());
+                                           EntityManager.GetAllBuff((TEntity) entity).Count());
             }
 
             EditorGUI.indentLevel--;

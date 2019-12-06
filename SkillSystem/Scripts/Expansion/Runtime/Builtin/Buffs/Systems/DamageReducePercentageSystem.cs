@@ -8,18 +8,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 百分比伤害减少,如果存在多个一样的buff,只会使用最后一个
     /// </summary>
-    public class DamageReducePercentageSystem<TDamageReducePercentageBuff,TDamageBuff>:IBuffCreateSystem<IcSkSEntity>
+    public class DamageReducePercentageSystem<TDamageReducePercentageBuff,TDamageBuff>:IBuffCreateSystem<IIcSkSEntity>
         where TDamageReducePercentageBuff : struct,IDamageReducePercentageBuff
         where TDamageBuff : struct,IDamageBuff
     {
-        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
+        private readonly IStructBuffManager<IIcSkSEntity> _buffManager;
 
-        public DamageReducePercentageSystem(IStructBuffManager<IcSkSEntity> buffManager)
+        public DamageReducePercentageSystem(IStructBuffManager<IIcSkSEntity> buffManager)
         {
             this._buffManager = buffManager;
         }
 
-        public void Create(IcSkSEntity entity, int index)
+        public void Create(IIcSkSEntity entity, int index)
         {
             var fixedBuffs = _buffManager.GetBuffs<TDamageReducePercentageBuff>(entity);
 

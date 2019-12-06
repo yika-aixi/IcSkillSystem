@@ -12,23 +12,23 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 固定吸血,可多个
     /// </summary>
-    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem<IcSkSEntity> 
+    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem<IIcSkSEntity> 
         where TMechanics : struct, IMechanicBuff
         where TFixedLifesteal : struct, IFixedLifesteal
         where TDamageBuff : struct,IDamageBuff
     {
-        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
+        private readonly IStructBuffManager<IIcSkSEntity> _buffManager;
 
-        public LifestealFixedSystem(IStructBuffManager<IcSkSEntity> buffManager)
+        public LifestealFixedSystem(IStructBuffManager<IIcSkSEntity> buffManager)
         {
             this._buffManager = buffManager;
         }
 
-        public void Destroy(IcSkSEntity entity, int index)
+        public void Destroy(IIcSkSEntity entity, int index)
         {
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
-            var fixedLifesteals = _buffManager.GetBuffs<TFixedLifesteal>(damage.Entity);
+            var fixedLifesteals = _buffManager.GetBuffs<TFixedLifesteal>(damage.Entity.ToIIcSkSEntity());
 
             if (fixedLifesteals.Count == 0)
             {
@@ -45,7 +45,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                 }
             }
 
-            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity);
+            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity.ToIIcSkSEntity());
 
             if (mechanicBuffs.Count == 0)
             {
@@ -69,7 +69,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                         }
                     }
                    
-                    _buffManager.SetBuffData(damage.Entity,mechanicBuff,i);
+                    _buffManager.SetBuffData(damage.Entity.ToIIcSkSEntity(),mechanicBuff,i);
                     
                     break;
                 }

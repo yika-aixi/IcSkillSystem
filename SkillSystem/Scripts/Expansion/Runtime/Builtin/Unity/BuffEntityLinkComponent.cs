@@ -1,9 +1,6 @@
 ﻿using System;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
-using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
-using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Component
@@ -11,17 +8,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Component
     public class BuffEntityLinkComponent : MonoBehaviour
     {
         [NonSerialized] 
-        public IIcSkSEntityManager<IcSkSEntity> EntityManager;
+        public IBuffManager<IIcSkSEntity> EntityManager;
         [NonSerialized] 
-        public IcSkSEntity IcSkSEntity;
+        public IIcSkSEntity IcSkSEntity;
 
-        public void Init(IIcSkSEntityManager<IcSkSEntity> entityManager, IcSkSEntity icSkSEntity)
+        public void Init(IBuffManager<IIcSkSEntity> entityManager, IIcSkSEntity icSkSEntity)
         {
             EntityManager = entityManager;
             Link(icSkSEntity);
         }
 
-        public void Link(IcSkSEntity icSkSEntity)
+        public void Link(IIcSkSEntity icSkSEntity)
         {
             this.IcSkSEntity = icSkSEntity;
         }

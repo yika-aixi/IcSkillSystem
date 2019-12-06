@@ -14,6 +14,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
         public float Value { get; set; }
         public int Type { get; set; }
         public int ID { get; }
-        public IcSkSEntity Entity { get; set; }
+        public IcEntityStruct Entity { get; set; }
     }
 }

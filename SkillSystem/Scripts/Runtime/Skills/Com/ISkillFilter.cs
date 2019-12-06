@@ -15,8 +15,8 @@ namespace CabinIcarus.SkillSystem.Runtime.Skills.Com
         /// <summary>
         /// 过滤技能
         /// </summary>
-        /// <param name="icSkSEntity"></param>
+        /// <param name="IIIcSkSEntity"></param>
         /// <returns></returns>
-        bool Filter<T>(T icSkSEntity,ISkillDataComponent skill) where T : IIcSkSEntity;
+        bool Filter<T>(T IIIcSkSEntity,ISkillDataComponent skill) where T : IIcSkSEntity;
     }
 }

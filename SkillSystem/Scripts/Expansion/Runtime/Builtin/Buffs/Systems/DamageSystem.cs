@@ -12,19 +12,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 伤害处理系统
     /// </summary>
-    public class DamageSystem<TMechanics,TDamageBuff>:IBuffCreateSystem<IcSkSEntity> 
+    public class DamageSystem<TMechanics,TDamageBuff>:IBuffCreateSystem<IIcSkSEntity> 
         where TMechanics : struct, IMechanicBuff
         where TDamageBuff : struct, IDamageBuff
     {
 //        private readonly IStructBuffManager<IcSkSEntity> _buffManager;
 
         private readonly BuffManager_Struct _buffManager;
-        public DamageSystem(IStructBuffManager<IcSkSEntity> buffManager)
+        public DamageSystem(IStructBuffManager<IIcSkSEntity> buffManager)
         {
             this._buffManager = (BuffManager_Struct) buffManager;
         }
 
-        public void Create(IcSkSEntity entity, int index)
+        public void Create(IIcSkSEntity entity, int index)
         {
             var buffs = _buffManager.GetBuffsCondition<TMechanics>(entity,_getHealth);
 

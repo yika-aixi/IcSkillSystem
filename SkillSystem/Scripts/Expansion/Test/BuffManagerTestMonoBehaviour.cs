@@ -3,7 +3,6 @@ using CabinIcarus.IcSkillSystem.Expansion.Builtin.Component;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
-using SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -41,10 +40,10 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             Value = value;
             Type = type;
-            Entity = -1;
+            Entity = new IcEntityStruct();
         }
 
-        public IcSkSEntity Entity { get; set; }
+        public IcEntityStruct Entity { get; set; }
     }
     
     struct TestBuff2:IMechanicBuff,IEquatable<TestBuff2>
@@ -85,21 +84,36 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
         private int _maxEntityId;
 
-        private IcSkSEntityManager _entityManager;
+        private BuffManager_Struct _entityManager;
 
         private void Awake()
         {
-            _entityManager = new IcSkSEntityManager(new BuffManager_Struct());
+            _entityManager = new BuffManager_Struct();
             _maxEntityId = EntityCount;
         }
 
+
+        class Entity:IIcSkSEntity
+        {
+            public int ID { get; private set; }
+
+            public Entity()
+            {
+                ID = 1;
+            }
+
+            public Entity(int id)
+            {
+                ID = id;
+            }
+        }
         private void Start()
         {
             for (int i = 0; i < EntityCount; i++)
             {
                 var id = i + 1;
                 
-                var entity = _entityManager.CreateEntity(id);
+                var entity = new Entity();
                 
                 GameObject go = new GameObject($"Entity ID:{id}");
 
@@ -117,18 +131,18 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             {
                 if (IsAdd)
                 {
-                    _addBuff(Random.Range(1, _maxEntityId + 1));
+                    _addBuff(new Entity(Random.Range(1, _maxEntityId + 1)));
                 }
                 else
                 {
-                    _removeBuff(Random.Range(1, _maxEntityId + 1));
+                    _removeBuff(new Entity(Random.Range(1, _maxEntityId + 1)));
                 }
             }
         }
 
-        private void _removeBuff(IcSkSEntity entity)
+        private void _removeBuff(IIcSkSEntity entity)
         {
-            var count = _entityManager.BuffManager.GetBuffCount<TestBuff1>(entity);
+            var count = _entityManager.GetBuffCount<TestBuff1>(entity);
             var value = count % 2;
             if (value == 0)
             {
@@ -136,15 +150,15 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             else
             {
-                count = _entityManager.BuffManager.GetBuffCount<TestBuff2>(entity);
+                count = _entityManager.GetBuffCount<TestBuff2>(entity);
                 _entityManager.RemoveBuff(entity, new TestBuff2(count, MechanicsType.Health));
             }
 
         }
 
-        private void _addBuff(IcSkSEntity entity)
+        private void _addBuff(IIcSkSEntity entity)
         {
-            var count = _entityManager.BuffManager.GetBuffCount<TestBuff1>(entity);
+            var count = _entityManager.GetBuffCount<TestBuff1>(entity);
             var value = count % 2;
             if (value == 0)
             {
@@ -152,7 +166,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             }
             else
             {
-                count = _entityManager.BuffManager.GetBuffCount<TestBuff2>(entity);
+                count = _entityManager.GetBuffCount<TestBuff2>(entity);
                 _entityManager.AddBuff(entity, new TestBuff2(count+1, MechanicsType.Health));
             }
         }
@@ -160,7 +174,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         [ContextMenu("Test Set 0")]
         private void _testSet()
         {
-            _entityManager.BuffManager.SetBuffData(1,new TestBuff1(100,100), 0);
+            _entityManager.SetBuffData(new Entity(), new TestBuff1(100,100), 0);
         }
     }
 }

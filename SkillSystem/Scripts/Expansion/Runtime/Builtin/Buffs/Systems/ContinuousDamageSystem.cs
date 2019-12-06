@@ -8,7 +8,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 持续伤害
     /// </summary>
-    public class ContinuousDamageSystem<T,TDamageBuff>:AIcStructBuffSystem<IcSkSEntity,TDamageBuff> where T:struct,IContinuousDamageBuff where TDamageBuff : struct,IDamageBuff
+    public class ContinuousDamageSystem<T,TDamageBuff>:AIcStructBuffSystem<IIcSkSEntity,TDamageBuff> where T:struct,IContinuousDamageBuff where TDamageBuff : struct,IDamageBuff
     {
         public override void Execute()
         {
@@ -40,7 +40,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
         #region Init 
 
-        public override void Create(IcSkSEntity entity, int index)
+        public override void Create(IIcSkSEntity entity, int index)
         {
             var buff = BuffManager.GetBuffData<T>(entity, index);
             
@@ -49,7 +49,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 
         #endregion
 
-        public ContinuousDamageSystem(IStructBuffManager<IcSkSEntity> buffManager) : base(buffManager)
+        public ContinuousDamageSystem(IStructBuffManager<IIcSkSEntity> buffManager) : base(buffManager)
         {
         }
     }
