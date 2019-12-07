@@ -9,17 +9,16 @@ using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
 using UnityEngine;
 using XNode;
-using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [Node.CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Create GameObject")]
-    public class CreateGoNode:ANPBehaveNode<Action>
+    [CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Create GameObject")]
+    public abstract class CreateGoNode:ANPBehaveNode<Action>
     {
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
         private GameObject _go;
-
+        
         //基于自身坐标
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
@@ -35,10 +34,20 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         [Output(ShowBackingValue.Always)]
         private GameObject _instantiates;
+
+        protected GameObject Go => GetInputValue(nameof(_go),_go);
+
+        protected bool BasedOnItselfPos => GetInputValue(nameof(_basedOnItselfPos),_basedOnItselfPos);
+
+        protected Vector3 Pos => GetInputValue(nameof(_pos),_pos);
+
+        protected Quaternion Quaternion => GetInputValue(nameof(_quaternion),_quaternion);
         
+        
+
         protected override Action GetOutValue()
         {
-            return new NPBehave.Action(_create);
+            return new Action(_create);
         }
 
         protected override object GetPortValue(NodePort port)
