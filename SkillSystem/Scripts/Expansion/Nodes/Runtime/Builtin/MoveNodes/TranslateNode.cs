@@ -14,12 +14,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Move/Translate")]
     public class TranslateNode:AMoveNode
     {
-        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)] 
-        private Action.Result _moveResult = Action.Result.PROGRESS;
+        [SerializeField]
+        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+        [PortTooltip("End Pos")]
+        private Vector3 _destination;
         
-        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)] 
-        private Action.Result _completeResult = Action.Result.SUCCESS;
-
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)] 
         private Space _space = Space.World;
 
@@ -29,32 +28,34 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)] 
         private float _stopDis = 1f;
         
-        protected override Action GetOutValue()
+        protected Vector3 Destination => GetInputValue(nameof(_destination), _destination);
+   
+        protected override Action.Result Move(Action.Request arg)
         {
-            return new Action(_move);
+            return _move(arg);
         }
 
         private Action.Result _move(Action.Request arg)
         {
+            if (arg == Action.Request.CANCEL)
+            {
+                return CompleteResult;
+            }
+            
             var dis = GetInputValue(nameof(_stopDis), _stopDis);
             var speed = GetInputValue(nameof(_speed), _speed);
             var space = GetInputValue(nameof(_space), _space);
-            
-            if (arg == Action.Request.CANCEL)
-            {
-                return GetInputValue(nameof(_completeResult), _completeResult);
-            }
 
             var direction = Destination - Tran.position;
             
             if (direction.sqrMagnitude <= dis)
             {
-                return GetInputValue(nameof(_completeResult), _completeResult);
+                return CompleteResult;
             }
             
             Tran.Translate(Time.fixedDeltaTime * speed * direction,space);
 
-            return GetInputValue(nameof(_moveResult), _moveResult);;
+            return MoveResult;
         }
     }
 }
