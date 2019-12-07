@@ -15,10 +15,16 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 #if UNITY_EDITOR
         public const string GroupFieldName = nameof(_group);
 #endif
-        
+
+        private IcSkillGroup _currentGroup;
         public IcSkillGroup GetGroup()
         {
-            return _group;
+            if (!_currentGroup)
+            {
+                _currentGroup =  (IcSkillGroup) _group.Copy();
+            }
+
+            return _currentGroup;
         }
         
         protected override NPBehave.Node GetOutValue()
@@ -28,7 +34,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
                 return null;
             }
 
-            _childGroupNode = _getChildGroupNode(_group);
+            GetGroup();
+
+            _childGroupNode = _getChildGroupNode(_currentGroup);
 
             if (!_childGroupNode)
             {
@@ -37,7 +45,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
             _childGroupNode.GetChildGroupNode = this;
             
-            return _group.GetChildGroupNode((IcSkillGroup) graph);
+            return _currentGroup.GetChildGroupNode((IcSkillGroup) graph);
         }
 
         protected override object GetPortValue(NodePort port)

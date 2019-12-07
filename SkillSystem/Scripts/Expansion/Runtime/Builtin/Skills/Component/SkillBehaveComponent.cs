@@ -4,6 +4,7 @@
 //2019年11月15日-16:59
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
+using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using CabinIcarus.IcSkillSystem.xNode_Group;
@@ -18,25 +19,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
     public class SkillBehaveComponent : MonoBehaviour
     {
         public IcSkillGroup Group;
-
+        
         public bool Passive;
 
-        private Root _root;
+        protected IcSkillGroup CurrentSkill;
 
         public ValueSDict Data;
 
+        private List<IcSkillGroup> _skillGroups = new List<IcSkillGroup>();
+        
         private void Awake()
         {
-            Group.Owner = gameObject;
-
             _init();
-
-#if UNITY_EDITOR
-            gameObject.AddComponent<Debugger>().BehaviorTree = _root;
-#endif
         }
 
-        private void Start()
+        protected virtual void OnEnable()
         {
             if (Passive)
             {
@@ -44,9 +41,48 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
             }
         }
 
+        protected virtual void OnDisable()
+        {
+            foreach (var skillGroup in _skillGroups)
+            {
+                if (skillGroup.RootNode.IsActive)
+                {
+                    skillGroup.RootNode.Stop();
+                }
+            }
+        }
+
         private void _init()
         {
-            _root = Group.Start();
+            CurrentSkill = CreateSkill();
+            CurrentSkill.Start();
+            Init();
+        }
+
+        protected IcSkillGroup CreateSkill()
+        {
+            IcSkillGroup skillGroup = (IcSkillGroup) Group.Copy();
+            skillGroup.Owner = gameObject;
+            _skillGroups.Add(skillGroup);
+            return skillGroup;
+        }
+
+        private void _debug(Root root)
+        {
+#if UNITY_EDITOR
+            Debugger debugger = null;
+            
+            if (!debugger)
+            {
+                debugger = gameObject.AddComponent<Debugger>();
+            }
+
+            debugger.BehaviorTree = root;
+#endif
+        }
+
+        protected virtual void Init()
+        {
         }
 
         public void Use()
@@ -54,16 +90,35 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
             Use(Data);
         }
 
-    public void Use(Dictionary<string,object> data)
+        public virtual void Use(Dictionary<string, object> data)
         {
-            Group.SetBlackboardVariable(data);
-            
-            _root.Start();
+            CurrentSkill.SetBlackboardVariable(data);
+
+            if (CurrentSkill.RootNode.IsActive)
+            {
+                foreach (var skill in _skillGroups)
+                {
+                    if (!skill.RootNode.IsActive)
+                    {
+                        CurrentSkill = skill;
+                        break;
+                    }
+                }
+
+                if (CurrentSkill.RootNode.IsActive)
+                {
+                    CurrentSkill = CreateSkill();
+                    CurrentSkill.Start();
+                }
+            }
+
+            _debug(CurrentSkill.RootNode);
+            CurrentSkill.RootNode.Start();
         }
 
         public void Stop()
         {
-            _root.Stop();
+            CurrentSkill.RootNode.Stop();
         }
 
         #region Test
@@ -73,13 +128,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         {
             _init();
         }
-        
+
         [ContextMenu("Use")]
         void _use()
         {
             Use();
         }
-        
+
         #endregion
     }
 }
