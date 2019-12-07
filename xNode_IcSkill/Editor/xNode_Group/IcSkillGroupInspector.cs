@@ -132,6 +132,15 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                                                 try
                                                 {
                                                     EditorGUI.LabelField(rect, $"{index + 1} : {targetNode.objectReferenceValue.name}");
+                                                    var removeButtonRect = rect;
+
+                                                    removeButtonRect.size = new Vector2(30,rect.height);
+                                                    removeButtonRect.position = new Vector2(rect.width - 10,removeButtonRect.position.y);
+                                                
+                                                    if (GUI.Button(removeButtonRect,EditorGUIUtility.FindTexture("d_P4_DeletedLocal")))
+                                                    {
+                                                        _group.RemoveNode((Node) targetNode.objectReferenceValue);
+                                                    }
                                                 }
                                                 catch (Exception e)
                                                 {
