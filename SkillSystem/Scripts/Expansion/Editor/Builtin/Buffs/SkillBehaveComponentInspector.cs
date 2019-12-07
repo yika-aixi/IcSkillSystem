@@ -4,10 +4,11 @@ using CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using CabinIcarus.IcSkillSystem.xNode_Group;
 using UnityEditor;
+using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
 {
-    [CustomEditor(typeof(SkillBehaveComponent))]
+    [CustomEditor(typeof(SkillBehaveComponent),true)]
     public class SkillBehaveComponentInspector : UnityEditor.Editor
     {
         private IcSkillGroup _lastGroup;
