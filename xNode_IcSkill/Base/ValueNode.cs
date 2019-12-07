@@ -20,7 +20,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
                 return GetOutValue();
             }
             
-            return this;
+            return null;
         }
 
         /// <summary>
