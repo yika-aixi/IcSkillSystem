@@ -23,11 +23,17 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
             return null;
         }
 
+        protected Type GetCurrentValueType()
+        {
+            var port = GetOutputPort(ValueOutPutPortName);
+
+            return port?.ValueType;
+        }
+        
         /// <summary>
         /// Value类型
         /// </summary>
         public abstract Type ValueType { get;}
-
 
         /// <summary>
         /// 是否能改变Value类型
