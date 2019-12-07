@@ -17,7 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
                 {
                     return Action.Result.SUCCESS;
                 }
-                
+
                 var root = OutValue.RootNode;
                 
                 if (_start)
