@@ -51,10 +51,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
             if (port.fieldName == nameof(OutValue))
             {
-                if (OutValue == null)
-                {
-                    OutValue = GetOutValue();
-                }
+                OutValue = GetOutValue();
 
                 return OutValue;
             }
