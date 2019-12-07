@@ -27,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
                 if (_lastGroup != _target.Group)
                 {
                     _lastGroup = _target.Group;
-
+                    
                     //remove
                     foreach (var key in _target.Data.Keys.ToList())
                     {
