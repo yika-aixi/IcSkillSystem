@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
-    [CreateNodeMenu("CabinIcarus/Nodes/NPBehave/Get Component")]
+    [CreateNodeMenu("CabinIcarus/Nodes/NPBehave/Go Get Component")]
     public class GetComponentValueNode:ValueNode
     {
         public override Type ValueType { get; } = typeof(Component);
