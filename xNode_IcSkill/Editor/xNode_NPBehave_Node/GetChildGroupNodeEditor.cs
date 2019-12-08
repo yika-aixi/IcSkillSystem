@@ -44,10 +44,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     _updatePort();
                 }
 
-                NodeEditorGUILayout.DynamicPortList("", typeof(object), serializedObject, NodePort.IO.Input,
+                NodeEditorGUILayout.DynamicPortList("in", typeof(object), serializedObject, NodePort.IO.Input,
                     Node.ConnectionType.Override, onCreation: _listSettingInput);
                 
-                NodeEditorGUILayout.DynamicPortList("", typeof(object), serializedObject, NodePort.IO.Output,
+                NodeEditorGUILayout.DynamicPortList("out", typeof(object), serializedObject, NodePort.IO.Output,
                     Node.ConnectionType.Multiple, onCreation: _listSettingOutput);
                 
                 NodeEditorGUILayout.PortField(new GUIContent("Group Root"),target.GetPort(nameof(GetChildGroupNode.OutValue)));
