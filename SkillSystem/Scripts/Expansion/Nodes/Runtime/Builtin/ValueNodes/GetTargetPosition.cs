@@ -19,6 +19,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         
         protected override object GetOutValue()
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                return null;
+            }
+#endif
+            
             var target = GetInputValue(nameof(_target), SkillGroup.Owner);
 
             if (_loacal)
