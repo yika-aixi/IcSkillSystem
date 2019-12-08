@@ -12,6 +12,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [PortTooltip("no input use Owner")]
         private GameObject _target;
 
+        [SerializeField]
+        private bool _isReverse;
+        
         public override Type ValueType { get; } = typeof(Vector3);
         
         protected override object GetOutValue()
@@ -24,7 +27,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 #endif
             var target = GetInputValue(nameof(_target), SkillGroup.Owner);
 
-            return target.transform.forward;
+            var forward = target.transform.forward;
+            return _isReverse ? -forward : forward;
         }
     }
 }
