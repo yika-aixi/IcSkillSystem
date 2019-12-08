@@ -120,11 +120,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                             _clearEdit();
                             Event.current.Use();
                         }
-
-                        if (e.type == EventType.Repaint && !contains)
-                        {
-                            _clearEdit();
-                        }
                     }
                     catch (ArgumentException)
                     {
@@ -158,12 +153,15 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 var path = AssetDatabase.GUIDToAssetPath(guid);
 
                 var group = AssetDatabase.LoadAssetAtPath<IcSkillGroup>(path);
-                        
+
                 foreach (var node in @group.nodes)
                 {
                     if (node is GetChildGroupNode)
                     {
-                        onAction?.Invoke(group,node);
+                        if (node.graph == this.window.graph)
+                        {
+                            onAction?.Invoke(group,node);
+                        }
                     }
                 }
             }
@@ -290,7 +288,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     _updateGetChildNodeGroup((group, node) =>
                     {
                         var nodePort = node.GetPort(port.fieldName);
-                    
+                        
                         nodePort.ValueType = type;
                     });
                 };
@@ -313,7 +311,11 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 if (port.ValueType != type)
                 {
                     port.ValueType = type;
-                    _updateGetChildNodeGroup((group, node) => { node.GetPort(port.fieldName).ValueType = type; });
+                    _updateGetChildNodeGroup((group, node) =>
+                    {
+                        var nodePort = node.GetPort(port.fieldName);
+                        nodePort.ValueType = type;
+                    });
                 }
             }
         }
