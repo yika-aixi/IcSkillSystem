@@ -19,12 +19,22 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
             var aValue = GetInputValue(nameof(_aValue), _aValue);
             var bValue = GetInputValue(nameof(_bValue), _bValue);
 
-            if (_equals)
+            return _equals ? _compare(aValue, bValue) : !_compare(aValue,bValue);
+        }
+
+        private bool _compare(object aValue, object bValue)
+        {
+            if (aValue == null && bValue == null)
             {
-                return aValue.Equals(bValue);
+                return true;
             }
 
-            return !aValue.Equals(bValue);
+            if (aValue == null)
+            {
+                return false;
+            }
+
+            return aValue.Equals(bValue);
         }
     }
 }
