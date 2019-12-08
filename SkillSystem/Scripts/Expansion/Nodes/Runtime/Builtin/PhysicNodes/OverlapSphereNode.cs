@@ -16,7 +16,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             bool result = false;
             
             var size = Physics.OverlapSphereNonAlloc(Origin, GetInputValue(nameof(_radius),_radius), Buffer, Mask,TriggerInteraction);
-
             if (size > 0)
             {
                 Result = Buffer.Take(size);

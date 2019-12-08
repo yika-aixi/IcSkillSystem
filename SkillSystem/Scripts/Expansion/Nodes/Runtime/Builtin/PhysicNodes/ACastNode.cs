@@ -9,13 +9,20 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [Node.NodeWidthAttribute(200)]
     public abstract class ACastNode:AObservingDecoratorNode<Condition>
     {
+        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+        [Label("Cast Owner")]
+        [PortTooltip("no input use SkillGroup Owner")]
+        private GameObject _owner;
+        
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [Node.LabelAttribute("Layer Mask")]
         private LayerMask _mask;
         
         protected LayerMask Mask => GetInputValue(nameof(_mask),_mask);
 
-#region Debug
+        public GameObject Owner => GetInputValue(nameof(_owner),SkillGroup.Owner);
+
+        #region Debug
 
 #if UNITY_EDITOR
 
@@ -51,7 +58,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             if (_drawGizmosCom == null)
             {
                 GameObject go = new GameObject("Cast Node Debug");
-                go.transform.SetParent(SkillGroup.Owner.transform);
+                go.transform.SetParent(Owner.transform);
                 _drawGizmosCom = go.AddComponent<DrawGizmosCom>();
                 _drawGizmosCom.OnDraw += () => { Gizmos.color = Color; };
                 _drawGizmosCom.OnDraw += OnDrawGizmos;
@@ -94,7 +101,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Node.LabelAttribute("Owner Add Offset")]
         private Vector3 _offset;
 
-        protected Vector3 Origin => SkillGroup.Owner.transform.position + Offset;
+        protected Vector3 Origin => Owner.transform.position + Offset;
         
         protected Vector3 Offset => GetInputValue(nameof(_offset), _offset);
         
