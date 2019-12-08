@@ -12,7 +12,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     public abstract class AObservingDecoratorNode<T>:ADecoratorNode<T> where T : Node
     {
-        [SerializeField] 
-        protected Stops Stops;
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+        private Stops _stops;
+
+        protected Stops Stops => GetInputValue(nameof(_stops), _stops);
     }
 }
