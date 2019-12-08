@@ -1,5 +1,4 @@
-﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
-using NPBehave;
+﻿using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
