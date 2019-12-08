@@ -99,13 +99,5 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 port.ValueType = newType;
             }
         }
-
-        public override void OnRemoveConnection(NodePort port)
-        {
-            if (port.fieldName == nameof(_enumerables))
-            {
-                GetPort(nameof(_currentValue)).ValueType = typeof(object);
-            }
-        }
     }
 }
