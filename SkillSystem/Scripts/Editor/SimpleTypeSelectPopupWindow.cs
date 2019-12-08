@@ -52,6 +52,17 @@ namespace CabinIcarus.IcSkillSystem.Editor
             }
         }
 
+        protected override void RowGUI(RowGUIArgs args)
+        {
+            if (args.item is TypeItem typeItem)
+            {
+                EditorGUI.LabelField(args.rowRect,new GUIContent(args.label,typeItem.Type.FullName));
+                return;
+            }
+            
+            base.RowGUI(args);
+        }
+
         protected override TreeViewItem BuildRoot()
         {
             int depth = -1;
