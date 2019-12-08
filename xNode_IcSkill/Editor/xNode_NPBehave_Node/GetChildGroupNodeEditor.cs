@@ -102,7 +102,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                         }
                         else
                         {
-                            target.AddDynamicInput(port.ValueType, Node.ConnectionType.Override, port.typeConstraint,port.TypeConstraintBaseType,port.fieldName);                              
+                            target.AddDynamicInput(port.ValueType, Node.ConnectionType.Override, Node.TypeConstraint.Inherited,port.TypeConstraintBaseType,port.fieldName);                              
                         }
                      
 
