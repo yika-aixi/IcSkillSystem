@@ -9,9 +9,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [Node.NodeWidthAttribute(200)]
     public abstract class ACastNode:AObservingDecoratorNode<Condition>
     {
-        [SerializeField]
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [Node.LabelAttribute("Layer Mask")]
-        protected LayerMask Mask;
+        private LayerMask _mask;
+        
+        protected LayerMask Mask => GetInputValue(nameof(_mask),_mask);
 
 #region Debug
 
