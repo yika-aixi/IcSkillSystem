@@ -132,13 +132,15 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 if (EditorGUI.EndChangeCheck())
                 {
                     _clearEdit();
+
+                    string oldName = oldPort.fieldName;
                     
                     target.PortRename(oldPort,newName);
                     
                     //update all use this group of graph GetChildGroup Node
                     _updateGetChildNodeGroup((group,node) =>
                     {
-                        node.PortRename(node.GetPort(oldPort.fieldName),newName);
+                        node.PortRename(node.GetPort(oldName),newName);
                     });
                 }
             }
@@ -156,9 +158,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
                 foreach (var node in @group.nodes)
                 {
-                    if (node is GetChildGroupNode)
+                    if (node is GetChildGroupNode getChild)
                     {
-                        if (node.graph == this.window.graph)
+                        if (getChild.ChildGroup == window.graph)
                         {
                             onAction?.Invoke(group,node);
                         }

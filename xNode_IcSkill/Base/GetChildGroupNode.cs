@@ -14,6 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
 #if UNITY_EDITOR
         public const string GroupFieldName = nameof(_group);
+        public IcSkillGroup ChildGroup => _group;
 #endif
 
         private IcSkillGroup _currentGroup;

@@ -21,12 +21,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         public override void OnInit()
         {
             _updatePort();
+            _lastWindow = NodeEditorWindow.current;
         }
 
         private IcSkillGroup _currentGroup;
         private SerializedProperty _groupSer;
+        NodeEditorWindow _lastWindow;
         public override void OnBodyGUI()
         {
+            if (_lastWindow != NodeEditorWindow.current)
+            {
+                _lastWindow = NodeEditorWindow.current;
+                
+                _updatePort();
+            }
             serializedObject.Update();
             {
                 EditorGUI.BeginChangeCheck();
