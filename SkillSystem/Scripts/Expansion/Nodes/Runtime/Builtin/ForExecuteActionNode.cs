@@ -22,11 +22,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Output(ShowBackingValue.Always)]
         private int _index;
 
-        private Action _selfAction;
         protected override Action GetOutValue()
         {
-            _selfAction = new Action(_for);
-            return _selfAction;
+            return new Action(_for);
         }
 
         protected override object GetPortValue(NodePort port)
@@ -71,7 +69,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                     _currentValue = ator.Current;
                     if (action.RootNode == null)
                     {
-                        action.SetRoot(_selfAction.RootNode);
+                        action.SetRoot(OutValue.RootNode);
                     }
                     action.Start();
                     _index++;
