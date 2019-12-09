@@ -5,12 +5,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     public abstract class ADecoratorNode<T>:ANPBehaveNode<T> where T : Node
     {
-        [SerializeField,Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
-        protected Node DecorateeNode;
+        [Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
+        protected Node _decorateeNode;
 
+        protected Node DecorateeNode;
         protected sealed override T GetOutValue()
         {
-            DecorateeNode = GetInputValue(nameof(DecorateeNode), DecorateeNode);
+            DecorateeNode = GetInputValue(nameof(_decorateeNode), _decorateeNode);
 
             return GetDecoratorNode();
         }

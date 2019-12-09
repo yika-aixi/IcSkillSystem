@@ -12,15 +12,16 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     public abstract class AConditionNode:AObservingDecoratorNode<Condition>
     {
-        [SerializeField]
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private float _checkInterval;
 
-        [SerializeField]
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private float _randomVariance;
 
         protected sealed override Condition GetDecoratorNode()
         {
-            return new Condition(Condition,Stops,_checkInterval,_randomVariance,DecorateeNode);
+            return new Condition(Condition,Stops,GetInputValue(nameof(_checkInterval),_checkInterval),
+                GetInputValue(nameof(_randomVariance),_randomVariance),DecorateeNode);
         }
 
         protected abstract bool Condition();
