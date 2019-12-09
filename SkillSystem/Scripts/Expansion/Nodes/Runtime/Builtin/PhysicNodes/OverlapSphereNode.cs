@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private float _radius;
 
-        protected override bool CastCheck()
+        protected override bool Condition()
         {
             DebugStart();
             

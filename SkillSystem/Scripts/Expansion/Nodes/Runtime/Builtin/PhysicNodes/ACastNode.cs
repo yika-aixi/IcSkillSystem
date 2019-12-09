@@ -7,7 +7,7 @@ using Node = XNode.Node;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [Node.NodeWidthAttribute(200)]
-    public abstract class ACastNode:AObservingDecoratorNode<Condition>
+    public abstract class ACastNode:AConditionNode
     {
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [Label("Cast Owner")]
@@ -104,12 +104,5 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         protected Vector3 Origin => Owner.transform.position + Offset;
         
         protected Vector3 Offset => GetInputValue(nameof(_offset), _offset);
-        
-        protected sealed override Condition GetDecoratorNode()
-        {
-            return new Condition(CastCheck,Stops,DecorateeNode);
-        }
-
-        protected abstract bool CastCheck();
     }
 }
