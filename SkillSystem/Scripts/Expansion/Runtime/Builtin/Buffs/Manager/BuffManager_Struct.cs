@@ -551,7 +551,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                         result[count] = new BuffDataInfo<T>(i,buff);
                         count++;
                     }
-                    catch (IndexOutOfRangeException e)
+                    catch (IndexOutOfRangeException)
                     {
                         //已经找到所有,结束后续
                         break;
@@ -616,7 +616,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                         result[count] = i;
                         count++;
                     }
-                    catch (IndexOutOfRangeException e)
+                    catch (IndexOutOfRangeException)
                     {
                         //已经找到所有,结束后续
                         break;

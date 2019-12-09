@@ -31,7 +31,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
 #if ENABLE_MANAGED_JOBS
-            for (var i = 0; i < buffs.Length; i++)
+            for (var i = 0; i < buffs.Length; )
 #else
             for (var i = 0; i < buffs.Count; i++)
 #endif

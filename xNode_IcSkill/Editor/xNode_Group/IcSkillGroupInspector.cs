@@ -142,7 +142,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                                                         _group.RemoveNode((Node) targetNode.objectReferenceValue);
                                                     }
                                                 }
-                                                catch (Exception e)
+                                                catch (Exception)
                                                 {
                                                     EditorGUI.LabelField(rect, $"{index + 1} Missing");
                                                 }

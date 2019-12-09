@@ -171,8 +171,6 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 
                 if (GUI.Button(rect,"Edit Value"))
                 {
-                    var size = 250;
-
                     _valueEditPopup.ValueS = valueS;
 
                     var pos = rect;
