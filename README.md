@@ -2,6 +2,8 @@
 
 [0.6 last Video](https://www.bilibili.com/video/av76312353)
 
+[Trello](https://trello.com/b/DF5JWisg/ic-skill-system)
+
 Example Unity Version:2019.2+
 
 Behave Tree Create Editor
