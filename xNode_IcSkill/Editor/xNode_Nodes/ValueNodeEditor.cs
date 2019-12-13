@@ -1,29 +1,28 @@
-﻿using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using UnityEngine;
 using XNode;
 using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 {
-    [NodeEditor.CustomNodeEditorAttribute(typeof(ValueNode))]
+    [CustomNodeEditorAttribute(typeof(DynamicValueNode))]
     public class ValueNodeEditor:NodeEditor
     {
-        private ValueNode _valueNode;
+        private DynamicValueNode _valueNode;
         private NodePort _valueOutPut;
         
         private SimpleTypeSelectPopupWindow windowContent;
 
         public override void OnInit()
         {
-            _valueNode = (ValueNode) target;
-            _valueOutPut = _valueNode.GetOutputPort(ValueNode.ValueOutPutPortName);
+            _valueNode = (DynamicValueNode) target;
+            _valueOutPut = _valueNode.GetOutputPort(DynamicValueNode.ValueOutPutPortName);
 
             if (_valueOutPut != null)
             {
                 if (_valueOutPut.ValueType == null)
                 {
-                    _valueOutPut.ValueType = _valueNode.ValueType;
+                    _valueOutPut.ValueType = typeof(object);
                 }
             }
             
@@ -44,20 +43,17 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             {
                 if (_valueOutPut == null)
                 {
-                    _valueOutPut = _valueNode.AddDynamicOutput(_valueNode.ValueType, fieldName: ValueNode.ValueOutPutPortName);
+                    _valueOutPut = _valueNode.AddDynamicOutput(typeof(object), fieldName: DynamicValueNode.ValueOutPutPortName);
                 }
                 
                 base.OnBodyGUI();
                 
-                if (_valueNode.IsChangeValueType)
+                if (GUILayout.Button("Change Type"))
                 {
-                    if (GUILayout.Button("Change Type"))
-                    {
-                        windowContent.BaseType = _valueNode.BaseType;
-                        
-                        UnityEditor.PopupWindow.Show(new Rect(GetCurrentMousePosition(), new Vector2(0, 0)),
-                            windowContent);
-                    }
+                    windowContent.BaseType = _valueNode.BaseType;
+                    
+                    UnityEditor.PopupWindow.Show(new Rect(GetCurrentMousePosition(), new Vector2(0, 0)),
+                        windowContent);
                 }
                 
             }

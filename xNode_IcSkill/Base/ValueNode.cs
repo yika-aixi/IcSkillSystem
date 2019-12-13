@@ -6,52 +6,93 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
+    public class ValueInfo<T>
+    {
+        public T Value;
+    }
+    
     /// <summary>
     /// 值节点
     /// </summary>
-    public abstract class ValueNode:Node,IIcSkillSystemNode
+    public abstract class ValueNode<T>:ANPNode<ValueInfo<T>>
     {
-        public const string ValueOutPutPortName = "Value";
-
-        public override object GetValue(NodePort port)
-        {
-            if (port.fieldName == ValueOutPutPortName)
-            {
-                return GetOutValue();
-            }
-            
-            return null;
-        }
-
-        protected Type GetCurrentValueType()
-        {
-            var port = GetOutputPort(ValueOutPutPortName);
-
-            return port?.ValueType;
-        }
+        private ValueInfo<T> _valueInfo;
         
-        /// <summary>
-        /// Value类型
-        /// </summary>
-        public abstract Type ValueType { get;}
+        protected sealed override ValueInfo<T> GetOutValue()
+        {
+            _checkValueInfo();
 
-        /// <summary>
-        /// 是否能改变Value类型
-        /// </summary>
-        public virtual bool IsChangeValueType { get; } = false;
+            _valueInfo.Value = GetTValue();
+
+            return _valueInfo;
+        }
+
+        protected sealed override object GetPortValue(NodePort port)
+        {
+            _checkValueInfo();
+
+            _valueInfo.Value = GetTValue(port);
+
+            return _valueInfo.Value;
+        }
+
+        protected virtual T GetTValue(NodePort port)
+        {
+            return default;
+        }
+
+        private void _checkValueInfo()
+        {
+            if (_valueInfo == null)
+            {
+                _valueInfo = new ValueInfo<T>();
+            }
+        }
+
+        protected abstract T GetTValue();
+
+        public IcSkillGroup SkillGroup { get; set; }
+    }
+    
+    /// <summary>
+    /// 动态值节点
+    /// </summary>
+    public abstract class DynamicValueNode:ValueNode<object>
+    {
+        public const string ValueOutPutPortName = "DynamicValue";
 
         /// <summary>
         /// 当是可改变类型是,只会显示该类型可以分配了的类型,默认为system.object
         /// </summary>
         public virtual Type BaseType { get; } = typeof(object);
         
-        /// <summary>
-        /// 获取输出 value
-        /// </summary>
-        /// <returns></returns>
-        protected abstract object GetOutValue();
+        protected Type GetCurrentValueType()
+        {
+            var port = GetOutputPort(ValueOutPutPortName);
 
-        public IcSkillGroup SkillGroup { get; set; }
+            return port?.ValueType;
+        }
+
+        protected sealed override object GetTValue()
+        {
+            return GetDynamicValue();
+        }
+
+        protected sealed override object GetTValue(NodePort port)
+        {
+            if (port.fieldName == ValueOutPutPortName)
+            {
+                return GetDynamicValue();
+            }
+            
+            return GetOtherValue(port);
+        }
+        protected abstract object GetDynamicValue();
+
+        protected virtual object GetOtherValue(NodePort port)
+        {
+            return null;
+        }
     }
     
     /// <summary>

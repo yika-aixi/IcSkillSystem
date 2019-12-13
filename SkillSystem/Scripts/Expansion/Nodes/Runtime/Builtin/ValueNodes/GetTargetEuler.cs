@@ -1,4 +1,3 @@
-using System;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using UnityEngine;
@@ -6,20 +5,19 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Target Euler Value")]
-    public class GetTargetEuler:ValueNode
+    public class GetTargetEuler:ValueNode<Vector3>
     { 
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [PortTooltip("no input use Owner")]
         private GameObject _target;
-        
-        public override Type ValueType { get; } = typeof(Vector3);
-        
-        protected override object GetOutValue()
+
+        protected override Vector3 GetTValue()
         {
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                return null;
+                return Vector3.zero;
             }
 #endif
             var target = GetInputValue(nameof(_target), SkillGroup.Owner);

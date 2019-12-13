@@ -3,12 +3,11 @@ using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using NPBehave;
 using UnityEngine;
-using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Blackboard/Get Blackboard Value")]
-    public class GetBlackboardValue:ValueNode
+    public class GetBlackboardValue:DynamicValueNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("no input use Blackboard of from Root")]
@@ -17,13 +16,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         [SerializeField]
         private string _key;
 
-        public override Type ValueType { get; } = typeof(object);
-
-        public override bool IsChangeValueType { get; } = true;
-
-        protected override object GetOutValue()
+        protected override object GetDynamicValue()
         {
-            
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {

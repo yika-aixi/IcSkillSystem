@@ -4,14 +4,12 @@ using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/NPBehave/Get Action Value")]
-    public class GetActionTaskActionNode:ValueNode
+    public class GetActionTaskActionNode:ValueNode<Action>
     {
-        public override Type ValueType { get; } = typeof(Action);
-
         [Input(ShowBackingValue.Always,ConnectionType.Multiple,TypeConstraint.Strict)]
         private NPBehave.Action _action;
-        
-        protected override object GetOutValue()
+
+        protected override Action GetTValue()
         {
             var action = GetInputValue(nameof(_action), _action);
 

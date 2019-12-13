@@ -5,14 +5,12 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/Component To GameObject")]
-    public class GetGoValueNode:ValueNode
+    public class GetGoValueNode:ValueNode<GameObject>
     {
-        public override Type ValueType { get; } = typeof(GameObject);
-
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
         private Component _component;
-        
-        protected override object GetOutValue()
+
+        protected override GameObject GetTValue()
         {
             var com = GetInputValue(nameof(_component), _component);
 

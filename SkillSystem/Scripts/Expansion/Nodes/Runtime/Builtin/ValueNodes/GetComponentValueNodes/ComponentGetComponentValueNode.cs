@@ -6,18 +6,14 @@ using UnityEngine;
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenu("CabinIcarus/Nodes/NPBehave/Component Get Component")]
-    public abstract class ComponentGetComponentValueNode:ValueNode
+    public class ComponentGetComponentValueNode:DynamicValueNode
     {
-        public override Type ValueType { get; } = typeof(Component);
-
-        public override bool IsChangeValueType { get; } = true;
-
-        public override Type BaseType { get; } = typeof(Component);
-
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
         private Component _target;
-        
-        protected override object GetOutValue()
+
+        public override Type BaseType => typeof(Component);
+
+        protected override object GetDynamicValue()
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying)
