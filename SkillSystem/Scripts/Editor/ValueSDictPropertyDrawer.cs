@@ -144,7 +144,15 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
                 if (value == null)
                 {
-                    valueS.SetValue(Activator.CreateInstance(valueS.ValueType));
+                    if (valueS.ValueType == typeof(string))
+                    {
+                        valueS.SetValue(string.Empty);
+                    }
+                    else
+                    {
+                        valueS.SetValue(Activator.CreateInstance(valueS.ValueType));
+                    }
+
                     Save();
                 }
 
