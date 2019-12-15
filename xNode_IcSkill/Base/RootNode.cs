@@ -1,12 +1,16 @@
 ﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Root")]
     public class RootNode : ANPBehaveNode<Root>
     {
+        [SerializeField]
+        public int Priority;
+        
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("黑板")]
         private Blackboard _blackBoard;

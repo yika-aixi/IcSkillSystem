@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
@@ -53,27 +54,47 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         
         public Root RootNode { get; private set; }
 
+        private List<Root> _roots = new List<Root>();
+
         /// <summary>
-        /// 开始,返回Node
+        /// 加载图
         /// </summary>
         /// <returns></returns>
-        public Root Start()
+        public void LoadGroup()
         {
             _init(this);
-
+            
+            List<RootNode> rootNodes = new List<RootNode>();
+            
             foreach (var node in nodes)
             {
                 if (node is RootNode rootNode)
                 {
-                    RootNode = rootNode.GetDefaultOutputValue();
-
-                    _setBlackboardValue();
-
-                    break;
+                    rootNodes.Add(rootNode);
                 }
             }
 
-            return RootNode;
+            rootNodes = rootNodes.OrderBy(x => x.Priority).ToList();
+            
+            int count = 0;
+            
+            foreach (var rootNode in rootNodes)
+            {
+                RootNode = rootNode.GetDefaultOutputValue();
+
+                if (_roots.Count - 1 <= count)
+                {
+                    _roots.Add(RootNode);
+                }
+                else
+                {
+                    _roots[count] = RootNode;
+                }
+
+                count++;
+            }
+        }
+
         }
 
         private void _setBlackboardValue()
@@ -81,6 +102,27 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             foreach (var item in _varMap)
             {
                 RootNode.Blackboard.Set(item.Key, item.Value.GetValue());
+        public void ExecuteGroup()
+        {
+            if (_roots.Count == 0)
+            {
+                throw new InvalidOperationException("have not Load Group or Group no exist Root Node");
+            }
+
+            foreach (var root in _roots)
+            {
+                root.Start();
+            }
+        }
+
+        public void StopGroup()
+        {
+            foreach (var root in _roots)
+            {
+                if (root.IsActive)
+                {
+                    root.Stop();
+                }
             }
         }
 

@@ -40,23 +40,56 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             };
         }
 
+        public override void OnHeaderGUI()
+        {
+            base.OnHeaderGUI();
+
+            var rect = GUILayoutUtility.GetLastRect();
+
+            rect.position = new Vector2(this.GetWidth() - 40,rect.position.y + 5);
+            
+            rect.size = new Vector2(30,16);
+
+            EditorGUI.PropertyField(rect,serializedObject.FindProperty(nameof(RootNode.Priority)),new GUIContent(""));
+        }
+
         public override void OnBodyGUI()
         {
             serializedObject.Update();
-            
-            NodeEditorGUILayout.PortField(new GUIContent("Blackboard"),target.GetPort("_blackBoard"));
-            NodeEditorGUILayout.PortField(new GUIContent("Clock"),target.GetPort("_clok"));
-            
-            EditorGUILayout.BeginHorizontal();
             {
-                {
-                    EditorGUILayout.LabelField(string.Empty,GUILayout.Width(GetWidth() / 2));
-                    NodeEditorGUILayout.PortField(new GUIContent("Main Node"),target.GetPort("_mainNode"));
-                }
-            }
-            EditorGUILayout.EndHorizontal();
+                NodeEditorGUILayout.PortField(new GUIContent("Blackboard"), target.GetPort("_blackBoard"));
+                NodeEditorGUILayout.PortField(new GUIContent("Clock"), target.GetPort("_clok"));
+                NodeEditorGUILayout.PortField(new GUIContent("Root"), target.GetPort(nameof(RootNode.OutValue)));
 
-            // Apply property modifications
+                EditorGUILayout.BeginHorizontal();
+                {
+                    EditorGUILayout.LabelField(string.Empty, GUILayout.Width(GetWidth() / 3.5f));
+
+                    EditorGUILayout.BeginVertical();
+                    {
+                        EditorGUILayout.LabelField(new GUIContent("Main Node"));
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            #region Spaces
+
+                            EditorGUILayout.Space();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.Space();
+
+                            #endregion
+                            
+                            NodeEditorGUILayout.PortField(new GUIContent(""), target.GetPort("_mainNode"));
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndHorizontal();
+                
+            }
             serializedObject.ApplyModifiedProperties();
         }
 
