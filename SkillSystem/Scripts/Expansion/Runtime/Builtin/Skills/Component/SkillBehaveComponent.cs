@@ -55,7 +55,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         private void _init()
         {
             CurrentSkill = CreateSkill();
-            CurrentSkill.Start();
+            CurrentSkill.LoadGroup();
             Init();
         }
 
@@ -92,7 +92,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
 
         public virtual void Use(Dictionary<string, object> data)
         {
-            CurrentSkill.SetBlackboardVariable(data);
+            CurrentSkill.SetGroupVariable(data);
 
             if (CurrentSkill.RootNode.IsActive)
             {
@@ -108,7 +108,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
                 if (CurrentSkill.RootNode.IsActive)
                 {
                     CurrentSkill = CreateSkill();
-                    CurrentSkill.Start();
+                    CurrentSkill.LoadGroup();
                 }
             }
 
