@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Nodes.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.xNode_Group;
+using CabinIcarus.IcSkillSystem.xNode_Group.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -28,6 +30,21 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             }            
             
             return new Color(30 / 255f,147 / 255f,65 / 255f);
+        }
+        
+        public override void OnInit()
+        {
+            IcSkillGroupEditor.OnAllowCreate += (group,type) =>
+            {
+                if (type != typeof(ChildGroupNode))
+                {
+                    return true;
+                }
+
+                var result = group.nodes.Any(x => x is ChildGroupNode || x is RootNode);
+ 
+                return !result;
+            };
         }
 
         private ReorderableList _dynamicIn;

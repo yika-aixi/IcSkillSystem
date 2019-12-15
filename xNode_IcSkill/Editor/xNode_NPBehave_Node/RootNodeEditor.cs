@@ -27,15 +27,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         public override void OnInit()
         {
-            
             IcSkillGroupEditor.OnAllowCreate += (group,type) =>
             {
-                if (type != typeof(RootNode) && type != typeof(ChildGroupNode))
+                if (type != typeof(RootNode))
                 {
                     return true;
                 }
 
-                var result = group.nodes.Any(x => x is RootNode || x is ChildGroupNode);
+                var result = group.nodes.Any(x => x is ChildGroupNode);
  
                 return !result;
             };
