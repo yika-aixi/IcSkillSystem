@@ -95,13 +95,54 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             }
         }
 
+        /// <summary>
+        /// Set Group variable
+        /// </summary>
+        /// <param name="map"></param>
+        public void SetGroupVariable(ValueSDict map)
+        {
+            _varMap = map;
+        }
+        
+        public void SetGroupVariable(Dictionary<string, object> variable)
+        {
+            if (variable == null)
+            {
+                Debug.LogWarning("variable map is null");
+                return;
+            }
+            
+            _varMap.Clear();
+            
+            foreach (var valuePair in variable)
+            {
+                var value = new ValueS();
+                value.SetValue(valuePair.Value);
+                _varMap.Add(valuePair.Key,value);
+            }
         }
 
-        private void _setBlackboardValue()
+        public object GetVariableValue(string key)
         {
-            foreach (var item in _varMap)
+            _varMap.TryGetValue(key, out var value);
+
+            return value;
+        }
+
+        public void SetOrAddVariable(string key, object value)
+        {
+            if (_varMap.ContainsKey(key))
             {
-                RootNode.Blackboard.Set(item.Key, item.Value.GetValue());
+                _varMap[key].SetValue(value);
+            }
+            else
+            {
+                var valueS = new ValueS();
+                valueS.SetValue(value);
+                _varMap.Add(key,valueS);
+            }                        
+        }
+
         public void ExecuteGroup()
         {
             if (_roots.Count == 0)
@@ -161,25 +202,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             return main;
         }
 
-        public void SetBlackboardVariable(Dictionary<string, object> variable)
-        {
-            if (variable == null)
-            {
-                Debug.LogWarning("variable map is null");
-                return;
-            }
-            _varMap.Clear();
-            
-            foreach (var valuePair in variable)
-            {
-                var value = new ValueS();
-                value.SetValue(valuePair.Value);
-                _varMap.Add(valuePair.Key,value);
-            }
-
-            _setBlackboardValue();
-        }
-        
         #region Serialize
 
 #if UNITY_EDITOR
