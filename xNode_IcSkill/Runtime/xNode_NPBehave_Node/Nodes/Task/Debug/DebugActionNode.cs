@@ -15,9 +15,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Debug")]
     public class DebugActionNode:ANPBehaveNode<Action>
     {
-        [SerializeField]
-        public LogType Type;
+        [SerializeField] 
+        private LogType _type;
 
+        [SerializeField]
+        [Label("String Message")]
+        public string _simMessage;
+
+        
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private object _message;
         
@@ -28,9 +33,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 
         private void _log()
         {
-            _message = GetInputValue<object>(nameof(_message));
+            _message = GetInputValue<object>(nameof(_message),_simMessage);
             
-            switch (Type)
+            switch (_type)
             {
                 case LogType.Error:
                     UnityEngine.Debug.LogError(_message);
