@@ -1,6 +1,4 @@
-﻿using System;
-using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using NPBehave;
 using UnityEngine;
 
@@ -10,7 +8,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     public class GetBlackboardValue:DynamicValueNode
     {
         [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
-        [PortTooltip("no input use Blackboard of from Root")]
         private Blackboard _blackBoard;
         
         [SerializeField]
@@ -28,9 +25,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
             if (blackboard == null)
             {
-                blackboard = SkillGroup.RootNode.Blackboard;
+                return null;
             }
-            
             
             return blackboard.Get(_key);
         }
