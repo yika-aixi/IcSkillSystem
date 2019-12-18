@@ -6,7 +6,6 @@
 //Assembly-CSharp
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using UnityEngine;
@@ -40,7 +39,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             
             return settings;
         }
-
+        
         //todo 先用它的这样的写法吧,后续改为在Node自定义编辑中处理
         public override string GetPortTooltip(NodePort port)
         {
