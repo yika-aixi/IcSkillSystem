@@ -36,4 +36,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             return null;
         }
     }
+
+    public struct RoodNodeComparer:IComparer<RootNode>
+    {
+        public int Compare(RootNode x, RootNode y)
+        {
+            if (x.Priority < y.Priority)
+            {
+                return -1;
+            }else if (x.Priority > y.Priority)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+    }
 }
