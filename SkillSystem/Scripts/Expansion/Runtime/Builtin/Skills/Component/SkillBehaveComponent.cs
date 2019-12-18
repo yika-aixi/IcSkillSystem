@@ -45,10 +45,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         {
             foreach (var skillGroup in _skillGroups)
             {
-                if (skillGroup.RootNode.IsActive)
-                {
-                    skillGroup.RootNode.Stop();
-                }
+                skillGroup.StopGroup();
             }
         }
 
@@ -94,31 +91,31 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         {
             CurrentSkill.SetGroupVariable(data);
 
-            if (CurrentSkill.RootNode.IsActive)
+            if (CurrentSkill.IsActive())
             {
                 foreach (var skill in _skillGroups)
                 {
-                    if (!skill.RootNode.IsActive)
+                    if (!skill.IsActive())
                     {
                         CurrentSkill = skill;
                         break;
                     }
                 }
 
-                if (CurrentSkill.RootNode.IsActive)
+                if (CurrentSkill.IsActive())
                 {
                     CurrentSkill = CreateSkill();
                     CurrentSkill.LoadGroup();
                 }
             }
 
-            _debug(CurrentSkill.RootNode);
-            CurrentSkill.RootNode.Start();
+//            _debug(CurrentSkill.RootNode);
+            CurrentSkill.ExecuteGroup();
         }
 
         public void Stop()
         {
-            CurrentSkill.RootNode.Stop();
+            CurrentSkill.StopGroup();
         }
 
         #region Test

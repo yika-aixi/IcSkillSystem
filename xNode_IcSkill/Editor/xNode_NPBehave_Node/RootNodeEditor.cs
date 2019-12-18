@@ -12,6 +12,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     public class RootNodeEditor:NodeEditor 
     {
         private RootNode rootNode;
+        private SerializedProperty _autoStartSer;
+        private SerializedProperty _prioritySer;
 
         public override Color GetTint()
         {
@@ -27,6 +29,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         public override void OnInit()
         {
+            _stor();
+            
             IcSkillGroupEditor.OnAllowCreate += (group,type) =>
             {
                 if (type != typeof(RootNode))
@@ -40,23 +44,43 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             };
         }
 
-        public override void OnHeaderGUI()
-        {
-            base.OnHeaderGUI();
-
-            var rect = GUILayoutUtility.GetLastRect();
-
-            rect.position = new Vector2(this.GetWidth() - 40,rect.position.y + 5);
-            
-            rect.size = new Vector2(30,16);
-
-            EditorGUI.PropertyField(rect,serializedObject.FindProperty(nameof(RootNode.Priority)),new GUIContent(""));
-        }
-
         public override void OnBodyGUI()
         {
             serializedObject.Update();
             {
+                EditorGUI.BeginChangeCheck();
+                {
+                    if (_prioritySer == null)
+                    {
+                        _prioritySer = serializedObject.FindProperty(nameof(RootNode.Priority));
+                    }
+
+                    EditorGUILayout.DelayedIntField(_prioritySer,new GUIContent("Priority",""));
+                }
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    _stor();
+                }
+
+                if (_autoStartSer == null)
+                {
+                    _autoStartSer = serializedObject.FindProperty(nameof(RootNode.AutoStart));
+                }
+
+                var isFirstRoot = rootNode.graph.nodes[0] == rootNode;
+                GUI.enabled = !isFirstRoot;
+                {
+                    _autoStartSer.boolValue = EditorGUILayout.ToggleLeft(new GUIContent("Group Start Auto Start",isFirstRoot ? "First Root Node Must be auto Start":""),
+                        _autoStartSer.boolValue);
+
+                    if (isFirstRoot)
+                    {
+                        rootNode.AutoStart = true;
+                    }
+                }
+                GUI.enabled = true;
+
                 NodeEditorGUILayout.PortField(new GUIContent("Blackboard"), target.GetPort("_blackBoard"));
                 NodeEditorGUILayout.PortField(new GUIContent("Clock"), target.GetPort("_clok"));
                 NodeEditorGUILayout.PortField(new GUIContent("Root"), target.GetPort(nameof(RootNode.OutValue)));
@@ -88,9 +112,42 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     EditorGUILayout.EndVertical();
                 }
                 EditorGUILayout.EndHorizontal();
-                
             }
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void _stor()
+        {
+            target.graph.nodes.Sort((a, b) =>
+            {
+                if (a is RootNode aRoot
+                    && b is RootNode bRoot)
+                {
+                    if (aRoot.Priority < bRoot.Priority)
+                    {
+                        return -1;
+                    }
+                        
+                    if (aRoot.Priority > bRoot.Priority)
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    if (a is RootNode)
+                    {
+                        return -1;
+                    }
+
+                    if (b is RootNode)
+                    {
+                        return 1;
+                    } 
+                }
+                    
+                return 0;
+            });
         }
 
         private void _check()

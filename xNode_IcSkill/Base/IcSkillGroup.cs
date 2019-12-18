@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
@@ -52,10 +51,10 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             }
         }
         
-        public Root RootNode { get; private set; }
+        private List<RootNode> _rootNodes = new List<RootNode>();
 
-        private List<Root> _roots = new List<Root>();
-
+        private int _rootCount;
+        
         /// <summary>
         /// 加载图
         /// </summary>
@@ -64,35 +63,18 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         {
             _init(this);
             
-            List<RootNode> rootNodes = new List<RootNode>();
-            
             foreach (var node in nodes)
             {
                 if (node is RootNode rootNode)
                 {
-                    rootNodes.Add(rootNode);
+                    rootNode.GetDefaultOutputValue();
+                    _rootNodes.Add(rootNode);
                 }
             }
-
-            rootNodes = rootNodes.OrderBy(x => x.Priority).ToList();
             
-            int count = 0;
-            
-            foreach (var rootNode in rootNodes)
-            {
-                RootNode = rootNode.GetDefaultOutputValue();
+            _rootNodes.Sort(new RoodNodeComparer());
 
-                if (_roots.Count - 1 <= count)
-                {
-                    _roots.Add(RootNode);
-                }
-                else
-                {
-                    _roots[count] = RootNode;
-                }
-
-                count++;
-            }
+            _rootCount = _rootNodes.Count;
         }
 
         /// <summary>
@@ -145,35 +127,67 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         public void ExecuteGroup()
         {
-            if (_roots.Count == 0)
+            if (_rootNodes.Count == 0)
             {
                 throw new InvalidOperationException("have not Load Group or Group no exist Root Node");
             }
 
-            foreach (var root in _roots)
+            for (var i = 0; i < _rootCount; i++)
             {
-                root.Start();
+                var root = _rootNodes[i];
+                
+                // To be safe, need to prevent the first root node from non starting automatically because of manual data modification, and need to start it.
+                if (root.AutoStart || i == 0)
+                {
+                    root.OutValue.Start();
+                }
             }
         }
 
         public void StopGroup()
         {
-            foreach (var root in _roots)
+            for (var i = 0; i < _rootCount; i++)
             {
-                if (root.IsActive)
+                var rootNode = _rootNodes[i];
+                
+                var root = rootNode.OutValue;
+                
+                if (root != null && root.IsActive)
                 {
                     root.Stop();
                 }
             }
         }
 
+        /// <summary>
+        /// group exist Active Root
+        /// </summary>
+        /// <returns></returns>
+        public bool IsActive()
+        {
+            for (var i = 0; i < _rootCount; i++)
+            {
+                var rootNode = _rootNodes[i];
+                
+                var root = rootNode.OutValue;
+
+                if (root.IsActive)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void _init(IcSkillGroup group)
         {
-            foreach (var node in nodes)
+            for (var index = 0; index < nodes.Count; index++)
             {
+                var node = nodes[index];
                 if (node is IIcSkillSystemNode skillNode)
                 {
-                    skillNode.SkillGroup = group;
+                    skillNode.SkillGroup = @group;
                 }
             }
         }
@@ -185,8 +199,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         public Node GetChildGroupNode(IcSkillGroup parent)
         {
             _init(parent);
-            
-            RootNode = parent.RootNode;
             
             Node main = null;
             
