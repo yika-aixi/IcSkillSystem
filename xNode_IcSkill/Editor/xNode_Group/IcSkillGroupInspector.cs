@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEditorInternal;
@@ -67,6 +68,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         Dictionary<int,bool> _nodeStateMap = new Dictionary<int, bool>();
         Dictionary<int,ReorderableList> _connectionsMap = new Dictionary<int, ReorderableList>();
         private Object _lastTarget;
+        
         private void _drawNodes()
         {
             if (_nodesSer == null)
