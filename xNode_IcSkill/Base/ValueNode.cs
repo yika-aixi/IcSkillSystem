@@ -9,6 +9,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     public class ValueInfo<T>
     {
         public T Value;
+        
+        public static implicit operator T(ValueInfo<T> valueInfo)
+        {
+            return valueInfo.Value;
+        }
     }
     
     /// <summary>
@@ -33,7 +38,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 
             _valueInfo.Value = GetTValue(port);
 
-            return _valueInfo.Value;
+            return _valueInfo;
         }
 
         protected virtual T GetTValue(NodePort port)
@@ -50,8 +55,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         }
 
         protected abstract T GetTValue();
-
-        public IcSkillGroup SkillGroup { get; set; }
     }
     
     /// <summary>
