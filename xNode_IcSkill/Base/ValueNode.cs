@@ -1,21 +1,11 @@
 ﻿using System;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
-using CabinIcarus.IcSkillSystem.xNode_Group;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
-    public class ValueInfo<T>
-    {
-        public T Value;
-        
-        public static implicit operator T(ValueInfo<T> valueInfo)
-        {
-            return valueInfo.Value;
-        }
-    }
-    
     /// <summary>
     /// 值节点
     /// </summary>
