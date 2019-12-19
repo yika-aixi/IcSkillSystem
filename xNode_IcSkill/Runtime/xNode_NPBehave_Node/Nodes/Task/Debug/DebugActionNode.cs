@@ -1,5 +1,4 @@
 ﻿using System;
-using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using UnityEngine;
 using Action = NPBehave.Action;
 
@@ -38,13 +37,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
             switch (_type)
             {
                 case LogType.Error:
-                    UnityEngine.Debug.LogError(_message);
+                    Debug.LogError(_message);
                     break;
                 case LogType.Warning:
-                    UnityEngine.Debug.LogWarning(_message);
+                    Debug.LogWarning(_message);
                     break;
                 case LogType.Log:
-                    UnityEngine.Debug.Log(_message);
+                    Debug.Log(_message);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

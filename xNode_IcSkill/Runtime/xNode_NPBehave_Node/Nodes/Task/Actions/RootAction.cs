@@ -16,26 +16,28 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
         
         protected override Action GetOutValue()
         {
-            return new Action(multiframeFunc2: request =>
+            return new Action(_execute);
+        }
+
+        private Action.Result _execute(bool stop)
+        {
+            if (stop)
             {
-                if (request != Action.Request.START)
-                {
-                    return Action.Result.SUCCESS;
-                }
+                return Action.Result.SUCCESS;
+            }
+            
+            var root = GetInputValue(nameof(_root), OutValue.RootNode);
+                            
+            if (_start)
+            {
+                root.Start();
+            }
+            else
+            {
+                root.Stop();
+            }
 
-                var root = GetInputValue(nameof(_root), OutValue.RootNode);
-                
-                if (_start)
-                {
-                    root.Start();
-                }
-                else
-                {
-                    root.Stop();
-                }
-
-                return Action.Result.PROGRESS;
-            });
+            return Action.Result.SUCCESS;
         }
     }
 }
