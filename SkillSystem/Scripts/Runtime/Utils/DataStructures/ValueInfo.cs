@@ -3,7 +3,13 @@ using System;
 namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
     [Serializable]
-    public class ValueInfo<T>
+    public abstract class AValueInfo
+    {
+        public abstract object GetValue();
+    }
+    
+    [Serializable]
+    public class ValueInfo<T>:AValueInfo
     {
         public T Value;
         
@@ -11,5 +17,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         {
             return valueInfo.Value;
         }
+
+        public override object GetValue() => Value;
     }
 }
