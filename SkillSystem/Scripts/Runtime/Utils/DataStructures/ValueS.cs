@@ -13,15 +13,19 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         public bool IsUnity => _isUnity;
 
         [SerializeField] private string ValueTypeAqName;
+        
+        [SerializeField] private string ValueInfoTypeAqName;
 
         [SerializeField] private string _valueStr;
 
-        private object _value;
+        private AValueInfo _value;
 
         [SerializeField] private Object _uValue;
         public Object UValue => _uValue;
 
         private Type _type;
+        
+        private Type _valueInfoType;
 
         public Type ValueType
         {
@@ -30,6 +34,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 if (_type == null && !string.IsNullOrWhiteSpace(ValueTypeAqName))
                 {
                     _type = Type.GetType(ValueTypeAqName);
+                    _valueInfoType = Type.GetType(ValueInfoTypeAqName);
                 }
 
                 return _type;
@@ -42,6 +47,11 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 _type = value;
 
                 ValueTypeAqName = value != null ? value.AssemblyQualifiedName : string.Empty;
+                
+                var type = typeof(ValueInfo<>);
+
+                _valueInfoType = type.MakeGenericType(ValueType);
+                ValueInfoTypeAqName = _valueInfoType.AssemblyQualifiedName;
             }
         }
 
@@ -54,33 +64,67 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         {
         }
 
-        public void SetValue(object value)
+        public void SetValue<T>(T value)
         {
-            ValueType = value?.GetType();
+            ValueType = typeof(T);
 
             if (_isUnity)
             {
-                _uValue = (Object) value;
+                _uValue = value as Object;
+                
                 return;
             }
 
-            _valueStr = SerializationUtil.ToString(value);
+            if (value == null)
+            {
+                _value = null;
+                _valueStr = string.Empty;
+                return;
+            }
+            
+            if (_value == null)
+            {
+                _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
+            }
+            
+            _value.GetType().GetField(nameof(ValueInfo<object>.Value)).SetValue(_value,value);
+            
+            //todo bug Valueinfo no Serialization ,Serialization is AValueInfo
+            //todo The reason is because utf8Json does not have non-generic serialization, I need to replace serialization library
+            _valueStr = SerializationUtil.ToString(_value);
         }
 
-        public object GetValue()
+        public T GetValue<T>()
         {
             if (_isUnity)
             {
-                return UValue;
+                return (T) (object) UValue;
             }
 
             if (ValueType == null)
             {
                 Debug.LogWarning("No Select Type!");
-                return null;
+                return default;
             }
 
-            return SerializationUtil.ToValue(_valueStr, ValueType);
+            if (_value == null)
+            {
+                _value = (AValueInfo) SerializationUtil.ToValue(_valueStr, _valueInfoType);
+
+                if (_value == null)
+                {
+                    if (ValueType == typeof(string))
+                    {
+                        SetValue(string.Empty);
+                    }
+                    else
+                    {
+                        SetValue((T) Activator.CreateInstance(ValueType));
+                    }
+                }
+            }
+
+            return ((ValueInfo<T>) _value).Value;
         }
     }
     
@@ -93,24 +137,10 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
             foreach (var pair in map)
             {
-                dict.Add(pair.Key,pair.Value.GetValue());
+                dict.Add(pair.Key,pair.Value.GetValue<object>());
             }
 
             return dict;
-        }
-
-        public static explicit operator ValueSDict(Dictionary<string, object> dict)
-        {
-            var map = new ValueSDict();
-            
-            foreach (var valuePair in dict)
-            {
-                var valueS = new ValueS();
-                valueS.SetValue(valuePair.Value);
-                map.Add(valuePair.Key,valueS);
-            }
-
-            return map;
         }
     }
 }
