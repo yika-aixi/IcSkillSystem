@@ -48,7 +48,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
                         {
                             if (values.ValueType != pair.Value.ValueType)
                             {
-                                values.SetValue(null);
+                                values.SetValue<object>(null);
                                 values.ValueType = pair.Value.ValueType;
                             }
                         }

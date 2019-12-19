@@ -322,7 +322,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
             set
             {
                 _valueS = value;
-                _editTree = new ValueEditTree(_valueS.GetValue(), new TreeViewState());
+                _editTree = new ValueEditTree(_valueS.GetValue<AValueInfo>(), new TreeViewState());
                 _editTree.OnValueChange += x =>
                 {
                     _valueS.SetValue(x);
