@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
-using NPBehave;
 using UnityEngine;
 using XNode;
 using Node = NPBehave.Node;
