@@ -27,6 +27,11 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             return JsonSerializer.Deserialize<T>(str);
         }
         
+        public static string ToString(object value,Type type)
+        {
+            return JsonSerializer.NonGeneric.ToJsonString(type,value);
+        }
+        
         public static object ToValue(string str,Type type)
         {
             if (string.IsNullOrEmpty(str) || str == "null")
