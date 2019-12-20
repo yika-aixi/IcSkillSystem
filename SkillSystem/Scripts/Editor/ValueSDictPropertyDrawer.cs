@@ -114,7 +114,11 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
         private void _drawValue(ref Rect rect,ValueS valueS)
         {
-            rect.size = new Vector2(rect.width - (70 + 30 + 10 + 30) // subtract EditValue and Refresh and Remove Button 
+            var primitiveOrStringType = _primitiveOrStringType(valueS);
+            
+            rect.size = new Vector2(rect.width - (
+                                        (primitiveOrStringType ? 0: 70) //primitive Or String Type No need to show edit button
+                                        + 30 + 30) // subtract EditValue and Refresh and Remove Button 
                 ,rect.height);
            
             //todo draw Value
@@ -158,17 +162,25 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.EnumFlagsField(pos,x.GetValue<Enum>()));
                 _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.GradientField(pos,x.GetValue<Gradient>()));
                 
-                rect.size = new Vector2(70,26);
-                
-                if (GUI.Button(rect,"Edit Value"))
+                if (!primitiveOrStringType)
                 {
-                    _valueEditPopup.ValueS = valueS;
+                    rect.size = new Vector2(70,26);
+                    
+                    if (GUI.Button(rect,"Edit Value"))
+                    {
+                        _valueEditPopup.ValueS = valueS;
 
-                    var pos = rect;
-                    PopupWindow.Show(pos,_valueEditPopup);
+                        var pos = rect;
+                        PopupWindow.Show(pos,_valueEditPopup);
+                    }
                 }
             }
             rect.position += new Vector2(rect.size.x + 10,0);
+        }
+
+        private static bool _primitiveOrStringType(ValueS valueS)
+        {
+            return valueS.ValueType.IsPrimitive || valueS.ValueType == typeof(string);
         }
 
         void _drawNonUnityValue<T>(ref  Rect rect,ValueS valueS, Func<Rect,ValueS,T> drawAction)
@@ -181,11 +193,11 @@ namespace CabinIcarus.IcSkillSystem.Editor
             var offset = new Vector2(15,0);
             rect.position -= offset; //subtract offset
             
-            rect.size -= new Vector2(10,0);
+//            rect.size -= new Vector2(10,0);
             
             var value = drawAction(rect,valueS);
             
-            rect.position += new Vector2(rect.size.x + 10,0);
+//            rect.position += new Vector2(rect.size.x + 10,0);
             
             if (GUI.changed)
             {

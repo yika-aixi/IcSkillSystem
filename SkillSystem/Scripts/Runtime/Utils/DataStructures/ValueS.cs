@@ -8,6 +8,9 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     [Serializable]
     public class ValueS
     {
+        //Boxing ValueInfo 
+        private ValueInfo<object> _boxValueInfo = new ValueInfo<object>();
+        
         [SerializeField] private bool _isUnity;
 
         public bool IsUnity => _isUnity;
@@ -19,6 +22,19 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         [SerializeField] private string _valueStr;
 
         private AValueInfo _value;
+
+        public AValueInfo ValueInfo
+        {
+            get
+            {
+                if (_value == null)
+                {
+                    GetValue<object>();
+                }
+
+                return _value;
+            }
+        }
 
         [SerializeField] private Object _uValue;
         public Object UValue => _uValue;
@@ -47,11 +63,20 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 _type = value;
 
                 ValueTypeAqName = value != null ? value.AssemblyQualifiedName : string.Empty;
-                
-                var type = typeof(ValueInfo<>);
 
-                _valueInfoType = type.MakeGenericType(ValueType);
-                ValueInfoTypeAqName = _valueInfoType.AssemblyQualifiedName;
+                if (_type != null)
+                {
+                    var type = typeof(ValueInfo<>);
+
+                    _valueInfoType = type.MakeGenericType(ValueType);
+                    
+                    ValueInfoTypeAqName = _valueInfoType.AssemblyQualifiedName;
+                }
+                else
+                {
+                    _valueInfoType = null;
+                    ValueInfoTypeAqName = string.Empty;
+                }
             }
         }
 
@@ -66,32 +91,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public void SetValue<T>(T value)
         {
-            ValueType = typeof(T);
-
-            if (_isUnity)
-            {
-                _uValue = value as Object;
-                
-                return;
-            }
-
-            if (value == null)
-            {
-                _value = null;
-                _valueStr = string.Empty;
-                return;
-            }
-            
-            if (_value == null)
-            {
-                _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
-            }
-            
-            _value.GetType().GetField(nameof(ValueInfo<object>.Value)).SetValue(_value,value);
-            
-            //todo bug Valueinfo no Serialization ,Serialization is AValueInfo
-            //todo The reason is because utf8Json does not have non-generic serialization, I need to replace serialization library
-            _valueStr = SerializationUtil.ToString(_value);
+            SetValue(value,typeof(T));
         }
 
         public T GetValue<T>()
@@ -119,12 +119,54 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     }
                     else
                     {
-                        SetValue((T) Activator.CreateInstance(ValueType));
+                        SetValue(Activator.CreateInstance(ValueType),ValueType);
                     }
                 }
             }
 
+            if (typeof(T) == typeof(object) && ValueType.IsValueType)
+            {
+                //runtime appear boxing action,error 
+                if (Application.isPlaying)
+                {
+                    Debug.LogWarning("Boxing !!!!! You should not do this, unless this is required, please troubleshoot the corresponding code");
+                }
+
+                _boxValueInfo.Value = _value.GetValue();
+
+                return (T) _boxValueInfo.Value;
+            }
+            
             return ((ValueInfo<T>) _value).Value;
+        }
+        
+        public void SetValue(object value,Type type)
+        {
+            if (value == null)
+            {
+                ValueType = null;
+                _value = null;
+                _valueStr = string.Empty;
+                return;
+            }
+            
+            ValueType = type;
+
+            if (_isUnity)
+            {
+                _uValue = value as Object;
+                
+                return;
+            }
+            
+            if (_value == null)
+            {
+                _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
+            }
+            
+            _value.GetType().GetField(nameof(ValueInfo<object>.Value)).SetValue(_value,value);
+            
+            _valueStr = SerializationUtil.ToString(_value,_valueInfoType);
         }
     }
     

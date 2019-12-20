@@ -41,6 +41,13 @@ namespace CabinIcarus.IcSkillSystem.Editor
             }
         }
 
+        class PrimitiveOrStringTypeItem : TreeViewItem
+        {
+            public PrimitiveOrStringTypeItem(int id, int depth) : base(id, depth)
+            {
+            }
+        }
+
         public ValueEditTree(object target,TreeViewState state, MultiColumnHeader multiColumnHeader = null, bool containProperty = true, bool containPrivateProperty = true) : base(state, multiColumnHeader)
         {
             _target = target;
@@ -86,6 +93,13 @@ namespace CabinIcarus.IcSkillSystem.Editor
         private void _collect(object target, TreeViewItem parent,ref int id,ref int depth)
         {
             var type = target.GetType();
+
+            if (type.IsPrimitive || type == typeof(string))
+            {
+                parent.AddChild(new PrimitiveOrStringTypeItem(id,depth));
+                return;
+            }
+            
             var pubField = type.GetFields(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => !x.IsNotSerialized);
 
@@ -174,9 +188,9 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
         protected override void RowGUI(RowGUIArgs args)
         {
+            var rect = args.rowRect;
             if (args.item is MemberInfoItem memberInfoItem && memberInfoItem.IsSimpleValue)
             {
-                var rect = args.rowRect;
                 var label = args.label;
                 EditorGUI.indentLevel += memberInfoItem.depth;
                 _drawNonUnityValue<int>(memberInfoItem, x => EditorGUI.IntField(rect,label, x));
@@ -198,6 +212,13 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 _drawNonUnityValue<Enum>(memberInfoItem, x => EditorGUI.EnumFlagsField(rect,label, x) );
                 _drawNonUnityValue<Gradient>(memberInfoItem, x => EditorGUI.GradientField(rect,label, x) );
                 EditorGUI.indentLevel -= memberInfoItem.depth;
+            }
+            else if (args.item is PrimitiveOrStringTypeItem)
+            {
+                var title = new GUIContent($"Primitive or String Type Editing is not supported.");
+                var size = EditorStyles.helpBox.CalcSize(title);
+                rect.size += new Vector2(0,size.y);
+                EditorGUI.HelpBox(rect,title.text,MessageType.Info);
             }
             else
             {
@@ -322,10 +343,11 @@ namespace CabinIcarus.IcSkillSystem.Editor
             set
             {
                 _valueS = value;
-                _editTree = new ValueEditTree(_valueS.GetValue<AValueInfo>(), new TreeViewState());
+                _editTree = new ValueEditTree(_valueS.GetValue<object>(), new TreeViewState());
                 _editTree.OnValueChange += x =>
                 {
-                    _valueS.SetValue(x);
+                    _valueS.SetValue(x, x.GetType());
+                    
                     OnEdit?.Invoke();
                 };
                 _editTree.Reload();
