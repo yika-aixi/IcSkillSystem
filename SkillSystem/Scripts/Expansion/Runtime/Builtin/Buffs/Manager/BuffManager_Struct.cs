@@ -531,8 +531,22 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #endif
             }
 
-            int count = condition == null ? buffs.Count : buffs.Count(condition);
+            int count = buffs.Count;
 
+            if (condition != null)
+            {
+                var len = count;
+                count = 0;
+                for (var i = 0; i < len; i++)
+                {
+                    var buff = buffs[i];
+                    if (condition(buff))
+                    {
+                        ++count;
+                    }
+                }
+            }
+            
 #if ENABLE_MANAGED_JOBS
             var result = new NativeArray<BuffDataInfo<T>>(count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
             count = 0;
@@ -596,7 +610,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #endif
             }
 
-            int count = condition == null ? buffs.Count : buffs.Count(condition);
+            int count = buffs.Count;
+
+            if (condition != null)
+            {
+                var len = count;
+                count = 0;
+                for (var i = 0; i < len; i++)
+                {
+                    var buff = buffs[i];
+                    if (condition(buff))
+                    {
+                        ++count;
+                    }
+                }
+            }
 
 #if ENABLE_MANAGED_JOBS
             var result = new NativeArray<int>(count,Allocator.Temp,NativeArrayOptions.UninitializedMemory);
