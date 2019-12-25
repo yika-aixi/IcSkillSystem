@@ -38,7 +38,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         }
     }
 
-    public struct RoodNodeComparer:IComparer<RootNode>
+    public class RoodNodeComparer:IComparer<RootNode>
     {
         public int Compare(RootNode x, RootNode y)
         {
