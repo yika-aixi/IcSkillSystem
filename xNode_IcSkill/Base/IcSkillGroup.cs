@@ -18,6 +18,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
     public class IcSkillGroup:NodeGraph
     {
+        private static RoodNodeComparer _roodNodeComparer = new RoodNodeComparer();
         private GameObject _owner;
 
         [SerializeField]
@@ -71,7 +72,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 }
             }
             
-            _rootNodes.Sort(new RoodNodeComparer());
+            _rootNodes.Sort(_roodNodeComparer);
 
             _rootCount = _rootNodes.Count;
         }
