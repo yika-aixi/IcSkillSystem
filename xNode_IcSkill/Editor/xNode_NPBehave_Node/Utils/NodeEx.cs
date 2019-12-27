@@ -15,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor.Utils
             
             var oldName = port.fieldName;
             
-            var fieldNameFieldInfo = port.GetType().GetField(NodePort.FieldNameEditor,BindingFlags.Instance | BindingFlags.NonPublic);
+            var fieldNameFieldInfo = port.GetType().GetField(NodePort.FIELDNAMEEDITOR,BindingFlags.Instance | BindingFlags.NonPublic);
             
             fieldNameFieldInfo.SetValue(port,newName);
 
