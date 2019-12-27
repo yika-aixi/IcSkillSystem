@@ -5,14 +5,12 @@ using XNode;
 namespace %NAMESPACE%
 {
     [CreateNodeMenu("CabinIcarus/Nodes/%ASSEMBLY%/%NAME% Value")]
-    public partial class %NAME%ValueNode:ValueNode
+    public partial class %NAME%ValueNode:ValueNode<%TYPE%>
     {
         [SerializeField]
         private %TYPE% _value;
-
-        public override Type ValueType { get; } = typeof(%TYPE%);
-        
-        protected override object GetOutValue()
+   
+        protected override %TYPE% GetTValue()
         {
             return _value;
         }
