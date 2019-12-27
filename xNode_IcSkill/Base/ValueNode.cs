@@ -11,12 +11,10 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     /// </summary>
     public abstract class ValueNode<T>:ANPNode<ValueInfo<T>>
     {
-        private ValueInfo<T> _valueInfo;
+        private ValueInfo<T> _valueInfo = new ValueInfo<T>();
         
         protected sealed override ValueInfo<T> GetOutValue()
         {
-            _checkValueInfo();
-
             _valueInfo.Value = GetTValue();
 
             return _valueInfo;
@@ -24,8 +22,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 
         protected sealed override object GetPortValue(NodePort port)
         {
-            _checkValueInfo();
-
             _valueInfo.Value = GetTValue(port);
 
             return _valueInfo;
@@ -34,14 +30,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         protected virtual T GetTValue(NodePort port)
         {
             return default;
-        }
-
-        private void _checkValueInfo()
-        {
-            if (_valueInfo == null)
-            {
-                _valueInfo = new ValueInfo<T>();
-            }
         }
 
         protected abstract T GetTValue();
