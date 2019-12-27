@@ -18,7 +18,13 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             return valueInfo.Value;
         }
 
+        public static implicit operator ValueInfo<T>(T value)
+        {
+            return new ValueInfo<T>(){Value = value};
+        }
+        
         public override object GetValue() => Value;
+
         public override string ToString()
         {
             return Value.ToString();
