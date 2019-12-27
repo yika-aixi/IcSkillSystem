@@ -19,5 +19,9 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         }
 
         public override object GetValue() => Value;
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }
