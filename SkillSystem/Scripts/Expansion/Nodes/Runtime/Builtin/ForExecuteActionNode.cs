@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using XNode;
 using Action = NPBehave.Action;
 using Node = NPBehave.Node;
@@ -22,6 +23,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Output(ShowBackingValue.Always)]
         private int _index;
 
+        private ValueInfo<int> _indexValue = new ValueInfo<int>();
+        
         protected override Action GetOutValue()
         {
             return new Action(_for);
@@ -36,7 +39,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
   
             if (port.fieldName == nameof(_index))
             {
-                return _index;
+                return _indexValue;
             }
 
             return null;
@@ -57,7 +60,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             {
                 var ator = enumerables.GetEnumerator();
 
-                _index = 0;
+                _indexValue.Value = 0;
 
                 if (action.IsActive)
                 {
@@ -72,7 +75,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                         action.SetRoot(OutValue.RootNode);
                     }
                     action.Start();
-                    _index++;
+                    _indexValue.Value++;
                 }
             }
         }
