@@ -125,13 +125,20 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             }                        
         }
 
-        public void ExecuteGroup()
+        /// <summary>
+        /// Start Group 
+        /// </summary>
+        /// <returns>first Root</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public Root ExecuteGroup()
         {
             if (_rootNodes.Count == 0)
             {
                 throw new InvalidOperationException("have not Load Group or Group no exist Root Node");
             }
 
+            Root firstRoot = null;
+            
             for (var i = 0; i < _rootCount; i++)
             {
                 var root = _rootNodes[i];
@@ -139,9 +146,16 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 // To be safe, need to prevent the first root node from non starting automatically because of manual data modification, and need to start it.
                 if (root.AutoStart || i == 0)
                 {
-                    root.OutValue.Start();
+                     root.OutValue.Start();
+
+                     if (firstRoot == null)
+                     {
+                         firstRoot = root.OutValue;
+                     }
                 }
             }
+
+            return firstRoot;
         }
 
         public void StopGroup()
