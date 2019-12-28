@@ -96,11 +96,6 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public T GetValue<T>()
         {
-            if (_isUnity)
-            {
-                return (T) (object) UValue;
-            }
-
             if (ValueType == null)
             {
                 Debug.LogWarning("No Select Type!");
@@ -152,13 +147,6 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             
             ValueType = type;
 
-            if (_isUnity)
-            {
-                _uValue = value as Object;
-                
-                return;
-            }
-            
             if (_value == null)
             {
                 _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
