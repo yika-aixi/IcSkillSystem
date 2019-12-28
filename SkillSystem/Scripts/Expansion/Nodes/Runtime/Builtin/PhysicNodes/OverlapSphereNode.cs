@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -9,22 +10,30 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private float _radius;
 
+        private List<Collider> _result = new List<Collider>();
+        
         protected override bool Condition()
         {
             DebugStart();
             
             bool result = false;
             
+            _result.Clear();
+            
             var size = Physics.OverlapSphereNonAlloc(Origin, GetInputValue(nameof(_radius),_radius), Buffer, Mask,TriggerInteraction);
+
             if (size > 0)
             {
-                Result = Buffer.Take(size);
-            
-                DebugStop();
-            
+                for (var i = 0; i < size; i++)
+                {
+                    _result.Add(Buffer[i]);
+                }
+
                 result = true;
             }
 
+            Result = _result;
+            
             DebugStop();
             
             return result;
