@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -44,6 +45,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         private Type _type;
         
         private Type _valueInfoType;
+        private FieldInfo _valueInfoValueFieldInfo;
 
         public Type ValueType
         {
@@ -53,6 +55,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 {
                     _type = Type.GetType(ValueTypeAqName);
                     _valueInfoType = Type.GetType(ValueInfoTypeAqName);
+                    _valueInfoValueFieldInfo = _valueInfoType.GetField(nameof(ValueInfo<object>.Value));
                 }
 
                 return _type;
@@ -73,6 +76,8 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     _valueInfoType = type.MakeGenericType(ValueType);
                     
                     ValueInfoTypeAqName = _valueInfoType.AssemblyQualifiedName;
+
+                    _valueInfoValueFieldInfo = _valueInfoType.GetField(nameof(ValueInfo<object>.Value));
                 }
                 else
                 {
@@ -153,15 +158,18 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 _valueStr = string.Empty;
                 return;
             }
-            
-            ValueType = type;
+
+            if (ValueType != type)
+            {
+                ValueType = type;
+            }
 
             if (_value == null)
             {
                 _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
             }
-            
-            _value.GetType().GetField(nameof(ValueInfo<object>.Value)).SetValue(_value,value);
+
+            _valueInfoValueFieldInfo.SetValue(_value,value);
             
             //todo Runtime Unwanted logic
             _valueStr = SerializationUtil.ToString(_value,_valueInfoType);
