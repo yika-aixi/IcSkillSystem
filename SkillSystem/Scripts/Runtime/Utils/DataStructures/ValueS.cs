@@ -121,6 +121,11 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
             return _value;
         }
+
+        public ValueInfo<T> GetValue<T>()
+        {
+            GetValueInfo();
+            
             if (typeof(T) == typeof(object) && ValueType.IsValueType)
             {
                 //runtime appear boxing action,error 
@@ -131,10 +136,10 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
                 _boxValueInfo.Value = _value.GetValue();
 
-                return (T) _boxValueInfo.Value;
+                return (ValueInfo<T>) _boxValueInfo;
             }
-            
-            return ((ValueInfo<T>) _value).Value;
+
+            return (ValueInfo<T>) _value;
         }
         
         public void SetValue(object value,Type type)
@@ -156,6 +161,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             
             _value.GetType().GetField(nameof(ValueInfo<object>.Value)).SetValue(_value,value);
             
+            //todo Runtime Unwanted logic
             _valueStr = SerializationUtil.ToString(_value,_valueInfoType);
         }
     }
