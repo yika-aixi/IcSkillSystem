@@ -5,7 +5,12 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     [Serializable]
     public abstract class AValueInfo
     {
-        public abstract object GetValue();
+        public object GetValue()
+        {
+            return ObjValue;
+        }
+
+        protected abstract object ObjValue { get; }
     }
     
     [Serializable]
@@ -23,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             return new ValueInfo<T>(){Value = value};
         }
         
-        public override object GetValue() => Value;
+        protected override object ObjValue => Value;
 
         public override string ToString()
         {
