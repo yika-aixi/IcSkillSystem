@@ -11,14 +11,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         protected override void Send()
         {
             var target = GetInputValue(nameof(_component), _component);
+
+            if (!target)
+            {
+                return;
+            }
             
             if (IsUpwards)
             {
-                target?.SendMessageUpwards(MessageName,Value,Options);
+                target.SendMessageUpwards(MessageName,Value,Options);
             }
             else
             {
-                target?.SendMessage(MessageName,Value,Options);
+                target.SendMessage(MessageName,Value,Options);
             }    
         }
     }

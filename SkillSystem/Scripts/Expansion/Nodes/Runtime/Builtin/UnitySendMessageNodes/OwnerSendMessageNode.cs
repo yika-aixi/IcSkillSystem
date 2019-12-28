@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     [CreateNodeMenuAttribute("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Send Message/Owner")]
@@ -7,13 +5,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         protected override void Send()
         {
+            if (!SkillGroup.Owner)
+            {
+                return;
+            }
+            
             if (IsUpwards)
             {
-                SkillGroup.Owner?.SendMessageUpwards(MessageName,Value,Options);
+                SkillGroup.Owner.SendMessageUpwards(MessageName,Value,Options);
             }
             else
             {
-                SkillGroup.Owner?.SendMessage(MessageName,Value,Options);
+                SkillGroup.Owner.SendMessage(MessageName,Value,Options);
             }
         }
     }
