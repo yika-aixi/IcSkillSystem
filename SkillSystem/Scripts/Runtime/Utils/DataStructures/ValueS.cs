@@ -36,7 +36,9 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             }
         }
 
-        [SerializeField] private Object _uValue;
+        [SerializeField] 
+        private Object _uValue;
+        
         public Object UValue => _uValue;
 
         private Type _type;
