@@ -5,9 +5,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Camera/Get/Main")]
     public class GetMainCameraNode : AGetCameraNode
     {
+        private Camera _mainCamera;
+        
         protected override Camera GetCamera()
         {
-            return Camera.main;
+            if (!_mainCamera)
+            {
+                _mainCamera = Camera.main;
+            }
+            
+            return _mainCamera;
         }
 
         protected override string GetCameraTooltip()
