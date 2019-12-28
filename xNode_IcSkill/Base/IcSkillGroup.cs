@@ -7,8 +7,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
+using NPBehave;
 using UnityEngine;
 using XNode;
 using Node = NPBehave.Node;
@@ -77,6 +79,13 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             _rootCount = _rootNodes.Count;
         }
 
+        List<string> _keys;
+
+        public IcSkillGroup()
+        {
+            _keys = _varMap.Keys.ToList();
+        }
+        
         /// <summary>
         /// Set Group variable
         /// </summary>
@@ -84,27 +93,23 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         public void SetGroupVariable(ValueSDict map)
         {
             _varMap = map;
-        }
-        
-        public void SetGroupVariable(Dictionary<string, object> variable)
-        {
-            if (variable == null)
-            {
-                Debug.LogWarning("variable map is null");
-                return;
-            }
+
+            var count = _keys.Count;
             
-            _varMap.Clear();
-            
-            foreach (var valuePair in variable)
+            for (var i = 0; i < count; i++)
             {
-                var value = new ValueS();
-                value.SetValue(valuePair.Value);
-                _varMap.Add(valuePair.Key,value);
+                var key = _keys[i];
+            
+                var result = map.TryGetValue(key, out var value);
+
+                if (result)
+                {
+                    _varMap[key] = value;
+                }
             }
         }
 
-        public object GetVariableValue(string key)
+        public ValueS GetVariableValue(string key)
         {
             _varMap.TryGetValue(key, out var value);
 
@@ -112,6 +117,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         }
 
         public void SetOrAddVariable(string key, object value)
+        {
+            SetOrAddVariable<object>(key, value);
+        }
+        
+        public void SetOrAddVariable<T>(string key, T value)
         {
             if (_varMap.ContainsKey(key))
             {
@@ -122,6 +132,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 var valueS = new ValueS();
                 valueS.SetValue(value);
                 _varMap.Add(key,valueS);
+                _keys.Add(key);
             }                        
         }
 
