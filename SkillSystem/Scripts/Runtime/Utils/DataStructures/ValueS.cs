@@ -94,14 +94,14 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             SetValue(value,typeof(T));
         }
 
-        public T GetValue<T>()
+        public AValueInfo GetValueInfo()
         {
             if (ValueType == null)
             {
                 Debug.LogWarning("No Select Type!");
                 return default;
             }
-
+            
             if (_value == null)
             {
                 _value = (AValueInfo) SerializationUtil.ToValue(_valueStr, _valueInfoType);
@@ -119,6 +119,8 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 }
             }
 
+            return _value;
+        }
             if (typeof(T) == typeof(object) && ValueType.IsValueType)
             {
                 //runtime appear boxing action,error 
