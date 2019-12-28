@@ -4,7 +4,6 @@
 //2019年11月15日-16:59
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
-using System;
 using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using CabinIcarus.IcSkillSystem.xNode_Group;
@@ -37,7 +36,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         {
             if (Passive)
             {
-                Use(Data);
+                Use();
             }
         }
 
@@ -82,15 +81,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         {
         }
 
-        public void Use()
+        public virtual void Use()
         {
-            Use(Data);
+            _setCurrentSkillGroup();
+            
+            CurrentSkill.SetGroupVariable(Data);
+            
+            var root = CurrentSkill.ExecuteGroup();
+            
+            _debug(root);
         }
 
-        public virtual void Use(Dictionary<string, object> data)
+        private void _setCurrentSkillGroup()
         {
-            CurrentSkill.SetGroupVariable(data);
-
             if (CurrentSkill.IsActive())
             {
                 foreach (var skill in _skillGroups)
@@ -108,9 +111,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
                     CurrentSkill.LoadGroup();
                 }
             }
-
-//            _debug(CurrentSkill.RootNode);
-            CurrentSkill.ExecuteGroup();
         }
 
         public void Stop()
