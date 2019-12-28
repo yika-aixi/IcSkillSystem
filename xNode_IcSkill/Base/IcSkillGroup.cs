@@ -116,9 +116,19 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             return value;
         }
 
-        public void SetOrAddVariable(string key, object value)
+        public void SetOrAddVariable(string key, object value,Type valueType)
         {
-            SetOrAddVariable<object>(key, value);
+            if (_varMap.ContainsKey(key))
+            {
+                _varMap[key].SetValue(value,valueType);
+            }
+            else
+            {
+                var valueS = new ValueS();
+                valueS.SetValue(value,valueType);
+                _varMap.Add(key,valueS);
+                _keys.Add(key);
+            }             
         }
         
         public void SetOrAddVariable<T>(string key, T value)
@@ -133,7 +143,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 valueS.SetValue(value);
                 _varMap.Add(key,valueS);
                 _keys.Add(key);
-            }                        
+            }      
         }
 
         /// <summary>
