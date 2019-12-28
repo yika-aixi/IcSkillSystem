@@ -25,7 +25,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks.GroupValueNode
 
         private void _setValue()
         {
-            SkillGroup.SetOrAddVariable(GetInputValue(nameof(_key),_key),GetInputValue(nameof(_newValue), _newValue));
+            var value = GetInputValue(nameof(_newValue), _newValue);
+            
+            SkillGroup.SetOrAddVariable(GetInputValue(nameof(_key),_key),value,value.GetType());
         }
     }
 }
