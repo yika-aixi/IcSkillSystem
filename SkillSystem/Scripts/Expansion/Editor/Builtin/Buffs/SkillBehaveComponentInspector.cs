@@ -24,40 +24,43 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
         {
             serializedObject.Update();
             {
-                if (_lastGroup != _target.Group)
-                {
-                    _lastGroup = _target.Group;
-                    
-                    //remove
-                    foreach (var key in _target.Data.Keys.ToList())
-                    {
-                        if (!_lastGroup.VariableMap.ContainsKey(key))
-                        {
-                            _target.Data.Remove(key);
-                        }
-                    }
-                    
-                    //update
-                    foreach (var pair in _lastGroup.VariableMap)
-                    {
-                        if (!_target.Data.TryGetValue(pair.Key,out var values))
-                        {
-                            _target.Data.Add(pair.Key,new ValueS(pair.Value));
-                        }
-                        else
-                        {
-                            if (values.ValueType != pair.Value.ValueType)
-                            {
-                                values.SetValue(null,pair.Value.ValueType);
-                                values.ValueType = pair.Value.ValueType;
-                            }
-                        }
-                    }
-                }
-
                 base.OnInspectorGUI();
+
+                if (GUILayout.Button(EditorGUIUtility.FindTexture("Refresh"),GUILayout.Height(50f)))
+                {
+                    _updateMap();
+                }
             }
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void _updateMap()
+        {
+            //remove
+            foreach (var key in _target.Data.Keys.ToList())
+            {
+                if (!_lastGroup.VariableMap.ContainsKey(key))
+                {
+                    _target.Data.Remove(key);
+                }
+            }
+
+            //update
+            foreach (var pair in _lastGroup.VariableMap)
+            {
+                if (!_target.Data.TryGetValue(pair.Key, out var values))
+                {
+                    _target.Data.Add(pair.Key, new ValueS(pair.Value));
+                }
+                else
+                {
+                    if (values.ValueType != pair.Value.ValueType)
+                    {
+                        values.SetValue(null, pair.Value.ValueType);
+                        values.ValueType = pair.Value.ValueType;
+                    }
+                }
+            }
         }
     }
 }
