@@ -92,8 +92,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
 
         public virtual void Use(Dictionary<string, object> data)
         {
-            CurrentSkill.SetBlackboardVariable(data);
-
             if (CurrentSkill.RootNode.IsActive)
             {
                 foreach (var skill in _skillGroups)
@@ -112,6 +110,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
                 }
             }
 
+            CurrentSkill.SetBlackboardVariable(data);
             _debug(CurrentSkill.RootNode);
             CurrentSkill.RootNode.Start();
         }
