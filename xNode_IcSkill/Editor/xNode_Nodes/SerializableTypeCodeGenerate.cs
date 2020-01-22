@@ -23,35 +23,41 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
            
         const string ValueNodeTemplateName = "ValueNodeTemplate.cs";
 
+        const string ValueNodeValueTypeTemplateName = "ValueNodeValueTypeTemplate.cs";
+        
         private static string _templateContent;
 
+        private static string _valueTypeTemplateContent;
+        
         private static Dictionary<string,bool> _generateTypeAqNameMap;
         private static Dictionary<Type,bool> _generateTypeMap;
         private static List<bool> _groupStates;
         private static IEnumerable<IGrouping<string, KeyValuePair<Type, bool>>> _assemblyGroup;
         
-        private static void _loadTemple()
+        private static string _loadTemple(string name)
         {
-            var guids = AssetDatabase.FindAssets(ValueNodeTemplateName);
+            var guids = AssetDatabase.FindAssets(name);
 
             if (guids.Length == 0)
             {
-                return;
+                return string.Empty;
             }
 
             var path = AssetDatabase.GUIDToAssetPath(guids[0]);
 
             var textAssets = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
 
-            _templateContent = textAssets.text;
-
+            var content = textAssets.text;
+            
             Resources.UnloadAsset(textAssets);
+
+            return content;
         }
 
         private static string GenerateSavePath
         {
-            get => EditorPrefs.GetString(_getKey(nameof(GenerateSavePath)));
-            set => EditorPrefs.SetString(_getKey(nameof(GenerateSavePath)),value);
+            get => EditorUserSettings.GetConfigValue(_getKey(nameof(GenerateSavePath)));
+            set => EditorUserSettings.SetConfigValue(_getKey(nameof(GenerateSavePath)),value);
         }
 
         public static string NameSpace
@@ -85,26 +91,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 SerializationUtil.ToValue<Dictionary<string, bool>>(
                     EditorPrefs.GetString(_getKey(nameof(_generateTypeAqNameMap))));
 
-            var runtimeTypes = TypeUtil.AllTypes
-                .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
-                .Where(x => !x.IsPointer)
-                .Where(x => !typeof(Delegate).IsAssignableFrom(x))
-                .Where(x => !typeof(Exception).IsAssignableFrom(x))
-                .Where(x => !typeof(Attribute).IsAssignableFrom(x))
-                .Where(x => !x.IsGenericType)
-                .Where(x => !x.IsAbstract)
-                .Where(x =>
-                {
-                    if (x.IsSealed)
-                    {
-                        return x.IsSealed && x.IsPublic || x.IsPublic;
-                    }
-
-                    return x.IsPublic;
-                })
-                .Where(x => x.IsValueType || x.IsEnum ||
-                            x.IsClass && x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
-                            typeof(Object).IsAssignableFrom(x)).ToList();
+            var runtimeTypes = TypeUtil.GetRuntimeFilterTypes.ToList();
             
             if (_generateTypeAqNameMap == null || _generateTypeAqNameMap.Count != runtimeTypes.Count)
             {
@@ -164,7 +151,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
         private void OnEnable()
         {
-            _loadTemple();
+            _templateContent = _loadTemple(ValueNodeTemplateName);
+            
+            _valueTypeTemplateContent = _loadTemple(ValueNodeValueTypeTemplateName);
             
             if (_generateTypeMap == null)
             {
@@ -210,11 +199,6 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
             if (GUILayout.Button("Generate"))
             {
-                if (!Directory.Exists(GenerateSavePath))
-                {
-                    Directory.CreateDirectory(GenerateSavePath);
-                }
-                
                 EditorUtility.DisplayProgressBar("Generate ing", string.Empty, 0);
 
                 var count = _generateTypeMap.Count;
@@ -250,7 +234,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                                 continue;
                             }
                         }
-
+                        
                         var assemblyPath = runtimeType.ConversionTypeAssemblyName();
                         
                         assemblyPath = assemblyPath.Replace(".", "/");
@@ -259,8 +243,18 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                         {
                             assemblyPath = assemblyPath.Remove(assemblyPath.Length - 1, 1);
                         }
+
+                        string content;
                         
-                        var content = _templateContent.Replace(TypeMark, runtimeType.FullName);
+                        if (runtimeType.IsValueType)
+                        {
+                            content = _valueTypeTemplateContent.Replace(TypeMark, runtimeType.FullName);
+                        }
+                        else
+                        {
+                            content = _templateContent.Replace(TypeMark, runtimeType.FullName);
+                        }
+                        
                         content = content.Replace(NameSpaceMark, NameSpace);
                         content = content.Replace(IsChangeMark, "false");
                         content = content.Replace(NameMark, typeName);
@@ -343,11 +337,10 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                             {
                                 EditorGUI.BeginChangeCheck();
                                 {
-                                    _temp = EditorGUILayout.ToggleLeft(item.Key.FullName, item.Value);
+                                    _generateTypeMap[item.Key] = EditorGUILayout.ToggleLeft(item.Key.FullName, item.Value);
                                 }
                                 if (EditorGUI.EndChangeCheck())
                                 {
-                                    _generateTypeMap[item.Key] = _temp;
                                     _save();
                                 }
                             }
