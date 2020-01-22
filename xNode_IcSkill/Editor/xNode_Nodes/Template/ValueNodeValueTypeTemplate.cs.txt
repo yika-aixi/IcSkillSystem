@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using XNode;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace %NAMESPACE%
 {
@@ -14,5 +14,10 @@ namespace %NAMESPACE%
         {
             return _value;
         }
+    }
+    
+    [Serializable]
+    public class IcVariable%NAME%:ValueInfo<%TYPE%>
+    {
     }
 }
