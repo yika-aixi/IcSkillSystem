@@ -227,7 +227,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     EditorUtility.DisplayProgressBar("Generate ing", runtimeType.FullName, i / (float) count);
                     var typeName = runtimeType.Name.Split('.').Last();
                     var fileName = $"{typeName}ValueNode.cs";
-                    var path = Path.Combine(GenerateSavePath, fileName);
+                    var dir = Path.Combine(GenerateSavePath, $"{runtimeType.Namespace?.Replace(".","/")}");
+
+                    var path = Path.Combine(dir, fileName);
                     
                     if (!item.Value)
                     {
@@ -264,6 +266,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                         content = content.Replace(NameMark, typeName);
                         content = content.Replace(AssemblyMark, assemblyPath);
 
+                        if (!Directory.Exists(dir))
+                        {
+                            Directory.CreateDirectory(dir);
+                        }
+                        
                         File.WriteAllText(path, content);
                     }
 
