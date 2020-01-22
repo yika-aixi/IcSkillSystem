@@ -1,0 +1,17 @@
+﻿using System;
+using UnityEngine;
+
+namespace %NAMESPACE%
+{
+    [CreateNodeMenu("CabinIcarus/Nodes/%ASSEMBLY%/%NAME% Value")]
+    public partial class %NAME%ValueNode:ValueNode<%TYPE%>
+    {
+        [SerializeField]
+        private %TYPE% _value;
+   
+        protected override %TYPE% GetTValue()
+        {
+            return _value;
+        }
+    }
+}
