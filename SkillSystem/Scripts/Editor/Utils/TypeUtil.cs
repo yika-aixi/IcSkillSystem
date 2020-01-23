@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor.Compilation;
 using Assembly = System.Reflection.Assembly;
+using Object = System.Object;
 
 namespace CabinIcarus.IcSkillSystem.Editor.Utils
 {
@@ -34,25 +35,15 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
             get
             {
                 return GetRuntimeTypes
-                    .Where(x => x.CustomAttributes.All(y => y.AttributeType != typeof(ObsoleteAttribute)))
                     .Where(x => !x.IsPointer)
                     .Where(x => !typeof(Delegate).IsAssignableFrom(x))
                     .Where(x => !typeof(Exception).IsAssignableFrom(x))
                     .Where(x => !typeof(Attribute).IsAssignableFrom(x))
                     .Where(x => !x.IsGenericType)
                     .Where(x => !x.IsAbstract)
-                    .Where(x =>
-                    {
-                        if (x.IsSealed)
-                        {
-                            return x.IsSealed && x.IsPublic || x.IsPublic;
-                        }
-
-                        return x.IsPublic;
-                    })
                     .Where(x => x.IsValueType || x.IsEnum ||
                                 x.IsClass &&
-                                x.CustomAttributes.Any(y => y.AttributeType == typeof(SerializableAttribute)) ||
+                                x.GetCustomAttributes().All(y => y is SerializableAttribute) ||
                                 typeof(Object).IsAssignableFrom(x));
             }
         }
@@ -66,22 +57,23 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
                 var runtimeAssemblies = CompilationPipeline.GetAssemblies(AssembliesType.Player);
                 runtimeAssemblies = runtimeAssemblies.Where(x => x.defines.Any(y => y != "UNITY_INCLUDE_TESTS")).ToArray();
                
-                foreach (Type allType in AllTypes)
+                
+                foreach (Type type in AllTypes)
                 {
                     foreach (var x in runtimeAssemblies)
                     {
-                        if (x.name == allType.Assembly.GetName().Name)
+                        if (x.name == type.Assembly.GetName().Name)
                         {
-                            types.Add(allType);
+                            types.Add(type);
                             break;
                         }
                     }
                     
-                    if (allType.Assembly.GetName().Name.StartsWith("UnityEngine"))
+                    if (type.Assembly.GetName().Name.StartsWith("UnityEngine"))
                     {
-                        if (!types.Contains(allType))
+                        if (!types.Contains(type))
                         {
-                            types.Add(allType);
+                            types.Add(type);
                         }
                     }
                 }
@@ -98,6 +90,30 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
         private static void _collectValueTyps()
         {
             _objectTypes.AddRange(AppDomain.CurrentDomain.GetAllTypes().Where(x => x.IsPublic));
+            
+            foreach (var type in _objectTypes.ToList())
+            {
+                _objectTypes.AddRange(type.GetNestedTypes(BindingFlags.Public)
+                    .Where(x => !x.IsNestedFamANDAssem));
+            }
+
+            _objectTypes = _objectTypes.Distinct().ToList();
+
+            _objectTypes = _objectTypes
+                .Where(x => x.CustomAttributes.All(y => !(y.AttributeType == typeof(ObsoleteAttribute))))
+                .Where(x =>
+                {
+                    if (x.DeclaringType == null)
+                    {
+                        return true;
+                    }
+
+                    var result =
+                        x.DeclaringType.CustomAttributes.Any(y => y.AttributeType == typeof(ObsoleteAttribute));
+                 
+                    return !result;
+                })
+                .ToList();
         }
         
         public static Type[] GetAllTypes(this AppDomain appDomain)
@@ -119,6 +135,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
                     typeList.AddRange(((IEnumerable<Type>) ex.Types).Where<Type>((Func<Type, bool>) (type => type != null)));
                 }
             }
+
             return typeList.ToArray();
         }
 
