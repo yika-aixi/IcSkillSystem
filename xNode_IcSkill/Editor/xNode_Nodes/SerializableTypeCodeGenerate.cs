@@ -183,7 +183,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         }
 
         private bool _force = false;
-
+        private bool _clearGenerateCode;
         private void OnGUI()
         {
             EditorGUILayout.BeginHorizontal();
@@ -205,9 +205,10 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             NameSpace = EditorGUILayout.DelayedTextField("Name Space:", NameSpace);
 
             _force = EditorGUILayout.ToggleLeft("Force",_force);
-            
+            //_clearGenerateCode = EditorGUILayout.ToggleLeft("Clear folder Before Generate",_clearGenerateCode);
             _drawGenerate();
         }
+
         
         private void _drawGenerate()
         {
@@ -217,6 +218,18 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             {
                 EditorUtility.DisplayProgressBar("Generate ing", string.Empty, 0);
 
+                if (_clearGenerateCode)
+                {
+                    //todo script dll no update Code may appear exist error
+                    //                    if (Directory.Exists(GenerateSavePath))
+//                    {
+//                        foreach (var file in Directory.GetFiles(GenerateSavePath, "*.cs", SearchOption.AllDirectories))
+//                        {
+//                            File.Delete(file);
+//                        }
+//                    }
+                }
+                
                 var count = _generateTypeMap.Count;
                 
                 int i = 0;
@@ -289,9 +302,24 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
                 EditorUtility.ClearProgressBar();
                 AssetDatabase.Refresh();
+                _clearNullFolder();
             }
         }
 
+        private void _clearNullFolder()
+        {
+            var folders = Directory.GetDirectories(GenerateSavePath);
+
+            foreach (var folder in folders)
+            {
+                var files = Directory.GetFiles(folder);
+
+                if (files.Length == 0)
+                {
+                    Directory.Delete(folder);   
+                }
+            }
+        }
         private bool _showAssemblyEnableOrClose;
         private bool _temp;
         private Vector2 _showAssemblyEnableOrClosePos;
