@@ -80,7 +80,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         protected virtual void Init()
         {
         }
-
+        
         public virtual void Use()
         {
             _setCurrentSkillGroup();
