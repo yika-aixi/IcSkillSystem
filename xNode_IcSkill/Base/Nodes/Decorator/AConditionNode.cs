@@ -5,6 +5,7 @@
 //2019年09月22日-00:08
 //Assembly-CSharp
 
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 
@@ -12,11 +13,11 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
     public abstract class AConditionNode:AObservingDecoratorNode<Condition>
     {
-        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private float _checkInterval;
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
+        private ValueInfo<float> _checkInterval;
 
-        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private float _randomVariance;
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
+        private ValueInfo<float> _randomVariance;
 
         protected sealed override Condition GetDecoratorNode()
         {

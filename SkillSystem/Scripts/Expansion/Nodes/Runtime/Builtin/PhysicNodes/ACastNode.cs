@@ -1,5 +1,7 @@
 ﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 using Node = XNode.Node;
@@ -16,7 +18,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [Node.LabelAttribute("Layer Mask")]
-        private LayerMask _mask;
+        private IcVariableLayerMask _mask;
         
         protected LayerMask Mask => GetInputValue(nameof(_mask),_mask);
 
@@ -99,7 +101,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         [SerializeField,Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [Node.LabelAttribute("Owner Add Offset")]
-        private Vector3 _offset;
+        private IcVariableVector3 _offset;
 
         protected Vector3 Origin => Owner.transform.position + Offset;
         

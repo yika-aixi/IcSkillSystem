@@ -5,6 +5,7 @@
 //2019年11月18日-21:03
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -13,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     public class AnimationBoolNode:AAnimatorSetXXXNode
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
-        private bool _value;
+        private IcVariableBoolean _value;
         
         protected override void NameMode()
         {

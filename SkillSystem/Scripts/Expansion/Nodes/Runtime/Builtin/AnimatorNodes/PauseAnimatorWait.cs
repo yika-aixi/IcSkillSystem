@@ -6,6 +6,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using NPBehave;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("Pause time (Second)")]
-        private float _time;
+        private IcVariableSingle _time;
         
         protected override Task CreateAction()
         {

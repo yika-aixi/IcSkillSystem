@@ -5,6 +5,7 @@
 //2019年11月17日-21:55
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -15,11 +16,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         //基于自身坐标
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
-        private bool _basedOnItselfPos = true;
+        private IcVariableBoolean _basedOnItselfPos = (IcVariableBoolean) true;
         
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
-        private Vector3 _pos;
+        private IcVariableVector3 _pos;
 
         protected override GameObject CreateGo()
         {
@@ -27,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
             if (_basedOnItselfPos)
             {
-                pos += SkillGroup.Owner.transform.position;
+                pos.Value += SkillGroup.Owner.transform.position;
             }
             
             return Instantiate(Go,pos, Quaternion);

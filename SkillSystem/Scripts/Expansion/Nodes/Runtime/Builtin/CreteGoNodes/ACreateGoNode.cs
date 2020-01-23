@@ -6,6 +6,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using NPBehave;
 using UnityEngine;
 using XNode;
@@ -17,10 +18,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
         private GameObject _go;
-        
-        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+
+        [Input(ShowBackingValue.Always, ConnectionType.Override, TypeConstraint.Strict)] 
         [SerializeField]
-        private Quaternion _quaternion = Quaternion.identity;
+        private IcVariableQuaternion _quaternion;
 
         [Output(ShowBackingValue.Always)]
         private GameObject _instantiates;
