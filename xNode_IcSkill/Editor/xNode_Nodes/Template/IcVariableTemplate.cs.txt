@@ -1,0 +1,10 @@
+using System;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
+
+namespace %NAMESPACE%
+{
+    [Serializable]
+    public class IcVariable%NAME%:ValueInfo<%TYPE%>
+    {
+    }
+}
