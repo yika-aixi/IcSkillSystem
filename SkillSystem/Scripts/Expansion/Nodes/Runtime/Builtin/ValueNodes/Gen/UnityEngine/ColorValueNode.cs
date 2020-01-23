@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
@@ -17,10 +16,5 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
             _variableValue.Value = _value;
             return _variableValue;
         }
-    }
-    
-    [Serializable]
-    public class IcVariableColor:ValueInfo<UnityEngine.Color>
-    {
     }
 }
