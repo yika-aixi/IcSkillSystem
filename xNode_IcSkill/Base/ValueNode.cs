@@ -9,22 +9,16 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
     /// <summary>
     /// 值节点
     /// </summary>
-    public abstract class ValueNode<T>:ANPNode<ValueInfo<T>>
+    public abstract class ValueNode<T>:ANPNode<T>
     {
-        private ValueInfo<T> _valueInfo = new ValueInfo<T>();
-        
-        protected sealed override ValueInfo<T> GetOutValue()
+        protected sealed override T GetOutValue()
         {
-            _valueInfo.Value = GetTValue();
-
-            return _valueInfo;
+            return GetTValue();
         }
 
         protected sealed override object GetPortValue(NodePort port)
         {
-            _valueInfo.Value = GetTValue(port);
-
-            return _valueInfo;
+            return GetTValue(port);
         }
 
         protected virtual T GetTValue(NodePort port)
