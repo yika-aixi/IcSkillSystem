@@ -7,7 +7,6 @@ using CabinIcarus.IcSkillSystem.Editor.Utils;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 {
@@ -25,9 +24,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
         const string ValueNodeValueTypeTemplateName = "ValueNodeValueTypeTemplate.cs";
         
+        const string IcVariableTemplateTemplateName = "IcVariableTemplate.cs";
+        
         private static string _templateContent;
 
         private static string _valueTypeTemplateContent;
+        private static string _icVariableTemplateContent;
         
         private static Dictionary<string,bool> _generateTypeAqNameMap;
         private static Dictionary<Type,bool> _generateTypeMap;
@@ -170,6 +172,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             _templateContent = _loadTemple(ValueNodeTemplateName);
             
             _valueTypeTemplateContent = _loadTemple(ValueNodeValueTypeTemplateName);
+
+            _icVariableTemplateContent = _loadTemple(IcVariableTemplateTemplateName);
             
             if (_generateTypeMap == null)
             {
@@ -209,11 +213,22 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             _drawGenerate();
         }
 
+        private List<string> _nodeCSFileNames = new List<string>();
+        private List<string> _icVariableCSFileNames = new List<string>();
+        
+        private List<string> _nodeClassNames = new List<string>();
+        private List<string> _icVariableClassNames = new List<string>();
         
         private void _drawGenerate()
         {
             _drawAssemblyEnableOrClose();
-
+            
+            _nodeCSFileNames.Clear();
+            _icVariableCSFileNames.Clear();
+            
+            _nodeClassNames.Clear();
+            _icVariableClassNames.Clear();
+            
             if (GUILayout.Button("Generate"))
             {
                 EditorUtility.DisplayProgressBar("Generate ing", string.Empty, 0);
@@ -239,11 +254,23 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     var runtimeType = item.Key;
                     EditorUtility.DisplayProgressBar("Generate ing", runtimeType.FullName, i / (float) count);
                     var typeName = runtimeType.Name.Split('.').Last();
-                    var fileName = $"{typeName}ValueNode.cs";
-                    var dir = Path.Combine(GenerateSavePath, $"{runtimeType.Namespace?.Replace(".","/")}");
+                    typeName = _pathInvalidRe(typeName);
+                    typeName = typeName.Replace('+', '.');
+                    var namespaceRe = runtimeType.Namespace;
+                    namespaceRe = _pathInvalidRe(namespaceRe);
 
-                    var path = Path.Combine(dir, fileName);
+                    var fileName = $"{typeName}ValueNode.cs";
+
+                    fileName = _getNewName(fileName, runtimeType,_nodeCSFileNames) + ".cs";
                     
+                    var dir = Path.Combine(GenerateSavePath, $"{namespaceRe}");
+                    
+                    dir = dir.Replace('+','_');
+                    
+                    string path = "";
+                    
+                    path = Path.Combine(dir, fileName);
+           
                     if (!item.Value)
                     {
                         if (File.Exists(path))
@@ -256,50 +283,79 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     
                     if (_isSerializableType(runtimeType))
                     {
-                        if (!_force)
-                        {
-                            if (File.Exists(path))
-                            {
-                                continue;
-                            }
-                        }
-                        
                         var assemblyPath = runtimeType.ConversionTypeAssemblyName();
-                        
                         assemblyPath = assemblyPath.Replace(".", "/");
 
                         if (assemblyPath.EndsWith("/"))
                         {
                             assemblyPath = assemblyPath.Remove(assemblyPath.Length - 1, 1);
                         }
-
+                        
                         string content;
                         
+                        string className = _getNewName(typeName,runtimeType,_nodeClassNames);
+                        
+                        if (!_force)
+                        {
+                            if (File.Exists(path))
+                            {
+                                goto IcVariable;
+                            }
+                        }
+
                         if (runtimeType.IsValueType)
                         {
-                            content = _valueTypeTemplateContent.Replace(TypeMark, runtimeType.FullName);
-                        }
+                            content = _valueTypeTemplateContent;
+                        } 
                         else
                         {
-                            content = _templateContent.Replace(TypeMark, runtimeType.FullName);
+                            content = _templateContent;
                         }
-                        
-                        content = content.Replace(NameSpaceMark, NameSpace);
-                        content = content.Replace(IsChangeMark, "false");
-                        content = content.Replace(NameMark, typeName);
-                        content = content.Replace(AssemblyMark, assemblyPath);
 
-                        if (!Directory.Exists(dir))
+                        content = _replaceContent(content, runtimeType, className, assemblyPath);
+
+                        _writeFile(dir, path, content);
+
+                        IcVariable:
+                        _nodeCSFileNames.Add(Path.GetFileNameWithoutExtension(fileName));
+                        _nodeClassNames.Add(className);
+                        
+                        //IcVariable
                         {
-                            Directory.CreateDirectory(dir);
+                            if (runtimeType.IsSubclassOf(typeof(ValueInfo<>)))
+                            {
+                                goto End;
+                            }
+
+                            dir = Path.Combine(GenerateSavePath, "IcVariables");
+                            dir = Path.Combine(dir, $"{namespaceRe}");
+
+                            fileName = $"IcVariable{typeName}.cs";
+                            fileName = _getNewName(fileName, runtimeType, _icVariableCSFileNames) + ".cs";
+
+                            path = Path.Combine(dir, fileName);
+                            
+                            if (!_force)
+                            {
+                                if (File.Exists(path))
+                                {
+                                    goto End;
+                                }
+                            }
+
+                            className = _getNewName(typeName,runtimeType,_icVariableClassNames);
+                            content = _replaceContent(_icVariableTemplateContent, runtimeType, className, assemblyPath);
+                            _writeFile(dir, path, content);
                         }
                         
-                        File.WriteAllText(path, content);
+                        End: ;
+                        _icVariableCSFileNames.Add(Path.GetFileNameWithoutExtension(fileName));
+                        _icVariableClassNames.Add(className);
                     }
 
                     ++i;
                 }
-
+                
                 EditorUtility.ClearProgressBar();
                 AssetDatabase.Refresh();
                 _clearNullFolder();
@@ -320,6 +376,74 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 }
             }
         }
+
+        private string _getNewName(string fileName, Type runtimeType,List<string> names)
+        {
+            if (names == null)
+            {
+                return fileName;
+            }
+
+            fileName = Path.GetFileNameWithoutExtension(fileName);
+
+            int index = 0;
+            int count = 1;
+            var space = runtimeType.Namespace;
+            var spaces = space?.Split('.');
+            
+            while (true)
+            {
+                if (!names.Contains(fileName))
+                {
+                    return fileName;
+                }
+
+                if (spaces == null || index >= spaces.Length - 1)
+                {
+                    fileName += $"_{count++}";
+                }
+                else
+                {
+                    fileName += $"_{spaces[index++]}";
+                }
+            }
+        }
+
+        private string _pathInvalidRe(string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                foreach (var pathChar in Path.GetInvalidPathChars())
+                {
+                    path = path.Replace(pathChar, '_');
+                }
+
+                path = path?.Replace(".", "/");
+            }
+
+            return path;
+        }
+
+        private void _writeFile(string dir, string path, string content)
+        {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            File.WriteAllText(path, content);
+        }
+
+        private string _replaceContent(string content, Type runtimeType, string typeName, string assemblyPath)
+        {
+            content = content.Replace(TypeMark, runtimeType.FullName.Replace('+', '.'));
+            content = content.Replace(NameSpaceMark, NameSpace);
+            content = content.Replace(IsChangeMark, "false");
+            content = content.Replace(NameMark, typeName);
+            content = content.Replace((string) AssemblyMark, assemblyPath);
+            return content;
+        }
+
         private bool _showAssemblyEnableOrClose;
         private bool _temp;
         private Vector2 _showAssemblyEnableOrClosePos;
