@@ -10,7 +10,18 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             return ObjValue;
         }
 
+        public void SetValue(AValueInfo value)
+        {
+            UpdateValue(value);
+        }
+
+        protected abstract void UpdateValue(AValueInfo value);
+        
+        public abstract void SetValueO(object vlaue);
+        
         protected abstract object ObjValue { get; }
+
+        public abstract Type ValueType { get; }
     }
     
     [Serializable]
@@ -27,8 +38,20 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         {
             return new ValueInfo<T>(){Value = value};
         }
-        
+
+        protected override void UpdateValue(AValueInfo value)
+        {
+            Value = ((ValueInfo<T>) value).Value;
+        }
+
+        public override void SetValueO(object vlaue)
+        {
+            Value = (T) vlaue;
+        }
+
         protected override object ObjValue => Value;
+        
+        public override Type ValueType => Value?.GetType();
 
         public override string ToString()
         {
