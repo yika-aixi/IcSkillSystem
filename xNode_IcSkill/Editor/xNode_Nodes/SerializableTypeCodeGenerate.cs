@@ -92,7 +92,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     EditorPrefs.GetString(_getKey(nameof(_generateTypeAqNameMap))));
 
             var runtimeTypes = TypeUtil.GetRuntimeFilterTypes.ToList();
-            
+            bool isSave = false;
             if (_generateTypeAqNameMap == null || _generateTypeAqNameMap.Count != runtimeTypes.Count)
             {
                 if (_generateTypeAqNameMap == null)
@@ -100,11 +100,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     _generateTypeAqNameMap = new Dictionary<string, bool>();
                 }
                 
+                //add
                 foreach (var runtimeType in runtimeTypes)
                 {
                     if (runtimeType.AssemblyQualifiedName == null)
                     {
-                        Debug.LogError(runtimeType);
                         continue;
                     }
                     
@@ -114,6 +114,17 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     }
                     _generateTypeAqNameMap.Add(runtimeType.AssemblyQualifiedName, true);
                 }
+                
+                //remove
+                foreach (var typeName in _generateTypeAqNameMap.Keys.ToList())
+                {
+                    if (!runtimeTypes.Exists(x=>x.AssemblyQualifiedName == typeName))
+                    {
+                        _generateTypeAqNameMap.Remove(typeName);
+                    }
+                }
+
+                isSave = true;
             }
 
             if (_generateTypeMap == null)
@@ -146,6 +157,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 {
                     _groupStates.Add(false);
                 }
+            }
+
+            if (isSave)
+            {
+                _save();
             }
         }
 
