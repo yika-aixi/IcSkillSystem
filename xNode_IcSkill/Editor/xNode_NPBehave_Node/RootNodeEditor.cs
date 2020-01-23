@@ -9,25 +9,37 @@ using XNodeEditor;
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
     [CustomNodeEditor(typeof(RootNode))]
-    public class RootNodeEditor:NodeEditor 
+    public class RootNodeEditor: ANPBehaveNodeEditor<RootNode,Root>
     {
         private RootNode rootNode;
         private SerializedProperty _autoStartSer;
         private SerializedProperty _prioritySer;
+//
+//        public override Color GetTint()
+//        {
+//            _check();
+//            
+//            if (!rootNode.GetPort("_mainNode").IsConnected)
+//            {
+//                return new Color(205 / 255f,20 / 255f,25 / 255f);
+//            }            
+//            
+//            return new Color(30 / 255f,147 / 255f,65 / 255f);
+//        }
 
-        public override Color GetTint()
+        protected override void ColorCheck()
         {
             _check();
-            
-            if (!rootNode.GetPort("_mainNode").IsConnected)
+
+            if (!rootNode.GetPort("_blackBoard").IsConnected || !rootNode.GetPort("_clok").IsConnected)
             {
-                return new Color(205 / 255f,20 / 255f,25 / 255f);
-            }            
+                Error = true;
+            }
             
-            return new Color(30 / 255f,147 / 255f,65 / 255f);
+            base.ColorCheck();
         }
 
-        public override void OnInit()
+        protected override void Init()
         {
             _stor();
             
@@ -44,7 +56,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             };
         }
 
-        public override void OnBodyGUI()
+        protected override void DrawBody()
         {
             serializedObject.Update();
             {
