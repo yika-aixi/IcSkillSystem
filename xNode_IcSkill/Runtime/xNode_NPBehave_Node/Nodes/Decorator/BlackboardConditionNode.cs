@@ -6,7 +6,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Decorator/Blackboard Condition")]
     public class BlackboardConditionNode:AObservingDecoratorNode<BlackboardCondition>
     {
-        [SerializeField]
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private string _key;
 
         [SerializeField]
@@ -17,9 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 
         protected override BlackboardCondition GetDecoratorNode()
         {
-            _value = GetInputValue(nameof(_value),_value);
-
-            return new BlackboardCondition(_key,_operator,_value,Stops,DecorateeNode);
+            return new BlackboardCondition(GetInputValue(nameof(_key),_key),_operator,GetInputValue(nameof(_value),_value),Stops,DecorateeNode);
         }
     }
 }
