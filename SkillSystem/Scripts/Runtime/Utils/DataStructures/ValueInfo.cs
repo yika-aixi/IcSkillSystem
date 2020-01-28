@@ -2,7 +2,6 @@ using System;
 
 namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
-    [Serializable]
     public abstract class AValueInfo
     {
         public object GetValue()
