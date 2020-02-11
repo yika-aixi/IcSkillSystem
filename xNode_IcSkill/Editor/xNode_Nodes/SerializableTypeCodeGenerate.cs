@@ -12,7 +12,9 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 {
     public class SerializableTypeCodeGenerate:EditorWindow
     {
-        private static string _defaultNameSpace = "CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes";
+        //pls not modify
+        //Built-in generated classes belong to this namespace.To ensure correct updates,do not modify
+        private const string BuiltinNodeNameSpace = "CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes";
 
         private const string NameMark = "%NAME%";
         private const string TypeMark = "%TYPE%";
@@ -33,6 +35,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
         
         private static Dictionary<string,bool> _generateTypeAqNameMap;
         private static Dictionary<Type,bool> _generateTypeMap;
+        private static Dictionary<string, string> _scriptAssetPathMap;
         private static List<bool> _groupStates;
         private static IEnumerable<IGrouping<string, KeyValuePair<Type, bool>>> _assemblyGroup;
         
@@ -56,10 +59,21 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             return content;
         }
 
+        
+        private static string OldGenerateSavePath
+        {
+            get => EditorUserSettings.GetConfigValue(_getKey($"Old{nameof(GenerateSavePath)}"));
+            set => EditorUserSettings.SetConfigValue(_getKey($"Old{nameof(GenerateSavePath)}"),value);
+        }
+        
         private static string GenerateSavePath
         {
             get => EditorUserSettings.GetConfigValue(_getKey(nameof(GenerateSavePath)));
-            set => EditorUserSettings.SetConfigValue(_getKey(nameof(GenerateSavePath)),value);
+            set
+            {
+                OldGenerateSavePath = GenerateSavePath;
+                EditorUserSettings.SetConfigValue(_getKey(nameof(GenerateSavePath)), value);
+            }
         }
 
         public static string NameSpace
@@ -69,7 +83,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                 var str = EditorPrefs.GetString(_getKey(nameof(NameSpace)));
                 if (string.IsNullOrWhiteSpace(str))
                 {
-                    NameSpace = _defaultNameSpace;
+                    NameSpace = BuiltinNodeNameSpace;
                     return NameSpace;
                 }
                 return str;
@@ -88,83 +102,134 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
         private static void _init()
         {
-            _generateTypeAqNameMap = new Dictionary<string, bool>();
-            _generateTypeAqNameMap =
-                SerializationUtil.ToValue<Dictionary<string, bool>>(
-                    EditorPrefs.GetString(_getKey(nameof(_generateTypeAqNameMap))));
-
-            var runtimeTypes = TypeUtil.GetRuntimeFilterTypes.ToList();
-            bool isSave = false;
-            if (_generateTypeAqNameMap == null || _generateTypeAqNameMap.Count != runtimeTypes.Count)
+            EditorUtility.DisplayProgressBar("Init","",0);
             {
-                if (_generateTypeAqNameMap == null)
                 {
                     _generateTypeAqNameMap = new Dictionary<string, bool>();
-                }
-                
-                //add
-                foreach (var runtimeType in runtimeTypes)
-                {
-                    if (runtimeType.AssemblyQualifiedName == null)
+                    _generateTypeAqNameMap =
+                        SerializationUtil.ToValue<Dictionary<string, bool>>(
+                            EditorPrefs.GetString(_getKey(nameof(_generateTypeAqNameMap))));
+
+                    var runtimeTypes = TypeUtil.GetRuntimeFilterTypes.ToList();
+                    bool isSave = false;
+                    if (_generateTypeAqNameMap == null || _generateTypeAqNameMap.Count != runtimeTypes.Count)
                     {
-                        continue;
+                        if (_generateTypeAqNameMap == null)
+                        {
+                            _generateTypeAqNameMap = new Dictionary<string, bool>();
+                        }
+                        
+                        EditorUtility.DisplayProgressBar("Init","Update Map ing.......",0);
+                        float count = runtimeTypes.Count,index = 1;
+                        
+                        //add
+                        foreach (var runtimeType in runtimeTypes)
+                        {
+                            if (runtimeType.AssemblyQualifiedName == null)
+                            {
+                                continue;
+                            }
+
+                            if (_generateTypeAqNameMap.ContainsKey(runtimeType.AssemblyQualifiedName))
+                            {
+                                continue;
+                            }
+
+                            _generateTypeAqNameMap.Add(runtimeType.AssemblyQualifiedName, true);
+                            
+                            EditorUtility.DisplayProgressBar("Init",$"Add {runtimeType.FullName}",index++/count);
+                        }
+
+                        EditorUtility.DisplayProgressBar("Init","Remove Missing Type ing.......",0);
+                        //remove
+                        var typeNames = _generateTypeAqNameMap.Keys.ToList();
+                        count = typeNames.Count;
+                        index = 9;
+                        foreach (var typeName in typeNames)
+                        {
+                            if (!runtimeTypes.Exists(x => x.AssemblyQualifiedName == typeName))
+                            {
+                                _generateTypeAqNameMap.Remove(typeName);
+                                EditorUtility.DisplayProgressBar("Init",$"Remove {typeName}",index++/count);
+                            }
+                        }
+
+                        isSave = true;
                     }
-                    
-                    if (_generateTypeAqNameMap.ContainsKey(runtimeType.AssemblyQualifiedName))
+
+                    if (_generateTypeMap == null)
                     {
-                        continue;
+                        bool exitMissing = false;
+
+                        _generateTypeMap = _generateTypeAqNameMap.Where(x =>
+                        {
+                            if (Type.GetType(x.Key) != null)
+                            {
+                                return true;
+                            }
+
+                            Debug.LogWarning($"Missing Type '{x.Key}'");
+
+                            exitMissing = true;
+
+                            return false;
+                        }).ToDictionary(x => Type.GetType(x.Key), x => x.Value);
+
+                        if (exitMissing)
+                        {
+                            _save();
+                        }
+
+                        _assemblyGroup = _generateTypeMap.GroupBy(x => x.Key.Assembly.FullName);
+                        _groupStates = new List<bool>();
+
+                        foreach (var unused in _assemblyGroup)
+                        {
+                            _groupStates.Add(false);
+                        }
                     }
-                    _generateTypeAqNameMap.Add(runtimeType.AssemblyQualifiedName, true);
-                }
-                
-                //remove
-                foreach (var typeName in _generateTypeAqNameMap.Keys.ToList())
-                {
-                    if (!runtimeTypes.Exists(x=>x.AssemblyQualifiedName == typeName))
+
+                    if (isSave)
                     {
-                        _generateTypeAqNameMap.Remove(typeName);
+                        _save();
                     }
                 }
 
-                isSave = true;
+                EditorUtility.DisplayProgressBar("Init","Search All Script and Cache Path ing.......",0);
+                {
+                    _scriptAssetPathMap = new Dictionary<string, string>();
+                    var scripts = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories);
+                    float count = scripts.Length,index = 1;
+                    foreach (var script in scripts)
+                    {
+                        var name = Path.GetFileName(script);
+                        var content = File.ReadAllText(script);
+                        var lines = content.Split('\r','\n');
+                        
+                        string nameSpaceLine = String.Empty;
+                        
+                        foreach (var line in lines)
+                        {
+                            if (line.StartsWith("namespace"))
+                            {
+                                nameSpaceLine = line;
+                                break;
+                            }
+                        }
+                        
+                        if (!string.IsNullOrEmpty(nameSpaceLine))
+                        {
+                            if (nameSpaceLine.Contains(NameSpace) || nameSpaceLine.Contains(BuiltinNodeNameSpace))
+                            {
+                                EditorUtility.DisplayProgressBar("Init",$"Cache {name}",index++/count);
+                                _scriptAssetPathMap.Add(name, script);
+                            }
+                        }
+                    }
+                }
             }
-
-            if (_generateTypeMap == null)
-            {
-                bool exitMissing = false;
-                
-                _generateTypeMap = _generateTypeAqNameMap.Where(x =>
-                {
-                    if (Type.GetType(x.Key) != null)
-                    {
-                        return true;
-                    }
-                    
-                    Debug.LogWarning($"Missing Type '{x.Key}'");
-
-                    exitMissing = true;
-                    
-                    return false;
-                }).ToDictionary(x => Type.GetType(x.Key), x => x.Value);
-
-                if (exitMissing)
-                {
-                    _save();
-                }
-                
-                _assemblyGroup = _generateTypeMap.GroupBy(x => x.Key.Assembly.FullName);
-                _groupStates = new List<bool>();
-
-                foreach (var unused in _assemblyGroup)
-                {
-                    _groupStates.Add(false);
-                }
-            }
-
-            if (isSave)
-            {
-                _save();
-            }
+            EditorUtility.ClearProgressBar();
+            
         }
 
         private void OnEnable()
@@ -270,7 +335,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                     string path = "";
                     
                     path = Path.Combine(dir, fileName);
-           
+                    
                     if (!item.Value)
                     {
                         if (File.Exists(path))
@@ -279,6 +344,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                         }
                         ++i;
                         continue;
+                    }
+                    
+                    // close not delete other folder script (eg. Builtin Generated)
+                    if (_scriptAssetPathMap.ContainsKey(fileName))
+                    {
+                        path = _scriptAssetPathMap[fileName];
                     }
                     
                     if (_isSerializableType(runtimeType))
@@ -335,6 +406,11 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
                             path = Path.Combine(dir, fileName);
                             
+                            if (_scriptAssetPathMap.ContainsKey(fileName))
+                            {
+                                path = _scriptAssetPathMap[fileName];
+                            }
+                            
                             if (!_force)
                             {
                                 if (File.Exists(path))
@@ -355,10 +431,30 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
                     ++i;
                 }
+
+                _clearOldFolder();
                 
                 EditorUtility.ClearProgressBar();
                 AssetDatabase.Refresh();
                 _clearNullFolder();
+            }
+        }
+
+        private void _clearOldFolder()
+        {
+            if (!string.IsNullOrWhiteSpace(OldGenerateSavePath))
+            {
+                if (OldGenerateSavePath != GenerateSavePath)
+                {
+                    //todo script dll no update Code may appear exist error
+                    //                    if (Directory.Exists(OldGenerateSavePath)) 
+//                    {
+//                        foreach (var file in Directory.GetFiles(OldGenerateSavePath, "*.cs", SearchOption.AllDirectories))
+//                        {
+//                            File.Delete(file);
+//                        }
+//                    }
+                }
             }
         }
 
