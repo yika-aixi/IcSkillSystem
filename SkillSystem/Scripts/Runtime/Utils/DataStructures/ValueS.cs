@@ -11,10 +11,6 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     {
         //Boxing ValueInfo 
         private ValueInfo<object> _boxValueInfo = new ValueInfo<object>();
-        
-        [SerializeField] private bool _isUnity;
-
-        public bool IsUnity => _isUnity;
 
         [SerializeField] private string ValueTypeAqName;
         
@@ -22,6 +18,10 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         [SerializeField] private string _valueStr;
 
+        [SerializeField] private Object _uValue;
+
+        public bool IsUValue => ValueType.IsAssignableFrom(typeof(Object));
+        
         private AValueInfo _value;
 
         public AValueInfo ValueInfo
@@ -37,15 +37,9 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             }
         }
 
-        [SerializeField] 
-        private Object _uValue;
-        
-        public Object UValue => _uValue;
-
         private Type _type;
         
         private Type _valueInfoType;
-        private FieldInfo _valueInfoValueFieldInfo;
 
         public Type ValueType
         {
@@ -55,7 +49,6 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 {
                     _type = Type.GetType(ValueTypeAqName);
                     _valueInfoType = Type.GetType(ValueInfoTypeAqName);
-                    _valueInfoValueFieldInfo = _valueInfoType.GetField(nameof(ValueInfo<object>.Value));
                 }
 
                 return _type;
@@ -63,8 +56,6 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
             set
             {
-                _isUnity = typeof(Object).IsAssignableFrom(value);
-
                 _type = value;
 
                 ValueTypeAqName = value != null ? value.AssemblyQualifiedName : string.Empty;
@@ -76,8 +67,6 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     _valueInfoType = type.MakeGenericType(ValueType);
                     
                     ValueInfoTypeAqName = _valueInfoType.AssemblyQualifiedName;
-
-                    _valueInfoValueFieldInfo = _valueInfoType.GetField(nameof(ValueInfo<object>.Value));
                 }
                 else
                 {
@@ -96,9 +85,51 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         {
         }
 
+        public void SetValueInfo(AValueInfo valueInfo)
+        {
+            if (valueInfo == null)
+            {
+                ValueType = null;
+                _value = null;
+                _valueStr = string.Empty;
+                return;
+            }
+
+            var type = valueInfo.ValueType;
+            
+            if (ValueType != type)
+            {
+                ValueType = type;
+            }
+
+            _value = valueInfo;
+        }
+        
         public void SetValue<T>(T value)
         {
-            SetValue(value,typeof(T));
+            if (value == null)
+            {
+                ValueType = null;
+                _value = null;
+                _valueStr = string.Empty;
+                return;
+            }
+
+            var type = typeof(T);
+            
+            if (ValueType != type)
+            {
+                ValueType = type;
+            }
+
+            if (_value == null)
+            {
+                _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
+            }
+
+            var valueInfo = (ValueInfo<T>) _value;
+
+            valueInfo.Value = value;
         }
 
         public AValueInfo GetValueInfo()
@@ -121,7 +152,13 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     }
                     else
                     {
-                        SetValue(Activator.CreateInstance(ValueType),ValueType);
+                        try
+                        {
+                            SetValue(Activator.CreateInstance(ValueType),ValueType);
+                        }
+                        catch (InvalidCastException)
+                        {
+                        }
                     }
                 }
             }
@@ -131,6 +168,12 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public ValueInfo<T> GetValue<T>()
         {
+            if (IsUValue)
+            {
+                Debug.LogError($"Value Is Unity Type. pls -> '{nameof(GetUnityValue)}'");
+                return null;
+            }
+            
             GetValueInfo();
             
             if (typeof(T) == typeof(object) && ValueType.IsValueType)
@@ -148,8 +191,23 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
             return (ValueInfo<T>) _value;
         }
+
+        public Object GetUnityValue()
+        {
+            return GetUnityValue<Object>();
+        }
         
-        public void SetValue(object value,Type type)
+        public T GetUnityValue<T>() where T : Object
+        {
+            return (T) _uValue;
+        }
+        
+        public void SetUnityValue(Object value)
+        {
+            _uValue = value;
+        }
+        
+        public void SetValue<T>(T value,Type type)
         {
             if (value == null)
             {
@@ -168,10 +226,13 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             {
                 _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
             }
-
-            _valueInfoValueFieldInfo.SetValue(_value,value);
             
-            //todo Runtime Unwanted logic
+            var valueInfo = (ValueInfo<T>) _value;
+            valueInfo.Value = value;
+        }
+
+        public void Save()
+        {
             _valueStr = SerializationUtil.ToString(_value,_valueInfoType);
         }
     }

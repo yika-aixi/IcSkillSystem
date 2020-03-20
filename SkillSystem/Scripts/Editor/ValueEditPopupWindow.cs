@@ -347,7 +347,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 _editTree.OnValueChange += x =>
                 {
                     _valueS.SetValue(x, x.GetType());
-                    
+                    _valueS.Save();
                     OnEdit?.Invoke();
                 };
                 _editTree.Reload();

@@ -71,6 +71,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                     if (GUI.Button(buttonRect,new GUIContent(EditorGUIUtility.FindTexture("Refresh"),$"Change Type,Current Type '{value.ValueType.FullName}'")))
                     {
                         value.SetValue<object>(null);
+                        value.Save();
                         Save();
                         return 0;
                     }
@@ -114,67 +115,46 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
         private void _drawValue(ref Rect rect,ValueS valueS)
         {
-            var primitiveOrStringType = _primitiveOrStringType(valueS);
+            var primitiveOrStringOrUnityType = _primitiveOrStringType(valueS) || valueS.IsUValue;
             
             rect.size = new Vector2(rect.width - (
-                                        (primitiveOrStringType ? 0: 70) //primitive Or String Type No need to show edit button
+                                        (primitiveOrStringOrUnityType ? 0: 70) //primitive Or String Or Unity Type No need to show edit button
                                         + 30 + 30) // subtract EditValue and Refresh and Remove Button 
                 ,rect.height);
-           
-            //todo draw Value
-            if (valueS.IsUnity)
+      
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.ObjectField(pos,x.GetUnityValue(),x.ValueType,false));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedIntField(pos,x.GetValue<int>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedFloatField(pos,x.GetValue<float>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedDoubleField(pos,x.GetValue<double>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.LongField(pos,x.GetValue<long>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedTextField(pos,x.GetValue<string>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector2Field(pos,"",x.GetValue<Vector2>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector2IntField(pos,"",x.GetValue<Vector2Int>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector3Field(pos,"",x.GetValue<Vector3>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector3IntField(pos,"",x.GetValue<Vector3Int>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector4Field(position: pos,"",x.GetValue<Vector4>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.ColorField(pos,x.GetValue<Color>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.CurveField(pos,x.GetValue<AnimationCurve>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.BoundsField(pos,x.GetValue<Bounds>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.BoundsIntField(pos,x.GetValue<BoundsInt>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.RectField(pos,x.GetValue<Rect>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.RectIntField(pos,x.GetValue<RectInt>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.EnumFlagsField(pos,x.GetValue<Enum>()));
+            _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.GradientField(pos,x.GetValue<Gradient>()));
+            
+            if (!primitiveOrStringOrUnityType)
             {
-                var offset = new Vector2(15,0);
-                rect.position -= offset; //subtract offset
+                rect.size = new Vector2(70,26);
                 
-                rect.size += new Vector2(70,0);// no Edit Value Button
-                Object obj;
-                EditorGUI.BeginChangeCheck();
+                if (GUI.Button(rect,"Edit Value"))
                 {
-                    obj = EditorGUI.ObjectField(rect,valueS.UValue, valueS.ValueType, false);
-                }
-                if (EditorGUI.EndChangeCheck())
-                {
-                    valueS.SetValue(obj);
-                    Save();
+                    _valueEditPopup.ValueS = valueS;
+
+                    var pos = rect;
+                    PopupWindow.Show(pos,_valueEditPopup);
                 }
             }
-            else
-            {
-                //todo non Unity Type
-
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedIntField(pos,x.GetValue<int>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedFloatField(pos,x.GetValue<float>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedDoubleField(pos,x.GetValue<double>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.LongField(pos,x.GetValue<long>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.DelayedTextField(pos,x.GetValue<string>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector2Field(pos,"",x.GetValue<Vector2>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector2IntField(pos,"",x.GetValue<Vector2Int>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector3Field(pos,"",x.GetValue<Vector3>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector3IntField(pos,"",x.GetValue<Vector3Int>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.Vector4Field(position: pos,"",x.GetValue<Vector4>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.ColorField(pos,x.GetValue<Color>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.CurveField(pos,x.GetValue<AnimationCurve>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.BoundsField(pos,x.GetValue<Bounds>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.BoundsIntField(pos,x.GetValue<BoundsInt>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.RectField(pos,x.GetValue<Rect>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.RectIntField(pos,x.GetValue<RectInt>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.EnumFlagsField(pos,x.GetValue<Enum>()));
-                _drawNonUnityValue(ref rect,valueS, (pos,x) => EditorGUI.GradientField(pos,x.GetValue<Gradient>()));
-                
-                if (!primitiveOrStringType)
-                {
-                    rect.size = new Vector2(70,26);
-                    
-                    if (GUI.Button(rect,"Edit Value"))
-                    {
-                        _valueEditPopup.ValueS = valueS;
-
-                        var pos = rect;
-                        PopupWindow.Show(pos,_valueEditPopup);
-                    }
-                }
-            }
+            
             rect.position += new Vector2(rect.size.x + 10,0);
         }
 
@@ -193,15 +173,20 @@ namespace CabinIcarus.IcSkillSystem.Editor
             var offset = new Vector2(15,0);
             rect.position -= offset; //subtract offset
             
-//            rect.size -= new Vector2(10,0);
-            
             var value = drawAction(rect,valueS);
-            
-//            rect.position += new Vector2(rect.size.x + 10,0);
             
             if (GUI.changed)
             {
-                valueS.SetValue(value);
+                if (valueS.IsUValue)
+                {
+                    valueS.SetUnityValue((Object) (object) value);
+                }
+                else
+                {
+                    valueS.SetValue(value);
+                    valueS.Save();     
+                }
+
                 Save();
             }
         }
