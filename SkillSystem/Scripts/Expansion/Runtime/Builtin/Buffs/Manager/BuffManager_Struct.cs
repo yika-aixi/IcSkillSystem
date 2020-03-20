@@ -15,6 +15,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 {
     interface IBuffList
     {
+        bool IsAvailable { get; }
+        
+        int ActualCount { get; }
+        
         int Count { get; }
 
         void AddBuff(IBuffDataComponent buff);
@@ -44,6 +48,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
     {
         public FasterReadOnlyList<T> Buffs => AsReadOnly();
 
+        public bool IsAvailable => ActualCount - Count > 0;
+
+        public BuffList(int initialSize) : base(initialSize)
+        {
+        }
+
         public void AddBuff(IBuffDataComponent buff)
         {
             Add((T) buff);
@@ -65,24 +75,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
     }
     
-//    public struct QueryResult
-//    {
-//        Dictionary<>
-//    }
-//    
     public class BuffManager_Struct<TEntity>:IStructBuffManager<TEntity> where TEntity : IIcSkSEntity
     {
+        public readonly int BuffChunkCount;
         public FasterReadOnlyList<TEntity> Entitys => _entitys.AsReadOnly();
         private IBuffList _currentBuffs;
         private FasterList<TEntity> _entitys;
-        private Dictionary<TEntity, Dictionary<Type,IBuffList>> _buffMaps;
+        private Dictionary<TEntity, Dictionary<Type,IBuffList[]>> _buffMaps;
         private Dictionary<Type,List<IBuffCreateSystem<TEntity>>> _onCreateMap = new Dictionary<Type, List<IBuffCreateSystem<TEntity>>>();
         private Dictionary<Type,List<IBuffDestroySystem<TEntity>>> _onDestroyMap = new Dictionary<Type, List<IBuffDestroySystem<TEntity>>>();
         private event Action _onUpdate;
-        public BuffManager_Struct()
+        public BuffManager_Struct(int buffChunkCount = 10)
         {
+            BuffChunkCount = buffChunkCount;
             _entitys = new FasterList<TEntity>();
-            _buffMaps = new Dictionary<TEntity, Dictionary<Type,IBuffList>>();
+            _buffMaps = new Dictionary<TEntity, Dictionary<Type,IBuffList[]>>();
         }
 
         public IStructBuffManager<TEntity> AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent
@@ -160,6 +167,69 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
 
+        /// <summary>
+        /// get Available of Buff List
+        /// </summary>
+        /// <param name="buffLists"></param>
+        /// <returns></returns>
+        IBuffList _getAvailableList<T>(ref IBuffList[] buffLists)
+        {
+            var count = buffLists.Length;
+
+            for (var i = 0; i < count; i++)
+            {
+                var buffList = buffLists[i];
+
+                if (buffList == null)
+                {
+                    buffList = new BuffList<T>(BuffChunkCount);
+                    buffLists[i] = buffList;
+                }
+                
+                if (buffList.IsAvailable)
+                    return buffList;
+            }
+
+            return _getBuffList(ref buffLists, count - 1,out _);
+        }
+        
+        /// <summary>
+        /// Access buff list, resize when smaller than index (index Lsh 1)
+        /// </summary>
+        /// <param name="buffLists"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        IBuffList _accessResizeBuffArray(ref IBuffList[] buffLists,int accessIndex)
+        {
+            var buffListsLength = buffLists.Length;
+            
+            if (buffListsLength <= accessIndex)
+            {
+                Array.Resize(ref buffLists,accessIndex << 1);
+            }
+
+            return buffLists[accessIndex];
+        }
+
+        /// <summary>
+        /// Get buff list, resize when smaller than index (index Lsh 1)
+        /// </summary>
+        /// <param name="buffLists"></param>
+        /// <param name="buffIndex"></param>
+        /// <param name="buffChunkIndex"></param>
+        /// <returns></returns>
+        IBuffList _getBuffList(ref IBuffList[] buffLists,int buffIndex,out int buffChunkIndex)
+        {
+            var fistBuffList = _accessResizeBuffArray(ref buffLists, 0);
+
+            var actualCount = fistBuffList.ActualCount;
+            
+            var aIndex = buffIndex / actualCount;
+            buffChunkIndex = buffIndex % actualCount;
+            
+            return _accessResizeBuffArray(ref buffLists, aIndex);
+        }
+        
         public void AddEntity(TEntity entity)
         {
             if (_entitys.Contains(entity))
@@ -169,7 +239,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             
             _entitys.Add(entity);
             
-            _buffMaps.Add(entity,new Dictionary<Type, IBuffList>());
+            _buffMaps.Add(entity,new Dictionary<Type, IBuffList[]>());
         }
         
         public void RemoveEntity(TEntity entity)
@@ -213,27 +283,30 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     Debug.LogError($"Add Buff {buffType} is appear box ing. If it is not caused by Editor Tools, please handle it.");
                 }
                 
-                result = new BuffList<T>();
+                result = new IBuffList[1];
                 
                 buffMap.Add(buffType, result);
             }
+
+            IBuffList temp = _getAvailableList<T>(ref result);
             
             if (!isBox)
             {
-                buffList = (BuffList<T>) result;
+                buffList = (BuffList<T>) temp;
+                
                 buffList.Add(buff);
             }
             else
             {
-                result.AddBuff((IBuffDataComponent) buff);
+                temp.AddBuff((IBuffDataComponent) buff);
             }
 
-            _currentBuffs = result;
+            _currentBuffs = temp;
 
 #if UNITY_EDITOR
             _createExecute = true;
 #endif
-            _callSystem(entity, buffType, result.Count - 1, true);
+            _callSystem(entity, buffType, temp.Count - 1, true);
 #if UNITY_EDITOR
             _createExecute = false;
 #endif
@@ -274,12 +347,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 throw new ArgumentException($"no {type.Name} Buff! Please Call {nameof(AddBuff)} or {nameof(SetBuffData)}.");
             }
 
-            if (result.Count - 1 < index)
+            IBuffList temp = _getBuffList(ref result,index,out var buffChunkIndex);
+
+            if (temp.Count - 1 < index)
             {
-                throw new IndexOutOfRangeException($"{type.Name} Buff Count :{result.Count},get index :{index}");
+                throw new IndexOutOfRangeException($"{type.Name} get index :{index}");
             }
 
-            return isBox ? (T) result.GetBuff(index) : ((BuffList<T>) result)[index];
+            return isBox ? (T) temp.GetBuff(buffChunkIndex) : ((BuffList<T>) temp)[buffChunkIndex];
         }
 
         /// <summary>
@@ -309,9 +384,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 _addBuff(entity,buffType,buff,isBox);
                 return;
             }
-            
 
-            if (index > result.Count -1)
+            var temp = _getBuffList(ref result, index, out var buffChunkIndex);
+            
+            if (temp.Count == 0)
             {
                 _addBuff(entity,buffType,buff,isBox);
                 return;
@@ -319,13 +395,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             if (!isBox)
             {
-                BuffList<T> buffList = (BuffList<T>) result;
+                BuffList<T> buffList = (BuffList<T>) temp;
 
-                buffList[index] = buff;
+                buffList[buffChunkIndex] = buff;
             }
             else
             {
-                result.SetBuff(index,(IBuffDataComponent) buff);
+                temp.SetBuff(buffChunkIndex,(IBuffDataComponent) buff);
             }
            
         }
@@ -412,36 +488,44 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             if (buffMap.TryGetValue(buffType, out var result))
             {
-                BuffList<T> buffList = null;
+                var buffChunkCount = result.Length;
                 
-                if (!isBox)
+                for (var i = 0; i < buffChunkCount; i++)
                 {
-                    buffList = (BuffList<T>) result;
-                }
-
-                var count = result.Count;
-                for (var index = count - 1; index >= 0; index--)
-                {
+                    var temp = result[i];
+                    
+                    BuffList<T> buffList = null;
+                
                     if (!isBox)
                     {
-                        var bf = buffList[index];
-                        if (!bf.Equals(buff))
-                        {
-                            continue;
-                        }
+                        buffList = (BuffList<T>) temp;
                     }
-                    else
+
+                    var count = temp.Count;
+                    for (var index = count - 1; index >= 0; index--)
                     {
-                        if (!result.GetBuff(index).Equals(buff))
+                        if (!isBox)
                         {
-                            continue;
+                            var bf = buffList[index];
+                            if (!bf.Equals(buff))
+                            {
+                                continue;
+                            }
                         }
-                    }
+                        else
+                        {
+                            if (!temp.GetBuff(index).Equals(buff))
+                            {
+                                continue;
+                            }
+                        }
                     
-                    _currentBuffs = result;
-                    _callSystem(entity,buffType, index, false);
-                    result.RemoveAt(index);
-                    break;
+                        _currentBuffs = temp;
+                        _callSystem(entity,buffType, index, false);
+                        temp.RemoveAt(index);
+                        
+                        return true;
+                    }
                 }
             }
 
@@ -488,18 +572,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             
             if (buffMap.TryGetValue(type,out var result))
             {
-                var buffList = (BuffList<T>) result;
-                
-                if (buff.Equals(default))
+                var buffChunkCount = result.Length;
+
+                for (var i = 0; i < buffChunkCount; i++)
                 {
-                    return true;
-                }
+                    var buffList = (BuffList<T>)  result[i];
                 
-                foreach (var bf in buffList)
-                {
-                    if (buff.Equals(bf))
+                    foreach (var bf in buffList)
                     {
-                        return true;
+                        if (buff.Equals(bf))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -663,6 +747,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return result;
         }
         
+        /// <summary>
+        /// 效率非常低,只建议在Editor下访问
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public FasterReadOnlyList<T> GetBuffs<T>(TEntity entity) where T :struct, IBuffDataComponent
         {
             var buffs = _getBuffs<T>(entity);
@@ -679,11 +768,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             if (_checkEntityExist(entity))
             {
+                FasterList<T> buffs = new FasterList<T>();
                 var buffMap = _buffMaps[entity];
             
                 if (buffMap.TryGetValue(typeof(T), out var result))
                 {
-                    return ((BuffList<T>)result);
+                    foreach (var buffList in result)
+                    {
+                        buffs.AddRange((BuffList<T>)buffList);
+                    }
+
+                    return buffs;
                 }
             }
 
@@ -708,7 +803,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
            {
                var buffList = buffList1;
                
-               buffs.AddRange(buffList.GetBuffs());
+               foreach (var list in buffList)
+               {
+                    buffs.AddRange(list.GetBuffs());
+               }
            }
 
            return buffs;
@@ -732,7 +830,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             if (buffMap.TryGetValue(typeof(T), out var result))
             {
-                count += result.Count;
+                var valueLength = result.Length;
+                for (var index = 0; index < valueLength; index++)
+                {
+                    var buffList = result[index];
+
+                    if (buffList != null)
+                    {
+                        count += buffList.Count;
+                    }
+                }
             }
 
             return count;
