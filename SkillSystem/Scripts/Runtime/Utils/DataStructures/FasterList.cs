@@ -495,6 +495,8 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public int Count => (int) _count;
 
+        public int ActualCount => _buffer.Length;
+        
         public bool IsReadOnly => false;
 
         public FasterList()
