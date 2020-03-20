@@ -60,13 +60,13 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
                 return GetDynamicValue();
             }
             
-            return GetOtherValue(port);
+            return GetOutValue(port);
         }
         protected abstract object GetDynamicValue();
 
-        protected virtual object GetOtherValue(NodePort port)
+        protected virtual object GetOutValue(NodePort port)
         {
-            return null;
+            return GetDynamicValue();
         }
     }
     
