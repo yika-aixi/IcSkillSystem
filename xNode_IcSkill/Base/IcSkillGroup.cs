@@ -109,6 +109,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             }
         }
 
+        public ValueInfo<T> GetVariableValue<T>(string key)
+        {
+            return GetVariableValue(key)?.GetValue<T>();
+        }
+
         public ValueS GetVariableValue(string key)
         {
             _varMap.TryGetValue(key, out var value);
@@ -116,21 +121,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             return value;
         }
 
-        public void SetOrAddVariable(string key, object value,Type valueType)
-        {
-            if (_varMap.ContainsKey(key))
-            {
-                _varMap[key].SetValue(value,valueType);
-            }
-            else
-            {
-                var valueS = new ValueS();
-                valueS.SetValue(value,valueType);
-                _varMap.Add(key,valueS);
-                _keys.Add(key);
-            }             
-        }
-        
         public void SetOrAddVariable<T>(string key, T value)
         {
             if (_varMap.ContainsKey(key))
@@ -145,6 +135,23 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 _keys.Add(key);
             }      
         }
+        
+        public void SetOrAddVariable<T>(string key, ValueInfo<T> value)
+        {
+            if (_varMap.ContainsKey(key))
+            {
+                _varMap[key].SetValueInfo(value);
+            }
+            else
+            {
+                var valueS = new ValueS();
+                valueS.SetValueInfo(value);
+                _varMap.Add(key,valueS);
+                _keys.Add(key);
+            }      
+        }
+
+        public Root FirstRoot { get; private set; }
 
         /// <summary>
         /// Start Group 
@@ -157,8 +164,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             {
                 throw new InvalidOperationException("have not Load Group or Group no exist Root Node");
             }
-
-            Root firstRoot = null;
             
             for (var i = 0; i < _rootCount; i++)
             {
@@ -169,14 +174,14 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 {
                      root.OutValue.Start();
 
-                     if (firstRoot == null)
+                     if (FirstRoot == null)
                      {
-                         firstRoot = root.OutValue;
+                         FirstRoot = root.OutValue;
                      }
                 }
             }
 
-            return firstRoot;
+            return FirstRoot;
         }
 
         public void StopGroup()
