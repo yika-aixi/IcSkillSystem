@@ -7,6 +7,14 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     [Serializable]
     public class SerializationDict<TKey,TValue>:Dictionary<TKey,TValue>,ISerializationCallbackReceiver
     {
+        public SerializationDict()
+        {
+        }
+
+        public SerializationDict(IEqualityComparer<TKey> comparer) : base(comparer)
+        {
+        }
+
         #region Serialize
 
 #if UNITY_EDITOR

@@ -35,10 +35,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
             if (GUI.Button(rect,GetButtonContent()))
             {
                 var keysSer = property.FindPropertyRelative(SerializationDict<TKey, TValue>.KeysFieldName);
-                
-                keysSer.InsertArrayElementAtIndex(keysSer.arraySize);
-                
-                keysSer.GetArrayElementAtIndex(keysSer.arraySize - 1).stringValue = keysSer.arraySize.ToString();
+                AddKey(keysSer);
             }
             
             rect.size = new Vector2(position.size.x,20);
@@ -76,6 +73,13 @@ namespace CabinIcarus.IcSkillSystem.Editor
             _height += 10;
 
             property.serializedObject.ApplyModifiedProperties();
+        }
+
+        protected virtual void AddKey(SerializedProperty keysSer)
+        {
+            keysSer.InsertArrayElementAtIndex(keysSer.arraySize);
+
+            keysSer.GetArrayElementAtIndex(keysSer.arraySize - 1).stringValue = keysSer.arraySize.ToString();
         }
 
         protected virtual GUIContent GetButtonContent()
