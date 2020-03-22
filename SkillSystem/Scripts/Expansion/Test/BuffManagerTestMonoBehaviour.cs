@@ -41,10 +41,10 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         {
             Value = value;
             Type = type;
-            Entity = new IcEntityStruct();
+            Entity = null;
         }
 
-        public IcEntityStruct Entity { get; set; }
+        public IIcSkSEntity Entity { get; set; }
     }
     
     struct TestBuff2:IMechanicBuff,IEquatable<TestBuff2>
@@ -85,11 +85,11 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
         private int _maxEntityId;
 
-        private BuffManager_Struct<IIcSkSEntity> _entityManager;
+        private BuffManager_Struct _entityManager;
 
         private void Awake()
         {
-            _entityManager = new BuffManager_Struct<IIcSkSEntity>();
+            _entityManager = new BuffManager_Struct();
             _maxEntityId = EntityCount;
         }
 

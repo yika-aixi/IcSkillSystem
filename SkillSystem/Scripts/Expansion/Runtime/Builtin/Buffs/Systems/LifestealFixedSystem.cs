@@ -12,14 +12,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 固定吸血,可多个
     /// </summary>
-    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem<IIcSkSEntity> 
+    public class LifestealFixedSystem<TMechanics,TFixedLifesteal,TDamageBuff>:IBuffDestroySystem 
         where TMechanics : struct, IMechanicBuff
         where TFixedLifesteal : struct, IFixedLifesteal
         where TDamageBuff : struct,IDamageBuff
     {
-        private readonly IStructBuffManager<IIcSkSEntity>  _buffManager;
+        private readonly IStructBuffManager  _buffManager;
 
-        public LifestealFixedSystem(IStructBuffManager<IIcSkSEntity>  buffManager)
+        public LifestealFixedSystem(IStructBuffManager  buffManager)
         {
             this._buffManager = buffManager;
         }
@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         {
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
-            var fixedLifesteals = _buffManager.GetBuffs<TFixedLifesteal>(damage.Entity.ToIIcSkSEntity());
+            var fixedLifesteals = _buffManager.GetBuffs<TFixedLifesteal>(damage.Entity);
 
             if (fixedLifesteals.Count == 0)
             {
@@ -45,7 +45,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                 }
             }
 
-            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity.ToIIcSkSEntity());
+            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity);
 
             if (mechanicBuffs.Count == 0)
             {
@@ -69,7 +69,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                         }
                     }
                    
-                    _buffManager.SetBuffData(damage.Entity.ToIIcSkSEntity(),mechanicBuff,i);
+                    _buffManager.SetBuffData(damage.Entity,mechanicBuff,i);
                     
                     break;
                 }

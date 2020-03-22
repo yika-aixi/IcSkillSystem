@@ -12,6 +12,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     public struct DeathStruct:IBuffDataComponent,IMakerEntity
     {
-        public IcEntityStruct Entity { get; set; }
+        public IIcSkSEntity Entity { get; set; }
     }
 }

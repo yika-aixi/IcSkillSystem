@@ -6,9 +6,9 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Skills.Condition
 {
     public abstract class ACondition<TEntity>:ICondition<TEntity> where TEntity : IIcSkSEntity
     {
-        protected readonly IBuffManager<TEntity> _buffManager;
+        protected readonly IBuffManager _buffManager;
 
-        protected ACondition(IBuffManager<TEntity> buffManager)
+        protected ACondition(IBuffManager buffManager)
         {
             this._buffManager = buffManager;
         }

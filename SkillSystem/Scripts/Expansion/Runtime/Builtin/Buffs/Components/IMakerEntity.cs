@@ -4,6 +4,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     public interface IMakerEntity
     {
-        IcEntityStruct Entity { get; set; }
+        IIcSkSEntity Entity { get; set; }
     }
 }

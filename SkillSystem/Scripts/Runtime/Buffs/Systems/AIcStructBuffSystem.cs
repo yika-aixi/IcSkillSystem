@@ -4,15 +4,14 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
 {
-    public abstract class AIcStructBuffSystem<TEntity,TBuffType>: 
-        IBuffCreateSystem<TEntity>,
-        IBuffUpdateSystem,IBuffDestroySystem<TEntity> 
-        where TEntity : IIcSkSEntity
+    public abstract class AIcStructBuffSystem<TBuffType>: 
+        IBuffCreateSystem,
+        IBuffUpdateSystem,IBuffDestroySystem
         where TBuffType : struct, IBuffDataComponent
     {
-        protected readonly IStructBuffManager<TEntity> BuffManager;
+        protected readonly IStructBuffManager BuffManager;
 
-        protected AIcStructBuffSystem(IStructBuffManager<TEntity> buffManager)
+        protected AIcStructBuffSystem(IStructBuffManager buffManager)
         {
             BuffManager = buffManager;
         }
@@ -21,11 +20,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
         {
         }
 
-        public virtual void Create(TEntity entity, int index)
+        public virtual void Create(IIcSkSEntity entity, int index)
         {
         }
 
-        public virtual void Destroy(TEntity entity, int index)
+        public virtual void Destroy(IIcSkSEntity entity, int index)
         {
         }
     }

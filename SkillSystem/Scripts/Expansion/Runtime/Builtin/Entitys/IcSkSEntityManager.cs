@@ -13,11 +13,11 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         public FasterReadOnlyList<IIcSkSEntity> Entitys => _entitys.AsReadOnly();
 
-        public IBuffManager<IIcSkSEntity> BuffManager { get; }
+        public IBuffManager BuffManager { get; }
 
-        private IStructBuffManager<IIcSkSEntity> SBuffManager => (IStructBuffManager<IIcSkSEntity>) BuffManager;
+        private IStructBuffManager SBuffManager => (IStructBuffManager) BuffManager;
 
-        public IcSkSEntityManager(IBuffManager<IIcSkSEntity> buffManager)
+        public IcSkSEntityManager(IBuffManager buffManager)
         {
             this.BuffManager = buffManager;
             _entitys = new FasterList<IIcSkSEntity>();
@@ -75,7 +75,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
 
         FasterReadOnlyList<IIcSkSEntity> IIcSkSEntityManager<IIcSkSEntity>.Entitys => throw new NotImplementedException();
 
-        IBuffManager<IIcSkSEntity> IIcSkSEntityManager<IIcSkSEntity>.BuffManager => throw new NotImplementedException();
+        IBuffManager IIcSkSEntityManager<IIcSkSEntity>.BuffManager => throw new NotImplementedException();
 
         IIcSkSEntity IIcSkSEntityManager<IIcSkSEntity>.CreateEntity()
         {

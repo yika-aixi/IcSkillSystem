@@ -11,14 +11,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
     /// <summary>
     /// 百分比吸血,可叠加
     /// </summary>
-    public class LifestealPercentageSystem<TMechanics,TPercentageLifesteal,TDamageBuff>:IBuffDestroySystem<IIcSkSEntity> 
+    public class LifestealPercentageSystem<TMechanics,TPercentageLifesteal,TDamageBuff>:IBuffDestroySystem 
         where TMechanics : struct, IMechanicBuff
         where TPercentageLifesteal : struct, IPercentageLifesteal
         where TDamageBuff : struct,IDamageBuff
     {
-        private readonly IStructBuffManager<IIcSkSEntity> _buffManager;
+        private readonly IStructBuffManager _buffManager;
 
-        public LifestealPercentageSystem(IStructBuffManager<IIcSkSEntity> buffManager)
+        public LifestealPercentageSystem(IStructBuffManager buffManager)
         {
             this._buffManager = buffManager;
         }
@@ -27,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         {
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
 
-            var fixedLifesteals = _buffManager.GetBuffs<TPercentageLifesteal>(damage.Entity.ToIIcSkSEntity());
+            var fixedLifesteals = _buffManager.GetBuffs<TPercentageLifesteal>(damage.Entity);
 
             if (fixedLifesteals.Count == 0)
             {
@@ -46,7 +46,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
             
             var lifesteal = fixedLifesteals[fixedLifesteals.Count - 1];
 
-            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity.ToIIcSkSEntity());
+            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity);
 
             if (mechanicBuffs.Count == 0)
             {
@@ -70,7 +70,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                         }
                     }
                    
-                    _buffManager.SetBuffData(damage.Entity.ToIIcSkSEntity(),mechanicBuff,i);
+                    _buffManager.SetBuffData(damage.Entity,mechanicBuff,i);
                     
                     break;
                 }

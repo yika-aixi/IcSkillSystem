@@ -7,7 +7,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
     {
         FasterReadOnlyList<TEntity> Entitys { get; }
         
-        IBuffManager<TEntity> BuffManager { get;}
+        IBuffManager BuffManager { get;}
 
         TEntity CreateEntity();
         
