@@ -9,6 +9,8 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             return ObjValue;
         }
 
+        internal abstract void SetValue(object value);
+
         public void SetValue(AValueInfo value)
         {
             UpdateValue(value);
@@ -34,6 +36,11 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         public static implicit operator ValueInfo<T>(T value)
         {
             return new ValueInfo<T>(){Value = value};
+        }
+
+        internal override void SetValue(object value)
+        {
+            Value = (T) value;
         }
 
         protected override void UpdateValue(AValueInfo value)

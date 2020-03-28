@@ -19,6 +19,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         [SerializeField] private string _valueStr;
 
         [SerializeField] private Object _uValue;
+        public bool IsArray;
 
         public bool IsUValue => ValueType.IsAssignableFrom(typeof(Object));
         
@@ -50,15 +51,23 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     _type = Type.GetType(ValueTypeAqName);
                     _valueInfoType = Type.GetType(ValueInfoTypeAqName);
                 }
-
+                
                 return _type;
             }
 
             set
             {
-                _type = value;
+                if (IsArray && value != null)
+                {
+                    var array = Array.CreateInstance(value, 0);
+                    _type = array.GetType();
+                }
+                else
+                {
+                    _type = value;
+                }
 
-                ValueTypeAqName = value != null ? value.AssemblyQualifiedName : string.Empty;
+                ValueTypeAqName = _type != null ? _type.AssemblyQualifiedName : string.Empty;
 
                 if (_type != null)
                 {
@@ -115,7 +124,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 return;
             }
 
-            var type = typeof(T);
+            var type = value.GetType();
             
             if (ValueType != type)
             {
@@ -127,9 +136,24 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
             }
 
-            var valueInfo = (ValueInfo<T>) _value;
+            var valueInfo = _value as ValueInfo<T>;
 
-            valueInfo.Value = value;
+            if (valueInfo != null)
+            {
+                valueInfo.Value = value;
+            }
+            else
+            {
+#if UNITY_EDITOR
+                //runtime appear boxing action,error 
+                if (Application.isPlaying && type.IsValueType)
+                {
+                    Debug.LogWarning("Boxing !!!!! You should not do this, unless this is required, please troubleshoot the corresponding code");
+                }
+#endif
+                _value.SetValue(value);
+            }
+
         }
 
         public AValueInfo GetValueInfo()
@@ -143,26 +167,36 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             if (_value == null)
             {
                 _value = (AValueInfo) SerializationUtil.ToValue(_valueStr, _valueInfoType);
+            }
 
-                if (_value == null)
+            if (_value == null || _value.GetValue() == null)
+            {
+                if (ValueType == typeof(string))
                 {
-                    if (ValueType == typeof(string))
+                    SetValue(string.Empty);
+                }
+                else
+                {
+                    try
                     {
-                        SetValue(string.Empty);
-                    }
-                    else
-                    {
-                        try
+                        if (!IsArray)
                         {
+              
                             SetValue(Activator.CreateInstance(ValueType),ValueType);
                         }
-                        catch (InvalidCastException)
+                        else
                         {
+                            var eType = ValueType.GetElementType();
+                            var array = Array.CreateInstance(eType, 0);
+                            SetValue(array);
                         }
+                    }
+                    catch (InvalidCastException e)
+                    {
                     }
                 }
             }
-
+            
             return _value;
         }
 
@@ -178,11 +212,13 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             
             if (typeof(T) == typeof(object) && ValueType.IsValueType)
             {
+#if UNITY_EDITOR
                 //runtime appear boxing action,error 
                 if (Application.isPlaying)
                 {
                     Debug.LogWarning("Boxing !!!!! You should not do this, unless this is required, please troubleshoot the corresponding code");
                 }
+#endif
 
                 _boxValueInfo.Value = _value.GetValue();
 
@@ -227,8 +263,23 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
             }
             
-            var valueInfo = (ValueInfo<T>) _value;
-            valueInfo.Value = value;
+            var valueInfo = _value as ValueInfo<T>;
+
+            if (valueInfo != null)
+            {
+                valueInfo.Value = value;
+            }
+            else
+            {
+#if UNITY_EDITOR
+                //runtime appear boxing action,error 
+                if (Application.isPlaying && type.IsValueType)
+                {
+                    Debug.LogWarning("Boxing !!!!! You should not do this, unless this is required, please troubleshoot the corresponding code");
+                }
+#endif
+                _value.SetValue(value);
+            }
         }
 
         public void Save()

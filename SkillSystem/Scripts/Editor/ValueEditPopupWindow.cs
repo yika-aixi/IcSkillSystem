@@ -13,6 +13,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.Editor
 {
@@ -41,6 +42,18 @@ namespace CabinIcarus.IcSkillSystem.Editor
             }
         }
 
+        class ArrayItem : TreeViewItem
+        {
+            public object Target { get; }
+            public Array Value;
+
+            public ArrayItem(int id, int depth,object target,Array value) : base(id, depth)
+            {
+                Target = target;
+                Value = value;
+            }
+        }
+        
         class PrimitiveOrStringTypeItem : TreeViewItem
         {
             public PrimitiveOrStringTypeItem(int id, int depth) : base(id, depth)
@@ -94,6 +107,12 @@ namespace CabinIcarus.IcSkillSystem.Editor
         {
             var type = target.GetType();
 
+            if (type.IsArray)
+            {
+                parent.AddChild(new ArrayItem(id,depth,_target,(Array) target));
+                return;
+            }
+            
             if (type.IsPrimitive || type == typeof(string))
             {
                 parent.AddChild(new PrimitiveOrStringTypeItem(id,depth));
@@ -186,9 +205,13 @@ namespace CabinIcarus.IcSkillSystem.Editor
             }
         }
 
+        private Rect _lastRect;
         protected override void RowGUI(RowGUIArgs args)
         {
             var rect = args.rowRect;
+            _lastRect = rect;
+            rect = _lastRect;
+            
             if (args.item is MemberInfoItem memberInfoItem && memberInfoItem.IsSimpleValue)
             {
                 var label = args.label;
@@ -220,9 +243,102 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 rect.size += new Vector2(0,size.y);
                 EditorGUI.HelpBox(rect,title.text,MessageType.Info);
             }
+            else if (args.item is ArrayItem arrayItem)
+            {
+                _drawArray(arrayItem);
+            }
             else
             {
                 base.RowGUI(args);
+            }
+        }
+
+        private Vector2 _pos;
+        private void _drawArray(ArrayItem arrayItem)
+        {
+            var array = arrayItem.Value;
+            var eType = array.GetType().GetElementType();
+            int count = array.Length;
+            var rect = _lastRect;
+            
+            if (eType != typeof(string) && !eType.IsPrimitive && !typeof(Object).IsAssignableFrom(eType))
+            {
+                var title = new GUIContent("no support of type,support string and UnityEngine Object and Primitive type");
+                var size = EditorStyles.helpBox.CalcSize(title);
+                rect.size += new Vector2(0,size.y);
+                EditorGUI.HelpBox(rect,title.text,MessageType.Warning);
+                return;
+            }
+            
+            EditorGUI.BeginChangeCheck();
+            {
+                count = EditorGUI.IntField(_lastRect,"Size:", count);
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                var newArray = Array.CreateInstance(eType, count);
+
+                for (var i = 0; i < array.Length; i++)
+                {
+                    newArray.SetValue(array.GetValue(i),i);
+                }
+
+                arrayItem.Value = newArray;
+                OnValueChange?.Invoke(newArray);
+                return;
+            }
+
+            rect = _lastRect;
+            rect.position+= new Vector2(0,20);
+            var viewRect = rect;
+            viewRect.size = new Vector2(300,300);
+            GUI.BeginScrollView(viewRect, _pos, viewRect);
+            {
+                rect.size = new Vector2(200,18);
+                var oldeSize = EditorGUIUtility.labelWidth;
+                EditorGUIUtility.labelWidth = GUI.skin.label.CalcSize(new GUIContent(array.Length.ToString())).x;
+
+                for (var i = 0; i < array.Length; i++)
+                {
+                    var value = array.GetValue(i);   
+                    var indexGUICon = new GUIContent(i.ToString());
+                    _drawelement<Object>(i,value, (x,index) => EditorGUI.ObjectField(rect,indexGUICon, x as Object, eType));
+                    _drawelement<int>(i,value, (x,index) => EditorGUI.IntField(rect,indexGUICon, (int)x));
+                    _drawelement<float>(i,value, (x,index) => EditorGUI.FloatField(rect,indexGUICon, (float)x));
+                    _drawelement<double>(i,value, (x,index) => EditorGUI.DoubleField(rect,indexGUICon, (double)x));
+                    _drawelement<long>(i,value, (x,index) => EditorGUI.LongField(rect,indexGUICon, (long)x) );
+                    _drawelement<string>(i,value, (x,index) => EditorGUI.DelayedTextField(rect,indexGUICon, x as string) );
+                    _drawelement<Enum>(i,value, (x,index) => EditorGUI.EnumPopup(rect,indexGUICon, (Enum)x) );
+                    
+                    rect.position+= new Vector2(0,20);
+                }
+
+                EditorGUIUtility.labelWidth = oldeSize;
+            }
+            GUI.EndScrollView();
+            
+            void _drawelement<T>(int index,object value,Func<object,int, object> drawValueAction)
+            {
+                if (!typeof(T).IsAssignableFrom(eType))
+                {
+                    return;
+                }
+
+                if (typeof(T) == typeof(string))
+                {
+                    if (value == null)
+                    {
+                        value = string.Empty;
+                    }   
+                }
+                
+                EditorGUI.BeginChangeCheck();
+                var obj = drawValueAction(value,index);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    array.SetValue(obj,index);
+                    OnValueChange?.Invoke(array);
+                }
             }
         }
 
@@ -234,7 +350,6 @@ namespace CabinIcarus.IcSkillSystem.Editor
             FieldInfo fieldInfo = null;
 
             PropertyInfo propertyInfo = null;
-
             if (isField)
             {
                 fieldInfo = (FieldInfo) item.Info;
@@ -250,10 +365,10 @@ namespace CabinIcarus.IcSkillSystem.Editor
             }
             
             var obj = item.Obj;
-            
             EditorGUI.BeginChangeCheck();
             {
                 _tempValue = isField ? fieldInfo.GetValue(obj) : propertyInfo.GetValue(obj);
+      
                 _tempValue = drawValueAction((T) _tempValue);
             }
             if (EditorGUI.EndChangeCheck())
@@ -279,7 +394,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
             {
                 return;
             }
-
+            
             if (item is MemberInfoItem typeItem)
             {
                 FieldInfo fieldInfo = null;
@@ -343,7 +458,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
             set
             {
                 _valueS = value;
-                _editTree = new ValueEditTree(_valueS.GetValue<object>(), new TreeViewState());
+                
+                _editTree = new ValueEditTree(_valueS.GetValueInfo().GetValue(), new TreeViewState());
                 _editTree.OnValueChange += x =>
                 {
                     _valueS.SetValue(x, x.GetType());

@@ -8,20 +8,20 @@ namespace CabinIcarus.IcSkillSystem.Editor
 {
     public abstract class SerializationDictDrawer<TKey,TValue> : PropertyDrawer
     {
-        protected SerializationDict<TKey, TValue> Map;
-        protected SerializationDict<TKey, TValue> GetMap(SerializedProperty property)
+        private SerializationDict<TKey, TValue> _map;
+        protected SerializationDict<TKey, TValue> GetMap()
         {
-            if (Map == null)
+            if (_map == null)
             {
-                Map = (SerializationDict<TKey, TValue>) this.fieldInfo.GetValue(property.serializedObject.targetObject);
+                _map = (SerializationDict<TKey, TValue>) this.fieldInfo.GetValue(Property.serializedObject.targetObject);
             }
 
-            return Map;
+            return _map;
         }
 
         protected Rect Position;
         float _height;
-        private bool _foldoutState;
+        private bool _foldoutState = true;
         protected SerializedProperty Property;
         public override void OnGUI(Rect position, SerializedProperty property,
             GUIContent label)
@@ -29,14 +29,9 @@ namespace CabinIcarus.IcSkillSystem.Editor
             Property = property;
             Position = position;
             _height = 20;
-            GetMap(property);
             var rect = position;
-            rect.size = new Vector2(position.size.x,20);
-            if (GUI.Button(rect,GetButtonContent()))
-            {
-                var keysSer = property.FindPropertyRelative(SerializationDict<TKey, TValue>.KeysFieldName);
-                AddKey(keysSer);
-            }
+            var topHeight = DrawTop(position);
+            _height += topHeight;
             
             rect.size = new Vector2(position.size.x,20);
             rect.position += new Vector2(0,_height);
@@ -49,7 +44,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 return;
             }
             
-            var map = GetMap(property);
+            var map = GetMap();
 
             int index = 0;
 
@@ -73,6 +68,19 @@ namespace CabinIcarus.IcSkillSystem.Editor
             _height += 10;
 
             property.serializedObject.ApplyModifiedProperties();
+        }
+
+        protected virtual float DrawTop(Rect position)
+        {
+            var rect = position;
+            rect.size = new Vector2(position.size.x,20);
+            if (GUI.Button(rect,GetButtonContent()))
+            {
+                var keysSer = Property.FindPropertyRelative(SerializationDict<TKey, TValue>.KeysFieldName);
+                AddKey(keysSer);
+            }
+
+            return 20;
         }
 
         protected virtual void AddKey(SerializedProperty keysSer)
@@ -100,6 +108,21 @@ namespace CabinIcarus.IcSkillSystem.Editor
         protected abstract float DrawItem(Rect rect, SerializationDict<TKey, TValue> map,
             KeyValuePair<TKey, TValue> item);
 
+        protected virtual void DrawRemoveButton(Rect rect,SerializationDict<TKey, TValue> map,KeyValuePair<TKey, TValue> item)
+        {
+            if (GUI.Button(rect,new GUIContent(EditorGUIUtility.FindTexture(
+#if UNITY_2020_1
+                "collabdeleted icon"
+#else
+                "d_P4_DeletedLocal"
+#endif
+                ),"Remove Item")))
+            {
+                map.Remove(item.Key);
+                Save();
+            }
+        }
+        
         protected void Save()
         {
             EditorUtility.SetDirty(Property.serializedObject.targetObject);
