@@ -2,6 +2,7 @@
 
 namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
+
     public class CheckFailureException:Exception
     {
         public string CheckFunctionName { get; }
@@ -18,6 +19,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         
         class Trace
         {
+            
             internal static void Assert(bool assertion, string functionName,string v)
             {
 #if NETFX_CORE
@@ -35,13 +37,17 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         
         public static void True(bool value, string message)
         {
-            if (UseException)
+            if (value)
             {
-                if (!value)
-                    throw new CheckFailureException(nameof(True), message);
+                return;    
             }
             
-            Trace.Assert(value,nameof(True), message);
+            if (UseException)
+            {
+                throw new CheckFailureException(nameof(True), message);
+            }
+            
+            Trace.Assert(false,nameof(True), message);
         }
     }
 }
