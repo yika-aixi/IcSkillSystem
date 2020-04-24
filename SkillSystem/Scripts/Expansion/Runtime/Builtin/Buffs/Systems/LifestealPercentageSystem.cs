@@ -5,6 +5,7 @@ using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems.Interfaces;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
@@ -26,8 +27,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
         public void Destroy(IIcSkSEntity entity, int index)
         {
             var damage = _buffManager.GetBuffData<TDamageBuff>(entity, index);
+            
+            ECSResources<IIcSkSEntity> damageEntity = damage.Entity;
+            IIcSkSEntity en = damageEntity.Get();
 
-            var fixedLifesteals = _buffManager.GetBuffs<TPercentageLifesteal>(damage.Entity);
+            var fixedLifesteals = _buffManager.GetBuffs<TPercentageLifesteal>(en);
 
             if (fixedLifesteals.Count == 0)
             {
@@ -46,7 +50,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
             
             var lifesteal = fixedLifesteals[fixedLifesteals.Count - 1];
 
-            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(damage.Entity);
+            var mechanicBuffs = _buffManager.GetBuffs<TMechanics>(en);
 
             if (mechanicBuffs.Count == 0)
             {
@@ -70,7 +74,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
                         }
                     }
                    
-                    _buffManager.SetBuffData(damage.Entity,mechanicBuff,i);
+                    _buffManager.SetBuffData(en,mechanicBuff,i);
                     
                     break;
                 }

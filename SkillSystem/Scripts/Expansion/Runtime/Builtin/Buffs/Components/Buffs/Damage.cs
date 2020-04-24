@@ -6,6 +6,7 @@
 //Assembly-CSharp
 
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
@@ -14,6 +15,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
         public float Value { get; set; }
         public int Type { get; set; }
         public int ID { get; }
-        public IIcSkSEntity Entity { get; set; }
+        public ECSResources<IIcSkSEntity> Entity { get; set; }
     }
 }

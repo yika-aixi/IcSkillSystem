@@ -4,6 +4,7 @@ using CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -44,7 +45,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
             Entity = null;
         }
 
-        public IIcSkSEntity Entity { get; set; }
+        public ECSResources<IIcSkSEntity> Entity { get; set; }
     }
     
     struct TestBuff2:IMechanicBuff,IEquatable<TestBuff2>

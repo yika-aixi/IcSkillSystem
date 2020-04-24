@@ -8,7 +8,14 @@
     {
         internal uint id;
         
-        public static implicit operator T(ECSResources<T> ecsString) { return ResourcesECSDB<T>.FromECS(ecsString.id); }
+        ECSResources(uint toEcs)
+        {
+            id = toEcs;
+        }
+        
+        public static implicit operator T(ECSResources<T> resources) { return ResourcesECSDB<T>.FromECS(resources.id); }
+        
+        public static implicit operator ECSResources<T>(T value) { return new ECSResources<T>(ResourcesECSDB<T>.ToECS(value));}
     }
     
     static class ResourcesECSDB<T>
@@ -33,6 +40,10 @@
 
     public static class ResourceExtensions
     {
+        public static T Get<T>(ref this ECSResources<T> resources)
+        {
+            return resources;
+        }
         public static void Set<T>(ref this ECSResources<T> resource, T newText)
         {
             if (resource.id != 0)
@@ -48,5 +59,6 @@
             else
                 resource.id = ResourcesECSDB<string>.ToECS(newText);
         }
+        
     }
 }

@@ -7,11 +7,12 @@
 
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Components;
 using CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
     public struct DeathStruct:IBuffDataComponent,IMakerEntity
     {
-        public IIcSkSEntity Entity { get; set; }
+        public ECSResources<IIcSkSEntity> Entity { get; set; }
     }
 }
