@@ -5,3 +5,6 @@
 	path = xNode
 	url = https://github.com/yika-aixi/xNode.git
 	branch = Cabin_Icarus
+[submodule "xNodeGroups"]
+	path = xNodeGroups
+	url = https://github.com/yika-aixi/xNodeGroups
