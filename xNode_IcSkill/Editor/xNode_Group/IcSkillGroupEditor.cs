@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 return null;
             }
             
-            return typeof(IIcSkillSystemNode).IsAssignableFrom(type) ? base.GetNodeMenuName(type) : null;
+            return typeof(IIcSkillSystemNode).IsAssignableFrom(type) || type.FullName == "XNode.NodeGroups.NodeGroup" ? base.GetNodeMenuName(type) : null;
         }
 
         public override NodeEditorPreferences.Settings GetDefaultPreferences()
