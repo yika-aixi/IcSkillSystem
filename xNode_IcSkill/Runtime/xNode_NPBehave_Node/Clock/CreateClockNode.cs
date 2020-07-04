@@ -1,6 +1,5 @@
-﻿using NPBehave;
-using UnityEngine;
-using XNode;
+﻿using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
+using NPBehave;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
@@ -9,7 +8,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     {
         protected override Clock GetOutValue()
         {
-           return new Clock();
+           var  clock = new Clock();
+
+           var update = this.SkillGroup.Owner.GetOrAddComponent<ClockUpdate>();
+           
+           update.AddClock(clock);
+           
+           return clock;
         }
     }
 }
