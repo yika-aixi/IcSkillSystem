@@ -22,6 +22,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
     {
         private static RoodNodeComparer _roodNodeComparer = new RoodNodeComparer();
         private GameObject _owner;
+        private Guid _id;
+        public Guid ID => _id;
 
         [SerializeField]
         private ValueSDict _varMap = new ValueSDict();
@@ -84,6 +86,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         public IcSkillGroup()
         {
             _keys = _varMap.Keys.ToList();
+            _id = Guid.NewGuid();
         }
         
         /// <summary>
