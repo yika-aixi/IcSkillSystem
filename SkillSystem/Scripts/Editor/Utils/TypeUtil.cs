@@ -47,12 +47,19 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
                                 typeof(Object).IsAssignableFrom(x));
             }
         }
-        
+
+        private static List<Type> _unityRuntimeTypes;
         public static IEnumerable<Type> UnityRuntimeTypes
         {
             get
             {
-                List<Type> types = new List<Type>();
+                if (_unityRuntimeTypes != null)
+                {
+                    return _unityRuntimeTypes;
+                }
+                
+                _unityRuntimeTypes = new List<Type>();
+                List<Type> types = _unityRuntimeTypes;
                 
                 var runtimeAssemblies = CompilationPipeline.GetAssemblies(AssembliesType.Player);
                 runtimeAssemblies = runtimeAssemblies.Where(x => x.defines.Any(y => y != "UNITY_INCLUDE_TESTS")).ToArray();
