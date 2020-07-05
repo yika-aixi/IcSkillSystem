@@ -1,64 +1,10 @@
 # SkillSystem
 
-[0.6 last Video](https://www.bilibili.com/video/av76312353)
+[installation Video](https://www.bilibili.com/video/BV1TJ411771h)
 
 [Trello](https://trello.com/b/DF5JWisg/ic-skill-system)
 
-Example Unity Version:2019.2+
-
 Behave Tree Create Editor
-
-Add a new buffManager, the buff needs to be a structure
-
-#### ECS Buff System
-
-##### Create Buff
-
-Implement `IBuffDataComponent`
-
-![](ReadmeImages/IDamageBufff.png)
-
-![](ReadmeImages/Buff.png)
-
-##### Buff System
-
-Create System Implement `IBuffCreateSystem`
-
-![Create](ReadmeImages/ECSBuffCreateSystem.png)
-
-Update System Implement `IBuffUpdateSystem`
-
-![Update](ReadmeImages/ECSBuffUpdateSystem.png)
-
-Destroy System Implement `IBuffDestroySystem`
-
-![Destroy](ReadmeImages/ECSBuffDestroySystem.png)
-
-
-##### Buff System
-
-Add Buff System
-
-```c#
-
-BuffManager_Struct BuffManager = new BuffManager_Struct();
-
-BuffManager.AddBuffSystem<TBuff>(new BuffSystem())
-```
-
-need Implement custom BuffManager, Implement `IBuffManager`
-
-![Update Buff System](ReadmeImages/UpdateBuffSystem.png)
-
-![Add Buff System](ReadmeImages/ECSBuffSystem.png)
-
-Add Buff
-
-![Add Buff](ReadmeImages/AddBuff.png)
-
-Remove Buff
-
-![Remove Buff](ReadmeImages/RemoveBuff.png)
 
 ###Skill Group
 
