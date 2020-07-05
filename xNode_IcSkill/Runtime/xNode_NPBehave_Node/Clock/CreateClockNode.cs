@@ -6,15 +6,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Clock/Create")]
     public class CreateClockNode:ClockNode
     {
+        private Clock _clock;
+
         protected override Clock GetOutValue()
         {
-           var  clock = new Clock();
+            if (_clock == null)
+            {
+               _clock = new Clock();
 
-           var update = this.SkillGroup.Owner.GetOrAddComponent<ClockUpdate>();
+               var update = this.SkillGroup.Owner.GetOrAddComponent<ClockUpdate>();
+               
+               update.AddClock(_clock);
+            }
            
-           update.AddClock(clock);
-           
-           return clock;
+            return _clock;
         }
     }
 }
