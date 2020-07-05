@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private GameObject _target;
             
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return  new Action(_destroy);
         }

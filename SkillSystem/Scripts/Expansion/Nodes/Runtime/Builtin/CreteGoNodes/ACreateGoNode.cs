@@ -30,7 +30,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         protected Quaternion Quaternion => GetInputValue(nameof(_quaternion),_quaternion);
         
-        protected sealed override Action GetOutValue()
+        protected sealed override Action CreateOutValue()
         {
             return new Action(_create);
         }

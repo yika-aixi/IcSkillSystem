@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
         protected Node _decorateeNode;
 
         protected Node DecorateeNode;
-        protected sealed override T GetOutValue()
+        protected sealed override T CreateOutValue()
         {
             DecorateeNode = GetInputValue(nameof(_decorateeNode), _decorateeNode);
 

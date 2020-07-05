@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         public bool IsUpwards => GetInputValue(nameof(_isUpwards),_isUpwards);
 
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return new Action(Send);
         }

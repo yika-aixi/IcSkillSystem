@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             return _currentGroup;
         }
         
-        protected override NPBehave.Node GetOutValue()
+        protected override NPBehave.Node CreateOutValue()
         {
             if (_group == null)
             {

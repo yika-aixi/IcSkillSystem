@@ -9,7 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)] 
         private float _seconds;
 
-        protected override Wait GetOutValue()
+        protected override Wait CreateOutValue()
         {
             return new Wait(_getSeconds);
         }

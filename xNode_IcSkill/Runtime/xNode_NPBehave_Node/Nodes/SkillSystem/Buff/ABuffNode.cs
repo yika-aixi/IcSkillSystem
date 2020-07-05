@@ -26,7 +26,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems.Buff
             }
         }
 
-        protected sealed override Node GetOutValue()
+        protected sealed override Node CreateOutValue()
         {
             BuffType = Type.GetType(_buffAQName);
 

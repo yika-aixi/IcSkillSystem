@@ -25,7 +25,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private object _message;
         
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return new Action(_log);
         }

@@ -14,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
         [SerializeField]
         private bool _start;
         
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return new Action(_execute);
         }

@@ -25,7 +25,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         [SerializeField]
         private string _key;
         
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return  new Action(_set);
         }

@@ -24,7 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         [PortTooltip("主节点")]
         private Node _mainNode;
 
-        protected override Root GetOutValue()
+        protected override Root CreateOutValue()
         {
             var black = GetInputValue(nameof(_blackBoard),_blackBoard);
             var clok = GetInputValue(nameof(_clok), _clok);

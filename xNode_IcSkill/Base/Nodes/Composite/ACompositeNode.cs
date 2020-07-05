@@ -17,7 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Composite
         [PortTooltip("节点,可多个")]
         private Node _nodes;
         
-        protected override T GetOutValue()
+        protected override T CreateOutValue()
         {
             var nodes = GetInputValues(nameof(_nodes), _nodes);
             

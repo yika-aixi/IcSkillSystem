@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [PortTooltipMethodOrPropertyGet(nameof(GetCameraTooltip))]
         protected Camera Camera;
         
-        protected sealed override Action GetOutValue()
+        protected sealed override Action CreateOutValue()
         {
             return new Action(_getMainCamera);
         }

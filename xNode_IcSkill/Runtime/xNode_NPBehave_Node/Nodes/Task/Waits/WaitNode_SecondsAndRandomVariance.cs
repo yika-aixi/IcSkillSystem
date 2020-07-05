@@ -14,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
         [SerializeField] 
         private float _randomVariance;
 
-        protected override Wait GetOutValue()
+        protected override Wait CreateOutValue()
         {
             return new Wait(_getSeconds(),_randomVariance);
         }

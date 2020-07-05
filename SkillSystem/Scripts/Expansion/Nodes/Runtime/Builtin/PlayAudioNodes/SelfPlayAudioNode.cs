@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Play Audio/Self")]
     public class SelfPlayAudioNode:APlayAudioNode
     {
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return new Action(_play);
         }

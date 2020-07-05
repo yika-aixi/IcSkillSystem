@@ -18,7 +18,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks.GroupValueNode
         [Input(ShowBackingValue.Never,ConnectionType.Override)]
         private object _newValue;
         
-        protected override Action GetOutValue()
+        protected override Action CreateOutValue()
         {
             return new Action(_setValue);
         }

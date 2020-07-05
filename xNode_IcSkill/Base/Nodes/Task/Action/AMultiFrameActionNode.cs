@@ -15,7 +15,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 
         protected Action.Result CompleteResult => GetInputValue(nameof(_completeResult),_completeResult);
 
-        protected sealed override Action GetOutValue()
+        protected sealed override Action CreateOutValue()
         {
             return new Action(Execute);
         }

@@ -24,7 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         protected Transform Tran => GetInputValue(nameof(_target),SkillGroup.Owner)?.transform;
 
-        protected sealed override Action GetOutValue()
+        protected sealed override Action CreateOutValue()
         {
             return new Action(Move);
         }

@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         protected Animator Anim { get; private set; }
 
-        protected override Task GetOutValue()
+        protected override Task CreateOutValue()
         {
             Anim = SkillGroup.Owner.GetComponent<Animator>();
             

@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
         [SerializeField] 
         private bool _sucessWhenStopped;
 
-        protected override WaitUntilStopped GetOutValue()
+        protected override WaitUntilStopped CreateOutValue()
         {
             return new WaitUntilStopped(_sucessWhenStopped);
         }

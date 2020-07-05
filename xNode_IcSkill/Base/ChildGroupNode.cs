@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 #endif
         internal GetChildGroupNode GetChildGroupNode;
         
-        protected override NPBehave.Node GetOutValue()
+        protected override NPBehave.Node CreateOutValue()
         {
             _main = GetInputValue(nameof(_main), _main);
 
