@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
-using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -13,7 +12,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         private List<Collider> _result = new List<Collider>();
         
-        protected override bool Condition()
+        protected override bool OnCast()
         {
             DebugStart();
             

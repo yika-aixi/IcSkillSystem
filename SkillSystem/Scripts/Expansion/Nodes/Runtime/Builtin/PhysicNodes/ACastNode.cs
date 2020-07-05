@@ -15,6 +15,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Label("Cast Owner")]
         [PortTooltip("no input use SkillGroup Owner")]
         private GameObject _owner;
+
+        [PortTooltip("0 or less 0 is one Cast,less -1 Unlimited duration, else Every time Clock update Cast,Until the end of the duration")]
+        [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+        private IcVariableSingle _duration;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [Node.LabelAttribute("Layer Mask")]
@@ -93,7 +97,35 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         protected virtual void OnDrawGizmos(){}
 #endregion
+
+        private float _time;
         
+        protected sealed override bool Condition()
+        {
+            if (_time <= 0)
+            {
+                _time = GetInputValue(nameof(_duration), _duration);
+            }
+            
+            bool result = OnCast();
+
+            _time -= Time.deltaTime;
+
+            if (_time <= -1)
+            {
+                return false;
+            }
+
+            if (_time <= 0)
+            {
+                return true;
+            }
+
+            return result;
+        }
+
+        protected abstract bool OnCast();
+
         [SerializeField]
         [PortTooltip("Max Ray cast Hit Result Count,default:100,min is 1")]
         [Min(1)]
