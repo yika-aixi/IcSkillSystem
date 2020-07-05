@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using XNode;
 using Action = NPBehave.Action;
@@ -13,6 +14,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private IEnumerable _enumerables;
+        
+        [PortTooltip("element count,-1 or no input be complete ergodic")]
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        private int _count = -1;
         
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private Node _action;
@@ -66,7 +71,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 {
                     action.Stop();
                 }
-                
+
                 while (ator.MoveNext())
                 {
                     _currentValue = ator.Current;
@@ -76,6 +81,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                     }
                     action.Start();
                     _indexValue.Value++;
+
+                    if (_indexValue >= _count-1)
+                    {
+                        break;
+                    }
                 }
             }
         }
