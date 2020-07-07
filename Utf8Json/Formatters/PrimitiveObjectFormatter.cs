@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Utf8Json.Internal;
 
 namespace Utf8Json.Formatters
 {
@@ -75,7 +76,7 @@ namespace Utf8Json.Formatters
                 writer.WriteBeginObject();
                 foreach (DictionaryEntry item in dict)
                 {
-                    if (count++ != 0) writer.WriteValueSeparator();
+                    if (count != 0) writer.WriteValueSeparator();
                     writer.WritePropertyName((string)item.Key);
                     Serialize(ref writer, item.Value, formatterResolver);
                 }
@@ -90,7 +91,7 @@ namespace Utf8Json.Formatters
                 writer.WriteBeginArray();
                 foreach (var item in collection)
                 {
-                    if (count++ != 0) writer.WriteValueSeparator();
+                    if (count != 0) writer.WriteValueSeparator();
                     Serialize(ref writer, item, formatterResolver);
                 }
                 writer.WriteEndArray();
