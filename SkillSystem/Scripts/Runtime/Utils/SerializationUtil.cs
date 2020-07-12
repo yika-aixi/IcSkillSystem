@@ -6,7 +6,7 @@
 //CabinIcarus.IcSkillSystem.Runtime
 
 using System;
-using Utf8Json;
+using CabinIcarus.OdinSerializer;
 
 namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
@@ -14,33 +14,40 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     {
         public static string ToString<T>(T value)
         {
-            return JsonSerializer.ToJsonString(value);
+            var bs = SerializationUtility.SerializeValue(value,DataFormat.Binary);
+            return Convert.ToBase64String(bs);
         }
 
         public static T ToValue<T>(string str)
         {
-            if (string.IsNullOrEmpty(str) || str == "null")
+            try
+            {
+                var bs = Convert.FromBase64String(str);
+                return SerializationUtility.DeserializeValue<T>(bs,DataFormat.Binary);
+            }
+            catch (Exception e)
             {
                 return default;
             }
-            
-            return JsonSerializer.Deserialize<T>(str);
         }
         
         public static string ToString(object value,Type type)
         {
-            return JsonSerializer.NonGeneric.ToJsonString(type,value);
+            var bs = SerializationUtility.SerializeValueWeak(value,DataFormat.Binary);
+            return Convert.ToBase64String(bs);
         }
         
         public static object ToValue(string str,Type type)
         {
-            if (string.IsNullOrEmpty(str) || str == "null")
+            try
+            {
+                var bs = Convert.FromBase64String(str);
+                return SerializationUtility.DeserializeValueWeak(bs,DataFormat.Binary);
+            }
+            catch (Exception e)
             {
                 return null;
             }
-            
-            var value = JsonSerializer.NonGeneric.Deserialize(type,str);
-            return value;
         }
     }
 }
