@@ -1,7 +1,9 @@
 {
     "name": "CabinIcarus.IcSkillSystem.Runtime",
+    "rootNamespace": "",
     "references": [
-        "Utf8Json"
+        "Utf8Json",
+        "CabinIcarus.OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -10,5 +12,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
