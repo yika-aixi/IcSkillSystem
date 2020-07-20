@@ -23,7 +23,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
             var keyRect = rect;
             
-            keyRect.size = new Vector2(Position.width / 4,ItemHeight());
+            keyRect.size = new Vector2(Position.width / 4,20);
             
             var valueRect = keyRect;
             
@@ -81,7 +81,8 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 buttonRect.position = new Vector2(rect.width - 10, buttonRect.position.y);
                 DrawRemoveButton(buttonRect,map, item);
             }
-            return 0;
+            
+            return 30;
         }
 
         private void _drawValueTypeSelect(ref Rect rect,ValueS value)
@@ -103,7 +104,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 
                 var size = 250;
                 var position = rect;
-                position.position += new Vector2(0,ItemHeight() + 5);
+                position.position += new Vector2(0,20 + 5);
                 
                 position.size = new Vector2(size,size);
                 

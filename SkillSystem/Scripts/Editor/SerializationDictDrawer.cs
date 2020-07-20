@@ -9,6 +9,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
     public abstract class SerializationDictDrawer<TKey,TValue> : PropertyDrawer
     {
         private SerializationDict<TKey, TValue> _map;
+      
         protected SerializationDict<TKey, TValue> GetMap()
         {
             if (_map == null)
@@ -23,45 +24,43 @@ namespace CabinIcarus.IcSkillSystem.Editor
         float _height;
         private bool _foldoutState = true;
         protected SerializedProperty Property;
+        private SerializedProperty _keysSer;
+        private SerializedProperty _valuesSer;
         public override void OnGUI(Rect position, SerializedProperty property,
             GUIContent label)
         {
-            Property = property;
             Position = position;
             _height = 20;
-            var rect = position;
-            var topHeight = DrawTop(position);
-            _height += topHeight;
+
+            var rect = Position;
+            rect.size = new Vector2(rect.size.x, 20);
+
+            _foldoutState = EditorGUI.Foldout(rect, _foldoutState, GetTitle(label), true);
             
-            rect.size = new Vector2(position.size.x,20);
-            rect.position += new Vector2(0,_height);
-            _height += 20;
-
-            _foldoutState = EditorGUI.Foldout(rect, _foldoutState,GetTitle(),true);
-
             if (!_foldoutState)
             {
                 return;
             }
+            rect.position += new Vector2(0, _height);
             
+            var topHeight = DrawTop(rect) + 5;
+            rect.position += new Vector2(0, topHeight);
+            _height += topHeight;
+
             var map = GetMap();
 
             int index = 0;
 
             var keys = map.Keys.ToList();
             
-            rect.position += new Vector2(0,ItemHeight());
             foreach (var key in keys)
             {
                 var value = map[key];
-                EditorGUI.indentLevel++;
-                {
-                    _height += DrawItem(rect, map, new KeyValuePair<TKey, TValue>(key,value));
-                }
-                EditorGUI.indentLevel--;
                 
-                rect.position += new Vector2(0,ItemHeight() + 10);
-                _height += ItemHeight() + 10;
+                var height = DrawItem(rect, map, new KeyValuePair<TKey, TValue>(key,value));
+                _height += height;
+                rect.position += new Vector2(0, height + 10);
+                
                 index++;
             }
             
@@ -95,13 +94,42 @@ namespace CabinIcarus.IcSkillSystem.Editor
             return new GUIContent("Add Item");
         }
 
-        protected virtual GUIContent GetTitle()
+        protected virtual GUIContent GetTitle(GUIContent label)
         {
-            return new GUIContent("Dict");
+            return label;
         }
 
+        /// <summary>
+        /// 需要重写<see cref="GetKeyValue"/>才可正常使用
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public SerializedProperty GetItemValueProperty(TKey key)
+        {
+            for (var i = 0; i < _keysSer.arraySize; i++)
+            {
+                TKey keyValue = GetKeyValue(_keysSer.GetArrayElementAtIndex(i));
+                
+                if (Equals(keyValue, key))
+                {
+                    return _valuesSer.GetArrayElementAtIndex(i);
+                }
+            }
+
+            return null;
+        }
+
+        protected virtual TKey GetKeyValue(SerializedProperty keySer)
+        {
+            return default;
+        }
+        
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
+            Property   = property;
+            _keysSer   = Property.FindPropertyRelative(SerializationDict<object, object>.KeysFieldName);
+            _valuesSer = Property.FindPropertyRelative(SerializationDict<object, object>.ValuesFieldName);
+
             return _height;
         }
 
@@ -110,13 +138,19 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
         protected virtual void DrawRemoveButton(Rect rect,SerializationDict<TKey, TValue> map,KeyValuePair<TKey, TValue> item)
         {
-            if (GUI.Button(rect,new GUIContent(EditorGUIUtility.FindTexture(
+            if (GUI.Button(rect,new GUIContent(
+#if UNITY_2020_2
+                (Texture) EditorGUIUtility.Load("d_p4_deletedlocal")
+#else
+                EditorGUIUtility.FindTexture(
 #if UNITY_2020_1
                 "collabdeleted icon"
 #else
                 "d_P4_DeletedLocal"
 #endif
-                ),"Remove Item")))
+                )
+#endif
+                ,"Remove Item")))
             {
                 map.Remove(item.Key);
                 Save();
@@ -126,11 +160,6 @@ namespace CabinIcarus.IcSkillSystem.Editor
         protected void Save()
         {
             EditorUtility.SetDirty(Property.serializedObject.targetObject);
-        }
-
-        protected virtual float ItemHeight()
-        {
-            return 20f;
         }
     }
 }
