@@ -49,24 +49,17 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
             var map = GetMap();
 
-            int index = 0;
-
             var keys = map.Keys.ToList();
             
             foreach (var key in keys)
             {
                 var value = map[key];
-                
-                var height = DrawItem(rect, map, new KeyValuePair<TKey, TValue>(key,value));
-                _height += height;
-                rect.position += new Vector2(0, height + 10);
-                
-                index++;
+
+                var height = DrawItem(rect, map, new KeyValuePair<TKey, TValue>(key, value)) + 10;
+                rect.position += new Vector2(0, height);
+                _height       += height;
             }
             
-            _height += 10;
-
-            property.serializedObject.ApplyModifiedProperties();
         }
 
         protected virtual float DrawTop(Rect position)
@@ -75,18 +68,16 @@ namespace CabinIcarus.IcSkillSystem.Editor
             rect.size = new Vector2(position.size.x,20);
             if (GUI.Button(rect,GetButtonContent()))
             {
-                var keysSer = Property.FindPropertyRelative(SerializationDict<TKey, TValue>.KeysFieldName);
-                AddKey(keysSer);
+                AddKey();
             }
 
             return 20;
         }
 
-        protected virtual void AddKey(SerializedProperty keysSer)
+        protected virtual void AddKey()
         {
-            keysSer.InsertArrayElementAtIndex(keysSer.arraySize);
-
-            keysSer.GetArrayElementAtIndex(keysSer.arraySize - 1).stringValue = keysSer.arraySize.ToString();
+            _keysSer.InsertArrayElementAtIndex(_keysSer.arraySize);
+            Save();
         }
 
         protected virtual GUIContent GetButtonContent()
@@ -159,7 +150,9 @@ namespace CabinIcarus.IcSkillSystem.Editor
         
         protected void Save()
         {
+            Property.serializedObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(Property.serializedObject.targetObject);
+            Property.serializedObject.Update();
         }
     }
 }
