@@ -77,8 +77,11 @@ namespace CabinIcarus.IcSkillSystem.Editor
         protected virtual void AddKey()
         {
             _keysSer.InsertArrayElementAtIndex(_keysSer.arraySize);
+            ResetKeyValue(_keysSer.GetArrayElementAtIndex(_keysSer.arraySize - 1));
             Save();
         }
+
+        protected abstract void ResetKeyValue(SerializedProperty key);
 
         protected virtual GUIContent GetButtonContent()
         {

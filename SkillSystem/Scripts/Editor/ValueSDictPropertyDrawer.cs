@@ -84,6 +84,11 @@ namespace CabinIcarus.IcSkillSystem.Editor
             
             return 30;
         }
+        
+        protected override void ResetKeyValue(SerializedProperty key)
+        {
+            key.stringValue = GetMap().Count.ToString();
+        }
 
         private void _drawValueTypeSelect(ref Rect rect,ValueS value)
         {
