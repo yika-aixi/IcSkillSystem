@@ -16,6 +16,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using UnityEngine;
+
 namespace CabinIcarus.OdinSerializer
 {
     using System;
@@ -52,8 +54,7 @@ namespace CabinIcarus.OdinSerializer
         {
             string name;
             var entry = reader.PeekEntry(out name);
-
-            if (entry == EntryType.Integer)
+            if (entry == EntryType.ULong)
             {
                 ulong value;
                 if (reader.ReadUInt64(out value) == false)

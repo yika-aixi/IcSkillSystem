@@ -332,7 +332,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadByte(out byte value)
         {
             ulong ulongValue;
-
+            if (peekedEntryType == EntryType.Byte)
+            {
+                peekedEntryType = EntryType.ULong;
+            }
             if (this.ReadUInt64(out ulongValue))
             {
                 checked
@@ -361,7 +364,7 @@ namespace CabinIcarus.OdinSerializer
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.String)
+            if (this.peekedEntryType == EntryType.Char)
             {
                 try
                 {
@@ -397,7 +400,8 @@ namespace CabinIcarus.OdinSerializer
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.FloatingPoint || this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.FloatingPoint || this.peekedEntryType == EntryType.Integer ||
+                (this.peekedEntryType >= EntryType.SByte && peekedEntryType <= EntryType.Decimal))
             {
                 try
                 {
@@ -429,7 +433,8 @@ namespace CabinIcarus.OdinSerializer
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.FloatingPoint || this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.FloatingPoint || this.peekedEntryType == EntryType.Integer ||
+                (this.peekedEntryType >= EntryType.SByte && peekedEntryType <= EntryType.Decimal))
             {
                 try
                 {
@@ -597,7 +602,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadInt16(out short value)
         {
             long longValue;
-
+            if (peekedEntryType == EntryType.Short)
+            {
+                peekedEntryType = EntryType.Long;
+            }
             if (this.ReadInt64(out longValue))
             {
                 checked
@@ -625,7 +633,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadInt32(out int value)
         {
             long longValue;
-
+            if (peekedEntryType == EntryType.Integer)
+            {
+                peekedEntryType = EntryType.Long;
+            }
             if (this.ReadInt64(out longValue))
             {
                 checked
@@ -654,7 +665,7 @@ namespace CabinIcarus.OdinSerializer
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.Long)
             {
                 try
                 {
@@ -805,7 +816,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadSByte(out sbyte value)
         {
             long longValue;
-
+            if (peekedEntryType == EntryType.SByte)
+            {
+                peekedEntryType = EntryType.Long;
+            }
             if (this.ReadInt64(out longValue))
             {
                 checked
@@ -834,7 +848,8 @@ namespace CabinIcarus.OdinSerializer
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.FloatingPoint || this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.FloatingPoint || this.peekedEntryType == EntryType.Integer ||
+                (this.peekedEntryType >= EntryType.SByte && peekedEntryType <= EntryType.Decimal))
             {
                 try
                 {
@@ -886,7 +901,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadUInt16(out ushort value)
         {
             ulong ulongValue;
-
+            if (peekedEntryType == EntryType.UShort)
+            {
+                peekedEntryType = EntryType.ULong;
+            }
             if (this.ReadUInt64(out ulongValue))
             {
                 checked
@@ -914,7 +932,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadUInt32(out uint value)
         {
             ulong ulongValue;
-
+            if (peekedEntryType == EntryType.UInt)
+            {
+                peekedEntryType = EntryType.ULong;
+            }
             if (this.ReadUInt64(out ulongValue))
             {
                 checked
@@ -943,7 +964,7 @@ namespace CabinIcarus.OdinSerializer
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.ULong)
             {
                 try
                 {

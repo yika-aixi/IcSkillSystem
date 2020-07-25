@@ -437,7 +437,8 @@ namespace CabinIcarus.OdinSerializer
         /// <returns>The deserialized value.</returns>
         public static object DeserializeValueWeak(IDataReader reader)
         {
-            return Serializer.Get<object>().ReadValueWeak(reader);
+            return Serializer.Get<object>()
+                .ReadValueWeak(reader);
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace CabinIcarus.OdinSerializer
         /// Could not parse entry.
         /// </summary>
         Invalid = 0,
-
+        
         /// <summary>
         /// Entry is a primitive value of type string or char.
         /// </summary>
@@ -37,12 +37,12 @@ namespace CabinIcarus.OdinSerializer
         /// Entry is a primitive value of type guid.
         /// </summary>
         Guid = 2,
-
+        
         /// <summary>
         /// Entry is a primitive value of type sbyte, byte, short, ushort, int, uint, long or ulong.
         /// </summary>
         Integer = 3,
-
+        
         /// <summary>
         /// Entry is a primitive value of type float, double or decimal.
         /// </summary>
@@ -106,6 +106,25 @@ namespace CabinIcarus.OdinSerializer
         /// <summary>
         /// Entry contains the string id of an external object in the DeserializationContext.
         /// </summary>
-        ExternalReferenceByString = 16
+        ExternalReferenceByString = 16,
+        
+        Char = 101,
+
+        SByte = 102,
+        
+        Byte = 103,
+        
+        Short = 104,
+        
+        UShort = 105,
+        
+        UInt = 106,
+        
+        Long = 107,
+        
+        ULong = 108,
+        Double = 109,
+        
+        Decimal = 110,
     }
 }

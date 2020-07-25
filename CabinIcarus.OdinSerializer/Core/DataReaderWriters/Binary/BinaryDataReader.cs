@@ -183,42 +183,42 @@ namespace CabinIcarus.OdinSerializer
 
                 case BinaryEntryType.NamedSByte:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.SByte;
                     break;
 
                 case BinaryEntryType.UnnamedSByte:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.SByte;
                     break;
 
                 case BinaryEntryType.NamedByte:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.Byte;
                     break;
 
                 case BinaryEntryType.UnnamedByte:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.Byte;
                     break;
 
                 case BinaryEntryType.NamedShort:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.Short;
                     break;
 
                 case BinaryEntryType.UnnamedShort:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.Short;
                     break;
 
                 case BinaryEntryType.NamedUShort:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.UShort;
                     break;
 
                 case BinaryEntryType.UnnamedUShort:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.UShort;
                     break;
 
                 case BinaryEntryType.NamedInt:
@@ -233,32 +233,32 @@ namespace CabinIcarus.OdinSerializer
 
                 case BinaryEntryType.NamedUInt:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.UInt;
                     break;
 
                 case BinaryEntryType.UnnamedUInt:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.UInt;
                     break;
 
                 case BinaryEntryType.NamedLong:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.Long;
                     break;
 
                 case BinaryEntryType.UnnamedLong:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.Long;
                     break;
 
                 case BinaryEntryType.NamedULong:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.ULong;
                     break;
 
                 case BinaryEntryType.UnnamedULong:
                     name = null;
-                    this.peekedEntryType = EntryType.Integer;
+                    this.peekedEntryType = EntryType.ULong;
                     break;
 
                 case BinaryEntryType.NamedFloat:
@@ -273,32 +273,32 @@ namespace CabinIcarus.OdinSerializer
 
                 case BinaryEntryType.NamedDouble:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.FloatingPoint;
+                    this.peekedEntryType = EntryType.Double;
                     break;
 
                 case BinaryEntryType.UnnamedDouble:
                     name = null;
-                    this.peekedEntryType = EntryType.FloatingPoint;
+                    this.peekedEntryType = EntryType.Double;
                     break;
 
                 case BinaryEntryType.NamedDecimal:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.FloatingPoint;
+                    this.peekedEntryType = EntryType.Decimal;
                     break;
 
                 case BinaryEntryType.UnnamedDecimal:
                     name = null;
-                    this.peekedEntryType = EntryType.FloatingPoint;
+                    this.peekedEntryType = EntryType.Decimal;
                     break;
 
                 case BinaryEntryType.NamedChar:
                     name = this.ReadStringValue();
-                    this.peekedEntryType = EntryType.String;
+                    this.peekedEntryType = EntryType.Char;
                     break;
 
                 case BinaryEntryType.UnnamedChar:
                     name = null;
-                    this.peekedEntryType = EntryType.String;
+                    this.peekedEntryType = EntryType.Char;
                     break;
 
                 case BinaryEntryType.NamedString:
@@ -686,6 +686,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadSByte(out sbyte value)
         {
             long longValue;
+            if (peekedEntryType == EntryType.SByte)
+            {
+                peekedEntryType = EntryType.Long;
+            }
             if (this.ReadInt64(out longValue))
             {
                 checked
@@ -723,6 +727,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadByte(out byte value)
         {
             ulong ulongValue;
+            if (peekedEntryType == EntryType.Byte)
+            {
+                peekedEntryType = EntryType.ULong;
+            }
             if (this.ReadUInt64(out ulongValue))
             {
                 checked
@@ -760,6 +768,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadInt16(out short value)
         {
             long longValue;
+            if (peekedEntryType == EntryType.Short)
+            {
+                peekedEntryType = EntryType.Long;
+            }
             if (this.ReadInt64(out longValue))
             {
                 checked
@@ -797,6 +809,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadUInt16(out ushort value)
         {
             ulong ulongValue;
+            if (peekedEntryType == EntryType.UShort)
+            {
+                peekedEntryType = EntryType.ULong;
+            }
             if (this.ReadUInt64(out ulongValue))
             {
                 checked
@@ -834,6 +850,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadInt32(out int value)
         {
             long longValue;
+            if (peekedEntryType == EntryType.Integer)
+            {
+                peekedEntryType = EntryType.Long;
+            }
             if (this.ReadInt64(out longValue))
             {
                 checked
@@ -871,6 +891,10 @@ namespace CabinIcarus.OdinSerializer
         public override bool ReadUInt32(out uint value)
         {
             ulong ulongValue;
+            if (peekedEntryType == EntryType.UInt)
+            {
+                peekedEntryType = EntryType.ULong;
+            }
             if (this.ReadUInt64(out ulongValue))
             {
                 checked
@@ -913,7 +937,7 @@ namespace CabinIcarus.OdinSerializer
                 this.PeekEntry(out name);
             }
 
-            if (this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.Long)
             {
                 try
                 {
@@ -1070,7 +1094,7 @@ namespace CabinIcarus.OdinSerializer
                 this.PeekEntry(out name);
             }
 
-            if (this.peekedEntryType == EntryType.Integer)
+            if (this.peekedEntryType == EntryType.ULong)
             {
                 try
                 {
@@ -1335,9 +1359,10 @@ namespace CabinIcarus.OdinSerializer
 
                 return true;
             }
-            else if (this.peekedEntryType == EntryType.Integer)
+            else if (this.peekedEntryType == EntryType.Integer || peekedEntryType >= EntryType.SByte && peekedEntryType <= EntryType.ULong)
             {
                 long val;
+                peekedEntryType = EntryType.Long;
                 if (!this.ReadInt64(out val))
                 {
                     value = 0;
@@ -1429,9 +1454,10 @@ namespace CabinIcarus.OdinSerializer
 
                 return true;
             }
-            else if (this.peekedEntryType == EntryType.Integer)
+            else if (this.peekedEntryType == EntryType.Integer || peekedEntryType >= EntryType.SByte && peekedEntryType <= EntryType.ULong)
             {
                 long val;
+                peekedEntryType = EntryType.Long;
                 if (!this.ReadInt64(out val))
                 {
                     value = 0;
@@ -1534,9 +1560,10 @@ namespace CabinIcarus.OdinSerializer
 
                 return true;
             }
-            else if (this.peekedEntryType == EntryType.Integer)
+            else if (this.peekedEntryType == EntryType.Integer || peekedEntryType >= EntryType.SByte && peekedEntryType <= EntryType.ULong)
             {
                 long val;
+                peekedEntryType = EntryType.Long;
                 if (!this.ReadInt64(out val))
                 {
                     value = 0;

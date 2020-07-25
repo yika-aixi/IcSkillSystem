@@ -36,7 +36,7 @@ namespace CabinIcarus.OdinSerializer
             string name;
             var entry = reader.PeekEntry(out name);
 
-            if (entry == EntryType.String)
+            if (entry == EntryType.Char)
             {
                 char value;
                 if (reader.ReadChar(out value) == false)

@@ -429,8 +429,8 @@ namespace CabinIcarus.OdinSerializer
                                 goto default;
                             }
 
-                            double value;
-                            reader.ReadDouble(out value);
+                            float value;
+                            reader.ReadSingle(out value);
                             return (T)(object)value;
                         }
 
@@ -441,8 +441,8 @@ namespace CabinIcarus.OdinSerializer
                                 goto default;
                             }
 
-                            long value;
-                            reader.ReadInt64(out value);
+                            int value;
+                            reader.ReadInt32(out value);
                             return (T)(object)value;
                         }
 
@@ -470,6 +470,116 @@ namespace CabinIcarus.OdinSerializer
                             return (T)(object)value;
                         }
 
+                    case EntryType.Char:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        char value;
+                        reader.ReadChar(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.SByte:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        sbyte value;
+                        reader.ReadSByte(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.Byte:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        byte value;
+                        reader.ReadByte(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.Short:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        short value;
+                        reader.ReadInt16(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.UShort:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        ushort value;
+                        reader.ReadUInt16(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.UInt:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        uint value;
+                        reader.ReadUInt32(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.Long:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        long value;
+                        reader.ReadInt64(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.ULong:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        ulong value;
+                        reader.ReadUInt64(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.Double:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        double value;
+                        reader.ReadDouble(out value);
+                        return (T)(object)value;
+                    }
+                    case EntryType.Decimal:
+                    {
+                        if (!ComplexTypeMayBeBoxedValueType)
+                        {
+                            goto default;
+                        }
+
+                        decimal value;
+                        reader.ReadDecimal(out value);
+                        return (T)(object)value;
+                    }
                     default:
 
                         // Lost value somehow

@@ -36,7 +36,8 @@ namespace CabinIcarus.OdinSerializer
             string name;
             var entry = reader.PeekEntry(out name);
 
-            if (entry == EntryType.FloatingPoint || entry == EntryType.Integer)
+            if (entry == EntryType.FloatingPoint || entry == EntryType.Integer ||
+                entry >= EntryType.SByte && entry <= EntryType.Decimal)
             {
                 double value;
                 if (reader.ReadDouble(out value) == false)
