@@ -1,4 +1,6 @@
-﻿namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
+﻿using System.Collections.Generic;
+
+namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
     /// <summary>
     /// https://github.com/sebas77/Svelto.ECS/blob/master/Svelto.ECS.Components/ECSResources/ECSResources.cs
@@ -16,25 +18,52 @@
         public static implicit operator T(ECSResources<T> resources) { return ResourcesECSDB<T>.FromECS(resources.id); }
         
         public static implicit operator ECSResources<T>(T value) { return new ECSResources<T>(ResourcesECSDB<T>.ToECS(value));}
+
+        public void Release()
+        {
+            ResourcesECSDB<T>.Release(id);
+            id = 0;
+        }
     }
     
     static class ResourcesECSDB<T>
     {
         internal static readonly FasterList<T> _resources = new FasterList<T>();
 
+        static Queue<int> _releaseQueue = new Queue<int>();
+        
         internal static uint ToECS(T resource)
         {
-            _resources.Add(resource);
+            if (resource == null)
+            {
+                return 0;
+            }
 
-            return (uint)_resources.Count;
+            if (_releaseQueue.Count > 0)
+            {
+                var index = _releaseQueue.Dequeue();
+                _resources[index] = resource;
+                return (uint) (index + 1);
+            }
+            else
+            {
+                _resources.Add(resource);
+                return (uint)_resources.Count;
+            }
         }
 
         public static T FromECS(uint id)
         {
-            if (id - 1 < _resources.Count)
+            if (id - 1 < _resources.Count && id >= 1)
                 return _resources[(int) id - 1];
             
-            return default(T);
+            return default;
+        }
+
+        public static void Release(uint id)
+        {
+            if (id - 1 < _resources.Count && id >= 1)
+                _releaseQueue.Enqueue((int) id - 1);
         }
     }   
 
