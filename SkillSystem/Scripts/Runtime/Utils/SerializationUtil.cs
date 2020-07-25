@@ -14,21 +14,12 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     {
         public static string ToString<T>(T value)
         {
-            var bs = SerializationUtility.SerializeValue(value,DataFormat.Binary);
-            return Convert.ToBase64String(bs);
+            return ToString(value, null);
         }
 
         public static T ToValue<T>(string str)
         {
-            try
-            {
-                var bs = Convert.FromBase64String(str);
-                return SerializationUtility.DeserializeValue<T>(bs,DataFormat.Binary);
-            }
-            catch (Exception e)
-            {
-                return default;
-            }
+            return (T) ToValue(str, null);
         }
         
         public static string ToString(object value,Type type)
@@ -39,15 +30,8 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         
         public static object ToValue(string str,Type type)
         {
-            try
-            {
-                var bs = Convert.FromBase64String(str);
-                return SerializationUtility.DeserializeValueWeak(bs,DataFormat.Binary);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            var bs = Convert.FromBase64String(str);
+            return SerializationUtility.DeserializeValueWeak(bs,DataFormat.Binary);
         }
     }
 }
