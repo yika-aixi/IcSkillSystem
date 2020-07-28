@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     public abstract class ANPNode<T>:Node,IIcSkillSystemNode
     {
-        public IcSkillGroup SkillGroup { get; set; }
+        public IcSkillGraph SkillGraph { get; set; }
 
         [Output()]
         public T OutValue;

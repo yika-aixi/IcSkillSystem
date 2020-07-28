@@ -11,13 +11,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
     [CustomEditor(typeof(SkillBehaveComponent),true)]
     public class SkillBehaveComponentInspector : UnityEditor.Editor
     {
-        private IcSkillGroup _lastGroup;
+        private IcSkillGraph _lastGraph;
         private SkillBehaveComponent _target;
         private void OnEnable()
         {
             _target = (SkillBehaveComponent) target;
 
-            _lastGroup = _target.Group;
+            _lastGraph = _target.graph;
         }
 
         public override void OnInspectorGUI()
@@ -39,14 +39,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Buffs
             //remove
             foreach (var key in _target.Data.Keys.ToList())
             {
-                if (!_lastGroup.VariableMap.ContainsKey(key))
+                if (!_lastGraph.VariableMap.ContainsKey(key))
                 {
                     _target.Data.Remove(key);
                 }
             }
 
             //update
-            foreach (var pair in _lastGroup.VariableMap)
+            foreach (var pair in _lastGraph.VariableMap)
             {
                 if (!_target.Data.TryGetValue(pair.Key, out var values))
                 {

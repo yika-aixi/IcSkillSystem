@@ -22,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         protected Action.Result CompleteResult => GetInputValue(nameof(_completeResult),_completeResult);
 
-        protected Transform Tran => GetInputValue(nameof(_target),SkillGroup.Owner)?.transform;
+        protected Transform Tran => GetInputValue(nameof(_target),SkillGraph.Owner)?.transform;
 
         protected sealed override Action CreateOutValue()
         {

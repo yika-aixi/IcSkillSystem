@@ -20,11 +20,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         private void _play()
         {
-            var source = SkillGroup.Owner.GetComponent<AudioSource>();
+            var source = SkillGraph.Owner.GetComponent<AudioSource>();
 
             if (!source)
             {
-                source = SkillGroup.Owner.AddComponent<AudioSource>();
+                source = SkillGraph.Owner.AddComponent<AudioSource>();
             }
 
             source.clip = Clip;

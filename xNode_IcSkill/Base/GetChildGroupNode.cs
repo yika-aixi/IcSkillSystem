@@ -8,36 +8,36 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     public class GetChildGroupNode:ANPBehaveNode<NPBehave.Node>
     {
         [SerializeField]
-        private IcSkillGroup _group;
+        private IcSkillGraph graph;
 
         private ChildGroupNode _childGroupNode;
 
 #if UNITY_EDITOR
-        public const string GroupFieldName = nameof(_group);
-        public IcSkillGroup ChildGroup => _group;
+        public const string GroupFieldName = nameof(graph);
+        public IcSkillGraph ChildGraph => graph;
 #endif
 
-        private IcSkillGroup _currentGroup;
-        public IcSkillGroup GetGroup()
+        private IcSkillGraph _currentGraph;
+        public IcSkillGraph GetGroup()
         {
-            if (!_currentGroup)
+            if (!_currentGraph)
             {
-                _currentGroup =  (IcSkillGroup) _group.Copy();
+                _currentGraph =  (IcSkillGraph) graph.Copy();
             }
 
-            return _currentGroup;
+            return _currentGraph;
         }
         
         protected override NPBehave.Node CreateOutValue()
         {
-            if (_group == null)
+            if (graph == null)
             {
                 return null;
             }
 
             GetGroup();
 
-            _childGroupNode = _getChildGroupNode(_currentGroup);
+            _childGroupNode = _getChildGroupNode(_currentGraph);
 
             if (!_childGroupNode)
             {
@@ -46,7 +46,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
             _childGroupNode.GetChildGroupNode = this;
             
-            return _currentGroup.GetChildGroupNode((IcSkillGroup) graph);
+            return _currentGraph.GetChildGroupNode((IcSkillGraph) ((Node) this).graph);
         }
 
         protected override object GetPortValue(NodePort port)
@@ -55,30 +55,30 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         }
 
         private ChildGroupNode _childNode;
-        private IcSkillGroup _lastGroup;
+        private IcSkillGraph _lastGraph;
         
-        ChildGroupNode _getChildGroupNode(IcSkillGroup skillGroup)
+        ChildGroupNode _getChildGroupNode(IcSkillGraph skillGraph)
         {
             if (_childGroupNode)
             {
                 return _childGroupNode;
             }
             
-            if (!skillGroup)
+            if (!skillGraph)
             {
                 return null;
             }
 
-            if (_lastGroup == skillGroup && _childNode)
+            if (_lastGraph == skillGraph && _childNode)
             {
                 return _childNode;
             }
             
-            foreach (var node in skillGroup.nodes)
+            foreach (var node in skillGraph.nodes)
             {
                 if (node is ChildGroupNode childGroupNode)
                 {
-                    _lastGroup = skillGroup;
+                    _lastGraph = skillGraph;
                     _childNode = childGroupNode;
                     return childGroupNode;
                 }

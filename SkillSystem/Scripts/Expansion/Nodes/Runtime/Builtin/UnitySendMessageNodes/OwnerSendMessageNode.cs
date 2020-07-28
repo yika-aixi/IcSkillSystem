@@ -5,18 +5,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         protected override void Send()
         {
-            if (!SkillGroup.Owner)
+            if (!SkillGraph.Owner)
             {
                 return;
             }
             
             if (IsUpwards)
             {
-                SkillGroup.Owner.SendMessageUpwards(MessageName,Value,Options);
+                SkillGraph.Owner.SendMessageUpwards(MessageName,Value,Options);
             }
             else
             {
-                SkillGroup.Owner.SendMessage(MessageName,Value,Options);
+                SkillGraph.Owner.SendMessage(MessageName,Value,Options);
             }
         }
     }

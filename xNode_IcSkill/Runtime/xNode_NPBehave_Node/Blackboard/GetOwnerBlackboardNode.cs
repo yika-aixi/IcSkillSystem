@@ -14,11 +14,11 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
         protected override Blackboard GetOutValue()
         {
-            var blackboard = SkillGroup.Owner.GetComponent<SelfBlackBoardComponent>();
+            var blackboard = SkillGraph.Owner.GetComponent<SelfBlackBoardComponent>();
 
             if (!blackboard)
             {
-                blackboard = SkillGroup.Owner.AddComponent<SelfBlackBoardComponent>();
+                blackboard = SkillGraph.Owner.AddComponent<SelfBlackBoardComponent>();
                 blackboard.UseUnityContextClock = GetInputValue(nameof(_useUnityContextClock), _useUnityContextClock);
             }
 

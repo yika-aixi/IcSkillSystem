@@ -14,7 +14,7 @@ using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
-    [CustomNodeGraphEditor(typeof(IcSkillGroup),"CabinIcarus.IcSkillSystem")]
+    [CustomNodeGraphEditor(typeof(IcSkillGraph),"CabinIcarus.IcSkillSystem")]
     public class IcSkillGroupEditor:NodeGraphEditor
     {
         public static event Func<NodeGraph,Type,bool> OnAllowCreate; 

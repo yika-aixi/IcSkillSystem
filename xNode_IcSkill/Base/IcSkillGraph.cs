@@ -18,7 +18,7 @@ using Node = NPBehave.Node;
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
     [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
-    public class IcSkillGroup:NodeGraph
+    public class IcSkillGraph:NodeGraph
     {
         private static RoodNodeComparer _roodNodeComparer = new RoodNodeComparer();
         private GameObject _owner;
@@ -83,7 +83,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         List<string> _keys;
 
-        public IcSkillGroup()
+        public IcSkillGraph()
         {
             _keys = _varMap.Keys.ToList();
             _id = Guid.NewGuid();
@@ -223,14 +223,14 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             return false;
         }
 
-        private void _init(IcSkillGroup group)
+        private void _init(IcSkillGraph graph)
         {
             for (var index = 0; index < nodes.Count; index++)
             {
                 var node = nodes[index];
                 if (node is IIcSkillSystemNode skillNode)
                 {
-                    skillNode.SkillGroup = @group;
+                    skillNode.SkillGraph = graph;
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         /// 获取子图,返回Node
         /// </summary>
         /// <returns></returns>
-        public Node GetChildGroupNode(IcSkillGroup parent)
+        public Node GetChildGroupNode(IcSkillGraph parent)
         {
             _init(parent);
             

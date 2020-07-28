@@ -4,6 +4,6 @@ namespace CabinIcarus.IcSkillSystem
 {
     public interface IIcSkillSystemNode
     {
-        IcSkillGroup SkillGroup { get; set; }
+        IcSkillGraph SkillGraph { get; set; }
     }
 }

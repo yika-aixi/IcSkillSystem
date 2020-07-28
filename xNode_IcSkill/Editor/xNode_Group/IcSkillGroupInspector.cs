@@ -13,10 +13,10 @@ using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
-    [CustomEditor(typeof(IcSkillGroup))]
+    [CustomEditor(typeof(IcSkillGraph))]
     public class IcSkillGroupInspector : UnityEditor.Editor
     {
-        private IcSkillGroup _group;
+        private IcSkillGraph _graph;
 
         private static Type[] _types;
 
@@ -34,9 +34,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _simpleTypeSelect = new SimpleTypeSelectPopupWindow(true,_types);
             }
             
-            _varMapSer = serializedObject.FindProperty(IcSkillGroup.VarMapFieldName);
+            _varMapSer = serializedObject.FindProperty(IcSkillGraph.VarMapFieldName);
             
-            _group = (IcSkillGroup) target;
+            _graph = (IcSkillGraph) target;
         }
 
         void _save()
@@ -141,7 +141,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                                                 
                                                     if (GUI.Button(removeButtonRect,EditorGUIUtility.FindTexture("d_P4_DeletedLocal")))
                                                     {
-                                                        _group.RemoveNode((Node) targetNode.objectReferenceValue);
+                                                        _graph.RemoveNode((Node) targetNode.objectReferenceValue);
                                                     }
                                                 }
                                                 catch (Exception)

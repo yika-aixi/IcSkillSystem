@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
             if (_basedOnItselfPos)
             {
-                pos.Value += SkillGroup.Owner.transform.position;
+                pos.Value += SkillGraph.Owner.transform.position;
             }
             
             return Instantiate(Go,pos, Quaternion);

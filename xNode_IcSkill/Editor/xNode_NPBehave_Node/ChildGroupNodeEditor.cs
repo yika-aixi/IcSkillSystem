@@ -163,21 +163,21 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             }
         }
 
-        void _updateGetChildNodeGroup(Action<IcSkillGroup,Node> onAction)
+        void _updateGetChildNodeGroup(Action<IcSkillGraph,Node> onAction)
         {
-            string[] guids = AssetDatabase.FindAssets ("t:" + typeof(IcSkillGroup));
+            string[] guids = AssetDatabase.FindAssets ("t:" + typeof(IcSkillGraph));
                     
             foreach (var guid in guids)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
 
-                var group = AssetDatabase.LoadAssetAtPath<IcSkillGroup>(path);
+                var group = AssetDatabase.LoadAssetAtPath<IcSkillGraph>(path);
 
                 foreach (var node in @group.nodes)
                 {
                     if (node is GetChildGroupNode getChild)
                     {
-                        if (getChild.ChildGroup == window.graph)
+                        if (getChild.ChildGraph == window.graph)
                         {
                             onAction?.Invoke(group,node);
                         }

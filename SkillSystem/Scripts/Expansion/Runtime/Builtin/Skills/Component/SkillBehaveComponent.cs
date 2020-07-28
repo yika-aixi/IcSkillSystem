@@ -17,15 +17,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
     /// </summary>
     public class SkillBehaveComponent : MonoBehaviour
     {
-        public IcSkillGroup Group;
+        public IcSkillGraph graph;
         
         public bool Passive;
 
-        protected IcSkillGroup CurrentSkill;
+        protected IcSkillGraph CurrentSkill;
 
         public ValueSDict Data;
 
-        private List<IcSkillGroup> _skillGroups = new List<IcSkillGroup>();
+        private List<IcSkillGraph> _skillGroups = new List<IcSkillGraph>();
         
         private void Awake()
         {
@@ -55,12 +55,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
             Init();
         }
 
-        protected IcSkillGroup CreateSkill()
+        protected IcSkillGraph CreateSkill()
         {
-            IcSkillGroup skillGroup = (IcSkillGroup) Group.Copy();
-            skillGroup.Owner = gameObject;
-            _skillGroups.Add(skillGroup);
-            return skillGroup;
+            IcSkillGraph skillGraph = (IcSkillGraph) graph.Copy();
+            skillGraph.Owner = gameObject;
+            _skillGroups.Add(skillGraph);
+            return skillGraph;
         }
 
         private void _debug(Root root)

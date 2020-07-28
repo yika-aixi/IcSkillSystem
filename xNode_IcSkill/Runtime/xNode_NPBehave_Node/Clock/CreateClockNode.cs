@@ -14,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             {
                _clock = new Clock();
 
-               var update = this.SkillGroup.Owner.GetOrAddComponent<ClockUpdate>();
+               var update = this.SkillGraph.Owner.GetOrAddComponent<ClockUpdate>();
                
                update.AddClock(_clock);
             }

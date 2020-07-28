@@ -38,7 +38,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         
         protected LayerMask Mask => GetInputValue(nameof(_mask),_mask);
 
-        public GameObject Owner => GetInputValue(nameof(_owner),SkillGroup.Owner);
+        public GameObject Owner => GetInputValue(nameof(_owner),SkillGraph.Owner);
 
         #region Debug
 

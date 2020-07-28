@@ -24,7 +24,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             _lastWindow = NodeEditorWindow.current;
         }
 
-        private IcSkillGroup _currentGroup;
+        private IcSkillGraph _currentGraph;
         private SerializedProperty _groupSer;
         NodeEditorWindow _lastWindow;
         public override void OnBodyGUI()
@@ -45,7 +45,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     }
 
                     NodeEditorGUILayout.PropertyField(_groupSer,new GUIContent("Group"));
-                    _currentGroup = (IcSkillGroup) _groupSer.objectReferenceValue;
+                    _currentGraph = (IcSkillGraph) _groupSer.objectReferenceValue;
                 }
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -66,10 +66,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         private void _updatePort()
         {
-            if(_currentGroup == null)
+            if(_currentGraph == null)
                 return;
             
-            var groupPort = _getChildGroupNode(_currentGroup);
+            var groupPort = _getChildGroupNode(_currentGraph);
 
             if (groupPort)
             {
@@ -122,14 +122,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             }
         }
 
-        ChildGroupNode _getChildGroupNode(IcSkillGroup skillGroup)
+        ChildGroupNode _getChildGroupNode(IcSkillGraph skillGraph)
         {
-            if (!skillGroup)
+            if (!skillGraph)
             {
                 return null;
             }
             
-            foreach (var node in skillGroup.nodes)
+            foreach (var node in skillGraph.nodes)
             {
                 if (node is ChildGroupNode childGroupNode)
                 {

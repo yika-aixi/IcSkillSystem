@@ -22,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 return null;
             }
 #endif
-            var target = GetInputValue(nameof(_target), SkillGroup.Owner);
+            var target = GetInputValue(nameof(_target), SkillGraph.Owner);
 
             return target.GetComponent(GetCurrentValueType());
         }
