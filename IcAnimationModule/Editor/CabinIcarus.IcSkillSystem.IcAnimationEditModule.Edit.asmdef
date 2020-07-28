@@ -1,0 +1,28 @@
+{
+    "name": "CabinIcarus.IcSkillSystem.IcAnimationEditModule.Edit",
+    "rootNamespace": "",
+    "references": [
+        "Icarus.EditorFrame",
+        "Icarus.EditorFrame.Common",
+        "CabinIcarus.IcSkillSystem.Runtime",
+        "CabinIcarus.IcSkillSystem.Expansion.Runtime",
+        "Icarus.AnimationEditor.Editor",
+        "Icarus.AnimationEditor.Runtime",
+        "CabinIcarus.IcSkillSystem.IcAnimationEditModule",
+        "CabinIcarus.IcSkillSystem.xNodeIc.Base",
+        "XNode"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ICANIMATIONEDITOR"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
