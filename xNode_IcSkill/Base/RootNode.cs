@@ -12,22 +12,22 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
         public bool AutoStart;
         
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("黑板")]
         private Blackboard _blackBoard;
         
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("Clock")]
         private Clock _clok;
         
-        [SerializeField,Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
+        [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         [PortTooltip("主节点")]
         private Node _mainNode;
 
         protected override Root CreateOutValue()
         {
-            var black = GetInputValue(nameof(_blackBoard),_blackBoard);
-            var clok = GetInputValue(nameof(_clok), _clok);
+            var black = GetInputValue(nameof(_blackBoard), UnityContext.GetSharedBlackboard("shader"));
+            var clok = GetInputValue(nameof(_clok),  UnityContext.GetClock());
             var mainNode = GetInputValue<Node>(nameof(_mainNode));
             if (black != null && clok != null && mainNode != null)
             {
