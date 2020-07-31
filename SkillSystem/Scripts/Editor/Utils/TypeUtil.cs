@@ -35,10 +35,10 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
             get
             {
                 return GetRuntimeTypes
-                    .Where(x => !x.IsPointer)
                     .Where(x => !typeof(Delegate).IsAssignableFrom(x))
                     .Where(x => !typeof(Exception).IsAssignableFrom(x))
                     .Where(x => !typeof(Attribute).IsAssignableFrom(x))
+                    .Where(x => !x.IsPointer)
                     .Where(x => !x.IsGenericType)
                     .Where(x => !x.IsAbstract)
                     .Where(x => x.IsValueType || x.IsEnum ||
