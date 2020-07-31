@@ -231,6 +231,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 if (node is IIcSkillSystemNode skillNode)
                 {
                     skillNode.SkillGraph = graph;
+                    skillNode.OnInit();
                 }
             }
         }

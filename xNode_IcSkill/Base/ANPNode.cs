@@ -26,14 +26,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         protected sealed override void Init()
         {
             base.Init();
-            
-            if (!_editorNoPlay())
-            {
-                OnInit();
-            }
         }
 
-        protected virtual void OnInit()
+        public virtual void OnInit()
         {
         }
         

@@ -22,19 +22,20 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 
         protected Root Node;
 
-        protected sealed override void Init()
+        public void OnInit()
         {
             if (Node == null)
             {
                 Node = GetInputValue<Root>(nameof(_node), null);
             }
 
-            OnInit();
+            On_Init();
         }
 
-        protected virtual void OnInit()
+        protected virtual void On_Init()
         {
         }
+
 
         protected void Execute()
         {
