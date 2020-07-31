@@ -93,23 +93,31 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 
                 EditorGUILayout.LabelField(title,GUILayout.Width( titleSize.x));
 
-                float width = GetWidth() - titleSize.x - 30;
+                float width = GetWidth() - titleSize.x - 30 - 35;
                 
                 if (_typeSelectWindow != null)
                 {
                     if (GUILayout.Button(_aQNameProperty.stringValue.Split(',')[0].Split('.').Last(),"popup",GUILayout.Width(width)))
                     {
+                        var currentMousePosition = this.GetCurrentMousePosition();
+                        
                         PopupWindow.Show(
-                            new Rect(new Vector2(Event.current.mousePosition.x - size / 2, size)
-                                ,new Vector2(size + 150,size)),
+                            new Rect(new Vector2(currentMousePosition.x , currentMousePosition.y )
+                                ,Vector2.zero),
                             _typeSelectWindow);
-                    } 
+                    }
                 }
                 else
                 {
                     EditorGUILayout.LabelField(new GUIContent($"No Impl.",$"No {GetBaseType()} Impl."),style:"popup",GUILayout.Width(width));
                 }
-                
+
+                if (GUILayout.Button("-", GUILayout.Width(32)))
+                {
+                    _aQNameProperty.stringValue = string.Empty;
+                    serializedObject.ApplyModifiedProperties();
+                    UpdateDynamicPort();
+                }
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -157,38 +165,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             inputs.AddRange(dynamicPorts);
             
             _updateDynamicPort(inputs,memberInfos);
+
+            serializedObject.ApplyModifiedProperties();
             
-            serializedObject.UpdateIfRequiredOrScript();
-        }
-
-        public override Color GetTint()
-        {
-            Type type = Type.GetType(_aQNameProperty.stringValue);
-
-            if (type == null)
-            {
-                Error = true;
-            }
-            else
-            {
-                var ctors = type.GetConstructors();
-                if (ctors.Length > 0)
-                {
-                    var defaultCtor = ctors[0];
-                    var args = defaultCtor.GetParameters();
-                    foreach (var ctorArg in args)
-                    {
-                        var inputPort = TNode.GetInputPort(_getParameterName(ctorArg.Name));
-
-                        if (!inputPort.IsConnected)
-                        {
-                            Error = true;
-                        }
-                    }
-                }
-            }
-           
-            return base.GetTint();
+            serializedObject.Update();
         }
 
         private string _getParameterName(string argName)
@@ -258,6 +238,30 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         protected override void ColorCheck()
         {
+            Type type = Type.GetType(_aQNameProperty.stringValue);
+
+            if (type == null)
+            {
+                Error = true;
+            }
+            else
+            {
+                var ctors = type.GetConstructors();
+                if (ctors.Length > 0)
+                {
+                    var defaultCtor = ctors[0];
+                    var args        = defaultCtor.GetParameters();
+                    foreach (var ctorArg in args)
+                    {
+                        var inputPort = TNode.GetInputPort(_getParameterName(ctorArg.Name));
+
+                        if (!inputPort.IsConnected)
+                        {
+                            Error = true;
+                        }
+                    }
+                }
+            }
         }
 
         protected abstract string GetAQNamePropertyName();
