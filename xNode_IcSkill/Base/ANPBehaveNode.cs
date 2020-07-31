@@ -5,6 +5,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     public abstract class ANPBehaveNode<T>:ANPNode<T> where T : Node
     {
+        public const string SharedBlackBoard = "SkillSystem.Shared";
         private T _value;
         protected sealed override T GetOutValue()
         {

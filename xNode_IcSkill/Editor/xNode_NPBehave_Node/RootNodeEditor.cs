@@ -31,11 +31,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         {
             _check();
 
-            if (!rootNode.GetPort("_blackBoard").IsConnected || !rootNode.GetPort("_clok").IsConnected)
-            {
-                Error = true;
-            }
-            
             base.ColorCheck();
         }
 

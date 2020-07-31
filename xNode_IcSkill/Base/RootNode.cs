@@ -26,9 +26,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
         protected override Root CreateOutValue()
         {
-            var black = GetInputValue(nameof(_blackBoard), UnityContext.GetSharedBlackboard("shader"));
+            var black = GetInputValue(nameof(_blackBoard), UnityContext.GetSharedBlackboard(SharedBlackBoard));
             var clok = GetInputValue(nameof(_clok),  UnityContext.GetClock());
             var mainNode = GetInputValue<Node>(nameof(_mainNode));
+            
             if (black != null && clok != null && mainNode != null)
             {
                 return new Root(black,clok,mainNode);
