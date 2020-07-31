@@ -6,6 +6,7 @@ using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
@@ -106,9 +107,16 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             {
                 {
                     _generateTypeAqNameMap = new Dictionary<string, bool>();
-                    _generateTypeAqNameMap =
-                        SerializationUtil.ToValue<Dictionary<string, bool>>(
-                            EditorPrefs.GetString(_getKey(nameof(_generateTypeAqNameMap))));
+                    try
+                    {
+                        _generateTypeAqNameMap =
+                            SerializationUtil.ToValue<Dictionary<string, bool>>(
+                                EditorPrefs.GetString(_getKey(nameof(_generateTypeAqNameMap))));
+                    }
+                    catch (FormatException e)
+                    {
+                        _generateTypeAqNameMap = new Dictionary<string, bool>();
+                    }
 
                     var runtimeTypes = TypeUtil.GetRuntimeFilterTypes.ToList();
                     bool isSave = false;
@@ -253,6 +261,8 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
         private bool _force = false;
         private bool _clearGenerateCode;
+        private SearchField _search;
+        private string _searchStr;
         private void OnGUI()
         {
             EditorGUILayout.BeginHorizontal();
@@ -275,6 +285,13 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
             _force = EditorGUILayout.ToggleLeft("Force",_force);
             //_clearGenerateCode = EditorGUILayout.ToggleLeft("Clear folder Before Generate",_clearGenerateCode);
+
+            if (_search == null)
+            {
+                _search = new SearchField();
+            }
+
+            _searchStr = _search.OnGUI(_searchStr);
             _drawGenerate();
         }
 
