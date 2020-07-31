@@ -140,7 +140,11 @@ namespace CabinIcarus.IcSkillSystem.Editor
         {
             this._focus = focus;
             _tree = new TypeTreeView(types,new TreeViewState());
-            _tree.OnSelect = x=> OnChangeTypeSelect?.Invoke(x);
+            _tree.OnSelect = x=>
+            {
+                OnChangeTypeSelect?.Invoke(x);
+                editorWindow.Close();
+            };
             _tree.Reload();
         }
 
