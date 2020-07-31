@@ -19,6 +19,11 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         
         public static implicit operator ECSResources<T>(T value) { return new ECSResources<T>(ResourcesECSDB<T>.ToECS(value));}
 
+        public object GetValue()
+        {
+            return ResourcesECSDB<T>.FromECS(id);
+        }
+        
         public void Release()
         {
             ResourcesECSDB<T>.Release(id);
