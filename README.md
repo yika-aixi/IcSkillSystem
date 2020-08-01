@@ -6,6 +6,15 @@
 
 Behave Tree Create Editor
 
+### 0.8 New Function
+SkillGraph Save/Read as Json
+
+New Node `IAutoExecute` It is used for automatic execution, such as battle events, if you need to perform actions on onHide, onDead, you can use it to achieve very intuitively
+
+I provide `InputKeyBoard/InputMouse` Auto Execute Node,To demonstrate how to write your own AutoExecuteNode
+
+Brand new Node life cycle `OnInit`, `OnStart`, `OnStop`
+
 ###Skill Group
 
 Cast Node And For Execute Action Node
