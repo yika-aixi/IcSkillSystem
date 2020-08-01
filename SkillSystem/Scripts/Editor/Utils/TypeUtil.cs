@@ -96,7 +96,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
 
         private static void _collectValueTyps()
         {
-            _objectTypes.AddRange(AppDomain.CurrentDomain.GetAllTypes().Where(x => x.IsPublic));
+            _objectTypes.AddRange(AppDomain.CurrentDomain.GetAllTypes());
             
             foreach (var type in _objectTypes.ToList())
             {
