@@ -3,26 +3,21 @@
 //2020-07-30 06:57
 //CabinIcarus.IcSkillSystem.xNodeIc.Base
 
-using CabinIcarus.IcSkillSystem;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
-using CabinIcarus.IcSkillSystem.xNode_Group;
 using NPBehave;
 using UnityEngine;
-using Node = XNode.Node;
 
 namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 {
-    public abstract class AAutoExecuteNode:Node,IIcSkillSystemNode
+    public abstract class AAutoExecuteNode:ABaseNode
     {
-        public IcSkillGraph SkillGraph { get; set; }
-        
         [SerializeField,Input(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)]
         [PortTooltip("执行节点")]
         private Root _node;
 
         protected Root Node;
 
-        public void OnInit()
+        public override void OnInit()
         {
             if (Node == null)
             {

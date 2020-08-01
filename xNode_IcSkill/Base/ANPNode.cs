@@ -5,31 +5,20 @@
 //2019年09月19日-21:33
 //Assembly-CSharp
 
-using CabinIcarus.IcSkillSystem.xNode_Group;
+using CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base;
 using UnityEngine;
 using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
-    public abstract class ANPNode<T>:Node,IIcSkillSystemNode
+    public abstract class ANPNode<T>:ABaseNode
     {
-        public IcSkillGraph SkillGraph { get; set; }
-
         [Output()]
         public T OutValue;
 
         public T GetDefaultOutputValue()
         {
             return (T) GetOutputPort(nameof(OutValue)).GetOutputValue();
-        }
-        
-        protected sealed override void Init()
-        {
-            base.Init();
-        }
-
-        public virtual void OnInit()
-        {
         }
         
         public sealed override object GetValue(NodePort port)
