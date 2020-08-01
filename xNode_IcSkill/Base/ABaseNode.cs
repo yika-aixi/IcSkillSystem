@@ -18,6 +18,11 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
         {
         }
 
+        public virtual void OnStart()
+        {
+            
+        }
+
         public virtual void OnStop()
         {
         }

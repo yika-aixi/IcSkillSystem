@@ -8,6 +8,8 @@ namespace CabinIcarus.IcSkillSystem
 
         void OnInit();
 
+        void OnStart();
+        
         void OnStop();
     }
 }

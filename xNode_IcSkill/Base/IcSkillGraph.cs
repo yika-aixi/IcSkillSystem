@@ -168,6 +168,17 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 LoadGroup();
             }
             
+            var count = nodes.Count;
+            
+            for (var index = 0; index < count; index++)
+            {
+                var node = nodes[index];
+                if (node is IIcSkillSystemNode skillNode)
+                {
+                    skillNode.OnStart();
+                }
+            }
+            
             for (var i = 0; i < _rootCount; i++)
             {
                 var root = _rootNodes[i];
