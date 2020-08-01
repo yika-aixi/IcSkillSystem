@@ -5,6 +5,7 @@ using NPBehave;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
+using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
@@ -68,6 +69,8 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     serializedObject.ApplyModifiedProperties();
                     _stor();
+                    serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(target.graph);
                 }
 
                 if (_autoStartSer == null)
@@ -130,30 +133,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 if (a is RootNode aRoot
                     && b is RootNode bRoot)
                 {
-                    if (aRoot.Priority < bRoot.Priority)
-                    {
-                        return -1;
-                    }
-                        
-                    if (aRoot.Priority > bRoot.Priority)
-                    {
-                        return 1;
-                    }
+                    return aRoot.Priority.CompareTo(bRoot.Priority);
                 }
-                else
+            
+                if (a is RootNode)
                 {
-                    if (a is RootNode)
-                    {
-                        return -1;
-                    }
-
-                    if (b is RootNode)
-                    {
-                        return 1;
-                    } 
+                    return -1;
                 }
-                    
-                return 0;
+            
+                if (b is RootNode)
+                {
+                    return 1;
+                }
+            
+                return 1;
             });
         }
 
