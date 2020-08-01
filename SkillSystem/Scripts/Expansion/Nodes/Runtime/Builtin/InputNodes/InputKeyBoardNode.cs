@@ -7,7 +7,6 @@ using System;
 using CabinIcarus.IcFrameWork.IcSkillSystem.SkillSystem.Scripts.Runtime.Attributes;
 using CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
-using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes.InputNodes
