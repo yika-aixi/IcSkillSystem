@@ -225,12 +225,22 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         private void _init(IcSkillGraph graph)
         {
-            for (var index = 0; index < nodes.Count; index++)
+            var count = nodes.Count;
+
+            for (var index = 0; index < count; index++)
             {
                 var node = nodes[index];
                 if (node is IIcSkillSystemNode skillNode)
                 {
                     skillNode.SkillGraph = graph;
+                }
+            }
+
+            for (var index = 0; index < count; index++)
+            {
+                var node = nodes[index];
+                if (node is IIcSkillSystemNode skillNode)
+                {
                     skillNode.OnInit();
                 }
             }
