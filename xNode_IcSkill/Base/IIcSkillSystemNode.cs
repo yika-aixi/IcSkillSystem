@@ -7,5 +7,7 @@ namespace CabinIcarus.IcSkillSystem
         IcSkillGraph SkillGraph { get; set; }
 
         void OnInit();
+
+        void OnStop();
     }
 }

@@ -165,7 +165,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         {
             if (_rootNodes.Count == 0)
             {
-                throw new InvalidOperationException("have not Load Group or Group no exist Root Node");
+                LoadGroup();
             }
             
             for (var i = 0; i < _rootCount; i++)
@@ -189,6 +189,17 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         public void StopGroup()
         {
+            var count = nodes.Count;
+            
+            for (var index = 0; index < count; index++)
+            {
+                var node = nodes[index];
+                if (node is IIcSkillSystemNode skillNode)
+                {
+                    skillNode.OnStop();
+                }
+            }
+            
             for (var i = 0; i < _rootCount; i++)
             {
                 var rootNode = _rootNodes[i];
