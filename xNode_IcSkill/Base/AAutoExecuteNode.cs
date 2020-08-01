@@ -3,6 +3,7 @@
 //2020-07-30 06:57
 //CabinIcarus.IcSkillSystem.xNodeIc.Base
 
+using System;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
@@ -17,14 +18,21 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 
         protected Root Node;
 
-        public override void OnInit()
+        public sealed override void OnInit()
         {
             if (Node == null)
             {
                 Node = GetInputValue<Root>(nameof(_node), null);
             }
 
-            On_Init();
+            if (Node != null)
+            {
+                On_Init();
+            }
+            else
+            {
+                throw new NullReferenceException("Node no input");
+            }
         }
 
         protected virtual void On_Init()
