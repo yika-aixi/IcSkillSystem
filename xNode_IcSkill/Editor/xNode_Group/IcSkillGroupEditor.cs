@@ -60,18 +60,26 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _fileMenu = new GenericMenu();
             }
             
+            AddFileMenuItem(new GUIContent("Open Graph"), false, _openGraph);            
+
             AddFileMenuItem(new GUIContent("Save as/Json"), false, _saveAsJson);
-            
-            // AddMenuItem(new GUIContent("Save as/Binary"), false, _saveAsBinary);
             AddFileMenuItem(new GUIContent("Read/Json"), false, _readJson);
+            // AddMenuItem(new GUIContent("Save as/Binary"), false, _saveAsBinary);
         }
 
         private GenericMenu _fileMenu;
         private Rect _last;
+        private event Action<Object> _onObjectSelectorClosed; 
         public override void OnGUI()
         {
             base.OnGUI();
+            var eve = Event.current;
 
+            if (eve.commandName == "ObjectSelectorClosed")
+            {
+                _onObjectSelectorClosed?.Invoke(EditorGUIUtility.GetObjectPickerObject());
+            }
+            
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar,GUILayout.Width(window.position.width));
             {
                 var menu = new GUIContent("File");
