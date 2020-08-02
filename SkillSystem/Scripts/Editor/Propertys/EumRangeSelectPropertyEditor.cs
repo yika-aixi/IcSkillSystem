@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CabinIcarus.IcFrameWork.IcSkillSystem.SkillSystem.Scripts.Runtime.Attributes;
 using UnityEditor;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.Editor
     [CustomPropertyDrawer(typeof(EnumRangeSelectAttribute))]
     public class EumRangeSelectPropertyEditor:PropertyDrawer
     {
+        private int _rangeCount;
         private int[] _enums;
         private string[] _enumNames;
         
@@ -64,6 +66,8 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.Editor
                 _enums = temp.ToArray();
                 _enumNames = tempStr.ToArray();
 
+                _rangeCount = _enums.Length;
+
                 if (isEnumField)
                 {
                     _enumIndexNames = property.enumNames;
@@ -76,8 +80,7 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.Editor
 
             if (!isEnumField)
             {
-                var length = _enums.Length;
-                for (var i = 0; i < length; i++)
+                for (var i = 0; i < _rangeCount; i++)
                 {
                     if (_enums[i] == iValue)
                     {
@@ -90,8 +93,7 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.Editor
             {
                 var enumName = _enumIndexNames[property.enumValueIndex];
 
-                var length = _enumNames.Length;
-                for (var i = 0; i < length; i++)
+                for (var i = 0; i < _rangeCount; i++)
                 {
                     if (enumName == _enumNames[i])
                     {
@@ -111,7 +113,6 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.Editor
                 {
                     return;
                 }
-            
                 if (isEnumField)
                 {
                     var enumName = _enumNames[enumIndex];
