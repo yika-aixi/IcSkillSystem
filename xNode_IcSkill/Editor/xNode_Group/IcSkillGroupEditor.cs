@@ -7,17 +7,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using CabinIcarus.EditorFrame.Expansion.NewtonsoftJson;
 using CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using XNode;
 using XNodeEditor;
@@ -26,7 +26,7 @@ using Object = UnityEngine.Object;
 namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
     [CustomNodeGraphEditor(typeof(IcSkillGraph),"CabinIcarus.IcSkillSystem")]
-    public class IcSkillGroupEditor:NodeGraphEditor
+    public partial class IcSkillGroupEditor:NodeGraphEditor
     {
         public static event Func<NodeGraph,Type,bool> OnAllowCreate; 
         
@@ -51,21 +51,22 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             return settings;
         }
 
-        public override void OnOpen()
+        public override void OnCreate()
         {
-            base.OnOpen();
-
-            if (_toolbarMenu == null)
+            base.OnCreate();
+            
+            if (_fileMenu == null)
             {
-                _toolbarMenu = new GenericMenu();
+                _fileMenu = new GenericMenu();
             }
             
-            AddMenuItem(new GUIContent("Save as/Json"), false, _saveAsJson);
+            AddFileMenuItem(new GUIContent("Save as/Json"), false, _saveAsJson);
+            
             // AddMenuItem(new GUIContent("Save as/Binary"), false, _saveAsBinary);
-            AddMenuItem(new GUIContent("Read/Json"), false, _readJson);
+            AddFileMenuItem(new GUIContent("Read/Json"), false, _readJson);
         }
 
-        private GenericMenu _toolbarMenu;
+        private GenericMenu _fileMenu;
         private Rect _last;
         public override void OnGUI()
         {
@@ -73,12 +74,12 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar,GUILayout.Width(window.position.width));
             {
-                var menu = new GUIContent("Menu");
+                var menu = new GUIContent("File");
                 var size = EditorStyles.toolbarButton.CalcSize(menu);
                 if (GUILayout.Button(menu, EditorStyles.toolbarButton,GUILayout.Width(size.x)))
                 {
                     _last.position += new Vector2(0,20);
-                    _toolbarMenu.DropDown(_last);
+                    _fileMenu.DropDown(_last);
                 }
 
                 _last = GUILayoutUtility.GetLastRect();
@@ -86,151 +87,19 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             EditorGUILayout.EndHorizontal();
         }
 
-        public void AddMenuItem(GUIContent content, bool on, Action clickCallback)
+        public void AddFileMenuItem(GUIContent content, bool on, Action clickCallback)
         {
-            _toolbarMenu.AddItem(content, on, clickCallback.Invoke);
+            _fileMenu.AddItem(content, on, clickCallback.Invoke);
         }
         
-        public void AddMenuItem(GUIContent content, bool on,object userData, Action<object> clickCallback)
+        public void AddFileMenuItem(GUIContent content, bool on,object userData, Action<object> clickCallback)
         {
-            _toolbarMenu.AddItem(content, on, clickCallback.Invoke,userData);
+            _fileMenu.AddItem(content, on, clickCallback.Invoke,userData);
         }
 
-        private void _saveAsJson()
-        {
-            var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "Json");
-            
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                return;
-            }
-            
-            Dictionary<string,object> map = new Dictionary<string, object>();
-
-            map.Add("Type", target.GetType().AssemblyQualifiedName);
-            map.Add("Name", target.name);
-            
-            var nodes = new List<Dictionary<string,object>>();
-            map.Add("Nodes",nodes);
-            Dictionary<Node,int> _nodeRefMap = new Dictionary<Node, int>();
-
-            foreach (var node in target.nodes)
-            {
-                var nMap = new Dictionary<string, object>();
-                nodes.Add(nMap);
-                _nodeRefMap.Add(node, nodes.Count - 1);
-            }
-            
-            var ports = new List<Dictionary<string,object>>();
-            map.Add("NodePorts", ports);
-            Dictionary<NodePort,int> _nodePortRefMap = new Dictionary<NodePort, int>();
-
-            foreach (var node in target.nodes)
-            {
-                foreach (var nodePort in node.Ports)
-                {
-                    var portMap = new Dictionary<string,object>();
-                    ports.Add(portMap);
-                    _nodePortRefMap.Add(nodePort, ports.Count -1);
-                    
-                    var fields = nodePort.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    
-                    var result = fields
-                            .Where(x => x.GetCustomAttribute<NonSerializedAttribute>() == null)
-                            .Where(x=>  x.IsPublic || x.IsPrivate && x.GetCustomAttribute<SerializeField>() != null)
-                            .Where(x=> x.Name != NodePort.ConnectionsEditor)
-                        ;
-                    
-                    foreach (var field in result)
-                    {
-                        var value = field.GetValue(nodePort);
-                        
-                        if (typeof(Node).IsAssignableFrom(field.FieldType))
-                        {
-                            portMap.Add(field.Name, _nodeRefMap[(Node) value]);                          
-                        }
-                        else
-                        {
-                            portMap.Add(field.Name, value);
-                        }
-                    }
-                }
-            }
-
-            foreach (var node in target.nodes)
-            {
-                var nMap = nodes[_nodeRefMap[node]];
- 
-                var type = node.GetType();
-                
-                nMap.Add("Type", type.AssemblyQualifiedName);
-
-                var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-                var result = fields
-                    .Where(x => x.GetCustomAttribute<NonSerializedAttribute>() == null)
-                    .Where(x=>  x.IsPublic || x.IsPrivate && x.GetCustomAttribute<SerializeField>() != null)
-                    .Where(x=> x.Name != nameof(Node.graph) && x.Name != Node.PortFieldName)
-                    ;
-                
-                foreach (var field in result)
-                {
-                    var value = field.GetValue(node);
-                    
-                    if (typeof(Object).IsAssignableFrom(field.FieldType))
-                    {
-                        var assetPath = Setting.AssetProcessorType.GetPath((Object) value);
-                        
-                        nMap.Add(field.Name,assetPath);
-                    }
-                    else
-                    {
-                        nMap.Add(field.Name, value);
-                    }
-                }
-                
-                //port
-                Dictionary<string, Dictionary<string,object>> portsMap = new Dictionary<string, Dictionary<string, object>>();
-                nMap.Add("Ports",portsMap);
-                
-                foreach (var nodePort in node.Ports)
-                {
-                    var portMap = new Dictionary<string,object>();
-                    
-                    portsMap.Add(nodePort.fieldName,portMap);
-                    
-                    portMap.Add("Port", _nodePortRefMap[nodePort]);
-                    
-                    var connects = new List<int>();
-                    
-                    portMap.Add(NodePort.ConnectionsEditor, connects);
-                    
-                    for (var i = 0; i < nodePort.ConnectionCount; i++)
-                    {
-                        var connect = nodePort.GetConnection(i);
-                        connects.Add(_nodePortRefMap[connect]);
-                    }
-                }
-            }
-
-            var json = JsonConvert.SerializeObject(map, new UnityValueTypeConverter());
-            
-            File.WriteAllText(path,json);
-
-            if (path.IndexOf(Application.dataPath, StringComparison.Ordinal) != -1)
-            {
-                AssetDatabase.Refresh();
-            }
-        }
-        
         private void _saveAsBinary()
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "bin");
-        }
-
-        private void _readJson()
-        {
-            
         }
 
         //todo 先用它的这样的写法吧,后续改为在Node自定义编辑中处理
@@ -309,7 +178,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 .Where(x => typeof(ISaveAsAssetProcessor).IsAssignableFrom(x))
                 .Where(x => !x.IsAbstract)
                 .Where(x => !x.IsInterface);
-Debug.LogError(temp.Count());
+
             var count = temp.Count();
             _assetProcessorAqNames = new string[count];
             _assetProcessorNames = new string[count];
@@ -365,7 +234,7 @@ Debug.LogError(temp.Count());
                 {
                     return new IcSkillSystemSetting()
                     {
-                        processorAqName = typeof(DefaultSaveAsAssetProcessor).AssemblyQualifiedName
+                        processorAqName = typeof(DefaultAssetProcessor).AssemblyQualifiedName
                     };
                 }
 
