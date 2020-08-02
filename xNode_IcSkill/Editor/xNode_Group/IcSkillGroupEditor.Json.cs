@@ -22,7 +22,14 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
     public partial class IcSkillGroupEditor
     {
-         private void _saveAsJson()
+        private const string NodeTypesKey = "NodeTypes";
+        private const string NodePortsKey = "NodePorts";
+        private const string NodesKey = "Nodes";
+        private const string TypeKey = "Type";
+        private const string NameKey = "Name";
+        private const string PortsKey = "Ports";
+
+        private void _saveAsJson()
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "Json");
             
@@ -35,10 +42,10 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             
             Dictionary<Type,int> nodeTypeRefMap = new Dictionary<Type, int>();
             List<string> nodeTypes = new List<string>();
-            map.Add("NodeTypes", nodeTypes);
+            map.Add(NodeTypesKey, nodeTypes);
             
             var ports = new List<string>();
-            map.Add("NodePorts", ports);
+            map.Add(NodePortsKey, ports);
 
             foreach (var node in target.nodes)
             {
@@ -54,7 +61,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
             
             var nodes = new List<Dictionary<string,object>>();
-            map.Add("Nodes",nodes);
+            map.Add(NodesKey,nodes);
             Dictionary<Node,int> nodeRefMap = new Dictionary<Node, int>();
 
             foreach (var node in target.nodes)
@@ -81,11 +88,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
  
                 var type = node.GetType();
                 
-                nMap.Add("Type", nodeTypeRefMap[type]);
+                nMap.Add(TypeKey, nodeTypeRefMap[type]);
 
                 if (node.name != NodeEditorUtilities.NodeDefaultName(type))
                 {
-                    nMap.Add("Name", node.name);
+                    nMap.Add(NameKey, node.name);
                 }
                 
                 var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -119,7 +126,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 
                 //port
                 Dictionary<string, Dictionary<string,object>> portsMap = new Dictionary<string, Dictionary<string, object>>();
-                nMap.Add("Ports",portsMap);
+                nMap.Add(PortsKey,portsMap);
                 
                 foreach (var nodePort in node.Ports)
                 {
@@ -189,20 +196,20 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
             AssetDatabase.CreateAsset(graph, saveFilePath.Replace(Application.dataPath, "Assets"));
             
-            var nodeTypes = (map["NodeTypes"] as JArray).Values<string>().ToArray();
-            var nodesJ = (map["Nodes"] as JArray);
+            var nodeTypes = (map[NodeTypesKey] as JArray).Values<string>().ToArray();
+            var nodesJ = (map[NodesKey] as JArray);
             Dictionary<string, object>[] nodes = nodesJ.ToObject<Dictionary<string, object>[]>();
-            var nodePorts = (map["NodePorts"] as JArray).Values<string>().ToArray();
+            var nodePorts = (map[NodePortsKey] as JArray).Values<string>().ToArray();
 
             var ser = JsonSerializer.CreateDefault();
             ser.Converters.Add(new UnityValueTypeConverter());
             foreach (var nodeMap in nodes)
             {
-                var type = nodeTypes[(long) nodeMap["Type"]];
+                var type = nodeTypes[(long) nodeMap[TypeKey]];
                 var nodeType = Type.GetType(type);
                 var node = graph.AddNode(nodeType);
                 
-                if (!nodeMap.TryGetValue("Name",out var na))
+                if (!nodeMap.TryGetValue(NameKey,out var na))
                 {
                     na = NodeEditorUtilities.NodeDefaultName(nodeType);
                 }
@@ -211,7 +218,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 AssetDatabase.AddObjectToAsset(node, graph);
                 foreach (var field in nodeMap)
                 {
-                    if (field.Key == "Ports" || field.Key == "Type" || field.Key == "Name")
+                    if (field.Key == PortsKey || field.Key == TypeKey || field.Key == NameKey)
                     {
                         continue;
                     }
@@ -256,7 +263,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 {
                     var node = graph.nodes[index];
                    
-                    if (nodeMap.TryGetValue("Ports", out var result))
+                    if (nodeMap.TryGetValue(PortsKey, out var result))
                     {
                         var ports = (result as JObject).ToObject<Dictionary<string, Dictionary<string, object>>>();
 
