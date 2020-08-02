@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 {
-    class DefaultSaveAsAssetProcessor:ISaveAsAssetProcessor
+    class DefaultAssetProcessor:ISaveAsAssetProcessor
     {
         public string GetPath(Object obj)
         {
