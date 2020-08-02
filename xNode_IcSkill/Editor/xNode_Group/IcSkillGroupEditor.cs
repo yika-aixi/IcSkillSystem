@@ -79,7 +79,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             {
                 _onObjectSelectorClosed?.Invoke(EditorGUIUtility.GetObjectPickerObject());
             }
-            
+
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar,GUILayout.Width(window.position.width));
             {
                 var menu = new GUIContent("File");
