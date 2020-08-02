@@ -11,31 +11,10 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
     public partial class IcSkillGroupEditor
     {
-        private async void _openGraph()
+        private void _openGraph()
         {
             _onObjectSelectorClosed += _openGraph;
             EditorGUIUtility.ShowObjectPicker<IcSkillGraph>(null, false,string.Empty,0);
-            
-            // var path = EditorUtility.OpenFilePanel("Graph select", Application.dataPath, "assets");
-            //
-            // if (string.IsNullOrWhiteSpace(path))
-            // {
-            //     return;
-            // }
-            //
-            // if (path.IndexOf(Application.dataPath, StringComparison.Ordinal) == -1)
-            // {
-            //     EditorUtility.DisplayDialog("Error", "graph asset path need is project path", "ok");
-            //     return;
-            // }
-            //
-            // var asset = AssetDatabase.LoadAssetAtPath<IcSkillGraph>(path.Replace(Application.dataPath, "Assets"));
-            //
-            // if (!asset)
-            // {
-            //     EditorUtility.DisplayDialog("Error", "asset not is graph asset", "ok");
-            //     return;
-            // }
         }
 
         private void _openGraph(Object obj)
