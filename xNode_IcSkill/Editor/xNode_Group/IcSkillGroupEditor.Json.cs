@@ -22,6 +22,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
     public partial class IcSkillGroupEditor
     {
+        private const string JsonVerKey = "Ver";
         private const string NodeTypesKey = "NodeTypes";
         private const string NodePortsKey = "NodePorts";
         private const string NodesKey = "Nodes";
@@ -29,6 +30,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private const string NameKey = "Name";
         private const string PortsKey = "Ports";
 
+        private const string JsonVer = "1";
         private void _saveAsJson()
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "Json");
@@ -39,6 +41,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
             
             Dictionary<string,object> map = new Dictionary<string, object>();
+            
+            map.Add(JsonVerKey,JsonVer);
             
             Dictionary<Type,int> nodeTypeRefMap = new Dictionary<Type, int>();
             List<string> nodeTypes = new List<string>();
@@ -191,6 +195,24 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
 
             var map = JsonConvert.DeserializeObject<Dictionary<string,object>>(File.ReadAllText(jsonPath), new UnityValueTypeConverter());
+
+            if (map.TryGetValue(JsonVerKey,out var ver))
+            {
+                if (ver.ToString() != JsonVer)
+                {
+                    EditorUtility.DisplayDialog("Error",
+                        $"Json Version Does not match, the current version is {JsonVer}, and the read file version is {map[JsonVerKey]}","ok");
+                    
+                    return;
+                }
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Error",
+                    $"Unknown json","ok");
+                return;
+            }
+            
             
             IcSkillGraph graph = ScriptableObject.CreateInstance<IcSkillGraph>();
 
