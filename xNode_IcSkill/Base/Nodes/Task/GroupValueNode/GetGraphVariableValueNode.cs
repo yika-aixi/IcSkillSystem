@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks.GroupValueNode
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Group variable/Get")]
-    public class GetGroupVariableValueNode:DynamicValueNode
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Graph variable/Get")]
+    public class GetGraphVariableValueNode:DynamicValueNode
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private string _key;
