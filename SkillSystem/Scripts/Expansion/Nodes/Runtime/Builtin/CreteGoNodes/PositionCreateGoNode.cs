@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         //基于自身坐标
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
-        private IcVariableBoolean _basedOnItselfPos = (IcVariableBoolean) true;
+        private IcVariableBoolean _basedOnItselfPos = new IcVariableBoolean {Value = true};
         
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
