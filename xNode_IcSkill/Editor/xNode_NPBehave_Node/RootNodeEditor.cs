@@ -15,18 +15,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         private RootNode rootNode;
         private SerializedProperty _autoStartSer;
         private SerializedProperty _prioritySer;
-//
-//        public override Color GetTint()
-//        {
-//            _check();
-//            
-//            if (!rootNode.GetPort("_mainNode").IsConnected)
-//            {
-//                return new Color(205 / 255f,20 / 255f,25 / 255f);
-//            }            
-//            
-//            return new Color(30 / 255f,147 / 255f,65 / 255f);
-//        }
 
         protected override void ColorCheck()
         {
@@ -78,7 +66,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     _autoStartSer = serializedObject.FindProperty(nameof(RootNode.AutoStart));
                 }
 
-                var isFirstRoot = rootNode.graph.nodes[0] == rootNode;
+                var isFirstRoot = rootNode.graph.nodes[rootNode.graph.nodes.Count-1] == rootNode;
                 GUI.enabled = !isFirstRoot;
                 {
                     _autoStartSer.boolValue = EditorGUILayout.ToggleLeft(new GUIContent("Group Start Auto Start",isFirstRoot ? "First Root Node Must be auto Start":""),
@@ -133,20 +121,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 if (a is RootNode aRoot
                     && b is RootNode bRoot)
                 {
-                    return aRoot.Priority.CompareTo(bRoot.Priority);
+                    return -aRoot.Priority.CompareTo(bRoot.Priority);
                 }
             
                 if (a is RootNode)
                 {
-                    return -1;
+                    return 1;
                 }
             
                 if (b is RootNode)
                 {
-                    return 1;
+                    return -1;
                 }
             
-                return 1;
+                return -1;
             });
         }
 
