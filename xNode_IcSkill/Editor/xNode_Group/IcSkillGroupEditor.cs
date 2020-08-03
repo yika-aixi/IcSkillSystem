@@ -7,16 +7,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using CabinIcarus.EditorFrame.Expansion.NewtonsoftJson;
 using CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
-using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 using XNode;
@@ -60,11 +57,17 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 _fileMenu = new GenericMenu();
             }
             
+            AddFileMenuItem(new GUIContent("New Graph"), false, _createGraph);
+            
             AddFileMenuItem(new GUIContent("Open Graph"), false, _openGraph);            
 
             AddFileMenuItem(new GUIContent("Save as/Json"), false, _saveAsJson);
             AddFileMenuItem(new GUIContent("Read/Json"), false, _readJson);
+            
+            AddFileMenuItem(new GUIContent("Backup"), false, _backup);
+            
             // AddMenuItem(new GUIContent("Save as/Binary"), false, _saveAsBinary);
+            _backupStart();
         }
 
         private GenericMenu _fileMenu;
@@ -84,15 +87,28 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             {
                 var menu = new GUIContent("File");
                 var size = EditorStyles.toolbarButton.CalcSize(menu);
-                if (GUILayout.Button(menu, EditorStyles.toolbarButton,GUILayout.Width(size.x)))
+                EditorGUILayout.BeginHorizontal();
                 {
-                    _last.position += new Vector2(0,20);
-                    _fileMenu.DropDown(_last);
-                }
+                    if (GUILayout.Button(menu, EditorStyles.toolbarButton, GUILayout.Width(size.x)))
+                    {
+                        _last.position += new Vector2(0, 20);
+                        _fileMenu.DropDown(_last);
+                    }
 
-                _last = GUILayoutUtility.GetLastRect();
+                    _last = GUILayoutUtility.GetLastRect();   
+                }
+                EditorGUILayout.EndHorizontal();
+
+                if (GUILayout.Button(new GUIContent((Texture) EditorGUIUtility.Load("aimconstraint icon"),"Positioning to Graph"),EditorStyles.toolbarButton, GUILayout.Height(size.y),GUILayout.Width(32)))
+                {
+                    Selection.activeObject = target;
+                }
             }
             EditorGUILayout.EndHorizontal();
+            
+            _backupHandle();
+            
+            window.Repaint();
         }
 
         public void AddFileMenuItem(GUIContent content, bool on, Action clickCallback)
@@ -225,6 +241,32 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 }
             }
 
+            public double SaveTime => Math.Max(saveTime,1);
+
+            public string SaveFolder
+            {
+                get
+                {
+                    if (string.IsNullOrWhiteSpace(saveFolder))
+                    {
+                        saveFolder = $"{Application.dataPath.Replace("Assets", "IcSkillBackups")}";
+                    }
+
+                    if (!Directory.Exists(saveFolder))
+                    {
+                        Directory.CreateDirectory(saveFolder);
+                    }
+                    
+                    return saveFolder;
+                }
+            }
+
+            [SerializeField]
+            internal double saveTime;
+
+            [SerializeField] 
+            internal string saveFolder;
+
             private IcSkillSystemSetting()
             {
             }
@@ -282,6 +324,52 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             {
                 Setting.processorAqName = _assetProcessorAqNames[index];
                 Setting.Save();
+            }
+
+            EditorGUILayout.BeginVertical("box");
+            {
+                EditorGUI.BeginChangeCheck();
+                {
+                    Setting.saveTime = EditorGUILayout.DelayedDoubleField("Auto Save Time", Setting.SaveTime);
+                }
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Setting.Save();
+                }
+
+
+                EditorGUILayout.BeginHorizontal();
+                {
+                    GUILayout.Label("Save Folder");
+                    if (GUILayout.Button("Select"))
+                    {
+                        Setting.saveFolder = EditorUtility.OpenFolderPanel("Save Folder", Setting.SaveFolder, string.Empty);
+                        Setting.Save();
+                    }
+
+                    if (GUILayout.Button(Setting.SaveFolder,"Label"))
+                    {
+                        InternalOpenFolder(Setting.SaveFolder);
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+        }
+        
+        static void InternalOpenFolder(string folder)
+        {
+            folder = string.Format("\"{0}\"", folder);
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsEditor:
+                    Process.Start("Explorer.exe", folder.Replace('/', '\\'));
+                    break;
+                case RuntimePlatform.OSXEditor:
+                    Process.Start("open", folder);
+                    break;
+                default:
+                    throw new NotImplementedException(string.Format("Not support open folder on '{0}' platform.", Application.platform.ToString()));
             }
         }
     }
