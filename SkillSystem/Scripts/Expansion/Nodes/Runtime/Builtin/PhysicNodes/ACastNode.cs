@@ -117,16 +117,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             var result = _resultCount > 0;
             
             _time -= Time.deltaTime;
-
+            bool durEnd = false;
+            
             if (_time <= -1)
             {
-                result = false;
+                durEnd = false;
             }
             else if (_time <= 0)
             {
-                result = true;
+                durEnd = true;
             }
 
+            result |= durEnd;
+            
             if (result)
             {
                 _debugStop();
