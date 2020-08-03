@@ -44,43 +44,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
 #if UNITY_EDITOR
 
-        class DrawGizmosCom:MonoBehaviour
-        {
-            public System.Action OnDraw;
-            public bool IsOpen;
-            private int _showCount;
-            private float _minTime = 0.2f;
-            private float _curTime;
-            private void OnDrawGizmos()
-            {
-                if (IsOpen || _showCount == -1)
-                {
-                    OnDraw?.Invoke();
-
-                    if (_curTime > _minTime)
-                    {
-                        ++_showCount;
-                        _curTime = 0;
-                    }
-                    else
-                    {
-                        _curTime += Time.deltaTime;
-                    }
-                }
-            }
-
-            public void ShowDebug()
-            {
-                IsOpen = true;
-                _showCount = -1;
-            }
-
-            public void HideDebug()
-            {
-                IsOpen = false;
-            }
-        }
-        
         /// <summary>
         /// Only Editor
         /// </summary>
@@ -91,17 +54,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         /// </summary>
         public Color Color = Color.red;
 
-        private DrawGizmosCom _drawGizmosCom;
+        private DrawGizmosComponent _drawGizmosComponent;
 
         void _debugInit()
         {
-            if (_drawGizmosCom == null)
+            if (_drawGizmosComponent == null)
             {
                 GameObject go = new GameObject("Cast Node Debug");
                 go.transform.SetParent(Owner.transform);
-                _drawGizmosCom = go.AddComponent<DrawGizmosCom>();
-                _drawGizmosCom.OnDraw += () => { Gizmos.color = Color; };
-                _drawGizmosCom.OnDraw += OnDrawGizmos;
+                _drawGizmosComponent = go.AddComponent<DrawGizmosComponent>();
+                _drawGizmosComponent.OnDraw += () => { Gizmos.color = Color; };
+                _drawGizmosComponent.OnDraw += OnDrawGizmos;
             }
         }
 #endif
@@ -113,7 +76,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             {
                 return;
             }
-            _drawGizmosCom.ShowDebug();
+            _drawGizmosComponent.ShowDebug();
 #endif
         }
 
@@ -125,7 +88,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             {
                 return;
             }
-            _drawGizmosCom.HideDebug();
+            _drawGizmosComponent.HideDebug();
 #endif
         }
 
@@ -220,7 +183,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         protected Vector3 Point => GetInputValue(nameof(_point), _point);
 
-        protected bool PointIsInput => GetPort(nameof(_point)).IsInput;
+        protected bool PointIsInput => GetPort(nameof(_point)).IsConnected;
         
         protected Vector3 Offset => GetInputValue(nameof(_offset), _offset);
     }
