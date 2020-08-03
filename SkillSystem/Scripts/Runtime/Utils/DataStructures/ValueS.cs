@@ -21,7 +21,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         [SerializeField] private Object _uValue;
         public bool IsArray;
 
-        public bool IsUValue => ValueType.IsAssignableFrom(typeof(Object));
+        public bool IsUValue => typeof(Object).IsAssignableFrom(ValueType);
         
         private AValueInfo _value;
 
@@ -123,12 +123,18 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                 _valueStr = string.Empty;
                 return;
             }
-
+            
             var type = value.GetType();
             
             if (ValueType != type)
             {
                 ValueType = type;
+            }
+
+            if (IsUValue)
+            {
+                SetUnityValue((Object)(object)value);
+                return;
             }
 
             if (_value == null)
