@@ -33,8 +33,10 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private const string TypeKey = "Type";
         private const string NameKey = "Name";
         private const string PortsKey = "Ports";
-
-        private const string JsonVer = "2";
+        private const string GraphVarsKey = "GraphVars";
+        private const string GraphVarTypesKey = "GraphVarTypes";
+        private const char GraphVarsUnityObjectTag = '&';
+        private const string JsonVer = "2.1";
         private void _saveAsJson()
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "Json");
@@ -89,6 +91,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             
             Dictionary<Object, int> unityObjectRef = new Dictionary<Object, int>();
             List<string> unityObjects = null;
+            var skG = (IcSkillGraph) target;
 
             {
                 foreach (var node in target.nodes)
@@ -126,12 +129,100 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                             unityObjects.Add(assetPath);
                             
                             unityObjectRef.Add((Object) value, unityObjects.Count -1);
-                            
                         }
+                    }
+                }
+                
+                foreach (var var in skG.VariableMap)
+                {
+                    if (var.Value.IsUValue)
+                    {
+                        var uValue = var.Value.GetUnityValue();
+                        
+                        if (uValue == null || unityObjectRef.ContainsKey(uValue))
+                        {
+                            continue;
+                        }
+                            
+                        var assetPath = Setting.AssetProcessorType.GetPath(uValue);
+
+                        if (unityObjects == null)
+                        {
+                            unityObjects = new List<string>();
+                            map.Add(UnityObjectsKey, unityObjects);
+                        }
+                            
+                        unityObjects.Add(assetPath);
+                            
+                        unityObjectRef.Add(uValue, unityObjects.Count -1);
                     }
                 }
             }
 
+            if (skG.VariableMap.Count > 0)
+            {
+                List<string> graphVarTypes = null;
+                Dictionary<Type,int> gTypeCache = new Dictionary<Type, int>();
+                
+                foreach (var var in skG.VariableMap)
+                {
+                    var valueType = var.Value.ValueType;
+
+                    if (valueType == null)
+                    {
+                        continue;
+                    }
+
+                    if (graphVarTypes == null)
+                    {
+                        graphVarTypes = new List<string>();
+                        map.Add(GraphVarTypesKey, graphVarTypes);
+                    }
+                    
+                    if (!graphVarTypes.Contains(valueType.AssemblyQualifiedName))
+                    {
+                        graphVarTypes.Add(valueType.AssemblyQualifiedName);
+                        gTypeCache.Add(valueType,graphVarTypes.Count - 1);
+                    }
+                }
+
+                if (graphVarTypes != null)
+                {
+                    Dictionary<string,object> graphVar = new Dictionary<string, object>();
+                    map.Add(GraphVarsKey, graphVar);
+
+                    foreach (var var in skG.VariableMap)
+                    {
+                        var valueType = var.Value.ValueType;
+
+                        if (valueType == null)
+                        {
+                            continue;
+                        }
+                        
+                        if (var.Value.IsUValue)
+                        {
+                            if (var.Value.GetUnityValue())
+                            {
+                                graphVar.Add(GraphVarsUnityObjectTag +var.Key, unityObjectRef[var.Value.GetUnityValue()]);
+                            }
+                        }
+                        else
+                        {
+                            /*
+                             * 0. Value type
+                             * 1. Value
+                             */
+                            graphVar.Add(var.Key, new[]
+                            {
+                                gTypeCache[valueType]
+                                ,
+                                var.Value.GetValueInfo().GetValue()
+                            });
+                        }
+                    }
+                }
+            }
 
             var nodes = new List<Dictionary<string,object>>();
             map.Add(NodesKey,nodes);
@@ -268,7 +359,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
             if (map.TryGetValue(JsonVerKey,out var ver))
             {
-                if (ver.ToString() != JsonVer)
+                var verStr = ver.ToString();
+                if (verStr != JsonVer || verStr != "2")
                 {
                     EditorUtility.DisplayDialog("Error",
                         $"Json Version Does not match, the current version is {JsonVer}, and the read file version is {map[JsonVerKey]}","ok");
@@ -406,8 +498,31 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
                     index++;
                 }
+                
+                Dictionary<string, object> graphVars;
+
+                if (map.TryGetValue(GraphVarsKey,out var vars))
+                {
+                    string[] gTypes = (map[GraphVarTypesKey] as JArray).ToObject<string[]>();
+                    
+                    graphVars = (vars as JObject).ToObject<Dictionary<string, object>>();
+                    
+                    foreach (var graphVar in graphVars)
+                    {
+                        if (graphVar.Key[0] == GraphVarsUnityObjectTag)
+                        {
+                            var objectPath = unityObjectPaths[(long)graphVar.Value];
+                            graph.SetOrAddVariable(graphVar.Key.Remove(0,1),Setting.AssetProcessorType.GetAsset(objectPath));
+                        }
+                        else
+                        {
+                            var type = Type.GetType(gTypes[(graphVar.Value as JArray)[0].Value<long>()]);
+                            
+                            graph.SetOrAddVariable(graphVar.Key, (graphVar.Value as JArray)[1].ToObject(type));
+                        }
+                    }
+                }
             }
-            
             
             AssetDatabase.Refresh();
         }
