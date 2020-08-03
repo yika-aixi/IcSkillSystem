@@ -1,5 +1,7 @@
 using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("CabinIcarus.IcSkillSystem.xNodeIc.Editor")]
 namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
     public abstract class AValueInfo
@@ -35,7 +37,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public static implicit operator ValueInfo<T>(T value)
         {
-            return new ValueInfo<T>(){Value = value};
+            return new ValueInfo<T> {Value = value};
         }
 
         internal override void SetValue(object value)
