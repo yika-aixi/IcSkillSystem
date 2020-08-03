@@ -23,7 +23,8 @@ namespace CabinIcarus.EditorFrame.Expansion.NewtonsoftJson
             typeof(Vector4),
             typeof(Rect),
             typeof(Vector2),
-            typeof(Color)
+            typeof(Color),
+            typeof(Quaternion)
         };
         
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
