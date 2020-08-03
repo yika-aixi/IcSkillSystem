@@ -162,5 +162,67 @@ namespace CabinIcarus.IcSkillSystem.Editor.Utils
 
             return assemblyPath;
         }
+
+        public static FieldInfo GetTypeField(this Type self, string fieldName,
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+        {
+            var type = self;
+
+            while (type != null)
+            {
+                var fs = type.GetField(fieldName,flags);
+
+                if (fs != null)
+                {
+                    return fs;
+                }
+
+                type = type.BaseType;
+            }
+
+            return null;
+        }
+
+        static FieldComparer _comparer = new FieldComparer();
+        public static FieldInfo[] GetTypeAllField(this Type self,BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+        {
+            List<FieldInfo> result = new List<FieldInfo>();
+            
+            var type = self;
+
+            while (type != null)
+            {
+                var fs = type.GetFields(flags);
+
+                result.AddRange(fs);
+
+                type = type.BaseType;
+            }
+            
+            return result.Distinct(new FieldComparer()).ToArray();
+        }
+
+        class FieldComparer:IEqualityComparer<FieldInfo>
+        {
+            public bool Equals(FieldInfo x, FieldInfo y)
+            {
+                if (ReferenceEquals(x, y)) return true;
+                
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                    return false;
+
+                if (x.Name == y.Name)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            public int GetHashCode(FieldInfo obj)
+            {
+                return obj.Name.GetHashCode();
+            }
+        }
     }
 }
