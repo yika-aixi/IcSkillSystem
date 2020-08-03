@@ -5,12 +5,12 @@ using XNode;
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Get")]
-    public class GetChildGroupNode:ANPBehaveNode<NPBehave.Node>
+    public class GetChildGraphNode:ANPBehaveNode<NPBehave.Node>
     {
         [SerializeField]
         private IcSkillGraph graph;
 
-        private ChildGroupNode _childGroupNode;
+        private ChildGraphNode _childGraphNode;
 
 #if UNITY_EDITOR
         public const string GroupFieldName = nameof(graph);
@@ -37,14 +37,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
             GetGroup();
 
-            _childGroupNode = _getChildGroupNode(_currentGraph);
+            _childGraphNode = _getChildGroupNode(_currentGraph);
 
-            if (!_childGroupNode)
+            if (!_childGraphNode)
             {
                 return null;
             }
 
-            _childGroupNode.GetChildGroupNode = this;
+            _childGraphNode.GetChildGraphNode = this;
             
             return _currentGraph.GetChildGroupNode((IcSkillGraph) ((Node) this).graph);
         }
@@ -54,14 +54,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             return _getChildGroupNode(GetGroup()).GetInputValue<object>(port.fieldName);
         }
 
-        private ChildGroupNode _childNode;
+        private ChildGraphNode _childNode;
         private IcSkillGraph _lastGraph;
         
-        ChildGroupNode _getChildGroupNode(IcSkillGraph skillGraph)
+        ChildGraphNode _getChildGroupNode(IcSkillGraph skillGraph)
         {
-            if (_childGroupNode)
+            if (_childGraphNode)
             {
-                return _childGroupNode;
+                return _childGraphNode;
             }
             
             if (!skillGraph)
@@ -76,7 +76,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             
             foreach (var node in skillGraph.nodes)
             {
-                if (node is ChildGroupNode childGroupNode)
+                if (node is ChildGraphNode childGroupNode)
                 {
                     _lastGraph = skillGraph;
                     _childNode = childGroupNode;

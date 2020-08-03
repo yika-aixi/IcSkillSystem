@@ -17,7 +17,7 @@ using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group
 {
-    [CreateAssetMenu(fileName = "New IcSkill Group",menuName = "CabinIcarus/IcSkillSystem/Group")]
+    [CreateAssetMenu(fileName = "New IcSkill Graph",menuName = "CabinIcarus/IcSkillSystem/Graph")]
     public class IcSkillGraph:NodeGraph
     {
         private static RoodNodeComparer _roodNodeComparer = new RoodNodeComparer();
@@ -46,9 +46,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
                 foreach (var node in nodes)
                 {
-                    if (node.GetType() == typeof(GetChildGroupNode))
+                    if (node.GetType() == typeof(GetChildGraphNode))
                     {
-                        var subNode = (GetChildGroupNode) node;
+                        var subNode = (GetChildGraphNode) node;
                         subNode.GetGroup().Owner = _owner;
                     }
                 }
@@ -280,7 +280,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             
             foreach (var node in nodes)
             {
-                if (node is ChildGroupNode childGroupNode)
+                if (node is ChildGraphNode childGroupNode)
                 {
                     main = childGroupNode.GetDefaultOutputValue();
                     break;

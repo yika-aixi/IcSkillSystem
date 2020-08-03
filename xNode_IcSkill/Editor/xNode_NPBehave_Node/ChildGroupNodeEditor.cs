@@ -15,10 +15,10 @@ using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [CustomNodeEditor(typeof(ChildGroupNode))]
+    [CustomNodeEditor(typeof(ChildGraphNode))]
     public class ChildGroupNodeEditor:NodeEditor 
     {
-        private ChildGroupNode rootNode;
+        private ChildGraphNode rootNode;
 
         public override Color GetTint()
         {
@@ -36,12 +36,12 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         {
             IcSkillGroupEditor.OnAllowCreate += (group,type) =>
             {
-                if (type != typeof(ChildGroupNode))
+                if (type != typeof(ChildGraphNode))
                 {
                     return true;
                 }
 
-                var result = group.nodes.Any(x => x is ChildGroupNode || x is RootNode);
+                var result = group.nodes.Any(x => x is ChildGraphNode || x is RootNode);
  
                 return !result;
             };
@@ -175,7 +175,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
                 foreach (var node in @group.nodes)
                 {
-                    if (node is GetChildGroupNode getChild)
+                    if (node is GetChildGraphNode getChild)
                     {
                         if (getChild.ChildGraph == window.graph)
                         {
@@ -211,7 +211,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             EditorGUILayout.BeginHorizontal();
             {
                 EditorGUILayout.LabelField(string.Empty,GUILayout.Width(GetWidth() / 2));
-                NodeEditorGUILayout.PortField(new GUIContent("Main Node"),target.GetPort(ChildGroupNode.MainNodeFieldName));
+                NodeEditorGUILayout.PortField(new GUIContent("Main Node"),target.GetPort(ChildGraphNode.MainNodeFieldName));
             }
             EditorGUILayout.EndHorizontal();
 
@@ -341,7 +341,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
         private void _check()
         {
-            if (rootNode == null) rootNode = target as ChildGroupNode;
+            if (rootNode == null) rootNode = target as ChildGraphNode;
         }
     }
 }

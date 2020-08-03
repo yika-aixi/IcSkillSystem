@@ -34,7 +34,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     return true;
                 }
 
-                var result = group.nodes.Any(x => x is ChildGroupNode);
+                var result = group.nodes.Any(x => x is ChildGraphNode);
  
                 return !result;
             };

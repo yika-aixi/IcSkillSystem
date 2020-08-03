@@ -10,10 +10,10 @@ using Node = XNode.Node;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    [CustomNodeEditor(typeof(GetChildGroupNode))]
+    [CustomNodeEditor(typeof(GetChildGraphNode))]
     public class GetChildGroupNodeEditor:NodeEditor 
     {
-        private ChildGroupNode rootNode;
+        private ChildGraphNode rootNode;
 
         private ReorderableList _dynamicOut;
         private ReorderableList _dynamicIn;
@@ -41,7 +41,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 {
                     if (_groupSer == null)
                     {
-                        _groupSer = serializedObject.FindProperty(GetChildGroupNode.GroupFieldName);
+                        _groupSer = serializedObject.FindProperty(GetChildGraphNode.GroupFieldName);
                     }
 
                     NodeEditorGUILayout.PropertyField(_groupSer,new GUIContent("Group"));
@@ -58,7 +58,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 NodeEditorGUILayout.DynamicPortList("out", typeof(object), serializedObject, NodePort.IO.Output,
                     Node.ConnectionType.Multiple, onCreation: _listSettingOutput);
                 
-                NodeEditorGUILayout.PortField(new GUIContent("Group Root"),target.GetPort(nameof(GetChildGroupNode.OutValue)));
+                NodeEditorGUILayout.PortField(new GUIContent("Group Root"),target.GetPort(nameof(GetChildGraphNode.OutValue)));
             }
             // Apply property modifications
             serializedObject.ApplyModifiedProperties();
@@ -81,7 +81,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 foreach (var port in thisPort)
                 {
                     // continue OutValue
-                    if (port.fieldName == nameof(GetChildGroupNode.OutValue))
+                    if (port.fieldName == nameof(GetChildGraphNode.OutValue))
                     {
                         continue;
                     }
@@ -96,7 +96,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 foreach (var port in childGroupNodePort)
                 {
                     // continue OutValue
-                    if (port.fieldName == nameof(GetChildGroupNode.OutValue))
+                    if (port.fieldName == nameof(GetChildGraphNode.OutValue))
                     {
                         continue;
                     }
@@ -122,7 +122,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             }
         }
 
-        ChildGroupNode _getChildGroupNode(IcSkillGraph skillGraph)
+        ChildGraphNode _getChildGroupNode(IcSkillGraph skillGraph)
         {
             if (!skillGraph)
             {
@@ -131,7 +131,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             
             foreach (var node in skillGraph.nodes)
             {
-                if (node is ChildGroupNode childGroupNode)
+                if (node is ChildGraphNode childGroupNode)
                 {
                     return childGroupNode;
                 }

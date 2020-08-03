@@ -2,8 +2,8 @@
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Main")]
-    public class ChildGroupNode:ANPBehaveNode<NPBehave.Node>
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGraph/Main")]
+    public class ChildGraphNode:ANPBehaveNode<NPBehave.Node>
     {
         [Input(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.Inherited)]
         private NPBehave.Node _main;
@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 #if UNITY_EDITOR
         public const string MainNodeFieldName = nameof(_main);
 #endif
-        internal GetChildGroupNode GetChildGroupNode;
+        internal GetChildGraphNode GetChildGraphNode;
         
         protected override NPBehave.Node CreateOutValue()
         {
@@ -22,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         
         protected override object GetPortValue(NodePort port)
         {
-            return GetChildGroupNode.GetInputValue<object>(port.fieldName);
+            return GetChildGraphNode.GetInputValue<object>(port.fieldName);
         }
     }
 }
