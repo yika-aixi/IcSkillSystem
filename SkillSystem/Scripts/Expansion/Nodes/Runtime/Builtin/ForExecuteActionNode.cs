@@ -61,6 +61,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             
             var enumerables = GetInputValue(nameof(_enumerables), _enumerables);
 
+            var count = GetInputValue(nameof(_count),_count);
+
             if (enumerables != null)
             {
                 var ator = enumerables.GetEnumerator();
@@ -72,20 +74,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                     action.Stop();
                 }
 
-                while (ator.MoveNext())
+                while (ator.MoveNext() && _indexValue < count)
                 {
                     _currentValue = ator.Current;
+                    
                     if (action.RootNode == null)
                     {
                         action.SetRoot(OutValue.RootNode);
                     }
+                    
                     action.Start();
-                    _indexValue.Value++;
 
-                    if (_indexValue >= _count-1)
-                    {
-                        break;
-                    }
+                    _indexValue.Value++;
                 }
             }
         }
