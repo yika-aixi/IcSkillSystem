@@ -9,7 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using CabinIcarus.EditorFrame.Expansion.NewtonsoftJson;
+using CabinIcarus.IcFrameWork.IcSkillSystem.SkillSystem.Scripts.Runtime.Utils;
+using CabinIcarus.IcSkillSystem.Editor.Utils;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
@@ -23,15 +26,15 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
     public partial class IcSkillGroupEditor
     {
         private const string JsonVerKey = "Ver";
-        private const char UnityObjectTag = '&';
         private const string NodeTypesKey = "NodeTypes";
         private const string NodePortsKey = "NodePorts";
         private const string NodesKey = "Nodes";
+        private const string UnityObjectsKey = "UnityObjects";
         private const string TypeKey = "Type";
         private const string NameKey = "Name";
         private const string PortsKey = "Ports";
 
-        private const string JsonVer = "1";
+        private const string JsonVer = "2";
         private void _saveAsJson()
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "Json");
@@ -57,7 +60,9 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             {
                 return;
             }
-            
+
+            FieldInfo[] fields;
+
             Dictionary<string,object> map = new Dictionary<string, object>();
             
             map.Add(JsonVerKey,JsonVer);
@@ -82,6 +87,52 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 }
             }
             
+            Dictionary<Object, int> unityObjectRef = new Dictionary<Object, int>();
+            List<string> unityObjects = null;
+
+            {
+                foreach (var node in target.nodes)
+                {
+                    var type = node.GetType();
+                    
+                    fields = type.GetTypeAllField();
+
+                    var result = fields
+                            .Where(x => x.GetCustomAttribute<NonSerializedAttribute>() == null)
+                            .Where(x =>  x.IsPublic || x.IsPrivate && x.GetCustomAttribute<SerializeField>() != null)
+                            .Where(x => x.Name != nameof(Node.graph) && x.Name != Node.PortFieldName &&
+                                        x.Name != nameof(RootNode.OutValue))
+                        ;
+
+                    foreach (var field in result)
+                    {
+                        var value = field.GetValue(node);
+
+                        if (typeof(Object).IsAssignableFrom(field.FieldType))
+                        {
+                            if (value == null || unityObjectRef.ContainsKey((Object) value))
+                            {
+                                continue;
+                            }
+                            
+                            var assetPath = Setting.AssetProcessorType.GetPath((Object) value);
+
+                            if (unityObjects == null)
+                            {
+                                unityObjects = new List<string>();
+                                map.Add(UnityObjectsKey, unityObjects);
+                            }
+                            
+                            unityObjects.Add(assetPath);
+                            
+                            unityObjectRef.Add((Object) value, unityObjects.Count -1);
+                            
+                        }
+                    }
+                }
+            }
+
+
             var nodes = new List<Dictionary<string,object>>();
             map.Add(NodesKey,nodes);
             Dictionary<Node,int> nodeRefMap = new Dictionary<Node, int>();
@@ -117,8 +168,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                     nMap.Add(NameKey, node.name);
                 }
                 
-                var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
+                fields = type.GetTypeAllField();
                 var result = fields
                     .Where(x => x.GetCustomAttribute<NonSerializedAttribute>() == null)
                     .Where(x=>  x.IsPublic || x.IsPrivate && x.GetCustomAttribute<SerializeField>() != null)
@@ -131,9 +181,12 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                     
                     if (typeof(Object).IsAssignableFrom(field.FieldType))
                     {
-                        var assetPath = Setting.AssetProcessorType.GetPath((Object) value);
+                        if (value == null)
+                        {
+                            continue;
+                        }
                         
-                        nMap.Add($"{UnityObjectTag}{field.Name}",assetPath);
+                        nMap.Add(field.Name, unityObjectRef[(Object) value]);
                     }
                     else
                     {
@@ -180,7 +233,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 }
             }
 
-            var json = JsonConvert.SerializeObject(map, new UnityValueTypeConverter());
+            var ser = new JsonSerializerSettings();
+            ser.Converters.Add(new UnityValueTypeConverter());
+            ser.Converters.Add(new IcVariableConverter());
+            
+            var json = JsonConvert.SerializeObject(map,Formatting.None, ser);
             
             File.WriteAllText(filePath,json);
         }
@@ -236,8 +293,17 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             Dictionary<string, object>[] nodes = nodesJ.ToObject<Dictionary<string, object>[]>();
             var nodePorts = (map[NodePortsKey] as JArray).Values<string>().ToArray();
 
+            string[] unityObjectPaths = null;
+
+            if (map.TryGetValue(UnityObjectsKey, out var pathResults))
+            {
+                unityObjectPaths = (pathResults as JArray).Values<string>().ToArray();
+            }
+
             var ser = JsonSerializer.CreateDefault();
             ser.Converters.Add(new UnityValueTypeConverter());
+            ser.Converters.Add(new IcVariableConverter());
+            
             foreach (var nodeMap in nodes)
             {
                 var type = nodeTypes[(long) nodeMap[TypeKey]];
@@ -261,12 +327,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
                     string fieldName = field.Key;
                     
-                    if (field.Key[0] == UnityObjectTag)
-                    {
-                        fieldName = fieldName.Remove(0, 1);
-                    }
-                    
-                    var fieldInfo = nodeType.GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    var fieldInfo = nodeType.GetTypeField(fieldName);
 
                     if (fieldInfo.FieldType.IsEnum)
                     {
@@ -295,14 +356,22 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                         continue;
                     }
 
-                    if (field.Key[0] == UnityObjectTag)
+                    if (typeof(AValueInfo).IsAssignableFrom(fieldInfo.FieldType))
                     {
-                        fieldInfo.SetValue(node, Setting.AssetProcessorType.GetAsset(field.Value.ToString()));
+                        var v = (AValueInfo) Activator.CreateInstance(fieldInfo.FieldType);
+                        v.SetValue(field.Value);
+                        
+                        fieldInfo.SetValue(node, v);
+                        continue;
                     }
-                    else
+
+                    if (typeof(Object).IsAssignableFrom(fieldInfo.FieldType))
                     {
-                        fieldInfo.SetValue(node, field.Value);
+                        fieldInfo.SetValue(node, Setting.AssetProcessorType.GetAsset(unityObjectPaths[(long)field.Value]));
+                        continue;
                     }
+                    
+                    fieldInfo.SetValue(node, field.Value);
                 }
             }
 
