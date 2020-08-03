@@ -17,7 +17,14 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks.GroupValueNode
         
         protected override object GetDynamicValue()
         {
-            return SkillGraph.GetVariableValue(GetInputValue(nameof(_key), _key)).GetValueInfo();
+            var valueS = SkillGraph.GetVariableValue(GetInputValue(nameof(_key), _key));
+
+            if (valueS.IsUValue)
+            {
+                return valueS.GetUnityValue();
+            }
+            
+            return valueS.GetValueInfo();
         }
     }
 }
