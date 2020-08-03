@@ -66,16 +66,22 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
         public void LoadGroup()
         {
             _init(this);
-            
-            foreach (var node in nodes)
+
+            for (var i = nodes.Count - 1; i >= 0; i--)
             {
+                var node = nodes[i];
                 if (node is RootNode rootNode)
                 {
                     rootNode.GetDefaultOutputValue();
                     _rootNodes.Add(rootNode);
+                    
+                    if (FirstRoot == null)
+                    {
+                        FirstRoot = rootNode.OutValue;
+                    }
                 }
             }
-            
+
             _rootNodes.Sort(_roodNodeComparer);
 
             _rootCount = _rootNodes.Count;
@@ -187,11 +193,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 if (root.AutoStart || i == 0)
                 {
                      root.OutValue.Start();
-
-                     if (FirstRoot == null)
-                     {
-                         FirstRoot = root.OutValue;
-                     }
                 }
             }
 
