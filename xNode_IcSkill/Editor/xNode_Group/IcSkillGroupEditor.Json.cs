@@ -23,6 +23,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
     public partial class IcSkillGroupEditor
     {
         private const string JsonVerKey = "Ver";
+        private const char UnityObjectTag = '&';
         private const string NodeTypesKey = "NodeTypes";
         private const string NodePortsKey = "NodePorts";
         private const string NodesKey = "Nodes";
@@ -34,8 +35,25 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private void _saveAsJson()
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "Json");
-            
+
             if (string.IsNullOrWhiteSpace(path))
+            {
+                return;
+            }
+            
+            _saveAsJson(path);
+            
+            if (path.IndexOf(Application.dataPath, StringComparison.Ordinal) != -1)
+            {
+                AssetDatabase.Refresh();
+            }
+            
+            InternalOpenFolder(Path.GetDirectoryName(path));
+        }
+        
+        private void _saveAsJson(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
             {
                 return;
             }
@@ -115,7 +133,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                     {
                         var assetPath = Setting.AssetProcessorType.GetPath((Object) value);
                         
-                        nMap.Add(field.Name,assetPath);
+                        nMap.Add($"{UnityObjectTag}{field.Name}",assetPath);
                     }
                     else
                     {
@@ -164,12 +182,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
             var json = JsonConvert.SerializeObject(map, new UnityValueTypeConverter());
             
-            File.WriteAllText(path,json);
-
-            if (path.IndexOf(Application.dataPath, StringComparison.Ordinal) != -1)
-            {
-                AssetDatabase.Refresh();
-            }
+            File.WriteAllText(filePath,json);
         }
         
         private void _readJson()
@@ -245,7 +258,15 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                         continue;
                     }
 
-                    var fieldInfo = nodeType.GetField(field.Key, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    string fieldName = field.Key;
+                    
+                    if (field.Key[0] == UnityObjectTag)
+                    {
+                        fieldName = fieldName.Remove(0, 1);
+                    }
+                    
+                    var fieldInfo = nodeType.GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                     if (fieldInfo.FieldType.IsEnum)
                     {
@@ -273,8 +294,15 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                         fieldInfo.SetValue(node, jObject.ToObject(fieldInfo.FieldType, ser));
                         continue;
                     }
-                    
-                    fieldInfo.SetValue(node,field.Value);
+
+                    if (field.Key[0] == UnityObjectTag)
+                    {
+                        fieldInfo.SetValue(node, Setting.AssetProcessorType.GetAsset(field.Value.ToString()));
+                    }
+                    else
+                    {
+                        fieldInfo.SetValue(node, field.Value);
+                    }
                 }
             }
 
