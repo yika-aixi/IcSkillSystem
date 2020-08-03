@@ -11,6 +11,24 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
     public partial class IcSkillGroupEditor
     {
+        private void _createGraph()
+        {
+            var targetPath = Application.dataPath.Replace("Assets", AssetDatabase.GetAssetPath(target));
+            var savePath = EditorUtility.SaveFilePanel("Save Path", targetPath,string.Empty, "asset");
+
+            if (string.IsNullOrWhiteSpace(savePath))
+            {
+                return;
+            }
+            
+            var graph = ScriptableObject.CreateInstance<IcSkillGraph>();
+            
+            AssetDatabase.CreateAsset(graph, savePath.Replace(Application.dataPath,"Assets"));
+            AssetDatabase.Refresh();
+
+            NodeEditorWindow.Open(graph);
+        }
+        
         private void _openGraph()
         {
             _onObjectSelectorClosed += _openGraph;
