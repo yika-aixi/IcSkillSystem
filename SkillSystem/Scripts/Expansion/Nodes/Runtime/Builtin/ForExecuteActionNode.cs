@@ -68,14 +68,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 var ator = enumerables.GetEnumerator();
 
                 _indexValue.Value = 0;
-
-                if (action.IsActive)
-                {
-                    action.Stop();
-                }
-
+                
                 while (ator.MoveNext() && _indexValue < count)
                 {
+                    if (!OutValue.RootNode.IsActive)
+                    {
+                        return;
+                    }
+                
+                    if (action.IsActive)
+                    {
+                        action.Stop();
+                    }
+                    
                     _currentValue = ator.Current;
                     
                     if (action.RootNode == null)
