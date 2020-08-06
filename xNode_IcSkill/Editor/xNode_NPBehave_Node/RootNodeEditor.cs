@@ -134,7 +134,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     return -1;
                 }
             
-                return -1;
+                return 0;
             });
         }
 
