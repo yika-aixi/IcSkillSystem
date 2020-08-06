@@ -1,17 +1,18 @@
 ﻿using System;
 using UnityEngine;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace %NAMESPACE%
 {
     [CreateNodeMenu("CabinIcarus/Nodes/%ASSEMBLY%/%NAME% Value")]
-    public partial class %NAME%ValueNode:ValueNode<IcVariable%NAME%>
+    public partial class %NAME%ValueNode:ValueNode<ValueInfo<%TYPE%>>
     {
         [SerializeField]
         private %TYPE% _value;
    
-        private IcVariable%NAME% _variableValue = new IcVariable%NAME%();
+        private ValueInfo<%TYPE%> _variableValue = new ValueInfo<%TYPE%>();
    
-        protected override IcVariable%NAME% GetTValue()
+        protected override ValueInfo<%TYPE%> GetTValue()
         {
             _variableValue.Value = _value;
             return _variableValue;

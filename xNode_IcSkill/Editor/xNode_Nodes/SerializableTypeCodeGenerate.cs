@@ -27,12 +27,12 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
 
         const string ValueNodeValueTypeTemplateName = "ValueNodeValueTypeTemplate.cs";
         
-        const string IcVariableTemplateTemplateName = "IcVariableTemplate.cs";
+        // const string IcVariableTemplateTemplateName = "IcVariableTemplate.cs";
         
         private static string _templateContent;
 
         private static string _valueTypeTemplateContent;
-        private static string _icVariableTemplateContent;
+        // private static string _icVariableTemplateContent;
         
         private static Dictionary<string,bool> _generateTypeAqNameMap;
         private static Dictionary<Type,bool> _generateTypeMap;
@@ -246,7 +246,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             
             _valueTypeTemplateContent = _loadTemple(ValueNodeValueTypeTemplateName);
 
-            _icVariableTemplateContent = _loadTemple(IcVariableTemplateTemplateName);
+            // _icVariableTemplateContent = _loadTemple(IcVariableTemplateTemplateName);
             
             if (_generateTypeMap == null)
             {
@@ -409,37 +409,37 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
                         _nodeClassNames.Add(className);
                         
                         //IcVariable
-                        {
-                            if (runtimeType.IsSubclassOf(typeof(ValueInfo<>)))
-                            {
-                                goto End;
-                            }
-
-                            dir = Path.Combine(GenerateSavePath, "IcVariables");
-                            dir = Path.Combine(dir, $"{namespaceRe}");
-
-                            fileName = $"IcVariable{typeName}.cs";
-                            fileName = _getNewName(fileName, runtimeType, _icVariableCSFileNames) + ".cs";
-
-                            path = Path.Combine(dir, fileName);
-                            
-                            if (_scriptAssetPathMap.ContainsKey(fileName))
-                            {
-                                path = _scriptAssetPathMap[fileName];
-                            }
-                            
-                            if (!_force)
-                            {
-                                if (File.Exists(path))
-                                {
-                                    goto End;
-                                }
-                            }
-
-                            className = _getNewName(typeName,runtimeType,_icVariableClassNames);
-                            content = _replaceContent(_icVariableTemplateContent, runtimeType, className, assemblyPath);
-                            _writeFile(dir, path, content);
-                        }
+                        // {
+                        //     if (runtimeType.IsSubclassOf(typeof(ValueInfo<>)))
+                        //     {
+                        //         goto End;
+                        //     }
+                        //
+                        //     dir = Path.Combine(GenerateSavePath, "IcVariables");
+                        //     dir = Path.Combine(dir, $"{namespaceRe}");
+                        //
+                        //     fileName = $"IcVariable{typeName}.cs";
+                        //     fileName = _getNewName(fileName, runtimeType, _icVariableCSFileNames) + ".cs";
+                        //
+                        //     path = Path.Combine(dir, fileName);
+                        //     
+                        //     if (_scriptAssetPathMap.ContainsKey(fileName))
+                        //     {
+                        //         path = _scriptAssetPathMap[fileName];
+                        //     }
+                        //     
+                        //     if (!_force)
+                        //     {
+                        //         if (File.Exists(path))
+                        //         {
+                        //             goto End;
+                        //         }
+                        //     }
+                        //
+                        //     className = _getNewName(typeName,runtimeType,_icVariableClassNames);
+                        //     content = _replaceContent(_icVariableTemplateContent, runtimeType, className, assemblyPath);
+                        //     _writeFile(dir, path, content);
+                        // }
                         
                         End: ;
                         _icVariableCSFileNames.Add(Path.GetFileNameWithoutExtension(fileName));
