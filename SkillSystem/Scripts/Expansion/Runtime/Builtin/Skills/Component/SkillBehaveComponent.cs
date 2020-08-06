@@ -29,6 +29,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
         
         private void Awake()
         {
+            if (!graph)
+            {
+                return;
+            }
+            
             _init();
         }
 

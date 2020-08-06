@@ -7,6 +7,7 @@
 
 using System;
 using CabinIcarus.OdinSerializer;
+using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 {
