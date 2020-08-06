@@ -6,6 +6,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 using Node = XNode.Node;
@@ -17,7 +18,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         //todo 需要editor 进行对应的显示/隐藏
         [Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [SerializeField]
-        private IcVariableBoolean _useHash;
+        private ValueInfo<bool> _useHash;
 
         [Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [SerializeField]
@@ -25,7 +26,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         [Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [SerializeField]
-        private IcVariableInt32 _hash;
+        private ValueInfo<int> _hash;
 
         protected bool UseHash => GetInputValue(nameof(_useHash),_useHash);
 

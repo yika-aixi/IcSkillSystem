@@ -1,4 +1,5 @@
 ﻿using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -7,7 +8,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     public class OverlapSphereNode:ACast3DNode<Collider>
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableSingle _radius;
+        private ValueInfo<float> _radius;
 
         protected override int OnCast()
         {

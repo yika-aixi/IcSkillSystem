@@ -10,10 +10,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     public abstract class ACastRaycastHit3DNode:ACast3DNode<RaycastHit>
     {
         [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        private IcVariableVector3 _direction;
+        private ValueInfo<Vector3> _direction;
         
         [SerializeField,Input(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        private IcVariableSingle _maxDistance;
+        private ValueInfo<float> _maxDistance;
 
         protected Vector3 Direction => GetInputValue(nameof(_direction), _direction);
 

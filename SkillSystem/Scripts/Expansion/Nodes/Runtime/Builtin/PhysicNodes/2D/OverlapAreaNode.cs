@@ -4,6 +4,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Nodes.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 using XNode;
 
@@ -13,7 +14,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     public class OverlapAreaNode:ACast2DNode<Collider2D>
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
-        private IcVariableVector2 _pointB;
+        private ValueInfo<Vector2> _pointB;
         
         protected override int OnCast()
         {

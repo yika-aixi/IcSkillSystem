@@ -7,6 +7,7 @@
 
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 using XNode;
@@ -21,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         [Input(ShowBackingValue.Always, ConnectionType.Override, TypeConstraint.Strict)] 
         [SerializeField]
-        private IcVariableQuaternion _quaternion;
+        private ValueInfo<Quaternion> _quaternion;
 
         [Output(ShowBackingValue.Always)]
         private GameObject _instantiates;

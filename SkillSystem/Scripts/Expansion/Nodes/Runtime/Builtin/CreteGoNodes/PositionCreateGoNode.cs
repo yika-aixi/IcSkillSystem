@@ -6,6 +6,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -16,11 +17,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         //基于自身坐标
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
-        private IcVariableBoolean _basedOnItselfPos = new IcVariableBoolean {Value = true};
+        private ValueInfo<bool> _basedOnItselfPos = true;
         
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [SerializeField]
-        private IcVariableVector3 _pos;
+        private ValueInfo<Vector3> _pos;
 
         protected override GameObject CreateGo()
         {

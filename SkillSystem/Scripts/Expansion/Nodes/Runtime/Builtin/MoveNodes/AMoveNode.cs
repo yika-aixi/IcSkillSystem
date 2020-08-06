@@ -1,9 +1,7 @@
 ﻿using CabinIcarus.IcSkillSystem.Nodes.Runtime;
-using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
-using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {

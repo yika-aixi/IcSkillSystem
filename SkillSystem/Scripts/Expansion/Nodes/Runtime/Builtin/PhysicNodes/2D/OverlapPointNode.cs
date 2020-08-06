@@ -5,6 +5,7 @@
 
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 using XNode;
 
@@ -15,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         [PortTooltip("no input use Owner Point")]
         [Input(ShowBackingValue.Always, ConnectionType.Override, TypeConstraint.Strict)]
-        private IcVariableVector2 _point;
+        private ValueInfo<Vector2> _point;
         
         protected override int OnCast()
         {

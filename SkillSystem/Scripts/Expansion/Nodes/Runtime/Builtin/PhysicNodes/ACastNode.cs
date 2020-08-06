@@ -26,15 +26,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         [PortTooltip("Follow owner")]
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableBoolean _followOwner;
+        private ValueInfo<bool> _followOwner;
 
         [PortTooltip("0 or less 0 is one Cast,less -1 Unlimited duration, else Every time Clock update Cast,Until the end of the duration")]
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableSingle _duration;
+        private ValueInfo<float> _duration;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         [Node.LabelAttribute("Layer Mask")]
-        private IcVariableLayerMask _mask;
+        private ValueInfo<LayerMask> _mask;
         
         protected LayerMask Mask => GetInputValue(nameof(_mask),_mask);
 
@@ -174,12 +174,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [PortTooltip("no input Point use")]
         [SerializeField,Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [Node.LabelAttribute("Owner Add Offset")]
-        private IcVariableVector3 _offset;
+        private ValueInfo<Vector3> _offset;
 
         [PortTooltip("no input use Owner")]
         [SerializeField,Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [Node.LabelAttribute("Designated point")]
-        private IcVariableVector3 _point;
+        private ValueInfo<Vector3> _point;
 
         private Vector3 _ownerPos;
         protected Vector3 Origin => _ownerPos + Offset;

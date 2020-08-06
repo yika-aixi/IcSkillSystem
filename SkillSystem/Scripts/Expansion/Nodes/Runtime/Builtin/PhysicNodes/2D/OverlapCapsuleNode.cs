@@ -4,6 +4,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Nodes.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 using XNode;
 
@@ -13,13 +14,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     public class OverlapCapsuleNode:ACast2DNode<Collider2D>
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableVector2 _size;
+        private ValueInfo<Vector2> _size;
 
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableCapsuleDirection2D _direction;
+        private ValueInfo<CapsuleDirection2D> _direction;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableSingle _angle;
+        private ValueInfo<float> _angle;
         
         protected override int OnCast()
         {

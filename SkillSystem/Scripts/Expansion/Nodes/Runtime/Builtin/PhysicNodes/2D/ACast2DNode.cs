@@ -4,6 +4,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Nodes.Runtime
 
 using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
+using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
@@ -14,10 +15,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         private bool _zIsY;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableSingle _minDepth;
+        private ValueInfo<float> _minDepth;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableSingle _maxDepth;
+        private ValueInfo<float> _maxDepth;
 
         protected float MinDepth => GetInputValue(nameof(_minDepth), _minDepth);
         

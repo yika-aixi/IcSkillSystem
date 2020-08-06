@@ -8,14 +8,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Move/Add Force")]
     public class AddForceNode : AMoveNode
     {
+        [SerializeField]
         [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private ValueInfo<Vector3> _forward;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableForceMode _mode;
+        private ValueInfo<ForceMode> _mode;
         
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
-        private IcVariableSingle _force;
+        private ValueInfo<float> _force;
         
         protected override Action.Result Move(Action.Request arg)
         {
@@ -25,7 +26,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             {
                 rigid.AddForce(GetInputValue(nameof(_forward),_forward).Value * GetInputValue(nameof(_force),_force),GetInputValue(nameof(_mode),_mode));
             }
-
+           
             return CompleteResult;
         }
     }
