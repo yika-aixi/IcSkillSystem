@@ -15,24 +15,29 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     public abstract class AAnimatorSetXXXNode:AAnimatorNode
     {
-        //todo 需要editor 进行对应的显示/隐藏
-        [Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        [SerializeField]
-        private ValueInfo<bool> _useHash;
+        private static FasterDictionary<string, int> _hashCache = new FasterDictionary<string, int>();
 
         [Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
         [SerializeField]
         private string _name;
 
-        [Node.InputAttribute(Node.ShowBackingValue.Always,Node.ConnectionType.Override,Node.TypeConstraint.Strict)]
-        [SerializeField]
-        private ValueInfo<int> _hash;
-
-        protected bool UseHash => GetInputValue(nameof(_useHash),_useHash);
-
         protected string Name => GetInputValue(nameof(_name), _name);
 
-        protected int Hash => GetInputValue(nameof(_hash), _hash);
+        protected int Hash
+        {
+            get
+            {
+                var key = Name;
+                
+                if (!_hashCache.TryGetValue(key,out var hash))
+                {
+                    hash = Animator.StringToHash(key);
+                    _hashCache.Add(key, hash);
+                }
+
+                return hash;
+            }
+        }
 
         protected override Task CreateAction()
         {
@@ -41,17 +46,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
         private void _setXxx()
         {
-            if (UseHash)
-            {
-                HashMode(Hash);
-            }
-            else
-            {
-                NameMode();
-            }
+            HashMode(Hash);
         }
-
-        protected abstract void NameMode();
 
         protected abstract void HashMode(in int hash);
     }

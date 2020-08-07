@@ -16,12 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Inherited)]
         private ValueInfo<bool> _value;
-        
-        protected override void NameMode()
-        {
-            Anim.SetBool(Name,GetInputValue(nameof(_value),_value));
-        }
-
+      
         protected override void HashMode(in int hash)
         {
             Anim.SetBool(hash,GetInputValue(nameof(_value),_value));

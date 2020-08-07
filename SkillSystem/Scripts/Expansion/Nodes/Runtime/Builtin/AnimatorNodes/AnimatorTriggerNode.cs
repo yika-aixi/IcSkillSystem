@@ -10,11 +10,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/Task/Actions/Animator/Trigger")]
     public class AnimatorTriggerNode:AAnimatorSetXXXNode
     {
-        protected override void NameMode()
-        {
-            Anim.SetTrigger(Name);
-        }
-
         protected override void HashMode(in int hash)
         {
             Anim.SetTrigger(hash);
