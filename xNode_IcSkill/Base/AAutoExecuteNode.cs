@@ -27,6 +27,11 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 
             if (Node != null)
             {
+#if UNITY_EDITOR
+                var debugger = SkillGraph.Owner.AddComponent<Debugger>();
+                debugger.BehaviorTree = Node;
+                debugger.Label = SkillGraph.name + " " + name.Replace("(Clone)",string.Empty);
+#endif
                 On_Init();
             }
             else

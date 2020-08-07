@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
-using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
