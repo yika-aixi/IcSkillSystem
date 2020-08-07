@@ -13,7 +13,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
             {
                 _value = CreateOutValue();
             }
-            
+
+#if UNITY_EDITOR
+            _value.Label = name.Replace("(Clone)", string.Empty);
+#endif
             return _value;
         }
         
