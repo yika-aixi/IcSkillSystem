@@ -22,10 +22,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 MinDepth, MaxDepth);
         }
 
+#if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
-            UnityEngine.Debug.Log("[2D Overlap Area Cast Node] Does not guarantee display accuracy");
             Gizmos.DrawGUITexture(new Rect(GetPoint(), GetInputValue(nameof(_pointB), _pointB)),  Texture2D.whiteTexture);
         }
+
+        public override void OnInit()
+        {
+            base.OnInit();
+
+            UnityEngine.Debug.Log("[2D Overlap Area Cast Node] Does not guarantee display accuracy");
+        }
+#endif
     }
 }

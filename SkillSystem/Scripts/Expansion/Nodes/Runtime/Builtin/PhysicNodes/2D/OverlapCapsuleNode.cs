@@ -34,7 +34,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         private Mesh _mesh;
         protected override void OnDrawGizmos()
         {
-            UnityEngine.Debug.Log("[2D Overlap Capsule Cast Node] Does not guarantee display accuracy");
             if (!_debugGO)
             {
                 _debugGO = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -55,6 +54,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             
             Gizmos.DrawMesh(_mesh, GetPoint(), Quaternion.AngleAxis(angle, Vector3.forward),
                 new Vector3(size.x,size.y,1));
+        }
+
+        public override void OnInit()
+        {
+            base.OnInit();
+            UnityEngine.Debug.Log("[2D Overlap Capsule Cast Node] Does not guarantee display accuracy");
         }
 #endif
     }
