@@ -76,6 +76,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Builtin.Skills.Component
             if (!debugger)
             {
                 debugger = gameObject.AddComponent<Debugger>();
+                debugger.Label = graph.name;
             }
 
             debugger.BehaviorTree = root;
