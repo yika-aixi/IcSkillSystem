@@ -3,9 +3,11 @@
 //2020-08-03 12:16
 //CabinIcarus.IcSkillSystem.xNodeIc.Editor
 
+using System;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
+using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 {
@@ -18,6 +20,12 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
 
             if (string.IsNullOrWhiteSpace(savePath))
             {
+                return;
+            }
+            
+            if (savePath.IndexOf(Application.dataPath, StringComparison.Ordinal) == -1)
+            {
+                EditorUtility.DisplayDialog("Error", "graph asset save path need is project path", "ok");
                 return;
             }
             
