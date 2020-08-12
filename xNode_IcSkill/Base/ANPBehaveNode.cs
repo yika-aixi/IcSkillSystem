@@ -16,6 +16,10 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 
 #if UNITY_EDITOR
             _value.Label = name.Replace("(Clone)", string.Empty);
+            if (_value.Label == _value.Name)
+            {
+                _value.Label = string.Empty;
+            }
 #endif
             return _value;
         }
