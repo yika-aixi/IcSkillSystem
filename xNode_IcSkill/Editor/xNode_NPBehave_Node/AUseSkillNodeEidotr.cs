@@ -29,11 +29,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return "_skillComponentAQName";
         }
 
-        protected override IEnumerable<NodePort> GetDynamicPort()
-        {
-            return TNode.DynamicInputs;
-        }
-
         protected override void Init()
         {
             base.Init();

@@ -27,7 +27,7 @@ namespace CabinIcarus.IcSkillSystem.Editor.xNode_Nodes
             }
             
             windowContent = new SimpleTypeSelectPopupWindow(true);
-            
+
             windowContent.OnChangeTypeSelect = type =>
             {
                 _valueOutPut.ValueType = type;

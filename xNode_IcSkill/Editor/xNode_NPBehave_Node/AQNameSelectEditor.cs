@@ -78,6 +78,11 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
         /// <returns></returns>
         protected abstract Type GetBaseType();
 
+        protected virtual bool ContainProperties()
+        {
+            return true;
+        }
+
         /// <summary>
         /// AQName 选择框
         /// </summary>
@@ -93,7 +98,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 
                 EditorGUILayout.LabelField(title,GUILayout.Width( titleSize.x));
 
-                float width = GetWidth() - titleSize.x - 30 - 35;
+                float width = GetWidth() - titleSize.x - 30 - 25;
                 
                 if (_typeSelectWindow != null)
                 {
@@ -112,12 +117,18 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                     EditorGUILayout.LabelField(new GUIContent($"No Impl.",$"No {GetBaseType()} Impl."),style:"popup",GUILayout.Width(width));
                 }
 
-                if (GUILayout.Button("-", GUILayout.Width(32)))
+                var defaultSize = EditorGUIUtility.GetIconSize();
+                EditorGUIUtility.SetIconSize(new Vector2(16,16));
                 {
-                    _aQNameProperty.stringValue = string.Empty;
-                    serializedObject.ApplyModifiedProperties();
-                    UpdateDynamicPort();
+                    if (GUILayout.Button(new GUIContent((Texture) EditorGUIUtility.Load("d_p4_deletedlocal")),
+                        GUILayout.Width(20)))
+                    {
+                        _aQNameProperty.stringValue = string.Empty;
+                        serializedObject.ApplyModifiedProperties();
+                        UpdateDynamicPort();
+                    }
                 }
+                EditorGUIUtility.SetIconSize(defaultSize);
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -132,7 +143,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 return;
             }
 
-            var dynamicPorts = GetDynamicPort();
+            var dynamicPorts = _getDynamicPort();
 
             if (dynamicPorts == null)
             {
@@ -147,11 +158,15 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
                 return;
             }
             
-            var fields = type.GetFields();
-            var properties = type.GetProperties();
             List<TypeInfo> memberInfos = new List<TypeInfo>();
+            var fields = type.GetFields();
             memberInfos.AddRange(fields.Select(x=> new TypeInfo(x.Name,x.FieldType)));
-            memberInfos.AddRange(properties.Where(x=>x.CanWrite).Select(x=> new TypeInfo(x.Name,x.PropertyType)));
+
+            if (ContainProperties())
+            {
+                var properties = type.GetProperties();
+                memberInfos.AddRange(properties.Where(x=>x.CanWrite).Select(x=> new TypeInfo(x.Name,x.PropertyType)));
+            }
 
             var ctros = type.GetConstructors();
             if (ctros.Length > 0)
@@ -176,9 +191,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             return xNodeExpansion.GetCtorParameterName(argName);
         }
 
-        protected virtual IEnumerable<NodePort> GetDynamicPort()
+        private IEnumerable<NodePort> _getDynamicPort()
         {
-            return null;
+            return TNode.DynamicInputs;
         }
 
         #region 动态节点更新

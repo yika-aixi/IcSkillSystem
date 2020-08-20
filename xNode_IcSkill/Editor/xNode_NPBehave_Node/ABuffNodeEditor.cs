@@ -34,11 +34,6 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 
             base.DrawBody();
         }
-        
-        protected override IEnumerable<NodePort> GetDynamicPort()
-        {
-            return TNode.DynamicInputs;
-        }
     }
     
     [CustomNodeEditor(typeof(AddOrRemoveBuffNode))]
