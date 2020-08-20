@@ -1,4 +1,5 @@
-﻿using NPBehave;
+﻿using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
+using NPBehave;
 using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
@@ -7,7 +8,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
     public class WaitNode_Seconds:ANPBehaveNode<Wait>
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)] 
-        private float _seconds;
+        private ValueInfo<float> _seconds;
 
         protected override Wait CreateOutValue()
         {
@@ -16,7 +17,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Tasks
 
         private float _getSeconds()
         {
-            return GetInputValue(nameof(_seconds),_seconds);
+            return GetInputValue(nameof(_seconds), _seconds);
         }
     }
 }
