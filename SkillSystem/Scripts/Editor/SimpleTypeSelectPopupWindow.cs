@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CabinIcarus.IcSkillSystem.Editor.Utils;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -18,13 +19,14 @@ namespace CabinIcarus.IcSkillSystem.Editor
                 Type = type;
             }
         }
-        private readonly IEnumerable<Type> types;
+        
+        public IEnumerable<Type> Types;
         
         public Action<Type> OnSelect;
 
         public TypeTreeView(IEnumerable<Type> types,TreeViewState state, MultiColumnHeader multiColumnHeader = null) : base(state, multiColumnHeader)
         {
-            this.types = types;
+            this.Types = types;
             this.useScrollView = true;
         }
         
@@ -71,7 +73,7 @@ namespace CabinIcarus.IcSkillSystem.Editor
 
             int id = 0;
             
-            foreach (var type in types)
+            foreach (var type in Types)
             {
                 var names = type.Assembly.GetName().Name.Split('.');
                 depth = 0;
@@ -148,10 +150,25 @@ namespace CabinIcarus.IcSkillSystem.Editor
             _tree.Reload();
         }
 
+        public bool ShowAbstractType;
+
+        public bool ShowInterfaceType;
+        
         public Type BaseType
         {
             get => _baseType;
-            set => _baseType = value;
+            set
+            {
+                _baseType = value;
+                
+                 var result = TypeUtil.GetRuntimeFilterTypes
+                    .Where(x=> _baseType.IsAssignableFrom(x) && (!ShowInterfaceType && !x.IsInterface) &&
+                               (!ShowAbstractType && !x.IsAbstract));
+                 
+                 _tree.Types = result;
+                 
+                 _tree.Reload();
+            }
         }
 
         public override void OnOpen()
