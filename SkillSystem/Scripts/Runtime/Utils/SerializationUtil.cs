@@ -20,7 +20,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
         public static T ToValue<T>(string str)
         {
-            return (T) ToValue(str, null);
+            return (T) ToValue(str, typeof(T));
         }
         
         public static string ToString(object value,Type type)
@@ -32,7 +32,19 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         public static object ToValue(string str,Type type)
         {
             var bs = Convert.FromBase64String(str);
-            return SerializationUtility.DeserializeValueWeak(bs,DataFormat.Binary);
+            var value = SerializationUtility.DeserializeValueWeak(bs,DataFormat.Binary);
+            
+            if (value is long || value is ulong)
+            {
+                return Convert.ChangeType(value, type);
+            }
+                    
+            if (value is double db)
+            {
+                return Convert.ChangeType(db, type);
+            }
+
+            return value;
         }
     }
 }
