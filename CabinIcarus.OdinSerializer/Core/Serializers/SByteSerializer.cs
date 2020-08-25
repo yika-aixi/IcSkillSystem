@@ -36,7 +36,7 @@ namespace CabinIcarus.OdinSerializer
             string name;
             var entry = reader.PeekEntry(out name);
 
-            if (entry == EntryType.SByte)
+            if (entry == EntryType.Integer)
             {
                 sbyte value;
                 if (reader.ReadSByte(out value) == false)

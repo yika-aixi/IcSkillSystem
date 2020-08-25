@@ -36,7 +36,7 @@ namespace CabinIcarus.OdinSerializer
             string name;
             var entry = reader.PeekEntry(out name);
 
-            if (entry == EntryType.ULong)
+            if (entry == EntryType.Integer)
             {
                 ulong value;
                 if (reader.ReadUInt64(out value) == false)

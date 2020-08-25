@@ -85,7 +85,7 @@ namespace CabinIcarus.OdinSerializer.Editor
                     else
                     {
                         // Just scan the asset
-                        this.ScanObject(assets[i]);
+                        this.ScanObject(asset);
                     }
                 }
             }
@@ -155,7 +155,7 @@ namespace CabinIcarus.OdinSerializer.Editor
                     return false;
                 }
 
-                var resourcesSet = new HashSet<UnityEngine.Object>();
+                var resourcesSet = new HashSet<UnityEngine.Object>(ReferenceEqualityComparer<UnityEngine.Object>.Default);
                 for (int i = 0; i < resourcesPaths.Count; i++)
                 {
                     var resourcesPath = resourcesPaths[i];
@@ -172,9 +172,20 @@ namespace CabinIcarus.OdinSerializer.Editor
 
                 for (int i = 0; i < resources.Length; i++)
                 {
-                    if (showProgressBar && DisplaySmartUpdatingCancellableProgressBar("Scanning resource " + i + " for AOT support", resources[i].name, (float)i / resources.Length))
+                    if (resources[i] == null) continue;
+
+                    try
                     {
-                        return false;
+                        if (showProgressBar && DisplaySmartUpdatingCancellableProgressBar("Scanning resource " + i + " for AOT support", resources[i].name, (float)i / resources.Length))
+                        {
+                            return false;
+                        }
+                    }
+                    catch (MissingReferenceException ex)
+                    {
+                        Debug.LogError("A resource threw a missing reference exception when scanning. Skipping resource and continuing scan.", resources[i]);
+                        Debug.LogException(ex, resources[i]);
+                        continue;
                     }
 
                     var assetPath = AssetDatabase.GetAssetPath(resources[i]);
@@ -404,6 +415,8 @@ namespace CabinIcarus.OdinSerializer.Editor
 
                 foreach (var asset in assets)
                 {
+                    if (asset == null) continue;
+
                     this.ScanObject(asset);
                 }
 
