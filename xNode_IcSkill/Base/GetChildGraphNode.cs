@@ -8,13 +8,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
     public class GetChildGraphNode:ANPBehaveNode<NPBehave.Node>
     {
         [SerializeField]
-        private IcSkillGraph graph;
+        private IcSkillGraph _graph;
 
         private ChildGraphNode _childGraphNode;
 
 #if UNITY_EDITOR
-        public const string GroupFieldName = nameof(graph);
-        public IcSkillGraph ChildGraph => graph;
+        public const string GroupFieldName = nameof(_graph);
+        public IcSkillGraph ChildGraph => _graph;
 #endif
 
         private IcSkillGraph _currentGraph;
@@ -22,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         {
             if (!_currentGraph)
             {
-                _currentGraph =  (IcSkillGraph) graph.Copy();
+                _currentGraph =  (IcSkillGraph) _graph.Copy();
             }
 
             return _currentGraph;
@@ -30,7 +30,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         
         protected override NPBehave.Node CreateOutValue()
         {
-            if (graph == null)
+            if (_graph == null)
             {
                 return null;
             }
