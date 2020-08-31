@@ -172,7 +172,15 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
             
             if (_value == null)
             {
-                _value = (AValueInfo) SerializationUtil.ToValue(_valueStr, _valueInfoType);
+                if (string.IsNullOrWhiteSpace(_valueStr))
+                {
+                    var vT = typeof(ValueInfo<>).MakeGenericType(ValueType);
+                    _value = (AValueInfo) Activator.CreateInstance(vT);
+                }
+                else
+                {
+                   _value = (AValueInfo) SerializationUtil.ToValue(_valueStr, _valueInfoType);
+                }
             }
 
             if (_value == null || _value.GetValue() == null)
