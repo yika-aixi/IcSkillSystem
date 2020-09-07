@@ -8,7 +8,6 @@
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
 using NPBehave;
 using UnityEngine;
-using Action = NPBehave.Action;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
@@ -16,10 +15,13 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         protected Animator Anim { get; private set; }
 
-        protected override Task CreateOutValue()
+        public override void OnSetOwner()
         {
             Anim = SkillGraph.Owner.GetComponent<Animator>();
-            
+        }
+
+        protected sealed override Task CreateOutValue()
+        {
             return CreateAction();
         }
 
