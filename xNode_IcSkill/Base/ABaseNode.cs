@@ -18,6 +18,10 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
         {
         }
 
+        public virtual void OnSetOwner()
+        {
+        }
+
         public virtual void OnStart()
         {
             

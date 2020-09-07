@@ -34,7 +34,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             {
                 if (!_owner)
                 {
-                    throw new NullReferenceException("no set Owner");
+                    throw new NullReferenceException($"no set Owner Graph:{name}");
                 }
 
                 return _owner;
@@ -50,6 +50,16 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                     {
                         var subNode = (GetChildGraphNode) node;
                         subNode.GetGroup().Owner = _owner;
+                    }
+                }
+
+                var count = nodes.Count;
+                for (var index = 0; index < count; index++)
+                {
+                    var node = nodes[index];
+                    if (node is IIcSkillSystemNode skillNode)
+                    {
+                        skillNode.OnSetOwner();
                     }
                 }
             }
