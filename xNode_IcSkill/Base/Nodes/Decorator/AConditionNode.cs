@@ -21,10 +21,20 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 
         protected sealed override Condition GetDecoratorNode()
         {
-            return new Condition(Condition,Stops,GetInputValue(nameof(_checkInterval),_checkInterval),
+            return new Condition(_condition,Stops,GetInputValue(nameof(_checkInterval),_checkInterval),
                 GetInputValue(nameof(_randomVariance),_randomVariance),DecorateeNode);
         }
 
+        bool _condition()
+        {
+            if (!SkillGraph.IsActive())
+            {
+                return true;
+            }
+            
+            return Condition();
+        }
+        
         protected abstract bool Condition();
     }
 }
