@@ -13,6 +13,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
 using XNode;
+using Exception = System.Exception;
 using Node = NPBehave.Node;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group
@@ -50,16 +51,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                     {
                         var subNode = (GetChildGraphNode) node;
                         subNode.GetGroup().Owner = _owner;
-                    }
-                }
-
-                var count = nodes.Count;
-                for (var index = 0; index < count; index++)
-                {
-                    var node = nodes[index];
-                    if (node is IIcSkillSystemNode skillNode)
-                    {
-                        skillNode.OnSetOwner();
                     }
                 }
             }
