@@ -15,8 +15,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
     {
         protected Animator Anim { get; private set; }
 
-        public override void OnSetOwner()
+        public override void OnStart()
         {
+            base.OnStart();
             Anim = SkillGraph.Owner.GetComponent<Animator>();
         }
 

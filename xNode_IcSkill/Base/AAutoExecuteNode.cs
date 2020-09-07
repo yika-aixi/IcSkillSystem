@@ -27,11 +27,6 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 
             if (Node != null)
             {
-#if UNITY_EDITOR
-                var debugger = SkillGraph.Owner.AddComponent<Debugger>();
-                debugger.BehaviorTree = Node;
-                debugger.Label = SkillGraph.name + " " + name.Replace("(Clone)",string.Empty);
-#endif
                 On_Init();
             }
             else
@@ -39,6 +34,26 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
                 throw new NullReferenceException("Node no input");
             }
         }
+
+#if UNITY_EDITOR
+        private Debugger _lastDebug;
+        public override void OnStart()
+        {
+            if (_lastDebug)
+            {
+                if (_lastDebug.gameObject == SkillGraph.Owner)
+                {
+                    return;
+                }
+                
+                Destroy(_lastDebug);
+            }
+            
+            var debugger = SkillGraph.Owner.AddComponent<Debugger>();
+            debugger.BehaviorTree = Node;
+            debugger.Label        = $"Auto Node [{SkillGraph.name + " " + name.Replace("(Clone)", string.Empty)}]";
+        }
+#endif
 
         protected virtual void On_Init()
         {
