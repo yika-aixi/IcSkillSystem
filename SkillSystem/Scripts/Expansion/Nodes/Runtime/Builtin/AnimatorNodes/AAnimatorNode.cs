@@ -6,6 +6,7 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Nodes.Runtime;
+using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
 using NPBehave;
 using UnityEngine;
 
@@ -13,13 +14,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 {
     public abstract class AAnimatorNode:ANPBehaveNode<Task>
     {
-        protected Animator Anim { get; private set; }
+        [PortTooltip("no input use Owner")]
+        [Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
+        private GameObject _target;
 
-        public override void OnStart()
-        {
-            base.OnStart();
-            Anim = SkillGraph.Owner.GetComponent<Animator>();
-        }
+        protected Animator Anim => GetInputValue(nameof(_target), SkillGraph.Owner).GetComponent<Animator>();
 
         protected sealed override Task CreateOutValue()
         {
