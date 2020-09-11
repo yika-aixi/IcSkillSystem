@@ -4,7 +4,7 @@ using XNode;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
 {
-    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGroup/Get")]
+    [CreateNodeMenu("CabinIcarus/IcSkillSystem/Behave Nodes/ChildGraph/Get")]
     public class GetChildGraphNode:ANPBehaveNode<NPBehave.Node>
     {
         [SerializeField]

@@ -146,7 +146,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             {
                 if (attrs[0] is PortTooltipAttribute tooltipAttribute)
                 {
-                    tooltip = string.IsNullOrEmpty(tooltipAttribute.Tooltip) ? tooltip : tooltipAttribute.Tooltip;
+                    tooltip = string.IsNullOrEmpty(tooltipAttribute.Tooltip) ? tooltip : tooltipAttribute.Tooltip +" "+ tooltip;
                 }
 
                 if (attrs[0] is PortTooltipMethodOrPropertyGetAttribute tooltipAttribute1)
