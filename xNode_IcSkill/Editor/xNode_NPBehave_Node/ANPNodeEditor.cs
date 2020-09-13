@@ -5,7 +5,7 @@ using XNodeEditor;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Editor
 {
-    public abstract class ANPNodeEditor<T,AT>:NodeEditor where T : ANPNode<AT>
+    public abstract class ANPNodeEditor<T,AT>:BaseNodeEditor where T : ANPNode<AT>
     {
         protected T TNode;
 
@@ -48,6 +48,13 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
             base.OnCreate();
             
             _check();
+
+            On_Create();
+        }
+
+        protected virtual void On_Create()
+        {
+            
         }
 
         public sealed override void OnInit()
