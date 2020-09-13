@@ -294,6 +294,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                 color.a         = 0.5f;
                 backgroundColor = color;
                 FontSize        = EditorStyles.label.fontSize;
+                Size = new Vector2(200,50);
             }
 
             internal void Draw()
