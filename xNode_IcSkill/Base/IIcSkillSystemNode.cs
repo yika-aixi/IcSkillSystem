@@ -1,4 +1,5 @@
-﻿using CabinIcarus.IcSkillSystem.xNode_Group;
+﻿using System.Collections.Generic;
+using CabinIcarus.IcSkillSystem.xNode_Group;
 
 namespace CabinIcarus.IcSkillSystem
 {
@@ -11,5 +12,7 @@ namespace CabinIcarus.IcSkillSystem
         void OnStart();
         
         void OnStop();
+
+        IEnumerable<string> GetPreloadAssets();
     }
 }

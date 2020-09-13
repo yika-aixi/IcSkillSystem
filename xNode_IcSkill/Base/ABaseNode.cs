@@ -3,7 +3,7 @@
 //2020-08-01 04:46
 //CabinIcarus.IcSkillSystem.xNodeIc.Base
 
-using System;
+using System.Collections.Generic;
 using CabinIcarus.IcSkillSystem;
 using CabinIcarus.IcSkillSystem.xNode_Group;
 using XNode;
@@ -29,6 +29,11 @@ namespace CabinIcarus.IcFrameWork.IcSkillSystem.xNode_IcSkill.Base
 
         protected sealed override void Init()
         {
+        }
+
+        public virtual IEnumerable<string> GetPreloadAssets()
+        {
+            return null;
         }
     }
 }

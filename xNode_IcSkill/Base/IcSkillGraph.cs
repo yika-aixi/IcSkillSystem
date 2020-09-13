@@ -55,6 +55,42 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 }
             }
         }
+
+        private List<string> _preloadAssets;
+
+        void _addPreLoadAssets(IIcSkillSystemNode node)
+        {
+            if (_preloadAssets == null)
+            {
+                _preloadAssets = new List<string>();
+            }
+            
+            _preloadAssets.Clear();
+
+            var assets = node.GetPreloadAssets();
+
+            if (assets != null)
+            {
+                _preloadAssets.AddRange(assets);
+            }
+        }
+        
+        public IEnumerable<string> GetGraphPreloadAssets()
+        {
+            var count = nodes.Count;
+            
+            for (var index = 0; index < count; index++)
+            {
+                var node = nodes[index];
+        
+                if (node is IIcSkillSystemNode skillNode)
+                {
+                    _addPreLoadAssets(skillNode);
+                }
+            }
+            
+            return _preloadAssets.Distinct();
+        }
         
         private List<RootNode> _rootNodes = new List<RootNode>();
 
