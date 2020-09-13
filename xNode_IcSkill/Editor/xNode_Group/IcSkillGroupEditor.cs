@@ -18,6 +18,7 @@ using UnityEditor;
 using UnityEngine;
 using XNode;
 using XNodeEditor;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
@@ -106,9 +107,65 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             }
             EditorGUILayout.EndHorizontal();
             
+            _drawNodeTooltip();
+
             _backupHandle();
             
             window.Repaint();
+        }
+
+        private Texture2D _tooltipTexture;
+        private GUIStyle  _tooltipStyle;
+        private void _drawNodeTooltip()
+        {
+            var selects = Selection.objects;
+
+            if (selects.Length == 0)
+            {
+                return;
+            }
+            
+            var node = selects[0];
+
+            var attr = node.GetType().GetCustomAttribute<NodeTooltipAttribute>();
+
+            if (attr == null)
+            {
+                return;
+            }
+
+            var windowPos = this.window.position;
+
+            var tooltipPos = windowPos;
+            tooltipPos.position = windowPos.size - Setting.NodeTooltipSetting.Size;
+            tooltipPos.size     = Setting.NodeTooltipSetting.Size;
+
+            if (!_tooltipTexture)
+            {
+                _tooltipTexture = new Texture2D(1,1);
+            }
+
+            var color = Setting.NodeTooltipSetting.backgroundColor;
+            
+            _tooltipTexture.SetPixel(1, 1, color);
+            
+            _tooltipTexture.Apply();
+            
+            if (_tooltipStyle == null)
+            {
+                _tooltipStyle          = new GUIStyle(EditorStyles.label);
+                _tooltipStyle.wordWrap = true;
+            }
+
+            _tooltipStyle.fontSize = Setting.NodeTooltipSetting.FontSize;
+            
+            GUI.DrawTexture(tooltipPos, _tooltipTexture);
+            GUI.BeginClip(tooltipPos);
+            {
+                GUILayout.Space(-20);
+                GUILayout.Label(attr.Tooltip, _tooltipStyle);
+            }
+            GUI.EndClip();
         }
 
         public void AddFileMenuItem(GUIContent content, bool on, Action clickCallback)
@@ -125,6 +182,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         {
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "bin");
         }
+        
+        
 
         //todo 先用它的这样的写法吧,后续改为在Node自定义编辑中处理
         public override string GetPortTooltip(NodePort port)
@@ -218,6 +277,51 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         }
 
         [Serializable]
+        public class NodeTooltipSetting
+        {
+            public Vector2 Size;
+
+            public int FontSize;
+
+            public Color backgroundColor;
+
+            [NonSerialized] 
+            private bool _exap;
+
+            public NodeTooltipSetting()
+            {
+                var color = Color.gray;
+                color.a         = 0.5f;
+                backgroundColor = color;
+                FontSize        = EditorStyles.label.fontSize;
+            }
+
+            internal void Draw()
+            {
+                EditorGUILayout.BeginVertical("box");
+                {
+                    _exap =
+                        EditorGUILayout.Foldout(_exap, "Node Tooltip Setting", true);
+
+                    if (Setting.NodeTooltipSetting._exap)
+                    {
+                        EditorGUI.BeginChangeCheck();
+                        {
+                            Size            = EditorGUILayout.Vector2Field("Size", Size);
+                            FontSize        = EditorGUILayout.IntField("Font Size", FontSize);
+                            backgroundColor = EditorGUILayout.ColorField("Background Color", backgroundColor);
+                        }
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            Setting.Save();
+                        }
+                    }
+                }
+                EditorGUILayout.EndVertical();
+            }
+        }
+        
+        [Serializable]
         public class IcSkillSystemSetting
         {
             private const string SettingKey = "IcSkillSystem.Setting";
@@ -260,6 +364,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                     return saveFolder;
                 }
             }
+
+            public NodeTooltipSetting NodeTooltipSetting;
 
             [SerializeField]
             internal double saveTime;
@@ -353,6 +459,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                     }
                 }
                 EditorGUILayout.EndHorizontal();
+
+                Setting.NodeTooltipSetting.Draw();
             }
             EditorGUILayout.EndVertical();
         }
