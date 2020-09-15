@@ -6,7 +6,6 @@
 //CabinIcarus.IcSkillSystem.Expansion.Runtime
 
 using CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes;
-using CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes;
 using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 using NPBehave;
 using UnityEngine;
@@ -35,14 +34,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             return GetInputValue(nameof(_time), _time);
         }
 
+        private float _startSpeed;
         private void _stop()
         {
-            Anim.enabled = false;
+            _startSpeed = Anim.speed;
+            Anim.speed  = 0;
         }
         
         private void _play()
         {
-            Anim.enabled = true;
+            Anim.speed   = _startSpeed;
         }
     }
 }
