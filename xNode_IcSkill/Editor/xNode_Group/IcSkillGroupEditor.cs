@@ -127,6 +127,11 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             
             var node = selects[0];
 
+            if (!node)
+            {
+                return;
+            }
+            
             var attr = node.GetType().GetCustomAttribute<NodeTooltipAttribute>();
 
             if (attr == null)
@@ -163,7 +168,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             GUI.BeginClip(tooltipPos);
             {
                 GUILayout.Space(-20);
-                GUILayout.Label(attr.Tooltip, _tooltipStyle);
+                EditorGUILayout.SelectableLabel(attr.Tooltip, _tooltipStyle);
             }
             GUI.EndClip();
         }
