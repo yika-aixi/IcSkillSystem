@@ -89,7 +89,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                 }
             }
             
-            return _preloadAssets.Distinct();
+            return _preloadAssets.Where(x=> !string.IsNullOrWhiteSpace(x)).Distinct();
         }
         
         private List<RootNode> _rootNodes = new List<RootNode>();
