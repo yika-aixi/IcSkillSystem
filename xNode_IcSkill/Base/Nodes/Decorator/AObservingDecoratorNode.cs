@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
-    public abstract class AObservingDecoratorNode<T>:ADecoratorNode<T> where T : Node
+    public abstract class AObservingDecoratorNode<T>:ADecoratorNode<T> where T : NPBehave.Decorator
     {
         [SerializeField,Input(ShowBackingValue.Always,ConnectionType.Override,TypeConstraint.Strict)]
         private ValueInfo<Stops> _stops;

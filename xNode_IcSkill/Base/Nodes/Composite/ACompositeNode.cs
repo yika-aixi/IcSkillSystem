@@ -11,7 +11,7 @@ using NPBehave;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Composite
 {
-    public abstract class ACompositeNode<T>:ANPBehaveNode<T> where T : Node
+    public abstract class ACompositeNode<T>:ANPBehaveNode<T> where T : NPBehave.Composite
     {
         [Input(typeConstraint = TypeConstraint.Inherited)]
         [PortTooltip("节点,可多个")]

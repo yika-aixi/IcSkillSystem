@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Decorator
 {
-    public abstract class ADecoratorNode<T>:ANPBehaveNode<T> where T : Node
+    public abstract class ADecoratorNode<T>:ANPBehaveNode<T> where T : NPBehave.Decorator
     {
         [Input(ShowBackingValue.Unconnected,ConnectionType.Override,TypeConstraint.Inherited)]
         protected Node _decorateeNode;
