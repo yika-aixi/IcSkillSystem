@@ -16,7 +16,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
             return GetTValue();
         }
 
-        protected sealed override object GetPortValue(NodePort port)
+        protected override object GetPortValue(NodePort port)
         {
             return GetTValue(port);
         }
