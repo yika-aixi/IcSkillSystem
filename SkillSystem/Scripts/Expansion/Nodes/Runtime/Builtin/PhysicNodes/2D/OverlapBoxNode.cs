@@ -39,7 +39,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
 
             var size = GetInputValue(nameof(_size),_size).Value;
             
-            Gizmos.DrawMesh(_mesh,GetPoint(), Quaternion.AngleAxis(GetInputValue(nameof(_angle),_angle),Vector3.forward), new Vector3(size.x,size.y,1));
+            Gizmos.DrawMesh(_mesh,GetPoint() - new Vector2(size.x / 2, -(size.y / 2)), Quaternion.AngleAxis(GetInputValue(nameof(_angle),_angle),Vector3.forward), new Vector3(size.x,size.y,1));
         }
 
         public override void OnInit()
