@@ -235,6 +235,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         }
         
         private static Dictionary<IIcSkSEntity, BuffManager2> _buffManager2s = new Dictionary<IIcSkSEntity, BuffManager2>();
+
+        public static void Tick()
+        {
+            foreach (var buffManager2 in _buffManager2s.Values)
+            {
+                buffManager2.Update();
+            }
+        }
         
         public static void AddBuff<T>(IIcSkSEntity entity, T buff) where  T : unmanaged,IBuffDataComponent
         {
