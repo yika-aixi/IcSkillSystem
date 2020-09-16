@@ -248,6 +248,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             buffM.AddBuff(buff, entity);
         }
 
+        public static void SetBuff<T>(IIcSkSEntity entity, int index, T buff) where  T : unmanaged, IBuffDataComponent
+        {
+            if (_buffManager2s.TryGetValue(entity, out var buffM))
+            {
+                buffM.SetBuff(buff, index);
+            }
+        }
+
         public static void RemoveBuff<T>(IIcSkSEntity entity, int index) where  T : unmanaged,IBuffDataComponent
         {
             if (_buffManager2s.TryGetValue(entity, out var buffM))
