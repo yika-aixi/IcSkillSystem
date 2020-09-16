@@ -38,15 +38,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
                 _random(a.Value.y, b.Value.y),
                 _random(a.Value.z, b.Value.z));
 
-            if (_lastRandom == null)
-            {
-                _lastRandom = new ValueInfo<Vector3>();
-                _value = new ValueInfo<Vector3>();
-            }
-            
-            _lastRandom.Value = value;
+            _lastRandom = value;
 
-            _value.Value = value;
+            _value = value;
             
             return _value;
         }

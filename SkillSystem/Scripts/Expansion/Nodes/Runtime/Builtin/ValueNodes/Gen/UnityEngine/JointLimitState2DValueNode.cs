@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.JointLimitState2D _value;
    
-        private ValueInfo<UnityEngine.JointLimitState2D> _variableValue = new ValueInfo<UnityEngine.JointLimitState2D>();
+        private ValueInfo<UnityEngine.JointLimitState2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.JointLimitState2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

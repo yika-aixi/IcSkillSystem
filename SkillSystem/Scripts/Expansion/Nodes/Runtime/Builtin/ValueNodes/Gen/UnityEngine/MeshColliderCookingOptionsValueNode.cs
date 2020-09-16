@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.MeshColliderCookingOptions _value;
    
-        private ValueInfo<UnityEngine.MeshColliderCookingOptions> _variableValue = new ValueInfo<UnityEngine.MeshColliderCookingOptions>();
+        private ValueInfo<UnityEngine.MeshColliderCookingOptions> _variableValue;
    
         protected override ValueInfo<UnityEngine.MeshColliderCookingOptions> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

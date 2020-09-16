@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ArticulationJacobian _value;
    
-        private ValueInfo<UnityEngine.ArticulationJacobian> _variableValue = new ValueInfo<UnityEngine.ArticulationJacobian>();
+        private ValueInfo<UnityEngine.ArticulationJacobian> _variableValue;
    
         protected override ValueInfo<UnityEngine.ArticulationJacobian> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

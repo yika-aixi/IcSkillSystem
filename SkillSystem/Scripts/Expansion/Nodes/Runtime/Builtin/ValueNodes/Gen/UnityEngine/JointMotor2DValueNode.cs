@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.JointMotor2D _value;
    
-        private ValueInfo<UnityEngine.JointMotor2D> _variableValue = new ValueInfo<UnityEngine.JointMotor2D>();
+        private ValueInfo<UnityEngine.JointMotor2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.JointMotor2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

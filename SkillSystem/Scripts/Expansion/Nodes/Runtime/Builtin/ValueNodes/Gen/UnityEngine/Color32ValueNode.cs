@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.Color32 _value;
    
-        private ValueInfo<UnityEngine.Color32> _variableValue = new ValueInfo<UnityEngine.Color32>();
+        private ValueInfo<UnityEngine.Color32> _variableValue;
    
         protected override ValueInfo<UnityEngine.Color32> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

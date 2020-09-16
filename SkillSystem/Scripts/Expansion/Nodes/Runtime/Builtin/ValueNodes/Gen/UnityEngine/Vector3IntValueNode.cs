@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.Vector3Int _value;
    
-        private ValueInfo<UnityEngine.Vector3Int> _variableValue = new ValueInfo<UnityEngine.Vector3Int>();
+        private ValueInfo<UnityEngine.Vector3Int> _variableValue;
    
         protected override ValueInfo<UnityEngine.Vector3Int> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

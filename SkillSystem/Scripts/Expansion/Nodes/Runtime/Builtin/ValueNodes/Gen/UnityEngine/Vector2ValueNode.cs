@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.Vector2 _value;
    
-        private ValueInfo<UnityEngine.Vector2> _variableValue = new ValueInfo<UnityEngine.Vector2>();
+        private ValueInfo<UnityEngine.Vector2> _variableValue;
    
         protected override ValueInfo<UnityEngine.Vector2> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

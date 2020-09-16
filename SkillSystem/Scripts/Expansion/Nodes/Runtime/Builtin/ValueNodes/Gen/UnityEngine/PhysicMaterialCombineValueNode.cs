@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.PhysicMaterialCombine _value;
    
-        private ValueInfo<UnityEngine.PhysicMaterialCombine> _variableValue = new ValueInfo<UnityEngine.PhysicMaterialCombine>();
+        private ValueInfo<UnityEngine.PhysicMaterialCombine> _variableValue;
    
         protected override ValueInfo<UnityEngine.PhysicMaterialCombine> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

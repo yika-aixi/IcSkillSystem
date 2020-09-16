@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.CollisionDetectionMode2D _value;
    
-        private ValueInfo<UnityEngine.CollisionDetectionMode2D> _variableValue = new ValueInfo<UnityEngine.CollisionDetectionMode2D>();
+        private ValueInfo<UnityEngine.CollisionDetectionMode2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.CollisionDetectionMode2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

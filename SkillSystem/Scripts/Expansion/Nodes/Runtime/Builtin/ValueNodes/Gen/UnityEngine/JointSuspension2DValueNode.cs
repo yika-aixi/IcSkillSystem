@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.JointSuspension2D _value;
    
-        private ValueInfo<UnityEngine.JointSuspension2D> _variableValue = new ValueInfo<UnityEngine.JointSuspension2D>();
+        private ValueInfo<UnityEngine.JointSuspension2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.JointSuspension2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

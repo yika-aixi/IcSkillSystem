@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ContactPoint _value;
    
-        private ValueInfo<UnityEngine.ContactPoint> _variableValue = new ValueInfo<UnityEngine.ContactPoint>();
+        private ValueInfo<UnityEngine.ContactPoint> _variableValue;
    
         protected override ValueInfo<UnityEngine.ContactPoint> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

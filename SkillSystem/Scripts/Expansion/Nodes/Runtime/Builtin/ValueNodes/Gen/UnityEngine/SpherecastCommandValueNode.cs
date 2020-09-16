@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.SpherecastCommand _value;
    
-        private ValueInfo<UnityEngine.SpherecastCommand> _variableValue = new ValueInfo<UnityEngine.SpherecastCommand>();
+        private ValueInfo<UnityEngine.SpherecastCommand> _variableValue;
    
         protected override ValueInfo<UnityEngine.SpherecastCommand> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

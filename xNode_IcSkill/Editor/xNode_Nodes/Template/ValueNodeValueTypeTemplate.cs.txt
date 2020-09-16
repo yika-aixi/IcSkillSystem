@@ -10,11 +10,11 @@ namespace %NAMESPACE%
         [SerializeField]
         private %TYPE% _value;
    
-        private ValueInfo<%TYPE%> _variableValue = new ValueInfo<%TYPE%>();
+        private ValueInfo<%TYPE%> _variableValue;
    
         protected override ValueInfo<%TYPE%> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

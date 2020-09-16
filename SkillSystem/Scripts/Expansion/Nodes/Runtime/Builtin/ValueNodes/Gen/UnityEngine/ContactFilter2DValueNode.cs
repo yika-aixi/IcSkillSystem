@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ContactFilter2D _value;
    
-        private ValueInfo<UnityEngine.ContactFilter2D> _variableValue = new ValueInfo<UnityEngine.ContactFilter2D>();
+        private ValueInfo<UnityEngine.ContactFilter2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.ContactFilter2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

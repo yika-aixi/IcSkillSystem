@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.RectInt _value;
    
-        private ValueInfo<UnityEngine.RectInt> _variableValue = new ValueInfo<UnityEngine.RectInt>();
+        private ValueInfo<UnityEngine.RectInt> _variableValue;
    
         protected override ValueInfo<UnityEngine.RectInt> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

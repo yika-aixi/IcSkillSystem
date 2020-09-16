@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.CapsulecastCommand _value;
    
-        private ValueInfo<UnityEngine.CapsulecastCommand> _variableValue = new ValueInfo<UnityEngine.CapsulecastCommand>();
+        private ValueInfo<UnityEngine.CapsulecastCommand> _variableValue;
    
         protected override ValueInfo<UnityEngine.CapsulecastCommand> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

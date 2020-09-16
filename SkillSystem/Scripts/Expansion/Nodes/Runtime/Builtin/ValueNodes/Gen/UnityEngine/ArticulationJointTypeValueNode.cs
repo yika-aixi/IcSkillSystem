@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ArticulationJointType _value;
    
-        private ValueInfo<UnityEngine.ArticulationJointType> _variableValue = new ValueInfo<UnityEngine.ArticulationJointType>();
+        private ValueInfo<UnityEngine.ArticulationJointType> _variableValue;
    
         protected override ValueInfo<UnityEngine.ArticulationJointType> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

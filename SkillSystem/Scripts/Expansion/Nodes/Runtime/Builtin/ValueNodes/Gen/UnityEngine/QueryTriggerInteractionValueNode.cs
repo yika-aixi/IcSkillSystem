@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.QueryTriggerInteraction _value;
    
-        private ValueInfo<UnityEngine.QueryTriggerInteraction> _variableValue = new ValueInfo<UnityEngine.QueryTriggerInteraction>();
+        private ValueInfo<UnityEngine.QueryTriggerInteraction> _variableValue;
    
         protected override ValueInfo<UnityEngine.QueryTriggerInteraction> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

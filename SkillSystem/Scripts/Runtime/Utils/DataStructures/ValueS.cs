@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     public class ValueS
     {
         //Boxing ValueInfo 
-        private ValueInfo<object> _boxValueInfo = new ValueInfo<object>();
+        private ValueInfo<object> _boxValueInfo;
 
         [SerializeField] private string ValueTypeAqName;
         
@@ -233,8 +233,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
                     Debug.LogWarning("Boxing !!!!! You should not do this, unless this is required, please troubleshoot the corresponding code");
                 }
 #endif
-
-                _boxValueInfo.Value = _value.GetValue();
+                _boxValueInfo = _value.GetValue();
 
                 return (ValueInfo<T>) _boxValueInfo;
             }

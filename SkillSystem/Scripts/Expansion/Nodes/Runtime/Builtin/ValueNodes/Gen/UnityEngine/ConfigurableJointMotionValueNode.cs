@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ConfigurableJointMotion _value;
    
-        private ValueInfo<UnityEngine.ConfigurableJointMotion> _variableValue = new ValueInfo<UnityEngine.ConfigurableJointMotion>();
+        private ValueInfo<UnityEngine.ConfigurableJointMotion> _variableValue;
    
         protected override ValueInfo<UnityEngine.ConfigurableJointMotion> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

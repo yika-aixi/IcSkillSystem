@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.CompositeCollider2D.GeometryType _value;
    
-        private ValueInfo<UnityEngine.CompositeCollider2D.GeometryType> _variableValue = new ValueInfo<UnityEngine.CompositeCollider2D.GeometryType>();
+        private ValueInfo<UnityEngine.CompositeCollider2D.GeometryType> _variableValue;
    
         protected override ValueInfo<UnityEngine.CompositeCollider2D.GeometryType> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

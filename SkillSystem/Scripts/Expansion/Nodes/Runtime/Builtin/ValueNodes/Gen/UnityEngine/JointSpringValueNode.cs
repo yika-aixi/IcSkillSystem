@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.JointSpring _value;
    
-        private ValueInfo<UnityEngine.JointSpring> _variableValue = new ValueInfo<UnityEngine.JointSpring>();
+        private ValueInfo<UnityEngine.JointSpring> _variableValue;
    
         protected override ValueInfo<UnityEngine.JointSpring> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

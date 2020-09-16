@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.RigidbodyInterpolation _value;
    
-        private ValueInfo<UnityEngine.RigidbodyInterpolation> _variableValue = new ValueInfo<UnityEngine.RigidbodyInterpolation>();
+        private ValueInfo<UnityEngine.RigidbodyInterpolation> _variableValue;
    
         protected override ValueInfo<UnityEngine.RigidbodyInterpolation> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
         [Output(ShowBackingValue.Always)]
         private int _index;
 
-        private ValueInfo<int> _indexValue = new ValueInfo<int>();
+        private ValueInfo<int> _indexValue;
         
         protected override Action CreateOutValue()
         {
@@ -67,7 +67,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Nodes
             {
                 var ator = enumerables.GetEnumerator();
 
-                _indexValue.Value = 0;
+                _indexValue = 0;
                 
                 while (ator.MoveNext() && _indexValue < count)
                 {

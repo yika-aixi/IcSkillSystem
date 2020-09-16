@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.CollisionFlags _value;
    
-        private ValueInfo<UnityEngine.CollisionFlags> _variableValue = new ValueInfo<UnityEngine.CollisionFlags>();
+        private ValueInfo<UnityEngine.CollisionFlags> _variableValue;
    
         protected override ValueInfo<UnityEngine.CollisionFlags> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

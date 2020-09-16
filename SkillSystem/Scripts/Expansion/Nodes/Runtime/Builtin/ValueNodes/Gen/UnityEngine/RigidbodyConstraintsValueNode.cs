@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.RigidbodyConstraints _value;
    
-        private ValueInfo<UnityEngine.RigidbodyConstraints> _variableValue = new ValueInfo<UnityEngine.RigidbodyConstraints>();
+        private ValueInfo<UnityEngine.RigidbodyConstraints> _variableValue;
    
         protected override ValueInfo<UnityEngine.RigidbodyConstraints> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

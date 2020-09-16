@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.RaycastHit _value;
    
-        private ValueInfo<UnityEngine.RaycastHit> _variableValue = new ValueInfo<UnityEngine.RaycastHit>();
+        private ValueInfo<UnityEngine.RaycastHit> _variableValue;
    
         protected override ValueInfo<UnityEngine.RaycastHit> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

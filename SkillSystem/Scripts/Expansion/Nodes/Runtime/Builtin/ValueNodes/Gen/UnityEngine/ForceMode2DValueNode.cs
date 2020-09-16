@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ForceMode2D _value;
    
-        private ValueInfo<UnityEngine.ForceMode2D> _variableValue = new ValueInfo<UnityEngine.ForceMode2D>();
+        private ValueInfo<UnityEngine.ForceMode2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.ForceMode2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

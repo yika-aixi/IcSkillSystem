@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.JointAngleLimits2D _value;
    
-        private ValueInfo<UnityEngine.JointAngleLimits2D> _variableValue = new ValueInfo<UnityEngine.JointAngleLimits2D>();
+        private ValueInfo<UnityEngine.JointAngleLimits2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.JointAngleLimits2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

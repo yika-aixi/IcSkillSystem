@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.ArticulationReducedSpace _value;
    
-        private ValueInfo<UnityEngine.ArticulationReducedSpace> _variableValue = new ValueInfo<UnityEngine.ArticulationReducedSpace>();
+        private ValueInfo<UnityEngine.ArticulationReducedSpace> _variableValue;
    
         protected override ValueInfo<UnityEngine.ArticulationReducedSpace> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

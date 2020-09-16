@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.RotationDriveMode _value;
    
-        private ValueInfo<UnityEngine.RotationDriveMode> _variableValue = new ValueInfo<UnityEngine.RotationDriveMode>();
+        private ValueInfo<UnityEngine.RotationDriveMode> _variableValue;
    
         protected override ValueInfo<UnityEngine.RotationDriveMode> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

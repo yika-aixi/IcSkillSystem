@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private System.Byte _value;
    
-        private ValueInfo<System.Byte> _variableValue = new ValueInfo<System.Byte>();
+        private ValueInfo<System.Byte> _variableValue;
    
         protected override ValueInfo<System.Byte> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

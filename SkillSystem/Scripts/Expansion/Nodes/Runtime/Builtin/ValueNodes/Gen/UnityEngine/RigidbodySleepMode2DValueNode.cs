@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.RigidbodySleepMode2D _value;
    
-        private ValueInfo<UnityEngine.RigidbodySleepMode2D> _variableValue = new ValueInfo<UnityEngine.RigidbodySleepMode2D>();
+        private ValueInfo<UnityEngine.RigidbodySleepMode2D> _variableValue;
    
         protected override ValueInfo<UnityEngine.RigidbodySleepMode2D> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

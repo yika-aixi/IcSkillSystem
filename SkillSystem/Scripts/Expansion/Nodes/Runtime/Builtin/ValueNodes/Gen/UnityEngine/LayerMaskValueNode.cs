@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.LayerMask _value;
    
-        private ValueInfo<UnityEngine.LayerMask> _variableValue = new ValueInfo<UnityEngine.LayerMask>();
+        private ValueInfo<UnityEngine.LayerMask> _variableValue;
    
         protected override ValueInfo<UnityEngine.LayerMask> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

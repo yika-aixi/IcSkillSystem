@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.SoftJointLimit _value;
    
-        private ValueInfo<UnityEngine.SoftJointLimit> _variableValue = new ValueInfo<UnityEngine.SoftJointLimit>();
+        private ValueInfo<UnityEngine.SoftJointLimit> _variableValue;
    
         protected override ValueInfo<UnityEngine.SoftJointLimit> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }

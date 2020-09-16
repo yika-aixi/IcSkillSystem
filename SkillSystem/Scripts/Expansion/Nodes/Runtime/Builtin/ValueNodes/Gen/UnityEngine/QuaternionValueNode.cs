@@ -10,11 +10,11 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         [SerializeField]
         private UnityEngine.Quaternion _value;
    
-        private ValueInfo<UnityEngine.Quaternion> _variableValue = new ValueInfo<UnityEngine.Quaternion>();
+        private ValueInfo<UnityEngine.Quaternion> _variableValue;
    
         protected override ValueInfo<UnityEngine.Quaternion> GetTValue()
         {
-            _variableValue.Value = _value;
+            _variableValue = _value;
             return _variableValue;
         }
     }
