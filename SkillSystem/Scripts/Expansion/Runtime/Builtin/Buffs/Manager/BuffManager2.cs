@@ -102,6 +102,16 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
 
+            public void SetBuff(in T newBuff, int index)
+            {
+                if (index < 0 || index >= _buffs.Count)
+                {
+                    return;
+                }
+
+                _fastAr[index] = newBuff;
+            }
+
             public void RemoveBuff(int index)
             {
                 if (index < 0 || index >= _buffs.Count)
@@ -180,12 +190,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             chunke.Entity = entity;
             chunke.AddBuff(buff);
         }
+
+        public void SetBuff<T>(in T newBuff, int index) where T : unmanaged,IBuffDataComponent
         {
             if (_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
             {
                 BuffChunk<T> chunke = (BuffChunk<T>) chunkWeak;
-                chunke.Entity = entity;
-                chunke.AddBuff(buff);
+
+                chunke.SetBuff(newBuff, index);
             }
         }
         
