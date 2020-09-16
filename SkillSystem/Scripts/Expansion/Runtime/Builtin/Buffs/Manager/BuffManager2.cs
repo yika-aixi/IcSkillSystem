@@ -166,6 +166,21 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         public void AddBuff<T>(T buff, IIcSkSEntity entity) where T : unmanaged,IBuffDataComponent
         {
+            BuffChunk<T> chunke;
+            if (!_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
+            {
+                chunke = new BuffChunk<T>();
+                _buffChunk.Add(typeof(T), chunke);
+            }
+            else
+            {
+                chunke = (BuffChunk<T>) chunkWeak;
+            }
+            
+            chunke.Entity = entity;
+            chunke.AddBuff(buff);
+        }
+        {
             if (_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
             {
                 BuffChunk<T> chunke = (BuffChunk<T>) chunkWeak;
