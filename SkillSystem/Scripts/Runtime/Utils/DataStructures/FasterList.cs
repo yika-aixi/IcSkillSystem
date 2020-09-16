@@ -597,6 +597,14 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
             _buffer[_count++] = item;
         }
+        
+        public void AddIn(in T item)
+        {
+            if (_count == _buffer.Length)
+                AllocateMore();
+
+            _buffer[_count++] = item;
+        }
 
         public void AddRef(ref T item)
         {
