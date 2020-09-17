@@ -11,7 +11,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
     {
         FasterReadOnlyList<IIcSkSEntity> Entitys { get; }
         
-        IBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : IBuffDataComponent;
+        IBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : IBuffData;
 
         void Update();
 
@@ -21,48 +21,48 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs
 
         void AddBuff<TBuff>(IIcSkSEntity entity, in TBuff buff);
 
-        TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : IBuffDataComponent;
+        TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : IBuffData;
 
-        TBuff GetBuffData<TBuff>(IIcSkSEntity entity, int index) where TBuff : IBuffDataComponent;
+        TBuff GetBuffData<TBuff>(IIcSkSEntity entity, int index) where TBuff : IBuffData;
 
-        void SetBuffData<TBuff>(IIcSkSEntity entity, in TBuff buff, int index) where TBuff : IBuffDataComponent;
+        void SetBuffData<TBuff>(IIcSkSEntity entity, in TBuff buff, int index) where TBuff : IBuffData;
 
-        bool RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : IBuffDataComponent;
+        bool RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : IBuffData;
 
-        bool HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : IBuffDataComponent;
+        bool HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : IBuffData;
 
         bool HasBuff(IIcSkSEntity entity, Type buffType);
         
-        bool HasBuff(IIcSkSEntity entity, Type buffType, IBuffDataComponent buff);
+        bool HasBuff(IIcSkSEntity entity, Type buffType, IBuffData buff);
 
-        IEnumerable<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity, Func<TBuff,bool> condition) where TBuff : IBuffDataComponent;
+        IEnumerable<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity, Func<TBuff,bool> condition) where TBuff : IBuffData;
 
-        FasterReadOnlyList<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity) where TBuff : IBuffDataComponent;
+        FasterReadOnlyList<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity) where TBuff : IBuffData;
         
-        IEnumerable<IBuffDataComponent> GetAllBuff(IIcSkSEntity entity);
+        IEnumerable<IBuffData> GetAllBuff(IIcSkSEntity entity);
 
-        int GetBuffCount<TBuff>(IIcSkSEntity entity) where TBuff : IBuffDataComponent;
+        int GetBuffCount<TBuff>(IIcSkSEntity entity) where TBuff : IBuffData;
     }
 
     public interface IStructBuffManager: IBuffManager
     {
-        new IStructBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent;
+        new IStructBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffData;
         
-        new void AddBuff<TBuff>(IIcSkSEntity entity, in TBuff buff) where TBuff : struct, IBuffDataComponent;
+        new void AddBuff<TBuff>(IIcSkSEntity entity, in TBuff buff) where TBuff : struct, IBuffData;
 
-        new TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : struct, IBuffDataComponent;
+        new TBuff GetCurrentBuffData<TBuff>(int index) where TBuff : struct, IBuffData;
 
-        new TBuff GetBuffData<TBuff>(IIcSkSEntity entity, int index) where TBuff : struct, IBuffDataComponent;
+        new TBuff GetBuffData<TBuff>(IIcSkSEntity entity, int index) where TBuff : struct, IBuffData;
 
         new void SetBuffData<TBuff>(IIcSkSEntity entity, in TBuff buff, int index)
-            where TBuff : struct, IBuffDataComponent;
+            where TBuff : struct, IBuffData;
 
-        new bool RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : struct, IBuffDataComponent;
+        new bool RemoveBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : struct, IBuffData;
 
-        new bool HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : struct, IBuffDataComponent;
+        new bool HasBuff<TBuff>(IIcSkSEntity entity, TBuff buff) where TBuff : struct, IBuffData;
 
-        new FasterReadOnlyList<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity) where TBuff : struct, IBuffDataComponent;
+        new FasterReadOnlyList<TBuff> GetBuffs<TBuff>(IIcSkSEntity entity) where TBuff : struct, IBuffData;
 
-        new int GetBuffCount<TBuff>(IIcSkSEntity entity) where TBuff : struct, IBuffDataComponent;
+        new int GetBuffCount<TBuff>(IIcSkSEntity entity) where TBuff : struct, IBuffData;
     }
 }

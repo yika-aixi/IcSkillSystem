@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Editor
     {
         protected override Type GetBaseType()
         {
-            return typeof(IBuffDataComponent);
+            return typeof(IBuffData);
         }
         
         protected override string GetAQNamePropertyName()

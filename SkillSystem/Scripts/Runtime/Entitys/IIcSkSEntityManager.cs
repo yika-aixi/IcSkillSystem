@@ -19,19 +19,19 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 
         void Update();
 
-        void AddBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
+        void AddBuff<T>(TEntity entity, T buff) where T : IBuffData;
         
-        bool RemoveBuff<T>(TEntity entity,T buff) where T : IBuffDataComponent;
+        bool RemoveBuff<T>(TEntity entity,T buff) where T : IBuffData;
 
-        bool HasBuff<T>(TEntity entity, T buff) where T : IBuffDataComponent;
+        bool HasBuff<T>(TEntity entity, T buff) where T : IBuffData;
     }
 
     public interface IStructIcSkSEntityManager<TEntity> : IIcSkSEntityManager<TEntity> where TEntity : IIcSkSEntity
     {
-        new void AddBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new void AddBuff<T>(TEntity entity, T buff) where T :struct, IBuffData;
         
-        new bool RemoveBuff<T>(TEntity entity,T buff) where T :struct, IBuffDataComponent;
+        new bool RemoveBuff<T>(TEntity entity,T buff) where T :struct, IBuffData;
 
-        new bool HasBuff<T>(TEntity entity, T buff) where T :struct, IBuffDataComponent;
+        new bool HasBuff<T>(TEntity entity, T buff) where T :struct, IBuffData;
     }
 }

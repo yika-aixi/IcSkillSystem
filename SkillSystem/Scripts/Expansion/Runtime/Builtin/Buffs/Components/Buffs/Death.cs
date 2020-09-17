@@ -11,7 +11,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
 {
-    public struct DeathStruct:IBuffDataComponent,IMakerEntity
+    public struct DeathStruct:IBuffData,IMakerEntity
     {
         public ECSResources<IIcSkSEntity> Entity { get; set; }
     }

@@ -26,7 +26,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             IIcSkSEntity Entity { get; set; }
         }
         
-        class BuffChunk<T>:IBuffChunkWeak where T : unmanaged,IBuffDataComponent
+        class BuffChunk<T>:IBuffChunkWeak where T : unmanaged,IBuffData
         {
             FasterList<T> _buffs = new FasterList<T>();
 
@@ -174,7 +174,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
 
-        public void AddBuff<T>(T buff, IIcSkSEntity entity) where T : unmanaged,IBuffDataComponent
+        public void AddBuff<T>(T buff, IIcSkSEntity entity) where T : unmanaged,IBuffData
         {
             BuffChunk<T> chunke;
             if (!_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
@@ -191,7 +191,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             chunke.AddBuff(buff);
         }
 
-        public void SetBuff<T>(in T newBuff, int index) where T : unmanaged,IBuffDataComponent
+        public void SetBuff<T>(in T newBuff, int index) where T : unmanaged,IBuffData
         {
             if (_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
             {
@@ -201,7 +201,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
         
-        public void RemoveBuff<T>(int index) where T : unmanaged,IBuffDataComponent
+        public void RemoveBuff<T>(int index) where T : unmanaged,IBuffData
         {
             if (_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
             {
@@ -211,7 +211,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
 
-        public bool GetBuff<T>(int index, out T buff) where T : unmanaged,IBuffDataComponent
+        public bool GetBuff<T>(int index, out T buff) where T : unmanaged,IBuffData
         {
             if (_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
             {
@@ -244,7 +244,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
         
-        public static void AddBuff<T>(IIcSkSEntity entity, T buff) where  T : unmanaged,IBuffDataComponent
+        public static void AddBuff<T>(IIcSkSEntity entity, T buff) where  T : unmanaged,IBuffData
         {
             if (!_buffManager2s.TryGetValue(entity, out var buffM))
             {
@@ -256,7 +256,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             buffM.AddBuff(buff, entity);
         }
 
-        public static void SetBuff<T>(IIcSkSEntity entity, int index, T buff) where  T : unmanaged, IBuffDataComponent
+        public static void SetBuff<T>(IIcSkSEntity entity, int index, T buff) where  T : unmanaged, IBuffData
         {
             if (_buffManager2s.TryGetValue(entity, out var buffM))
             {
@@ -264,7 +264,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
 
-        public static void RemoveBuff<T>(IIcSkSEntity entity, int index) where  T : unmanaged,IBuffDataComponent
+        public static void RemoveBuff<T>(IIcSkSEntity entity, int index) where  T : unmanaged,IBuffData
         {
             if (_buffManager2s.TryGetValue(entity, out var buffM))
             {
@@ -282,7 +282,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffManager2s.Remove(entity);
         }
 
-        public static bool GetBuff<T>(IIcSkSEntity entity, int index,out T buff) where T : unmanaged,IBuffDataComponent
+        public static bool GetBuff<T>(IIcSkSEntity entity, int index,out T buff) where T : unmanaged,IBuffData
         {
             if (_buffManager2s.TryGetValue(entity, out var buffM))
             {
@@ -297,17 +297,17 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
         
-        public interface IBuffCreateSystemNew<T> : IBuffSystem where T : unmanaged, IBuffDataComponent
+        public interface IBuffCreateSystemNew<T> : IBuffSystem where T : unmanaged, IBuffData
         {
             void Create(IIcSkSEntity entity, int index);
         }
         
-        public interface IBuffUpdateSystemNew<T> : IBuffSystem where T : unmanaged, IBuffDataComponent
+        public interface IBuffUpdateSystemNew<T> : IBuffSystem where T : unmanaged, IBuffData
         {
             void Update(IIcSkSEntity entity, int index);
         }
         
-        public interface IBuffDestroySystemNew<T> : IBuffSystem where T : unmanaged, IBuffDataComponent
+        public interface IBuffDestroySystemNew<T> : IBuffSystem where T : unmanaged, IBuffData
         {
             void Destroy(IIcSkSEntity entity, T buff);
         }
@@ -320,7 +320,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         private static FasterList<IBuffSystem> _systems = new FasterList<IBuffSystem>();
         
-        static void _onCreateBuff<T>(BuffChunk<T> buffChunk, int index) where T : unmanaged, IBuffDataComponent
+        static void _onCreateBuff<T>(BuffChunk<T> buffChunk, int index) where T : unmanaged, IBuffData
         {
             var count = _systems.Count;
             // var type  = typeof(T);
@@ -341,7 +341,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
 
-        static void _onUpdate<T>(BuffChunk<T> buffChunk, int index) where T : unmanaged, IBuffDataComponent
+        static void _onUpdate<T>(BuffChunk<T> buffChunk, int index) where T : unmanaged, IBuffData
         {
             var count = _systems.Count;
             for (var i = 0; i < count; i++)
@@ -357,7 +357,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
 
-        static void _onDestroy<T>(BuffChunk<T> buffChunk, T buff) where T : unmanaged, IBuffDataComponent
+        static void _onDestroy<T>(BuffChunk<T> buffChunk, T buff) where T : unmanaged, IBuffData
         {
             var count = _systems.Count;
             for (var i = 0; i < count; i++)

@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs.Systems
 {
-    public class BuffTimeSystem<T>:IBuffUpdateSystem where T:struct,IBuffDataComponent,IBuffTimeDataComponent
+    public class BuffTimeSystem<T>:IBuffUpdateSystem where T:struct,IBuffData,IBuffTimeDataComponent
     {
         private readonly IStructBuffManager  _buffManager;
 

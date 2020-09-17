@@ -17,7 +17,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 {
     public class NewBuffManagerTest
     {
-        struct Buff:IBuffDataComponent,IBuffValueDataComponent
+        struct Buff:IBuffData,IBuffValueDataComponent
         {
             public float Value { get; set; }
         }

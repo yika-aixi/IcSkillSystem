@@ -13,7 +13,7 @@ namespace  CabinIcarus.IcSkillSystem
     {
         #region Has Buff
         public static bool HasBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
-            IBuffDataComponent buff)
+            IBuffData buff)
         {
             bool result = false;
             if (entityManager is IStructIcSkSEntityManager<IIcSkSEntity> structIcSkSEntityManager)
@@ -30,7 +30,7 @@ namespace  CabinIcarus.IcSkillSystem
         #region Remove Buff
 
         public static bool RemoveBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
-            IBuffDataComponent buff)
+            IBuffData buff)
         {
             bool result = false;
             
@@ -49,7 +49,7 @@ namespace  CabinIcarus.IcSkillSystem
         #region Add Buff
 
         public static void AddBuff(IIcSkSEntityManager<IIcSkSEntity> entityManager, IIcSkSEntity entity,
-            IBuffDataComponent buff)
+            IBuffData buff)
         {
             if (entityManager is IStructIcSkSEntityManager<IIcSkSEntity> skSEntityManager)
             {
@@ -66,7 +66,7 @@ namespace  CabinIcarus.IcSkillSystem
             Has
         }
         
-        private static void _buffAddOrRemove(ActionType actionType,out bool result,IIcSkSEntity entity, IBuffDataComponent buff,
+        private static void _buffAddOrRemove(ActionType actionType,out bool result,IIcSkSEntity entity, IBuffData buff,
             IStructIcSkSEntityManager<IIcSkSEntity> structIcSkSEntityManager)
         {
             result = false;

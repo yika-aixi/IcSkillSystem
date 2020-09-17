@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 伤害 buff
     /// </summary>
-    public interface IDamageBuff:IDamage,IBuffDataComponent
+    public interface IDamageBuff:IDamage,IBuffData
     {
     }
 }

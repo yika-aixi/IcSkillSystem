@@ -7,7 +7,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Systems
     public abstract class AIcStructBuffSystem<TBuffType>: 
         IBuffCreateSystem,
         IBuffUpdateSystem,IBuffDestroySystem
-        where TBuffType : struct, IBuffDataComponent
+        where TBuffType : struct, IBuffData
     {
         protected readonly IStructBuffManager BuffManager;
 

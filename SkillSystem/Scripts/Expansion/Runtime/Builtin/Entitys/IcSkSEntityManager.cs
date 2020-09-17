@@ -36,7 +36,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             SBuffManager.Update();
         }
 
-        public void AddBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
+        public void AddBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffData
         {
 //            if (!_checkEntity(entity))
 //            {
@@ -46,7 +46,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             SBuffManager.AddBuff(entity,buff);
         }
 
-        public bool RemoveBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
+        public bool RemoveBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffData
         {
             if (!_checkEntity(entity))
             {
@@ -56,7 +56,7 @@ namespace SkillSystem.SkillSystem.Scripts.Expansion.Runtime.Builtin.Entitys
             return SBuffManager.RemoveBuff(entity, buff);
         }
 
-        public bool HasBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffDataComponent
+        public bool HasBuff<T>(IIcSkSEntity entity, T buff) where T :struct, IBuffData
         {
             if (!_checkEntity(entity))
             {

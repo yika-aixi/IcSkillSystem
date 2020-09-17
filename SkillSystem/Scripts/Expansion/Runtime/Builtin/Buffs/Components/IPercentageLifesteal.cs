@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 百分比吸血
     /// </summary>
-    public interface IPercentageLifesteal:ILifesteal,IBuffDataComponent,IBuffType
+    public interface IPercentageLifesteal:ILifesteal,IBuffData,IBuffType
     {
     }
     

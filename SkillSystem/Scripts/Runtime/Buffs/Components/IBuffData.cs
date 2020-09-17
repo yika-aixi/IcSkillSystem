@@ -10,7 +10,7 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Components
     /// <summary>
     /// buff 组件
     /// </summary>
-    public interface IBuffDataComponent
+    public interface IBuffData
     {
     }
 }

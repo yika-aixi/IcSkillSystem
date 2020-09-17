@@ -21,18 +21,18 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         
         int Count { get; }
 
-        void AddBuff(IBuffDataComponent buff);
+        void AddBuff(IBuffData buff);
         
-        IBuffDataComponent GetBuff(int index);
+        IBuffData GetBuff(int index);
 
-        void SetBuff(int index, IBuffDataComponent newBuff);
+        void SetBuff(int index, IBuffData newBuff);
         
-        IEnumerable<IBuffDataComponent> GetBuffs();
+        IEnumerable<IBuffData> GetBuffs();
 
         void RemoveAt(int index);
     }
 
-    public struct BuffDataInfo<T> where T : struct,IBuffDataComponent
+    public struct BuffDataInfo<T> where T : struct,IBuffData
     {
         public int Index { get; }
         public T Buff { get; }
@@ -54,24 +54,24 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
         }
 
-        public void AddBuff(IBuffDataComponent buff)
+        public void AddBuff(IBuffData buff)
         {
             Add((T) buff);
         }
 
-        public IBuffDataComponent GetBuff(int index)
+        public IBuffData GetBuff(int index)
         {
-            return (IBuffDataComponent)this[index];
+            return (IBuffData)this[index];
         }
 
-        public void SetBuff(int index, IBuffDataComponent newBuff)
+        public void SetBuff(int index, IBuffData newBuff)
         {
             this[index] = (T) newBuff;
         }
         
-        public IEnumerable<IBuffDataComponent> GetBuffs()
+        public IEnumerable<IBuffData> GetBuffs()
         {
-            return Buffs.Select(x=>(IBuffDataComponent) x);
+            return Buffs.Select(x=>(IBuffData) x);
         }
     }
     
@@ -92,7 +92,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffMaps = new Dictionary<IIcSkSEntity, Dictionary<Type,IBuffList[]>>();
         }
 
-        public IStructBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffDataComponent
+        public IStructBuffManager AddBuffSystem<TBuffType>(IBuffSystem buffSystem) where TBuffType : struct,IBuffData
         {
             var type = buffSystem.GetType();
             var buffType = typeof(TBuffType);
@@ -263,7 +263,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             _buffMaps.Remove(entity);
         }
 
-        public void AddBuff<T>(IIcSkSEntity entity,in T buff) where T : struct, IBuffDataComponent
+        public void AddBuff<T>(IIcSkSEntity entity,in T buff) where T : struct, IBuffData
         {
             if (!_checkEntityExist(entity))
             {
@@ -307,7 +307,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
             else
             {
-                temp.AddBuff((IBuffDataComponent) buff);
+                temp.AddBuff((IBuffData) buff);
             }
 
             _currentBuffs = temp;
@@ -327,7 +327,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <param name="index"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetCurrentBuffData<T>(int index) where T : struct, IBuffDataComponent
+        public T GetCurrentBuffData<T>(int index) where T : struct, IBuffData
         {
             if (_currentBuffs.Count - 1 < index)
             {
@@ -336,7 +336,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return ((BuffList<T>) _currentBuffs)[index];
         }
         
-        public T GetBuffData<T>(IIcSkSEntity entity, int index) where T : struct, IBuffDataComponent
+        public T GetBuffData<T>(IIcSkSEntity entity, int index) where T : struct, IBuffData
         {
             return _getBuffData<T>(entity, index);
         }
@@ -373,7 +373,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <param name="buff"></param>
         /// <param name="index"></param>
         /// <typeparam name="T"></typeparam>
-        public void SetBuffData<T>(IIcSkSEntity entity, in T buff,int index) where T : struct, IBuffDataComponent
+        public void SetBuffData<T>(IIcSkSEntity entity, in T buff,int index) where T : struct, IBuffData
         {
             var type = typeof(T);
             _setBuffData(entity, type,buff, index);
@@ -410,7 +410,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
             else
             {
-                temp.SetBuff(buffChunkIndex,(IBuffDataComponent) buff);
+                temp.SetBuff(buffChunkIndex,(IBuffData) buff);
             }
            
         }
@@ -473,7 +473,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 #endif
         }
 
-        public bool RemoveBuff<T>(IIcSkSEntity entity, T buff) where T : struct, IBuffDataComponent
+        public bool RemoveBuff<T>(IIcSkSEntity entity, T buff) where T : struct, IBuffData
         {
             var type = typeof(T);
 
@@ -541,7 +541,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return false;
         }
 
-        public bool HasBuff<T>(IIcSkSEntity entity,T buff) where T : struct, IBuffDataComponent
+        public bool HasBuff<T>(IIcSkSEntity entity,T buff) where T : struct, IBuffData
         {
             return _hasBuff(entity, typeof(T), buff);
         }
@@ -554,7 +554,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <returns></returns>
         public bool HasBuff(IIcSkSEntity entity, Type buffType)
         {
-            return _hasBuff<IBuffDataComponent>(entity, buffType, null);
+            return _hasBuff<IBuffData>(entity, buffType, null);
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <param name="buff"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool HasBuff(IIcSkSEntity entity, Type buffType, IBuffDataComponent buff)
+        public bool HasBuff(IIcSkSEntity entity, Type buffType, IBuffData buff)
         {
             return _hasBuff(entity, buffType, buff);
         }
@@ -608,7 +608,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <param name="condition"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public NativeArray<BuffDataInfo<T>> GetBuffsCondition<T>(IIcSkSEntity entity, Func<T,bool> condition) where T :struct, IBuffDataComponent
+        public NativeArray<BuffDataInfo<T>> GetBuffsCondition<T>(IIcSkSEntity entity, Func<T,bool> condition) where T :struct, IBuffData
 #else
         public FasterList<BuffDataInfo<T>> GetBuffsCondition<T>(IIcSkSEntity entity, Func<T,bool> condition) where T :struct, IBuffDataComponent
 #endif
@@ -685,7 +685,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// <param name="condition"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public NativeArray<int> GetBuffsCondition<T>(IIcSkSEntity entity, Func<T,bool> condition,out FasterList<T> outBuffs) where T :struct, IBuffDataComponent
+        public NativeArray<int> GetBuffsCondition<T>(IIcSkSEntity entity, Func<T,bool> condition,out FasterList<T> outBuffs) where T :struct, IBuffData
 #else
         public FasterList<int> GetBuffsCondition<T>(IIcSkSEntity entity, Func<T,bool> condition,out FasterList<T> outBuffs) where T :struct, IBuffDataComponent
 #endif
@@ -761,7 +761,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public FasterReadOnlyList<T> GetBuffs<T>(IIcSkSEntity entity) where T :struct, IBuffDataComponent
+        public FasterReadOnlyList<T> GetBuffs<T>(IIcSkSEntity entity) where T :struct, IBuffData
         {
             var buffs = _getBuffs<T>(entity);
 
@@ -773,7 +773,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             return buffs.AsReadOnly();
         }
         
-        private FasterList<T> _getBuffs<T>(IIcSkSEntity entity) where T :struct, IBuffDataComponent
+        private FasterList<T> _getBuffs<T>(IIcSkSEntity entity) where T :struct, IBuffData
         {
             if (_checkEntityExist(entity))
             {
@@ -799,14 +799,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public IEnumerable<IBuffDataComponent> GetAllBuff(IIcSkSEntity entity)
+        public IEnumerable<IBuffData> GetAllBuff(IIcSkSEntity entity)
         {
            if (!_checkEntityExist(entity))
            {
                return null;
            }
 
-           List<IBuffDataComponent> buffs = new List<IBuffDataComponent>();
+           List<IBuffData> buffs = new List<IBuffData>();
            
            foreach (var buffList1 in _buffMaps[entity].Values)
            {
@@ -821,7 +821,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
            return buffs;
         }
 
-        public int GetBuffCount<T>(IIcSkSEntity entity) where T : struct,IBuffDataComponent
+        public int GetBuffCount<T>(IIcSkSEntity entity) where T : struct,IBuffData
         {
             return _getBuffCount<T>(entity);
         }
@@ -862,7 +862,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         #region Cover
         
         [Obsolete("use -> `GetBuffsCondition`")]
-        public IEnumerable<T> GetBuffs<T>(IIcSkSEntity entity,Func<T,bool> condition) where T :IBuffDataComponent
+        public IEnumerable<T> GetBuffs<T>(IIcSkSEntity entity,Func<T,bool> condition) where T :IBuffData
         {
             throw new NotImplementedException($"please use {nameof(GetBuffsCondition)}.");
         }
@@ -917,7 +917,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
         int IBuffManager.GetBuffCount<TBuff>(IIcSkSEntity entity)
         {
-            return _getBuffCount<IBuffDataComponent>(entity);
+            return _getBuffCount<IBuffData>(entity);
         }
 
         #endregion

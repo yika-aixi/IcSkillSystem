@@ -13,7 +13,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems.Buff
         
         protected Type BuffType;
 
-        protected IBuffDataComponent Buff
+        protected IBuffData Buff
         {
             get
             {
@@ -22,7 +22,7 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.SkillSystems.Buff
                     return null;
                 }
             
-                return (IBuffDataComponent) this.DynamicInputCreateInstance(BuffType);
+                return (IBuffData) this.DynamicInputCreateInstance(BuffType);
             }
         }
 

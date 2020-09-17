@@ -12,10 +12,10 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
 {
     struct BuffInfo
     {
-        public IBuffDataComponent Buff;
+        public IBuffData Buff;
         public int Index;
 
-        public BuffInfo(IBuffDataComponent buff, int index)
+        public BuffInfo(IBuffData buff, int index)
         {
             Buff = buff;
             Index = index;
@@ -28,7 +28,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
         private Dictionary<Type, List<BuffInfo>> _buffGroup;
         private List<bool> _foldoutState1;
         private List<bool> _foldoutState2;
-        private List<IBuffDataComponent> _buffs;
+        private List<IBuffData> _buffs;
 
         private void OnEnable()
         {
@@ -36,7 +36,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
             _buffGroup = new Dictionary<Type, List<BuffInfo>>();
             _foldoutState1 = new List<bool>();
             _foldoutState2 = new List<bool>();
-            _buffs = new List<IBuffDataComponent>();
+            _buffs = new List<IBuffData>();
             
             BuffDebugWindow.EntityManager = _entityBuff._buffManager;
         }
@@ -199,9 +199,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Editors.Builtin.Entitys
         }
 
         private void _memberInfoDraw(MemberInfo[] fields, BuffInfo buff,
-            Func<MemberInfo, IBuffDataComponent, object> getValue,
+            Func<MemberInfo, IBuffData, object> getValue,
             Func<MemberInfo,bool> isSet,
-            Action<MemberInfo, IBuffDataComponent, object> setValue)
+            Action<MemberInfo, IBuffData, object> setValue)
         {
             foreach (var info in fields)
             {

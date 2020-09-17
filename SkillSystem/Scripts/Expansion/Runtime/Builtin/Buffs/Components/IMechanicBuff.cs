@@ -47,7 +47,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Buffs.Components
     /// <summary>
     /// 能力buff
     /// </summary>
-    public interface IMechanicBuff:IBuffDataComponent,IBuffValueDataComponent
+    public interface IMechanicBuff:IBuffData,IBuffValueDataComponent
     {
         MechanicsType MechanicsType { get; set; }
     }
