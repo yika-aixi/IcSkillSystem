@@ -34,7 +34,9 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             struct RemoveBuffInfo
             {
-                public T Buff;
+                public static RemoveBuffInfo Null = new RemoveBuffInfo(default,-1);
+                
+                public        T Buff;
 
                 public int Index;
 
@@ -45,35 +47,49 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
             
-            Queue<RemoveBuffInfo> _removeQ = new Queue<RemoveBuffInfo>();
+            FasterList<RemoveBuffInfo> _removeQ = new FasterList<RemoveBuffInfo>();
             
             private T[] _fastAr => _buffs.ToArrayFast();
-            
+
+            private bool _isRemove;
             public void Update()
             {
-                var count  = _buffs.Count;
+                int count;
 
-                for (var i = 0; i < count; i++)
+                if (_isRemove)
                 {
-                    _onUpdate(this, i);
-                }
+                    var fastR = _removeQ.ToArrayFast();
+                    count = fastR.Length;
+                    for (int i = count - 1; i >= 0; i--)
+                    {
+                        var removeBuffInfo = fastR[i];
 
-                count = _addQ.Count;
+                        if (removeBuffInfo.Index == -1)
+                        {
+                            continue;
+                        }
+
+                        _onDestroy(this, _fastAr[i]);
+                        _buffs.RemoveAt(removeBuffInfo.Index);
+
+                        fastR[i] = RemoveBuffInfo.Null;
+                    }
+
+                    _isRemove = false;
+                }
+                
+                count     = _addQ.Count;
 
                 for (int i = 0; i < count; i++)
                 {
                     _onCreateBuff(this, _addQ.Dequeue());
                 }
-
-                count = _removeQ.Count;
                 
-                for (int i = 0; i < count; i++)
+                count = _buffs.Count;
+
+                for (var i = 0; i < count; i++)
                 {
-                    var removeBuffInfo = _removeQ.Dequeue();
-                    
-                    _onDestroy(this, removeBuffInfo.Buff);
-                    
-                    _buffs.RemoveAt(removeBuffInfo.Index);
+                    _onUpdate(this, i);
                 }
             }
 
@@ -92,6 +108,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     _addQ.Enqueue(_buffs.Count);
                 
                     _buffs.AddIn(buff);
+                    _removeQ.AddRef(ref RemoveBuffInfo.Null);
                 }
                 finally
                 {
@@ -118,14 +135,15 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 {
                     return;
                 }
-                
+
+                _isRemove = true;
                 SpinLock sl        = new SpinLock();
                 bool     lockState = false;
 
                 try
                 {
                     sl.Enter(ref lockState);
-                    _removeQ.Enqueue(new RemoveBuffInfo(_fastAr[index], index));
+                    _removeQ.ToArrayFast()[index] = new RemoveBuffInfo(_fastAr[index], index);
                 }
                 finally
                 {
@@ -357,7 +375,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             }
         }
 
-        static void _onDestroy<T>(BuffChunk<T> buffChunk, T buff) where T : unmanaged, IBuffData
+        static void _onDestroy<T>(BuffChunk<T> buffChunk,in T buff) where T : unmanaged, IBuffData
         {
             var count = _systems.Count;
             for (var i = 0; i < count; i++)
