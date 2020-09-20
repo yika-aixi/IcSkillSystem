@@ -8,7 +8,7 @@ using System;
 namespace CabinIcarus.IcSkillSystem.Nodes.Runtime.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class NodeTooltipAttribute:APortTooltipAttribute
+    public class NodeTooltipAttribute:Attribute
     {
         public readonly string Tooltip;
 
