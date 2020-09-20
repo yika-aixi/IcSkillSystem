@@ -345,7 +345,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             if (!_checkEntityExist(entity))
             {
-                throw new ArgumentException($"{entity.ID} entity not exist! Please Call {nameof(AddEntity)}.");
+                throw new ArgumentException($"{entity.SkillEID} entity not exist! Please Call {nameof(AddEntity)}.");
             }
 
             var type = typeof(T);

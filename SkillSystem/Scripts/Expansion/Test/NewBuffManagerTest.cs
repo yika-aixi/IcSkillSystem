@@ -45,7 +45,7 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
         class Entity:IIcSkSEntity
         {
             private int _id;
-            public int ID => _id;
+            public int SkillEID => _id;
 
             public Entity(int id)
             {

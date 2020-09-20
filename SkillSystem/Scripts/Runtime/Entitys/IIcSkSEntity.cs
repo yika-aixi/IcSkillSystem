@@ -9,6 +9,6 @@ namespace CabinIcarus.IcSkillSystem.Runtime.Buffs.Entitys
 {
     public interface IIcSkSEntity
     {
-        int ID { get; }
+        int SkillEID { get; }
     }
 }

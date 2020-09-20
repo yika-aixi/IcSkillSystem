@@ -97,16 +97,16 @@ namespace IcSkillSystem.SkillSystem.Expansion.Tests
 
         class Entity:IIcSkSEntity
         {
-            public int ID { get; private set; }
+            public int SkillEID { get; private set; }
 
             public Entity()
             {
-                ID = 1;
+                SkillEID = 1;
             }
 
             public Entity(int id)
             {
-                ID = id;
+                SkillEID = id;
             }
         }
         private void Start()
