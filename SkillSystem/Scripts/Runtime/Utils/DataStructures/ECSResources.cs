@@ -8,6 +8,8 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
     /// <typeparam name="T"></typeparam>
     public struct ECSResources<T>
     {
+        static ECSResources<T> Null = new ECSResources<T>(){ id = 0};
+        
         internal uint id;
         
         ECSResources(uint toEcs)
@@ -16,8 +18,16 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
         }
         
         public static implicit operator T(ECSResources<T> resources) { return ResourcesECSDB<T>.FromECS(resources.id); }
-        
-        public static implicit operator ECSResources<T>(T value) { return new ECSResources<T>(ResourcesECSDB<T>.ToECS(value));}
+
+        public static implicit operator ECSResources<T>(T value)
+        {
+            if (value == null)
+            {
+                return Null;
+            }
+            
+            return new ECSResources<T>(ResourcesECSDB<T>.ToECS(value));
+        }
 
         public object GetValue()
         {
