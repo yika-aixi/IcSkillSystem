@@ -139,7 +139,7 @@ namespace CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils
 
             if (_value == null)
             {
-                _value = (AValueInfo) Activator.CreateInstance(_valueInfoType);
+                _value = (ValueInfo<T>) default(T);
             }
 
             var valueInfo = _value as ValueInfo<T>;
