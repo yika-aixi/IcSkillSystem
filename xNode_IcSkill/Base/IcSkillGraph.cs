@@ -199,6 +199,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         public Root FirstRoot { get; private set; }
 
+        private bool _isStart;
         /// <summary>
         /// Start Group 
         /// </summary>
@@ -210,7 +211,7 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
             {
                 LoadGroup();
             }
-            
+
             var count = nodes.Count;
             
             for (var index = 0; index < count; index++)
@@ -221,6 +222,8 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
                     skillNode.OnStart();
                 }
             }
+            
+            _isStart = true;
             
             for (var i = 0; i < _rootCount; i++)
             {
@@ -238,14 +241,19 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group
 
         public void StopGroup()
         {
-            var count = nodes.Count;
-            
-            for (var index = 0; index < count; index++)
+            if (_isStart)
             {
-                var node = nodes[index];
-                if (node is IIcSkillSystemNode skillNode)
+                _isStart = false;
+                
+                var count = nodes.Count;
+                
+                for (var index = 0; index < count; index++)
                 {
-                    skillNode.OnStop();
+                    var node = nodes[index];
+                    if (node is IIcSkillSystemNode skillNode)
+                    {
+                        skillNode.OnStop();
+                    }
                 }
             }
             
