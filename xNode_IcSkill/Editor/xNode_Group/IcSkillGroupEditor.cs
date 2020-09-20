@@ -188,9 +188,6 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
             var path = EditorUtility.SaveFilePanel("Save Path", Application.dataPath, target.name, "bin");
         }
         
-        
-
-        //todo 先用它的这样的写法吧,后续改为在Node自定义编辑中处理
         public override string GetPortTooltip(NodePort port)
         {
             var tooltip = base.GetPortTooltip(port);
@@ -240,6 +237,16 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
                             tooltip = (string) property.GetValue(node);
                         }
                     } 
+                }
+            }
+
+            var inputAttribute = port.GetType().GetCustomAttribute<MustInputAttribute>();
+            
+            if (inputAttribute != null)
+            {
+                if (!port.IsConnected)
+                {
+                    return $"This port must be entered, otherwise an abnormal error such as a null pointer will occur";
                 }
             }
 
