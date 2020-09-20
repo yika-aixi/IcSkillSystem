@@ -25,5 +25,9 @@ namespace CabinIcarus.IcSkillSystem.Nodes.Runtime
         }
         
         protected abstract T CreateOutValue();
+
+#if UNITY_EDITOR
+        public const string CreateOutValueMethodName = nameof(CreateOutValue);
+#endif
     }
 }

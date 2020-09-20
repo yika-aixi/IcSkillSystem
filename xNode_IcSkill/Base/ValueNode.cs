@@ -27,6 +27,10 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
         }
 
         protected abstract T GetTValue();
+
+#if UNITY_EDITOR
+        public const string GetTValueMethodName = nameof(GetTValue);
+#endif
     }
     
     /// <summary>
