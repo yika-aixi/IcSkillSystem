@@ -14,8 +14,25 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
    
         protected override ValueInfo<UnityEngine.Quaternion> GetTValue()
         {
-            _variableValue = _value;
+            _variableValue.Value = _value;
+            
             return _variableValue;
+        }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+
+            _variableValue = _value;
+        }
+
+        public override void OnStop()
+        {
+            base.OnStop();
+            
+            _variableValue.Release();
+
+            _variableValue = null;
         }
     }
 }
