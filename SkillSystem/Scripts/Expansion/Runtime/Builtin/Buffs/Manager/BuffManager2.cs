@@ -20,8 +20,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         {
             void         Update();
             void         RemoveAllBuff();
-            
-            BuffManager2 BuffM2 { get; set; }
 
             IIcSkSEntity Entity { get; set; }
         }
@@ -32,22 +30,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
             private Queue<int> _addQ = new Queue<int>();
 
-            struct RemoveBuffInfo
-            {
-                public static RemoveBuffInfo Null = new RemoveBuffInfo(default,-1);
-                
-                public        T Buff;
-
-                public int Index;
-
-                public RemoveBuffInfo(T buff, int index)
-                {
-                    Buff  = buff;
-                    Index = index;
-                }
-            }
-            
-            FasterList<RemoveBuffInfo> _removeQ = new FasterList<RemoveBuffInfo>();
+            FasterList<bool> _removeQ = new FasterList<bool>();
             
             private T[] _fastAr => _buffs.ToArrayFast();
 
@@ -64,15 +47,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     {
                         var removeBuffInfo = fastR[i];
 
-                        if (removeBuffInfo.Index == -1)
+                        if (removeBuffInfo == false)
                         {
                             continue;
                         }
 
                         _onDestroy(this, _fastAr[i]);
-                        _buffs.RemoveAt(removeBuffInfo.Index);
-
-                        fastR[i] = RemoveBuffInfo.Null;
+                        _buffs.RemoveAt(i);
+                        fastR[i] = false;
                     }
 
                     _isRemove = false;
@@ -93,7 +75,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 }
             }
 
-            public BuffManager2 BuffM2 { get; set; }
             public IIcSkSEntity Entity { get; set; }
 
             public void AddBuff(in T buff)
@@ -108,7 +89,7 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     _addQ.Enqueue(_buffs.Count);
                 
                     _buffs.AddIn(buff);
-                    _removeQ.AddRef(ref RemoveBuffInfo.Null);
+                    _removeQ.Add(false);
                 }
                 finally
                 {
@@ -136,14 +117,14 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                     return;
                 }
 
-                _isRemove = true;
+                _isRemove                   = true;
                 SpinLock sl        = new SpinLock();
                 bool     lockState = false;
-
+                
                 try
                 {
                     sl.Enter(ref lockState);
-                    _removeQ.ToArrayFast()[index] = new RemoveBuffInfo(_fastAr[index], index);
+                    _removeQ.ToArrayFast()[index] = true;
                 }
                 finally
                 {
