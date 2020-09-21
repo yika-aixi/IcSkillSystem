@@ -39,6 +39,20 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             {
                 int count;
 
+                count = _addQ.Count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    _onCreateBuff(this, _addQ.Dequeue());
+                }
+                
+                count = _buffs.Count;
+
+                for (var i = 0; i < count; i++)
+                {
+                    _onUpdate(this, i);
+                }
+                
                 if (_isRemove)
                 {
                     var fastR = _removeQ.ToArrayFast();
@@ -59,20 +73,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
 
                     _isRemove = false;
                 }
-                
-                count     = _addQ.Count;
-
-                for (int i = 0; i < count; i++)
-                {
-                    _onCreateBuff(this, _addQ.Dequeue());
-                }
-                
-                count = _buffs.Count;
-
-                for (var i = 0; i < count; i++)
-                {
-                    _onUpdate(this, i);
-                }
             }
 
             public IIcSkSEntity Entity { get; set; }
@@ -85,9 +85,8 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 try
                 {
                     sl.Enter(ref lockState);
-                    
-                    _addQ.Enqueue(_buffs.Count);
                 
+                    _addQ.Enqueue(_buffs.Count);
                     _buffs.AddIn(buff);
                     _removeQ.Add(false);
                 }
@@ -176,9 +175,11 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
         public void AddBuff<T>(T buff, IIcSkSEntity entity) where T : unmanaged,IBuffData
         {
             BuffChunk<T> chunke;
+            
             if (!_buffChunk.TryGetValue(typeof(T), out var chunkWeak))
             {
                 chunke = new BuffChunk<T>();
+                chunke.Entity = entity;
                 _buffChunk.Add(typeof(T), chunke);
             }
             else
@@ -186,7 +187,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 chunke = (BuffChunk<T>) chunkWeak;
             }
             
-            chunke.Entity = entity;
             chunke.AddBuff(buff);
         }
 
@@ -311,31 +311,19 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
             void Destroy(IIcSkSEntity entity, T buff);
         }
 
-        // private static Dictionary<Type ,List<IBuffUpdateSystem>> _updateS = new Dictionary<Type, List<IBuffUpdateSystem>>();
-        //
-        // private static Dictionary<Type ,List<IBuffCreateSystem>> _createS = new Dictionary<Type, List<IBuffCreateSystem>>();
-        //
-        // private static Dictionary<Type ,List<IBuffDestroySystem>> _destoryS = new  Dictionary<Type, List<IBuffDestroySystem>>();
-
         private static FasterList<IBuffSystem> _systems = new FasterList<IBuffSystem>();
         
         static void _onCreateBuff<T>(BuffChunk<T> buffChunk, int index) where T : unmanaged, IBuffData
         {
             var count = _systems.Count;
-            // var type  = typeof(T);
             
-            // if (_createS.TryGetValue(type, out var systems))
+            for (var i = 0; i < count; i++)
             {
-                for (var i = 0; i < count; i++)
-                {
-                    var system = _systems[i];
+                var system = _systems[i];
 
-                    if (system is IBuffCreateSystemNew<T> createSystemNew)
-                    {
-                        createSystemNew.Create(buffChunk.Entity, index);
-                    }
-                    
-                    // system.Create(buffChunk.Entity, index);
+                if (system is IBuffCreateSystemNew<T> createSystemNew)
+                {
+                    createSystemNew.Create(buffChunk.Entity, index);
                 }
             }
         }
@@ -351,8 +339,6 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 {
                     createSystemNew.Update(buffChunk.Entity, index);
                 }
-                    
-                // system.Create(buffChunk.Entity, index);
             }
         }
 
@@ -367,49 +353,12 @@ namespace CabinIcarus.IcSkillSystem.Expansion.Runtime.Builtin.Buffs
                 {
                     createSystemNew.Destroy(buffChunk.Entity, buff);
                 }
-                    
-                // system.Create(buffChunk.Entity, index);
             }
         }
 
         public static void AddSystem(IBuffSystem buffSystem)
         {
-            // var type = typeof(IBuffSystem);
-            //
-            // if (buffSystem is IBuffCreateSystem createSystem)
-            // {
-            //     if (!_createS.TryGetValue(type, out var createSystems))
-            //     {
-            //         createSystems = new List<IBuffCreateSystem>();
-            //         _createS.Add(type, createSystems);
-            //     }
-            //
-            //     _addSystem(createSystems, createSystem);
-            // }
-            
             _addSystem(_systems, buffSystem);
-            
-            // if (buffSystem is IBuffUpdateSystem updateSystem)
-            // {
-            //     if (!_updateS.TryGetValue(type, out var updateSystems))
-            //     {
-            //         updateSystems = new List<IBuffUpdateSystem>();
-            //         _updateS.Add(type, updateSystems);
-            //     }
-            //
-            //     _addSystem(updateSystems,updateSystem);
-            // }
-            //
-            // if (buffSystem is IBuffDestroySystem destroySystem)
-            // {
-            //     if (!_destoryS.TryGetValue(type, out var destroySystems))
-            //     {
-            //         destroySystems = new List<IBuffDestroySystem>();
-            //         _destoryS.Add(type, destroySystems);
-            //     }
-            //
-            //     _addSystem(destroySystems, destroySystem);
-            // }
 
             void _addSystem<TS>(IList<TS> systems,TS system)
             {
