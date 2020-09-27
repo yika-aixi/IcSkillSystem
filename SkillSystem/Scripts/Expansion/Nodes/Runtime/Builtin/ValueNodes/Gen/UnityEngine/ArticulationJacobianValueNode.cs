@@ -4,6 +4,7 @@ using CabinIcarus.IcSkillSystem.SkillSystem.Runtime.Utils;
 
 namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
 {
+#if UNITY_2020_2
     [CreateNodeMenu("CabinIcarus/Nodes/UnityEngine/PhysicsModule/ArticulationJacobian Value")]
     public partial class ArticulationJacobianValueNode:ValueNode<ValueInfo<UnityEngine.ArticulationJacobian>>
     {
@@ -35,4 +36,5 @@ namespace CabinIcarus.IcSkillSystem.Runtime.xNode_Nodes
             _variableValue = null;
         }
     }
+#endif
 }
