@@ -414,7 +414,13 @@ namespace CabinIcarus.IcSkillSystem.xNode_Group.Editor
         private static IcSkillSystemSetting _setting;
         public static IcSkillSystemSetting Setting
         {
-            get { return _setting ??= IcSkillSystemSetting.Load(); }
+            get
+            {
+#if UNITY_2020_2
+                return _setting ??= IcSkillSystemSetting.Load();
+#endif
+                return _setting = _setting ?? IcSkillSystemSetting.Load();
+            }
         }
 
 #if !UNITY_2019_1_OR_NEWER
